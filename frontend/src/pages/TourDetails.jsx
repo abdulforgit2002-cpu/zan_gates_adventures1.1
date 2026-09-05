@@ -4,6 +4,7 @@ import { Link, useParams } from "react-router-dom";
 import {
     getTourBySlug,
     getTourPrices,
+    getTourImages,
 } from "../services/tourService";
 
 const TourDetails = () => {
@@ -11,9 +12,20 @@ const TourDetails = () => {
 
     const [tour, setTour] = useState(null);
     const [prices, setPrices] = useState([]);
+    const [images, setImages] = useState([]);
 
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
+
+    /*
+     * ============================================================
+     * GALLERY / LIGHTBOX STATE
+     * ============================================================
+     */
+
+    const [selectedImageIndex, setSelectedImageIndex] =
+        useState(null);
+
 
     /*
      * ============================================================
@@ -31,56 +43,79 @@ const TourDetails = () => {
      * Then:
      *
      * GET /api/tours/{id}/prices
+     *
+     * GET /api/tours/{id}/images
      */
+
     useEffect(() => {
+
         const loadTour = async () => {
+
             try {
+
                 setLoading(true);
                 setError("");
 
                 /*
                  * Make sure a slug exists.
                  */
+
                 if (!slug) {
+
                     throw new Error(
                         "No tour was specified."
                     );
+
                 }
+
 
                 /*
                  * Retrieve the tour directly by slug.
-                 *
-                 * This replaces the old process of:
-                 *
-                 * 1. getTours()
-                 * 2. find matching slug
-                 * 3. getTour(id)
-                 *
-                 * We now go directly to the API.
                  */
+
                 const tourData =
                     await getTourBySlug(slug);
 
+
                 if (!tourData) {
+
                     throw new Error(
                         "The requested tour could not be found."
                     );
+
                 }
 
+
                 /*
-                 * Retrieve all pricing options using
-                 * the ID returned by the slug endpoint.
+                 * Retrieve pricing options.
                  */
+
                 const priceData =
-                    await getTourPrices(tourData.id);
+                    await getTourPrices(
+                        tourData.id
+                    );
+
+
+                /*
+                 * Retrieve tour images.
+                 */
+
+                const imageData =
+                    await getTourImages(
+                        tourData.id
+                    );
+
 
                 /*
                  * Save data into React state.
                  */
+
                 setTour(tourData);
                 setPrices(priceData);
+                setImages(imageData);
 
             } catch (error) {
+
                 console.error(
                     "Failed to load tour:",
                     error
@@ -88,6 +123,7 @@ const TourDetails = () => {
 
                 setTour(null);
                 setPrices([]);
+                setImages([]);
 
                 setError(
                     error.message ||
@@ -95,12 +131,181 @@ const TourDetails = () => {
                 );
 
             } finally {
+
                 setLoading(false);
+
             }
+
         };
 
+
         loadTour();
+
     }, [slug]);
+
+
+    /*
+     * ============================================================
+     * LIGHTBOX FUNCTIONS
+     * ============================================================
+     */
+
+
+    /*
+     * Open selected image.
+     */
+
+    const openLightbox = (index) => {
+
+        setSelectedImageIndex(index);
+
+    };
+
+
+    /*
+     * Close lightbox.
+     */
+
+    const closeLightbox = () => {
+
+        setSelectedImageIndex(null);
+
+    };
+
+
+    /*
+     * Show previous image.
+     */
+
+    const showPreviousImage = () => {
+
+        if (
+            selectedImageIndex === null ||
+            images.length === 0
+        ) {
+            return;
+        }
+
+
+        setSelectedImageIndex(
+            (selectedImageIndex - 1 + images.length) %
+            images.length
+        );
+
+    };
+
+
+    /*
+     * Show next image.
+     */
+
+    const showNextImage = () => {
+
+        if (
+            selectedImageIndex === null ||
+            images.length === 0
+        ) {
+            return;
+        }
+
+
+        setSelectedImageIndex(
+            (selectedImageIndex + 1) %
+            images.length
+        );
+
+    };
+
+
+    /*
+     * ============================================================
+     * KEYBOARD NAVIGATION
+     * ============================================================
+     *
+     * ESC   → close
+     * ←     → previous
+     * →     → next
+     */
+
+    useEffect(() => {
+
+        const handleKeyDown = (event) => {
+
+            if (selectedImageIndex === null) {
+                return;
+            }
+
+
+            if (event.key === "Escape") {
+
+                closeLightbox();
+
+            }
+
+
+            if (event.key === "ArrowLeft") {
+
+                showPreviousImage();
+
+            }
+
+
+            if (event.key === "ArrowRight") {
+
+                showNextImage();
+
+            }
+
+        };
+
+
+        document.addEventListener(
+            "keydown",
+            handleKeyDown
+        );
+
+
+        return () => {
+
+            document.removeEventListener(
+                "keydown",
+                handleKeyDown
+            );
+
+        };
+
+    }, [
+        selectedImageIndex,
+        images.length
+    ]);
+
+
+    /*
+     * ============================================================
+     * PREVENT BODY SCROLL WHEN LIGHTBOX IS OPEN
+     * ============================================================
+     */
+
+    useEffect(() => {
+
+        if (selectedImageIndex !== null) {
+
+            document.body.style.overflow = "hidden";
+
+        } else {
+
+            document.body.style.overflow = "";
+
+        }
+
+
+        return () => {
+
+            document.body.style.overflow = "";
+
+        };
+
+    }, [selectedImageIndex]);
 
 
     /*
@@ -108,8 +313,11 @@ const TourDetails = () => {
      * LOADING STATE
      * ============================================================
      */
+
     if (loading) {
+
         return (
+
             <main className="tour-details-page">
 
                 <section className="tour-details-loading">
@@ -127,7 +335,9 @@ const TourDetails = () => {
                 </section>
 
             </main>
+
         );
+
     }
 
 
@@ -136,8 +346,11 @@ const TourDetails = () => {
      * ERROR STATE
      * ============================================================
      */
+
     if (error) {
+
         return (
+
             <main className="tour-details-page">
 
                 <section className="tour-details-error">
@@ -168,7 +381,9 @@ const TourDetails = () => {
                 </section>
 
             </main>
+
         );
+
     }
 
 
@@ -177,8 +392,11 @@ const TourDetails = () => {
      * SAFETY CHECK
      * ============================================================
      */
+
     if (!tour) {
+
         return null;
+
     }
 
 
@@ -198,6 +416,7 @@ const TourDetails = () => {
     /*
      * Find the lowest available price.
      */
+
     const lowestPrice =
         numericPrices.length > 0
             ? Math.min(...numericPrices)
@@ -207,6 +426,7 @@ const TourDetails = () => {
     /*
      * Determine currency.
      */
+
     const currency =
         prices.length > 0 &&
         prices[0].currency
@@ -219,14 +439,29 @@ const TourDetails = () => {
      *
      * Other currencies use the currency code.
      */
+
     const currencySymbol =
         currency === "USD"
             ? "$"
             : currency;
 
 
+    /*
+     * ============================================================
+     * SELECTED LIGHTBOX IMAGE
+     * ============================================================
+     */
+
+    const selectedImage =
+        selectedImageIndex !== null
+            ? images[selectedImageIndex]
+            : null;
+
+
     return (
+
         <main className="tour-details-page">
+
 
             {/* ==================================================
                 TOUR HERO
@@ -237,6 +472,7 @@ const TourDetails = () => {
                 <div className="tour-details-hero-overlay"></div>
 
                 <div className="tour-details-container">
+
 
                     {/* ==============================
                         BREADCRUMB
@@ -298,6 +534,7 @@ const TourDetails = () => {
 
                         <div className="tour-details-quick-info">
 
+
                             {/* DESTINATION */}
 
                             <div>
@@ -341,7 +578,9 @@ const TourDetails = () => {
                                     </span>
 
                                     <strong>
+
                                         {currencySymbol}
+
                                         {lowestPrice.toLocaleString(
                                             "en-US",
                                             {
@@ -349,6 +588,7 @@ const TourDetails = () => {
                                                 maximumFractionDigits: 2,
                                             }
                                         )}
+
                                     </strong>
 
                                 </div>
@@ -362,6 +602,104 @@ const TourDetails = () => {
                 </div>
 
             </section>
+
+
+            {/* ==================================================
+                TOUR GALLERY
+            ================================================== */}
+
+            {images.length > 0 && (
+
+                <section className="tour-details-gallery">
+
+                    <div className="tour-details-container">
+
+
+                        {/* ==============================
+                            GALLERY HEADER
+                        ============================== */}
+
+                        <div className="tour-gallery-header">
+
+                            <span className="tour-section-label">
+                                EXPERIENCE GALLERY
+                            </span>
+
+                            <h2>
+                                Explore {tour.title}
+                            </h2>
+
+                            <p>
+                                Discover the places, scenery and
+                                experiences that make this journey
+                                special.
+                            </p>
+
+                        </div>
+
+
+                        {/* ==============================
+                            GALLERY GRID
+                        ============================== */}
+
+                        <div className="tour-gallery-grid">
+
+                            {images.map(
+                                (image, index) => (
+
+                                    <button
+                                        type="button"
+                                        key={image.id}
+                                        className={
+                                            image.is_primary
+                                                ? "tour-gallery-item tour-gallery-primary"
+                                                : "tour-gallery-item"
+                                        }
+                                        onClick={() =>
+                                            openLightbox(index)
+                                        }
+                                        aria-label={`View image ${index + 1} of ${images.length}`}
+                                    >
+
+                                        <img
+                                            src={image.image_url}
+                                            alt={
+                                                image.alt_text ||
+                                                `${tour.title} experience in ${
+                                                    tour.destination_name ||
+                                                    "Zanzibar"
+                                                }`
+                                            }
+                                            loading={
+                                                image.is_primary
+                                                    ? "eager"
+                                                    : "lazy"
+                                            }
+                                        />
+
+
+                                        {/* IMAGE OVERLAY */}
+
+                                        <span className="tour-gallery-overlay">
+
+                                            <span>
+                                                View Image
+                                            </span>
+
+                                        </span>
+
+                                    </button>
+
+                                )
+                            )}
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+            )}
 
 
             {/* ==================================================
@@ -558,6 +896,7 @@ const TourDetails = () => {
 
 
                                             return (
+
                                                 <div
                                                     className="tour-price-row"
                                                     key={price.id}
@@ -571,21 +910,27 @@ const TourDetails = () => {
 
 
                                                         <span>
+
                                                             {price.pricing_type ===
                                                             "PER_PERSON"
                                                                 ? "Price per person"
                                                                 : "Group price"}
+
                                                         </span>
 
                                                     </div>
 
 
                                                     <strong>
+
                                                         {currencySymbol}
+
                                                         {formattedAmount}
+
                                                     </strong>
 
                                                 </div>
+
                                             );
 
                                         })}
@@ -730,7 +1075,9 @@ const TourDetails = () => {
 
 
                                         <strong>
+
                                             {currencySymbol}
+
                                             {lowestPrice.toLocaleString(
                                                 "en-US",
                                                 {
@@ -738,6 +1085,7 @@ const TourDetails = () => {
                                                     maximumFractionDigits: 2,
                                                 }
                                             )}
+
                                         </strong>
 
 
@@ -779,8 +1127,143 @@ const TourDetails = () => {
 
             </section>
 
+
+            {/* ==================================================
+                IMAGE LIGHTBOX
+            ================================================== */}
+
+            {selectedImage && (
+
+                <div
+                    className="tour-lightbox"
+                    role="dialog"
+                    aria-modal="true"
+                    aria-label="Tour image viewer"
+                    onClick={closeLightbox}
+                >
+
+                    {/* ==============================
+                        CLOSE BUTTON
+                    ============================== */}
+
+                    <button
+                        type="button"
+                        className="tour-lightbox-close"
+                        onClick={closeLightbox}
+                        aria-label="Close image viewer"
+                    >
+                        ×
+                    </button>
+
+
+                    {/* ==============================
+                        PREVIOUS BUTTON
+                    ============================== */}
+
+                    {images.length > 1 && (
+
+                        <button
+                            type="button"
+                            className="tour-lightbox-prev"
+                            onClick={(event) => {
+
+                                event.stopPropagation();
+
+                                showPreviousImage();
+
+                            }}
+                            aria-label="Previous image"
+                        >
+                            ‹
+                        </button>
+
+                    )}
+
+
+                    {/* ==============================
+                        IMAGE
+                    ============================== */}
+
+                    <div
+                        className="tour-lightbox-content"
+                        onClick={(event) =>
+                            event.stopPropagation()
+                        }
+                    >
+
+                        <img
+                            src={selectedImage.image_url}
+                            alt={
+                                selectedImage.alt_text ||
+                                `${tour.title} experience in ${
+                                    tour.destination_name ||
+                                    "Zanzibar"
+                                }`
+                            }
+                        />
+
+
+                        {/* ==============================
+                            IMAGE CAPTION
+                        ============================== */}
+
+                        {selectedImage.alt_text && (
+
+                            <p className="tour-lightbox-caption">
+
+                                {selectedImage.alt_text}
+
+                            </p>
+
+                        )}
+
+
+                        {/* ==============================
+                            IMAGE COUNTER
+                        ============================== */}
+
+                        <div className="tour-lightbox-counter">
+
+                            {selectedImageIndex + 1}
+                            {" / "}
+                            {images.length}
+
+                        </div>
+
+                    </div>
+
+
+                    {/* ==============================
+                        NEXT BUTTON
+                    ============================== */}
+
+                    {images.length > 1 && (
+
+                        <button
+                            type="button"
+                            className="tour-lightbox-next"
+                            onClick={(event) => {
+
+                                event.stopPropagation();
+
+                                showNextImage();
+
+                            }}
+                            aria-label="Next image"
+                        >
+                            ›
+                        </button>
+
+                    )}
+
+                </div>
+
+            )}
+
         </main>
+
     );
+
 };
 
 export default TourDetails;

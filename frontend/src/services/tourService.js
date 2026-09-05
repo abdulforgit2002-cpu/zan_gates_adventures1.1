@@ -21,18 +21,46 @@ export const getTour = async (id) => {
     return response.data ?? null;
 };
 
-/** * Get a single tour by slug. * * Example: * /api/tours/slug/safari-blue-zanzibar */ 
-export const getTourBySlug = async (slug) => { 
-    const response = await api.get( `/tours/slug/${encodeURIComponent(slug)}` ); 
-    
-    return response.data ?? null; };
+
+/**
+ * Get a single tour by slug.
+ *
+ * Example:
+ * /api/tours/slug/safari-blue-zanzibar
+ */
+export const getTourBySlug = async (slug) => {
+    const response = await api.get(
+        `/tours/slug/${encodeURIComponent(slug)}`
+    );
+
+    return response.data ?? null;
+};
 
 
 /**
  * Get prices for a specific tour.
  */
 export const getTourPrices = async (id) => {
-    const response = await api.get(`/tours/${id}/prices`);
+    const response = await api.get(
+        `/tours/${id}/prices`
+    );
+
+    return Array.isArray(response.data)
+        ? response.data
+        : [];
+};
+
+
+/**
+ * Get all images for a specific tour.
+ *
+ * Endpoint:
+ * GET /api/tours/{id}/images
+ */
+export const getTourImages = async (id) => {
+    const response = await api.get(
+        `/tours/${id}/images`
+    );
 
     return Array.isArray(response.data)
         ? response.data
