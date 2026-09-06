@@ -17,8 +17,15 @@ class BookingEnquiryController
      * Important:
      * - The frontend does NOT submit the final price.
      * - The backend retrieves the official price from PostgreSQL.
+     * - The backend selects the correct pricing tier.
      * - The backend calculates the estimated total.
      * - New enquiries are always created as PENDING.
+     *
+     * Current pricing model:
+     * - PER_PERSON
+     * - Pricing tier is determined by the number of adults.
+     * - Children are recorded but are not automatically charged
+     *   because no separate child pricing model currently exists.
      */
     public function store(): never
     {
@@ -85,7 +92,10 @@ class BookingEnquiryController
 
             if (
                 $tourId === null ||
-                filter_var($tourId, FILTER_VALIDATE_INT) === false ||
+                filter_var(
+                    $tourId,
+                    FILTER_VALIDATE_INT
+                ) === false ||
                 (int) $tourId < 1
             ) {
 
@@ -99,7 +109,9 @@ class BookingEnquiryController
 
 
             /*
-             * Adults validation.
+             * ------------------------------------------------------
+             * Adults validation
+             * ------------------------------------------------------
              */
 
             if (
@@ -128,7 +140,9 @@ class BookingEnquiryController
 
 
             /*
-             * Children validation.
+             * ------------------------------------------------------
+             * Children validation
+             * ------------------------------------------------------
              */
 
             if (
@@ -157,7 +171,9 @@ class BookingEnquiryController
 
 
             /*
-             * Full name validation.
+             * ------------------------------------------------------
+             * Full name validation
+             * ------------------------------------------------------
              */
 
             if ($fullName === '') {
@@ -179,7 +195,9 @@ class BookingEnquiryController
 
 
             /*
-             * Email validation.
+             * ------------------------------------------------------
+             * Email validation
+             * ------------------------------------------------------
              */
 
             if ($email === '') {
@@ -215,7 +233,9 @@ class BookingEnquiryController
 
 
             /*
-             * Phone validation.
+             * ------------------------------------------------------
+             * Phone validation
+             * ------------------------------------------------------
              */
 
             if ($phone === '') {
@@ -263,7 +283,11 @@ class BookingEnquiryController
 
 
             /*
-             * Special requirements are optional.
+             * ------------------------------------------------------
+             * Special requirements validation
+             * ------------------------------------------------------
+             *
+             * This field is optional.
              */
 
             if (mb_strlen($specialRequirements) > 5000) {
@@ -321,7 +345,9 @@ class BookingEnquiryController
 
 
             /*
-             * Do not allow past dates.
+             * ------------------------------------------------------
+             * Do not allow past dates
+             * ------------------------------------------------------
              *
              * PostgreSQL is used as the authoritative current date.
              */
@@ -403,9 +429,27 @@ class BookingEnquiryController
              *
              * PER_PERSON
              *
+             * The applicable pricing tier is selected according
+             * to the number of adults.
+             *
+             * Example:
+             *
+             * 1–4 adults
+             *     → $120 per adult
+             *
+             * 5–10 adults
+             *     → $100 per adult
+             *
              * Children are recorded but are not automatically
              * charged because no separate child pricing model
              * currently exists.
+             *
+             * IMPORTANT:
+             *
+             * Do NOT select the cheapest price.
+             *
+             * The selected price must match the customer's
+             * applicable adult pricing tier.
              */
 
             $priceStmt = $this->db->prepare(
@@ -421,9 +465,17 @@ class BookingEnquiryController
 
                  WHERE tour_id = :tour_id
 
+                 AND pricing_type = 'PER_PERSON'
+
+                 AND min_people <= :adults
+
+                 AND (
+                    max_people IS NULL
+                    OR max_people >= :adults
+                 )
+
                  ORDER BY
-                    price ASC,
-                    min_people ASC
+                    min_people DESC
 
                  LIMIT 1
 
@@ -431,7 +483,8 @@ class BookingEnquiryController
             );
 
             $priceStmt->execute([
-                'tour_id' => $tourId
+                'tour_id' => $tourId,
+                'adults' => $adults
             ]);
 
 
@@ -443,7 +496,7 @@ class BookingEnquiryController
                 $this->db->rollBack();
 
                 Response::error(
-                    'Pricing is currently unavailable for this tour.',
+                    'Pricing is currently unavailable for this tour and group size.',
                     409
                 );
             }
@@ -465,7 +518,14 @@ class BookingEnquiryController
                 $price['pricing_type'];
 
 
-            if ($unitPrice < 0) {
+            /*
+             * Price must be greater than zero.
+             *
+             * A zero price should not normally be accepted
+             * for a configured paid tour.
+             */
+
+            if ($unitPrice <= 0) {
 
                 $this->db->rollBack();
 
@@ -477,7 +537,9 @@ class BookingEnquiryController
 
 
             /*
-             * Current supported pricing:
+             * ------------------------------------------------------
+             * Current supported pricing
+             * ------------------------------------------------------
              *
              * PER_PERSON
              *
@@ -508,7 +570,9 @@ class BookingEnquiryController
 
 
             /*
-             * Round monetary value to two decimal places.
+             * ------------------------------------------------------
+             * Round monetary value
+             * ------------------------------------------------------
              */
 
             $estimatedTotal =
@@ -528,7 +592,7 @@ class BookingEnquiryController
              *
              * from the frontend.
              *
-             * These are controlled by the backend.
+             * These values are controlled by the backend.
              */
 
             $insertStmt = $this->db->prepare(

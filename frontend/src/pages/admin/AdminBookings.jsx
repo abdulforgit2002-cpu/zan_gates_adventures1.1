@@ -61,6 +61,27 @@ function AdminBookings() {
 
     /*
     |--------------------------------------------------------------------------
+    | STATUS UPDATE STATE
+    |--------------------------------------------------------------------------
+    |
+    | Stores the booking ID currently being updated.
+    |
+    | This prevents:
+    |
+    | - double clicking
+    | - duplicate requests
+    | - changing multiple bookings simultaneously
+    |
+    */
+
+    const [
+        updatingBookingId,
+        setUpdatingBookingId,
+    ] = useState(null);
+
+
+    /*
+    |--------------------------------------------------------------------------
     | PAGINATION
     |--------------------------------------------------------------------------
     */
@@ -107,11 +128,6 @@ function AdminBookings() {
     |--------------------------------------------------------------------------
     | LOAD BOOKINGS
     |--------------------------------------------------------------------------
-    |
-    | The refresh state is intentionally NOT included in this callback's
-    | dependency list. This prevents refresh from causing unnecessary
-    | repeated API requests.
-    |
     */
 
     const loadBookings = useCallback(
@@ -256,14 +272,6 @@ function AdminBookings() {
                 |--------------------------------------------------------------------------
                 | BOOKINGS
                 |--------------------------------------------------------------------------
-                |
-                | Expected backend structure:
-                |
-                | {
-                |     bookings: [...],
-                |     pagination: {...}
-                | }
-                |
                 */
 
                 let bookingRows = [];
@@ -340,12 +348,6 @@ function AdminBookings() {
                     });
 
                 } else {
-
-                    /*
-                    |--------------------------------------------------------------------------
-                    | Fallback pagination
-                    |--------------------------------------------------------------------------
-                    */
 
                     const total =
                         bookingRows.length;
@@ -473,12 +475,6 @@ function AdminBookings() {
         } = event.target;
 
 
-        /*
-        |--------------------------------------------------------------------------
-        | Always return to first page when filtering.
-        |--------------------------------------------------------------------------
-        */
-
         setPage(1);
 
 
@@ -521,6 +517,11 @@ function AdminBookings() {
     */
 
     const handleRefresh = async () => {
+
+        if (refreshing) {
+            return;
+        }
+
 
         setRefreshing(true);
 
@@ -772,6 +773,420 @@ function AdminBookings() {
 
     /*
     |--------------------------------------------------------------------------
+    | STATUS TRANSITIONS
+    |--------------------------------------------------------------------------
+    |
+    | This mirrors the backend AdminBookingController.
+    |
+    */
+
+    const getAllowedNextStatuses = (
+        status
+    ) => {
+
+        const normalized =
+            String(
+                status || ""
+            )
+                .trim()
+                .toUpperCase();
+
+
+        switch (normalized) {
+
+            case "PENDING":
+
+                return [
+                    "CONFIRMED",
+                    "CANCELLED",
+                ];
+
+
+            case "CONFIRMED":
+
+                return [
+                    "COMPLETED",
+                    "CANCELLED",
+                ];
+
+
+            case "CANCELLED":
+            case "COMPLETED":
+            default:
+
+                return [];
+
+        }
+
+    };
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | STATUS ACTION LABEL
+    |--------------------------------------------------------------------------
+    */
+
+    const statusActionLabel = (
+        status
+    ) => {
+
+        switch (
+            String(
+                status || ""
+            )
+                .trim()
+                .toUpperCase()
+        ) {
+
+            case "CONFIRMED":
+
+                return "Confirm";
+
+
+            case "CANCELLED":
+
+                return "Cancel";
+
+
+            case "COMPLETED":
+
+                return "Complete";
+
+
+            default:
+
+                return formatStatus(
+                    status
+                );
+
+        }
+
+    };
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | UPDATE BOOKING STATUS
+    |--------------------------------------------------------------------------
+    */
+
+    const handleStatusChange = async (
+        booking,
+        requestedStatus
+    ) => {
+
+        const bookingId =
+            booking?.id;
+
+
+        if (
+            bookingId === null ||
+            bookingId === undefined ||
+            bookingId === ""
+        ) {
+
+            setError(
+                "Unable to update this booking because its ID is missing."
+            );
+
+            return;
+        }
+
+
+        const currentStatus =
+            String(
+                booking?.status || ""
+            )
+                .trim()
+                .toUpperCase();
+
+
+        const nextStatus =
+            String(
+                requestedStatus || ""
+            )
+                .trim()
+                .toUpperCase();
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Defensive transition validation
+        |--------------------------------------------------------------------------
+        */
+
+        const allowedStatuses =
+            getAllowedNextStatuses(
+                currentStatus
+            );
+
+
+        if (
+            !allowedStatuses.includes(
+                nextStatus
+            )
+        ) {
+
+            setError(
+                `Invalid booking status transition: ${currentStatus || "UNKNOWN"} → ${nextStatus}.`
+            );
+
+            return;
+        }
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Prevent duplicate requests
+        |--------------------------------------------------------------------------
+        */
+
+        if (
+            updatingBookingId !== null
+        ) {
+
+            return;
+        }
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Confirmation
+        |--------------------------------------------------------------------------
+        */
+
+        const guestName =
+            booking?.full_name ||
+            "this guest";
+
+
+        const actionLabel =
+            statusActionLabel(
+                nextStatus
+            );
+
+
+        let confirmationMessage =
+            `Are you sure you want to ${actionLabel.toLowerCase()} this booking for ${guestName}?`;
+
+
+        if (
+            nextStatus === "CANCELLED"
+        ) {
+
+            confirmationMessage =
+                `Are you sure you want to cancel this booking for ${guestName}? This action cannot be undone.`;
+
+        } else if (
+            nextStatus === "COMPLETED"
+        ) {
+
+            confirmationMessage =
+                `Are you sure you want to mark this booking for ${guestName} as completed? This action cannot be undone.`;
+
+        } else if (
+            nextStatus === "CONFIRMED"
+        ) {
+
+            confirmationMessage =
+                `Are you sure you want to confirm this booking for ${guestName}?`;
+
+        }
+
+
+        const confirmed =
+            window.confirm(
+                confirmationMessage
+            );
+
+
+        if (!confirmed) {
+            return;
+        }
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | UPDATE
+        |--------------------------------------------------------------------------
+        */
+
+        setError("");
+
+
+        setUpdatingBookingId(
+            bookingId
+        );
+
+
+        try {
+
+            await adminApi.updateBookingStatus(
+                bookingId,
+                nextStatus
+            );
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | Update local booking immediately
+            |--------------------------------------------------------------------------
+            */
+
+            setBookings(
+                (previousBookings) =>
+                    previousBookings.map(
+                        (currentBooking) => {
+
+                            if (
+                                String(
+                                    currentBooking?.id
+                                ) !==
+                                String(
+                                    bookingId
+                                )
+                            ) {
+
+                                return currentBooking;
+                            }
+
+
+                            return {
+                                ...currentBooking,
+                                status:
+                                    nextStatus,
+                            };
+
+                        }
+                    )
+            );
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | Reload from server
+            |--------------------------------------------------------------------------
+            |
+            | This ensures the UI is synchronized
+            | with the authoritative backend state.
+            |
+            */
+
+            await loadBookings({
+                showLoading: false,
+            });
+
+        } catch (err) {
+
+            console.error(
+                "Failed to update booking status:",
+                err
+            );
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | AUTHENTICATION
+            |--------------------------------------------------------------------------
+            */
+
+            if (
+                err?.code ===
+                    "AUTH_EXPIRED" ||
+                err?.code ===
+                    "AUTH_REQUIRED"
+            ) {
+
+                logout();
+
+                return;
+            }
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | FORBIDDEN
+            |--------------------------------------------------------------------------
+            */
+
+            if (
+                err?.code ===
+                "FORBIDDEN"
+            ) {
+
+                setError(
+                    "You do not have permission to update booking statuses."
+                );
+
+                return;
+            }
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | BACKEND TRANSITION CONFLICT
+            |--------------------------------------------------------------------------
+            */
+
+            if (
+                err?.status === 409
+            ) {
+
+                const backendMessage =
+                    err?.response?.message ||
+                    err?.message ||
+                    "The booking status could not be changed because the booking has already changed.";
+
+
+                setError(
+                    backendMessage
+                );
+
+
+                /*
+                |--------------------------------------------------------------------------
+                | Refresh after a conflict.
+                |--------------------------------------------------------------------------
+                |
+                | Another administrator may have changed
+                | the booking between page load and update.
+                |
+                */
+
+                await loadBookings({
+                    showLoading: false,
+                });
+
+
+                return;
+            }
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | GENERAL ERROR
+            |--------------------------------------------------------------------------
+            */
+
+            setError(
+                err?.message ||
+                "Unable to update the booking status. Please try again."
+            );
+
+        } finally {
+
+            setUpdatingBookingId(
+                null
+            );
+
+        }
+
+    };
+
+
+    /*
+    |--------------------------------------------------------------------------
     | LOGOUT
     |--------------------------------------------------------------------------
     */
@@ -869,12 +1284,6 @@ function AdminBookings() {
         const items = [];
 
 
-        /*
-        |--------------------------------------------------------------------------
-        | Small number of pages
-        |--------------------------------------------------------------------------
-        */
-
         if (
             totalPages <= 7
         ) {
@@ -897,23 +1306,11 @@ function AdminBookings() {
         }
 
 
-        /*
-        |--------------------------------------------------------------------------
-        | First page
-        |--------------------------------------------------------------------------
-        */
-
         items.push({
             type: "page",
             number: 1,
         });
 
-
-        /*
-        |--------------------------------------------------------------------------
-        | Left ellipsis
-        |--------------------------------------------------------------------------
-        */
 
         if (
             currentPage > 3
@@ -926,12 +1323,6 @@ function AdminBookings() {
 
         }
 
-
-        /*
-        |--------------------------------------------------------------------------
-        | Pages around current page
-        |--------------------------------------------------------------------------
-        */
 
         const start =
             Math.max(
@@ -961,12 +1352,6 @@ function AdminBookings() {
         }
 
 
-        /*
-        |--------------------------------------------------------------------------
-        | Right ellipsis
-        |--------------------------------------------------------------------------
-        */
-
         if (
             currentPage <
             totalPages - 2
@@ -979,12 +1364,6 @@ function AdminBookings() {
 
         }
 
-
-        /*
-        |--------------------------------------------------------------------------
-        | Last page
-        |--------------------------------------------------------------------------
-        */
 
         items.push({
             type: "page",
@@ -1031,10 +1410,6 @@ function AdminBookings() {
             <aside className="admin-sidebar">
 
 
-                {/* ======================================================
-                    BRAND
-                ====================================================== */}
-
                 <div className="admin-brand">
 
                     <Link
@@ -1064,18 +1439,10 @@ function AdminBookings() {
                 </div>
 
 
-                {/* ======================================================
-                    SIDEBAR LABEL
-                ====================================================== */}
-
                 <div className="admin-sidebar-label">
                     ADMINISTRATION
                 </div>
 
-
-                {/* ======================================================
-                    NAVIGATION
-                ====================================================== */}
 
                 <nav className="admin-sidebar-nav">
 
@@ -1111,10 +1478,6 @@ function AdminBookings() {
                 </nav>
 
 
-                {/* ======================================================
-                    SIDEBAR BOTTOM
-                ====================================================== */}
-
                 <div className="admin-sidebar-bottom">
 
 
@@ -1131,10 +1494,6 @@ function AdminBookings() {
 
                     </Link>
 
-
-                    {/* ==================================================
-                        ADMIN USER
-                    ================================================== */}
 
                     <div className="admin-user">
 
@@ -1170,10 +1529,6 @@ function AdminBookings() {
                     </div>
 
 
-                    {/* ==================================================
-                        SIGN OUT
-                    ================================================== */}
-
                     <button
                         type="button"
                         className="admin-signout"
@@ -1194,10 +1549,6 @@ function AdminBookings() {
 
             <main className="admin-main">
 
-
-                {/* ======================================================
-                    TOP BAR
-                ====================================================== */}
 
                 <header className="admin-topbar">
 
@@ -1223,10 +1574,6 @@ function AdminBookings() {
 
                 </header>
 
-
-                {/* ======================================================
-                    CONTENT
-                ====================================================== */}
 
                 <section className="admin-content">
 
@@ -1263,7 +1610,10 @@ function AdminBookings() {
                             type="button"
                             className="admin-refresh-button"
                             onClick={handleRefresh}
-                            disabled={refreshing}
+                            disabled={
+                                refreshing ||
+                                updatingBookingId !== null
+                            }
                         >
 
                             {refreshing
@@ -1283,10 +1633,6 @@ function AdminBookings() {
                     <section className="booking-filters">
 
 
-                        {/* ==================================================
-                            SEARCH
-                        ================================================== */}
-
                         <div className="booking-filter-search">
 
                             <label>
@@ -1305,14 +1651,13 @@ function AdminBookings() {
                                 }
                                 placeholder="Guest, email or phone..."
                                 autoComplete="off"
+                                disabled={
+                                    updatingBookingId !== null
+                                }
                             />
 
                         </div>
 
-
-                        {/* ==================================================
-                            STATUS
-                        ================================================== */}
 
                         <div>
 
@@ -1328,6 +1673,9 @@ function AdminBookings() {
                                 }
                                 onChange={
                                     handleFilterChange
+                                }
+                                disabled={
+                                    updatingBookingId !== null
                                 }
                             >
 
@@ -1360,10 +1708,6 @@ function AdminBookings() {
                         </div>
 
 
-                        {/* ==================================================
-                            EXACT TRAVEL DATE
-                        ================================================== */}
-
                         <div>
 
                             <label>
@@ -1380,14 +1724,13 @@ function AdminBookings() {
                                 onChange={
                                     handleFilterChange
                                 }
+                                disabled={
+                                    updatingBookingId !== null
+                                }
                             />
 
                         </div>
 
-
-                        {/* ==================================================
-                            DATE FROM
-                        ================================================== */}
 
                         <div>
 
@@ -1405,14 +1748,13 @@ function AdminBookings() {
                                 onChange={
                                     handleFilterChange
                                 }
+                                disabled={
+                                    updatingBookingId !== null
+                                }
                             />
 
                         </div>
 
-
-                        {/* ==================================================
-                            DATE TO
-                        ================================================== */}
 
                         <div>
 
@@ -1430,20 +1772,22 @@ function AdminBookings() {
                                 onChange={
                                     handleFilterChange
                                 }
+                                disabled={
+                                    updatingBookingId !== null
+                                }
                             />
 
                         </div>
 
-
-                        {/* ==================================================
-                            CLEAR
-                        ================================================== */}
 
                         <button
                             type="button"
                             className="booking-clear-button"
                             onClick={
                                 clearFilters
+                            }
+                            disabled={
+                                updatingBookingId !== null
                             }
                         >
                             Clear
@@ -1517,10 +1861,6 @@ function AdminBookings() {
                     <section className="admin-table-card">
 
 
-                        {/* ==================================================
-                            LOADING
-                        ================================================== */}
-
                         {loading ? (
 
                             <div
@@ -1542,10 +1882,6 @@ function AdminBookings() {
 
                         ) : bookings.length === 0 ? (
 
-
-                            /* ==================================================
-                                EMPTY
-                            ================================================== */
 
                             <div className="admin-empty-state">
 
@@ -1587,10 +1923,6 @@ function AdminBookings() {
 
                         ) : (
 
-
-                            /* ==================================================
-                                BOOKINGS TABLE
-                            ================================================== */
 
                             <div className="admin-table-wrapper">
 
@@ -1647,9 +1979,32 @@ function AdminBookings() {
                                         {bookings.map(
                                             (booking) => {
 
-
                                                 const bookingId =
                                                     booking?.id;
+
+
+                                                const bookingStatus =
+                                                    String(
+                                                        booking?.status ||
+                                                        ""
+                                                    )
+                                                        .trim()
+                                                        .toUpperCase();
+
+
+                                                const allowedStatuses =
+                                                    getAllowedNextStatuses(
+                                                        bookingStatus
+                                                    );
+
+
+                                                const isUpdating =
+                                                    String(
+                                                        updatingBookingId
+                                                    ) ===
+                                                    String(
+                                                        bookingId
+                                                    );
 
 
                                                 return (
@@ -1804,14 +2159,14 @@ function AdminBookings() {
                                                             <span
                                                                 className={
                                                                     `booking-status ${statusClass(
-                                                                        booking?.status
+                                                                        bookingStatus
                                                                     )}`
                                                                 }
                                                             >
 
                                                                 {
                                                                     formatStatus(
-                                                                        booking?.status
+                                                                        bookingStatus
                                                                     )
                                                                 }
 
@@ -1821,23 +2176,126 @@ function AdminBookings() {
 
 
                                                         {/* ==============================================
-                                                            ACTION
+                                                            ACTIONS
                                                         ============================================== */}
 
                                                         <td>
 
-                                                            <Link
-                                                                to={
-                                                                    `/admin/bookings/${encodeURIComponent(
-                                                                        String(
-                                                                            bookingId
-                                                                        )
-                                                                    )}`
-                                                                }
-                                                                className="booking-view-button"
-                                                            >
-                                                                View
-                                                            </Link>
+                                                            <div className="booking-actions">
+
+
+                                                                <Link
+                                                                    to={
+                                                                        `/admin/bookings/${encodeURIComponent(
+                                                                            String(
+                                                                                bookingId
+                                                                            )
+                                                                        )}`
+                                                                    }
+                                                                    className="booking-view-button"
+                                                                    aria-label={
+                                                                        `View booking ${bookingId}`
+                                                                    }
+                                                                >
+                                                                    View
+                                                                </Link>
+
+
+                                                                {/* ==========================================
+                                                                    PENDING ACTIONS
+                                                                ========================================== */}
+
+                                                                {allowedStatuses.includes(
+                                                                    "CONFIRMED"
+                                                                ) && (
+
+                                                                    <button
+                                                                        type="button"
+                                                                        className="booking-status-action booking-confirm-button"
+                                                                        onClick={() =>
+                                                                            handleStatusChange(
+                                                                                booking,
+                                                                                "CONFIRMED"
+                                                                            )
+                                                                        }
+                                                                        disabled={
+                                                                            updatingBookingId !== null
+                                                                        }
+                                                                    >
+
+                                                                        {
+                                                                            isUpdating
+                                                                                ? "Updating..."
+                                                                                : "Confirm"
+                                                                        }
+
+                                                                    </button>
+
+                                                                )}
+
+
+                                                                {allowedStatuses.includes(
+                                                                    "CANCELLED"
+                                                                ) && (
+
+                                                                    <button
+                                                                        type="button"
+                                                                        className="booking-status-action booking-cancel-button"
+                                                                        onClick={() =>
+                                                                            handleStatusChange(
+                                                                                booking,
+                                                                                "CANCELLED"
+                                                                            )
+                                                                        }
+                                                                        disabled={
+                                                                            updatingBookingId !== null
+                                                                        }
+                                                                    >
+
+                                                                        {
+                                                                            isUpdating
+                                                                                ? "Updating..."
+                                                                                : "Cancel"
+                                                                        }
+
+                                                                    </button>
+
+                                                                )}
+
+
+                                                                {/* ==========================================
+                                                                    CONFIRMED → COMPLETED
+                                                                ========================================== */}
+
+                                                                {allowedStatuses.includes(
+                                                                    "COMPLETED"
+                                                                ) && (
+
+                                                                    <button
+                                                                        type="button"
+                                                                        className="booking-status-action booking-complete-button"
+                                                                        onClick={() =>
+                                                                            handleStatusChange(
+                                                                                booking,
+                                                                                "COMPLETED"
+                                                                            )
+                                                                        }
+                                                                        disabled={
+                                                                            updatingBookingId !== null
+                                                                        }
+                                                                    >
+
+                                                                        {
+                                                                            isUpdating
+                                                                                ? "Updating..."
+                                                                                : "Complete"
+                                                                        }
+
+                                                                    </button>
+
+                                                                )}
+
+                                                            </div>
 
                                                         </td>
 
@@ -1871,14 +2329,11 @@ function AdminBookings() {
                             <div className="admin-pagination">
 
 
-                                {/* ==================================================
-                                    PREVIOUS
-                                ================================================== */}
-
                                 <button
                                     type="button"
                                     disabled={
-                                        currentPage <= 1
+                                        currentPage <= 1 ||
+                                        updatingBookingId !== null
                                     }
                                     onClick={() =>
                                         goToPage(
@@ -1889,10 +2344,6 @@ function AdminBookings() {
                                     ← Previous
                                 </button>
 
-
-                                {/* ==================================================
-                                    PAGE NUMBERS
-                                ================================================== */}
 
                                 <div className="admin-pagination-pages">
 
@@ -1940,6 +2391,9 @@ function AdminBookings() {
                                                             item.number
                                                         )
                                                     }
+                                                    disabled={
+                                                        updatingBookingId !== null
+                                                    }
                                                     aria-current={
                                                         item.number ===
                                                         currentPage
@@ -1960,15 +2414,12 @@ function AdminBookings() {
                                 </div>
 
 
-                                {/* ==================================================
-                                    NEXT
-                                ================================================== */}
-
                                 <button
                                     type="button"
                                     disabled={
                                         currentPage >=
-                                        totalPages
+                                            totalPages ||
+                                        updatingBookingId !== null
                                     }
                                     onClick={() =>
                                         goToPage(
