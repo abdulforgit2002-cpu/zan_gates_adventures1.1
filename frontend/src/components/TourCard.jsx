@@ -110,7 +110,7 @@ const TourCard = ({ tour }) => {
 
     /*
     |--------------------------------------------------------------------------
-    | PRICING
+    | PRICING TYPE
     |--------------------------------------------------------------------------
     */
 
@@ -160,8 +160,18 @@ const TourCard = ({ tour }) => {
         tour.featured === "1";
 
 
-    return (
+    /*
+    |--------------------------------------------------------------------------
+    | IMAGE ERROR
+    |--------------------------------------------------------------------------
+    */
 
+    const handleImageError = () => {
+        setImageError(true);
+    };
+
+
+    return (
         <article className="tour-card">
 
 
@@ -176,16 +186,18 @@ const TourCard = ({ tour }) => {
                     <img
                         src={imageUrl}
                         alt={title}
+                        className="tour-card-image-element"
                         loading="lazy"
                         decoding="async"
-                        onError={() =>
-                            setImageError(true)
-                        }
+                        onError={handleImageError}
                     />
 
                 ) : (
 
-                    <div className="tour-card-placeholder">
+                    <div
+                        className="tour-card-placeholder"
+                        aria-hidden="true"
+                    >
 
                         <span>
                             ZAN GATES
@@ -200,14 +212,20 @@ const TourCard = ({ tour }) => {
                 )}
 
 
-                <div className="tour-card-image-shade" />
+                <div
+                    className="tour-card-image-shade"
+                    aria-hidden="true"
+                />
 
 
                 {isFeatured && (
 
                     <span className="tour-card-badge">
 
-                        <span className="tour-card-badge-dot" />
+                        <span
+                            className="tour-card-badge-dot"
+                            aria-hidden="true"
+                        />
 
                         Featured
 
@@ -231,14 +249,23 @@ const TourCard = ({ tour }) => {
             <div className="tour-card-content">
 
 
+                {/* -----------------------------------------------------
+                    META
+                ----------------------------------------------------- */}
+
                 <div className="tour-card-meta">
+
 
                     <span>
 
                         <svg
                             viewBox="0 0 24 24"
+                            width="16"
+                            height="16"
                             aria-hidden="true"
+                            focusable="false"
                         >
+
                             <path
                                 d="M12 21s7-6.1 7-12a7 7 0 1 0-14 0c0 5.9 7 12 7 12Z"
                                 fill="none"
@@ -254,9 +281,12 @@ const TourCard = ({ tour }) => {
                                 stroke="currentColor"
                                 strokeWidth="1.7"
                             />
+
                         </svg>
 
-                        {destination}
+                        <span>
+                            {destination}
+                        </span>
 
                     </span>
 
@@ -265,8 +295,12 @@ const TourCard = ({ tour }) => {
 
                         <svg
                             viewBox="0 0 24 24"
+                            width="16"
+                            height="16"
                             aria-hidden="true"
+                            focusable="false"
                         >
+
                             <circle
                                 cx="12"
                                 cy="12"
@@ -283,9 +317,12 @@ const TourCard = ({ tour }) => {
                                 strokeWidth="1.7"
                                 strokeLinecap="round"
                             />
+
                         </svg>
 
-                        {duration}
+                        <span>
+                            {duration}
+                        </span>
 
                     </span>
 
@@ -293,10 +330,19 @@ const TourCard = ({ tour }) => {
 
 
 
+                {/* -----------------------------------------------------
+                    TITLE
+                ----------------------------------------------------- */}
+
                 <h3>
                     {title}
                 </h3>
 
+
+
+                {/* -----------------------------------------------------
+                    DESCRIPTION
+                ----------------------------------------------------- */}
 
                 <p className="tour-card-description">
                     {description}
@@ -304,8 +350,14 @@ const TourCard = ({ tour }) => {
 
 
 
+                {/* -----------------------------------------------------
+                    FOOTER
+                ----------------------------------------------------- */}
+
                 <div className="tour-card-footer">
 
+
+                    {/* PRICE */}
 
                     <div className="tour-card-price">
 
@@ -346,20 +398,28 @@ const TourCard = ({ tour }) => {
 
 
 
+                    {/* VIEW TOUR */}
+
                     {tourSlug ? (
 
                         <Link
                             to={`/tours/${encodeURIComponent(tourSlug)}`}
                             className="tour-card-button"
+                            aria-label={`View ${title}`}
                         >
+
                             <span>
                                 View Tour
                             </span>
 
                             <svg
                                 viewBox="0 0 24 24"
+                                width="18"
+                                height="18"
                                 aria-hidden="true"
+                                focusable="false"
                             >
+
                                 <path
                                     d="M5 12h13M13 6l6 6-6 6"
                                     fill="none"
@@ -368,6 +428,7 @@ const TourCard = ({ tour }) => {
                                     strokeLinecap="round"
                                     strokeLinejoin="round"
                                 />
+
                             </svg>
 
                         </Link>
@@ -375,10 +436,14 @@ const TourCard = ({ tour }) => {
                     ) : (
 
                         <span
-                            className="tour-card-button"
+                            className="tour-card-button tour-card-button-disabled"
                             aria-disabled="true"
                         >
-                            View Tour
+
+                            <span>
+                                View Tour
+                            </span>
+
                         </span>
 
                     )}
