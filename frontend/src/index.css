@@ -1,6 +1,81 @@
 /* ============================================================
+   ZAN GATES ADVENTURES
+   GLOBAL / PUBLIC WEBSITE / ADMINISTRATION
+   ============================================================ */
+
+/* ============================================================
+   GLOBAL FOUNDATION
+   ============================================================ */
+
+:root {
+    --zg-deep-teal: #123f46;
+    --zg-teal: #168083;
+    --zg-teal-dark: #116b6e;
+    --zg-teal-soft: #e5f4f3;
+
+    --zg-page: #f5f7f6;
+    --zg-card: #ffffff;
+    --zg-border: #e1e9e8;
+
+    --zg-text: #203536;
+    --zg-muted: #718083;
+
+    --zg-success: #21723d;
+    --zg-danger: #a52d2d;
+    --zg-warning: #a66b00;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+    color: var(--zg-text);
+    background: #ffffff;
+    font-family:
+        Inter,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+}
+
+button,
+input,
+textarea,
+select {
+    font: inherit;
+}
+
+button,
+a {
+    -webkit-tap-highlight-color: transparent;
+}
+
+img {
+    max-width: 100%;
+}
+
+a {
+    color: inherit;
+}
+
+::selection {
+    background: rgba(22, 128, 131, 0.18);
+    color: var(--zg-deep-teal);
+}
+
+
+/* ============================================================
    TOUR SECTION
-============================================================ */
+   ============================================================ */
 
 .tours-section {
     padding: 100px 7%;
@@ -35,7 +110,7 @@
 
 /* ============================================================
    TOUR GRID
-============================================================ */
+   ============================================================ */
 
 .tours-grid {
     max-width: 1250px;
@@ -52,13 +127,11 @@
 
 /* ============================================================
    TOUR CARD
-============================================================ */
+   ============================================================ */
 
 .tour-card {
     background: #ffffff;
-
     border-radius: 18px;
-
     overflow: hidden;
 
     box-shadow:
@@ -79,11 +152,10 @@
 
 /* ============================================================
    IMAGE PLACEHOLDER
-============================================================ */
+   ============================================================ */
 
 .tour-card-image {
     height: 250px;
-
     position: relative;
 
     background:
@@ -110,12 +182,10 @@
 
 .tour-badge {
     position: absolute;
-
     top: 18px;
     left: 18px;
 
     background: #ffffff;
-
     color: #111;
 
     padding: 7px 12px;
@@ -129,7 +199,7 @@
 
 /* ============================================================
    CARD CONTENT
-============================================================ */
+   ============================================================ */
 
 .tour-card-content {
     padding: 25px;
@@ -137,43 +207,35 @@
 
 .tour-card-meta {
     display: flex;
-
     justify-content: space-between;
-
     gap: 10px;
 
     margin-bottom: 15px;
 
     font-size: 12px;
-
     color: #777;
 }
 
 .tour-card h3 {
     margin: 0 0 12px;
-
     font-size: 24px;
 }
 
 .tour-card p {
     color: #666;
-
     line-height: 1.7;
-
     min-height: 75px;
 }
 
 
 /* ============================================================
    CARD FOOTER
-============================================================ */
+   ============================================================ */
 
 .tour-card-footer {
     display: flex;
-
     justify-content: space-between;
     align-items: center;
-
     gap: 20px;
 
     padding-top: 20px;
@@ -183,32 +245,28 @@
 
 .tour-price {
     display: flex;
-
     flex-direction: column;
 }
 
 .tour-price small {
     font-size: 11px;
-
     color: #777;
 }
 
 .tour-price strong {
     font-size: 25px;
-
     line-height: 1.2;
 }
 
 
 /* ============================================================
-   BUTTON
-============================================================ */
+   TOUR BUTTON
+   ============================================================ */
 
 .tour-button {
     border: none;
 
     background: #111827;
-
     color: #ffffff;
 
     padding: 12px 18px;
@@ -226,14 +284,13 @@
 
 .tour-button:hover {
     background: #000000;
-
     transform: translateY(-2px);
 }
 
 
 /* ============================================================
-   STATES
-============================================================ */
+   PUBLIC STATES
+   ============================================================ */
 
 .loading-state,
 .error-state,
@@ -266,17 +323,17 @@
 
 /* ============================================================
    TOUR DETAILS PAGE
-============================================================ */
+   ============================================================ */
 
 .tour-details-page {
     min-height: 100vh;
-
     background: #ffffff;
 }
 
+
 /* ============================================================
    BOOKING PAGE
-============================================================ */
+   ============================================================ */
 
 .booking-page {
     min-height: 100vh;
@@ -285,8 +342,8 @@
 
 
 /* ============================================================
-   CONTAINER
-============================================================ */
+   BOOKING CONTAINER
+   ============================================================ */
 
 .booking-container {
     width: min(1180px, 92%);
@@ -296,10 +353,11 @@
 
 /* ============================================================
    BOOKING HEADER
-============================================================ */
+   ============================================================ */
 
 .booking-header {
     padding: 55px 0 75px;
+
     background:
         linear-gradient(
             135deg,
@@ -307,6 +365,7 @@
             #0d6265 55%,
             #092f35
         );
+
     color: #ffffff;
 }
 
@@ -315,8 +374,11 @@
     flex-wrap: wrap;
     align-items: center;
     gap: 10px;
+
     margin-bottom: 45px;
+
     color: rgba(255, 255, 255, 0.65);
+
     font-size: 0.84rem;
 }
 
@@ -336,8 +398,11 @@
 
 .booking-section-label {
     display: block;
+
     margin-bottom: 14px;
+
     color: #168083;
+
     font-size: 0.72rem;
     font-weight: 800;
     letter-spacing: 0.14em;
@@ -349,7 +414,9 @@
 
 .booking-header h1 {
     max-width: 850px;
+
     margin: 0;
+
     font-size: clamp(2.5rem, 5vw, 4.6rem);
     line-height: 1.04;
     letter-spacing: -0.045em;
@@ -357,8 +424,11 @@
 
 .booking-header p {
     max-width: 700px;
+
     margin: 24px 0 0;
+
     color: rgba(255, 255, 255, 0.82);
+
     font-size: 1.05rem;
     line-height: 1.8;
 }
@@ -366,7 +436,7 @@
 
 /* ============================================================
    BOOKING CONTENT
-============================================================ */
+   ============================================================ */
 
 .booking-content {
     padding: 80px 0 100px;
@@ -374,17 +444,20 @@
 
 .booking-layout {
     display: grid;
+
     grid-template-columns:
         minmax(0, 1fr)
         360px;
+
     gap: 55px;
+
     align-items: start;
 }
 
 
 /* ============================================================
-   FORM
-============================================================ */
+   BOOKING FORM
+   ============================================================ */
 
 .booking-form-wrapper {
     min-width: 0;
@@ -392,9 +465,13 @@
 
 .booking-form {
     padding: 40px;
+
     border: 1px solid #e2e9e9;
+
     border-radius: 24px;
+
     background: #ffffff;
+
     box-shadow:
         0 20px 70px
         rgba(16, 58, 62, 0.07);
@@ -403,21 +480,25 @@
 
 /* ============================================================
    TOUR PREVIEW
-============================================================ */
+   ============================================================ */
 
 .booking-tour-preview {
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 25px;
+
     padding: 25px;
     margin-bottom: 45px;
+
     border-radius: 18px;
+
     background: #f3f8f7;
 }
 
 .booking-tour-preview span {
     color: #168083;
+
     font-size: 0.68rem;
     font-weight: 800;
     letter-spacing: 0.13em;
@@ -425,21 +506,28 @@
 
 .booking-tour-preview h2 {
     margin: 8px 0 5px;
+
     color: #123f46;
+
     font-size: 1.35rem;
 }
 
 .booking-tour-preview p {
     margin: 0;
+
     color: #718083;
+
     font-size: 0.88rem;
 }
 
 .booking-tour-preview a {
     flex-shrink: 0;
+
     color: #168083;
+
     font-size: 0.85rem;
     font-weight: 700;
+
     text-decoration: none;
 }
 
@@ -449,12 +537,13 @@
 
 
 /* ============================================================
-   FORM SECTION
-============================================================ */
+   BOOKING FORM SECTION
+   ============================================================ */
 
 .booking-form-section {
     padding-bottom: 45px;
     margin-bottom: 45px;
+
     border-bottom: 1px solid #e8eeee;
 }
 
@@ -462,6 +551,7 @@
     display: flex;
     align-items: flex-start;
     gap: 18px;
+
     margin-bottom: 30px;
 }
 
@@ -469,25 +559,34 @@
     display: flex;
     align-items: center;
     justify-content: center;
+
     width: 40px;
     height: 40px;
+
     flex-shrink: 0;
+
     border-radius: 50%;
+
     background: #e5f4f3;
     color: #137779;
+
     font-size: 0.72rem;
     font-weight: 800;
 }
 
 .booking-form-heading h2 {
     margin: 0 0 6px;
+
     color: #123f46;
+
     font-size: 1.5rem;
 }
 
 .booking-form-heading p {
     margin: 0;
+
     color: #718083;
+
     font-size: 0.9rem;
     line-height: 1.6;
 }
@@ -495,12 +594,14 @@
 
 /* ============================================================
    FORM GRID
-============================================================ */
+   ============================================================ */
 
 .booking-form-grid {
     display: grid;
+
     grid-template-columns:
         repeat(2, minmax(0, 1fr));
+
     gap: 22px;
 }
 
@@ -514,8 +615,11 @@
 
 .booking-field label {
     display: block;
+
     margin-bottom: 9px;
+
     color: #123f46;
+
     font-size: 0.82rem;
     font-weight: 700;
 }
@@ -528,13 +632,20 @@
 .booking-field input,
 .booking-field textarea {
     width: 100%;
+
     box-sizing: border-box;
+
     border: 1px solid #dce5e5;
+
     border-radius: 11px;
+
     outline: none;
+
     background: #ffffff;
     color: #123f46;
+
     font: inherit;
+
     transition:
         border-color 0.2s ease,
         box-shadow 0.2s ease;
@@ -547,8 +658,11 @@
 
 .booking-field textarea {
     min-height: 145px;
+
     padding: 14px 15px;
+
     resize: vertical;
+
     line-height: 1.6;
 }
 
@@ -560,6 +674,7 @@
 .booking-field input:focus,
 .booking-field textarea:focus {
     border-color: #168083;
+
     box-shadow:
         0 0 0 4px
         rgba(22, 128, 131, 0.09);
@@ -568,17 +683,22 @@
 
 /* ============================================================
    TRAVELLER COUNTER
-============================================================ */
+   ============================================================ */
 
 .traveller-counter {
     display: flex;
     align-items: center;
     justify-content: space-between;
+
     width: 100%;
     height: 52px;
+
     box-sizing: border-box;
+
     padding: 0 7px;
+
     border: 1px solid #dce5e5;
+
     border-radius: 11px;
 }
 
@@ -586,15 +706,23 @@
     display: flex;
     align-items: center;
     justify-content: center;
+
     width: 36px;
     height: 36px;
+
     padding: 0;
+
     border: 0;
+
     border-radius: 8px;
+
     background: #f1f6f5;
     color: #123f46;
+
     font-size: 1.3rem;
+
     cursor: pointer;
+
     transition:
         background 0.2s ease,
         transform 0.2s ease;
@@ -617,7 +745,9 @@
 
 .booking-helper-text {
     margin: 15px 0 0;
+
     color: #7a888a;
+
     font-size: 0.8rem;
     line-height: 1.6;
 }
@@ -625,15 +755,21 @@
 
 /* ============================================================
    SUBMIT ERROR
-============================================================ */
+   ============================================================ */
 
 .booking-submit-error {
     padding: 14px 16px;
+
     margin-bottom: 20px;
+
     border: 1px solid #f1c9c9;
+
     border-radius: 10px;
+
     background: #fff5f5;
+
     color: #a33a3a;
+
     font-size: 0.88rem;
     line-height: 1.5;
 }
@@ -641,23 +777,31 @@
 
 /* ============================================================
    SUBMIT BUTTON
-============================================================ */
+   ============================================================ */
 
 .booking-submit-button {
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 15px;
+
     width: 100%;
     min-height: 56px;
+
     padding: 0 25px;
+
     border: 0;
+
     border-radius: 12px;
+
     background: #168083;
     color: #ffffff;
+
     font: inherit;
     font-weight: 750;
+
     cursor: pointer;
+
     transition:
         transform 0.2s ease,
         background 0.2s ease,
@@ -670,7 +814,9 @@
 
 .booking-submit-button:hover:not(:disabled) {
     transform: translateY(-2px);
+
     background: #116b6e;
+
     box-shadow:
         0 12px 28px
         rgba(22, 128, 131, 0.23);
@@ -683,16 +829,19 @@
 
 .booking-form-disclaimer {
     margin: 16px 0 0;
+
     color: #879394;
+
     font-size: 0.76rem;
     line-height: 1.6;
+
     text-align: center;
 }
 
 
 /* ============================================================
    SUMMARY SIDEBAR
-============================================================ */
+   ============================================================ */
 
 .booking-summary {
     position: sticky;
@@ -701,9 +850,13 @@
 
 .booking-summary-card {
     padding: 32px;
+
     border: 1px solid #dfe8e7;
+
     border-radius: 22px;
+
     background: #ffffff;
+
     box-shadow:
         0 20px 60px
         rgba(16, 58, 62, 0.09);
@@ -711,6 +864,7 @@
 
 .booking-summary-label {
     color: #168083;
+
     font-size: 0.68rem;
     font-weight: 800;
     letter-spacing: 0.13em;
@@ -718,7 +872,9 @@
 
 .booking-summary-card h2 {
     margin: 12px 0 25px;
+
     color: #123f46;
+
     font-size: 1.55rem;
     line-height: 1.25;
 }
@@ -736,6 +892,7 @@
 
 .booking-summary-meta span {
     color: #8a9798;
+
     font-size: 0.65rem;
     font-weight: 800;
     letter-spacing: 0.1em;
@@ -748,7 +905,9 @@
 
 .booking-summary-divider {
     height: 1px;
+
     margin: 25px 0;
+
     background: #e7eeee;
 }
 
@@ -756,7 +915,9 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+
     gap: 20px;
+
     margin-bottom: 15px;
 }
 
@@ -783,6 +944,7 @@
 
 .booking-summary-total > strong {
     color: #123f46;
+
     font-size: 2rem;
     line-height: 1.15;
 }
@@ -795,20 +957,26 @@
 .booking-summary-note {
     padding: 18px;
     margin-top: 28px;
+
     border-radius: 14px;
+
     background: #f3f8f7;
 }
 
 .booking-summary-note strong {
     display: block;
+
     margin-bottom: 7px;
+
     color: #123f46;
     font-size: 0.85rem;
 }
 
 .booking-summary-note p {
     margin: 0;
+
     color: #718083;
+
     font-size: 0.78rem;
     line-height: 1.7;
 }
@@ -816,18 +984,21 @@
 
 /* ============================================================
    CONFIDENCE CARD
-============================================================ */
+   ============================================================ */
 
 .booking-confidence-card {
     padding: 28px;
     margin-top: 18px;
+
     border-radius: 20px;
+
     background: #123f46;
     color: #ffffff;
 }
 
 .booking-confidence-card > span {
     color: rgba(255, 255, 255, 0.55);
+
     font-size: 0.65rem;
     font-weight: 800;
     letter-spacing: 0.12em;
@@ -841,47 +1012,62 @@
 .booking-confidence-card ul {
     display: grid;
     gap: 10px;
+
     padding: 0;
     margin: 0;
+
     list-style: none;
 }
 
 .booking-confidence-card li {
     position: relative;
+
     padding-left: 20px;
+
     color: rgba(255, 255, 255, 0.78);
+
     font-size: 0.82rem;
 }
 
 .booking-confidence-card li::before {
     content: "✓";
+
     position: absolute;
     left: 0;
+
     color: #7ac9c5;
+
     font-weight: 800;
 }
 
 
 /* ============================================================
-   LOADING
-============================================================ */
+   BOOKING LOADING
+   ============================================================ */
 
 .booking-loading {
     min-height: 70vh;
+
     display: flex;
     align-items: center;
     justify-content: center;
+
     text-align: center;
+
     color: #607174;
 }
 
 .booking-spinner {
     width: 42px;
     height: 42px;
+
     margin: 0 auto 18px;
+
     border: 3px solid #dfeaea;
     border-top-color: #168083;
+
     border-radius: 50%;
+
     animation:
         bookingSpinner
         0.8s linear infinite;
@@ -895,22 +1081,27 @@
 
 
 /* ============================================================
-   ERROR
-============================================================ */
+   BOOKING ERROR
+   ============================================================ */
 
 .booking-error {
     min-height: 70vh;
+
     width: min(650px, 92%);
+
     margin: 0 auto;
+
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+
     text-align: center;
 }
 
 .booking-error > span {
     color: #b06d3c;
+
     font-size: 0.7rem;
     font-weight: 800;
     letter-spacing: 0.13em;
@@ -918,32 +1109,42 @@
 
 .booking-error h1 {
     margin: 14px 0;
+
     color: #123f46;
+
     font-size: 2.4rem;
 }
 
 .booking-error p {
     margin: 0 0 30px;
+
     color: #687779;
+
     line-height: 1.7;
 }
 
 
 /* ============================================================
-   BUTTONS
-============================================================ */
+   BOOKING BUTTONS
+   ============================================================ */
 
 .booking-primary-button,
 .booking-secondary-button {
     display: inline-flex;
     align-items: center;
     justify-content: center;
+
     min-height: 50px;
+
     padding: 0 22px;
+
     border-radius: 10px;
+
     text-decoration: none;
+
     font-size: 0.88rem;
     font-weight: 700;
+
     transition:
         transform 0.2s ease,
         background 0.2s ease;
@@ -961,6 +1162,7 @@
 
 .booking-secondary-button {
     border: 1px solid #d8e3e2;
+
     background: #ffffff;
     color: #123f46;
 }
@@ -972,12 +1174,14 @@
 
 
 /* ============================================================
-   SUCCESS
-============================================================ */
+   BOOKING SUCCESS
+   ============================================================ */
 
 .booking-success-section {
     min-height: 75vh;
+
     padding: 80px 20px;
+
     display: flex;
     align-items: center;
     justify-content: center;
@@ -985,13 +1189,19 @@
 
 .booking-success-card {
     width: min(700px, 100%);
+
     padding: 50px;
+
     border: 1px solid #dfe8e7;
+
     border-radius: 26px;
+
     background: #ffffff;
+
     box-shadow:
         0 25px 80px
         rgba(16, 58, 62, 0.09);
+
     text-align: center;
 }
 
@@ -999,12 +1209,17 @@
     display: flex;
     align-items: center;
     justify-content: center;
+
     width: 68px;
     height: 68px;
+
     margin: 0 auto 25px;
+
     border-radius: 50%;
+
     background: #e5f4f3;
     color: #137779;
+
     font-size: 1.8rem;
     font-weight: 800;
 }
@@ -1015,35 +1230,48 @@
 
 .booking-success-card h1 {
     margin: 0;
+
     color: #123f46;
+
     font-size: clamp(2rem, 4vw, 3rem);
 }
 
 .booking-success-card > p {
     max-width: 570px;
+
     margin: 18px auto 0;
+
     color: #687779;
+
     line-height: 1.8;
 }
 
 .booking-success-summary {
     display: grid;
+
     grid-template-columns:
         repeat(3, 1fr);
+
     gap: 15px;
+
     margin: 35px 0;
 }
 
 .booking-success-summary div {
     padding: 20px;
+
     border-radius: 14px;
+
     background: #f4f8f7;
 }
 
 .booking-success-summary span {
     display: block;
+
     margin-bottom: 7px;
+
     color: #8a9798;
+
     font-size: 0.63rem;
     font-weight: 800;
     letter-spacing: 0.1em;
@@ -1056,8 +1284,11 @@
 
 .booking-success-note {
     padding: 20px;
+
     border-radius: 14px;
+
     background: #f8f5ed;
+
     text-align: left;
 }
 
@@ -1068,7 +1299,9 @@
 
 .booking-success-note p {
     margin: 8px 0 0;
+
     color: #687779;
+
     font-size: 0.82rem;
     line-height: 1.7;
 }
@@ -1077,16 +1310,16 @@
     display: flex;
     justify-content: center;
     gap: 12px;
+
     margin-top: 30px;
 }
 
 
 /* ============================================================
-   TABLET
-============================================================ */
+   BOOKING TABLET
+   ============================================================ */
 
 @media (max-width: 900px) {
-
     .booking-layout {
         grid-template-columns: 1fr;
         gap: 35px;
@@ -1099,16 +1332,14 @@
     .booking-summary-card {
         max-width: 650px;
     }
-
 }
 
 
 /* ============================================================
-   MOBILE
-============================================================ */
+   BOOKING MOBILE
+   ============================================================ */
 
 @media (max-width: 650px) {
-
     .booking-container {
         width: 90%;
     }
@@ -1169,16 +1400,14 @@
     .booking-secondary-button {
         width: 100%;
     }
-
 }
 
 
 /* ============================================================
-   REDUCED MOTION
-============================================================ */
+   BOOKING REDUCED MOTION
+   ============================================================ */
 
 @media (prefers-reduced-motion: reduce) {
-
     .booking-submit-button,
     .booking-primary-button,
     .booking-secondary-button,
@@ -1187,24 +1416,22 @@
         animation: none;
         transition: none;
     }
-
 }
 
 
 /* ============================================================
-   CONTAINER
-============================================================ */
+   TOUR DETAILS CONTAINER
+   ============================================================ */
 
 .tour-details-container {
     width: min(1180px, 92%);
-
     margin: 0 auto;
 }
 
 
 /* ============================================================
-   HERO
-============================================================ */
+   TOUR DETAILS HERO
+   ============================================================ */
 
 .tour-details-hero {
     position: relative;
@@ -1212,7 +1439,6 @@
     min-height: 560px;
 
     display: flex;
-
     align-items: flex-end;
 
     padding: 90px 0 70px;
@@ -1266,7 +1492,6 @@
 
 .tour-details-hero-overlay {
     position: absolute;
-
     inset: 0;
 
     background:
@@ -1279,20 +1504,17 @@
 
 .tour-details-hero .tour-details-container {
     position: relative;
-
     z-index: 2;
 }
 
 
 /* ============================================================
-   BREADCRUMB
-============================================================ */
+   TOUR DETAILS BREADCRUMB
+   ============================================================ */
 
 .tour-details-breadcrumb {
     display: flex;
-
     align-items: center;
-
     gap: 10px;
 
     margin-bottom: 35px;
@@ -1305,7 +1527,6 @@
 
 .tour-details-breadcrumb a {
     color: #ffffff;
-
     text-decoration: none;
 }
 
@@ -1315,14 +1536,13 @@
 
 
 /* ============================================================
-   HERO CONTENT
-============================================================ */
+   TOUR DETAILS HERO CONTENT
+   ============================================================ */
 
 .tour-details-category {
     display: inline-flex;
 
     padding: 8px 14px;
-
     margin-bottom: 18px;
 
     border:
@@ -1332,11 +1552,8 @@
     border-radius: 999px;
 
     font-size: 0.75rem;
-
     font-weight: 700;
-
     letter-spacing: 0.12em;
-
     text-transform: uppercase;
 }
 
@@ -1349,7 +1566,6 @@
         clamp(2.6rem, 6vw, 5.2rem);
 
     line-height: 1.02;
-
     letter-spacing: -0.045em;
 }
 
@@ -1362,20 +1578,17 @@
         rgba(255, 255, 255, 0.86);
 
     font-size: 1.1rem;
-
     line-height: 1.75;
 }
 
 
 /* ============================================================
-   QUICK INFORMATION
-============================================================ */
+   TOUR QUICK INFORMATION
+   ============================================================ */
 
 .tour-details-quick-info {
     display: flex;
-
     flex-wrap: wrap;
-
     gap: 45px;
 
     margin-top: 42px;
@@ -1383,9 +1596,7 @@
 
 .tour-details-quick-info div {
     display: flex;
-
     flex-direction: column;
-
     gap: 7px;
 }
 
@@ -1394,9 +1605,7 @@
         rgba(255, 255, 255, 0.58);
 
     font-size: 0.7rem;
-
     font-weight: 700;
-
     letter-spacing: 0.12em;
 }
 
@@ -1406,31 +1615,26 @@
 
 
 /* ============================================================
-   ============================================================
-   TOUR GALLERY
-   ============================================================
-============================================================ */
+   TOUR DETAILS GALLERY
+   ============================================================ */
 
 .tour-details-gallery {
     padding: 90px 0;
-
     background: #ffffff;
 }
 
 
 /* ============================================================
    GALLERY HEADER
-============================================================ */
+   ============================================================ */
 
 .tour-gallery-header {
     max-width: 720px;
-
     margin-bottom: 35px;
 }
 
 .tour-gallery-header .tour-section-label {
     display: block;
-
     margin-bottom: 14px;
 }
 
@@ -1443,7 +1647,6 @@
         clamp(1.8rem, 3vw, 2.7rem);
 
     line-height: 1.15;
-
     letter-spacing: -0.03em;
 }
 
@@ -1455,14 +1658,13 @@
     color: #667578;
 
     font-size: 1rem;
-
     line-height: 1.8;
 }
 
 
 /* ============================================================
    GALLERY GRID
-============================================================ */
+   ============================================================ */
 
 .tour-gallery-grid {
     width: 100%;
@@ -1478,7 +1680,7 @@
 
 /* ============================================================
    GALLERY ITEM
-============================================================ */
+   ============================================================ */
 
 .tour-gallery-item {
     position: relative;
@@ -1486,11 +1688,9 @@
     display: block;
 
     width: 100%;
-
     height: 330px;
 
     padding: 0;
-
     margin: 0;
 
     border: none;
@@ -1504,20 +1704,13 @@
     cursor: pointer;
 
     appearance: none;
-
     -webkit-appearance: none;
 }
 
 
 /* ============================================================
    PRIMARY GALLERY IMAGE
-============================================================ */
-
-/*
- * When there are 3 or more images,
- * the primary image becomes the large
- * feature image on the left.
- */
+   ============================================================ */
 
 .tour-gallery-grid:has(
     .tour-gallery-item:nth-child(3)
@@ -1534,15 +1727,8 @@
     .tour-gallery-item:nth-child(3)
 ) .tour-gallery-primary {
     grid-row: 1 / 3;
-
     height: 100%;
 }
-
-
-/*
- * When there is only one image,
- * make it large and centered.
- */
 
 .tour-gallery-grid:has(
     .tour-gallery-item:only-child
@@ -1553,12 +1739,6 @@
 
     min-height: 420px;
 }
-
-
-/*
- * When there are exactly two images,
- * keep both images balanced.
- */
 
 .tour-gallery-grid:not(
     :has(.tour-gallery-item:nth-child(3))
@@ -1571,13 +1751,12 @@
 
 /* ============================================================
    GALLERY IMAGE
-============================================================ */
+   ============================================================ */
 
 .tour-gallery-item img {
     display: block;
 
     width: 100%;
-
     height: 100%;
 
     object-fit: cover;
@@ -1596,7 +1775,7 @@
 
 /* ============================================================
    IMAGE HOVER
-============================================================ */
+   ============================================================ */
 
 .tour-gallery-item:hover img {
     transform: scale(1.045);
@@ -1605,17 +1784,14 @@
 
 /* ============================================================
    GALLERY OVERLAY
-============================================================ */
+   ============================================================ */
 
 .tour-gallery-overlay {
     position: absolute;
-
     inset: 0;
 
     display: flex;
-
     align-items: flex-end;
-
     justify-content: flex-start;
 
     padding: 24px;
@@ -1634,11 +1810,6 @@
         opacity 0.35s ease;
 }
 
-
-/* ============================================================
-   SHOW OVERLAY
-============================================================ */
-
 .tour-gallery-item:hover
 .tour-gallery-overlay,
 .tour-gallery-item:focus-visible
@@ -1646,16 +1817,9 @@
     opacity: 1;
 }
 
-
-/* ============================================================
-   VIEW IMAGE LABEL
-============================================================ */
-
 .tour-gallery-overlay span {
     display: inline-flex;
-
     align-items: center;
-
     gap: 8px;
 
     padding: 10px 16px;
@@ -1663,11 +1827,8 @@
     color: #ffffff;
 
     font-size: 11px;
-
     font-weight: 600;
-
     letter-spacing: 0.12em;
-
     text-transform: uppercase;
 
     border:
@@ -1678,16 +1839,10 @@
         rgba(0, 0, 0, 0.25);
 
     backdrop-filter: blur(8px);
-
     -webkit-backdrop-filter: blur(8px);
 
     border-radius: 4px;
 }
-
-
-/* ============================================================
-   GALLERY FOCUS
-============================================================ */
 
 .tour-gallery-item:focus-visible {
     outline:
@@ -1699,8 +1854,8 @@
 
 
 /* ============================================================
-   MAIN CONTENT
-============================================================ */
+   TOUR DETAILS MAIN CONTENT
+   ============================================================ */
 
 .tour-details-content {
     padding: 90px 0;
@@ -1724,7 +1879,6 @@
 
 .tour-details-section {
     padding-bottom: 70px;
-
     margin-bottom: 70px;
 
     border-bottom:
@@ -1733,7 +1887,6 @@
 
 .tour-details-section:last-child {
     border-bottom: 0;
-
     margin-bottom: 0;
 }
 
@@ -1745,9 +1898,7 @@
     color: #168083;
 
     font-size: 0.72rem;
-
     font-weight: 800;
-
     letter-spacing: 0.14em;
 }
 
@@ -1760,7 +1911,6 @@
         clamp(1.8rem, 3vw, 2.7rem);
 
     line-height: 1.15;
-
     letter-spacing: -0.03em;
 }
 
@@ -1772,18 +1922,16 @@
     color: #56676a;
 
     font-size: 1.05rem;
-
     line-height: 1.9;
 }
 
 
 /* ============================================================
    HIGHLIGHTS
-============================================================ */
+   ============================================================ */
 
 .tour-highlights {
     display: grid;
-
     gap: 24px;
 
     margin-top: 35px;
@@ -1809,9 +1957,7 @@
 
 .tour-highlight-icon {
     display: flex;
-
     align-items: center;
-
     justify-content: center;
 
     width: 52px;
@@ -1820,11 +1966,9 @@
     border-radius: 50%;
 
     background: #e5f4f3;
-
     color: #137779;
 
     font-size: 0.8rem;
-
     font-weight: 800;
 }
 
@@ -1847,7 +1991,7 @@
 
 /* ============================================================
    PRICING
-============================================================ */
+   ============================================================ */
 
 .tour-pricing-table {
     margin-top: 30px;
@@ -1862,9 +2006,7 @@
 
 .tour-price-row {
     display: flex;
-
     align-items: center;
-
     justify-content: space-between;
 
     gap: 25px;
@@ -1881,9 +2023,7 @@
 
 .tour-price-row div {
     display: flex;
-
     flex-direction: column;
-
     gap: 5px;
 }
 
@@ -1897,14 +2037,13 @@
 
 .tour-price-row span {
     color: #718083;
-
     font-size: 0.85rem;
 }
 
 
 /* ============================================================
    INFORMATION CARDS
-============================================================ */
+   ============================================================ */
 
 .tour-info-grid {
     display: grid;
@@ -1945,12 +2084,11 @@
 
 
 /* ============================================================
-   SIDEBAR
-============================================================ */
+   TOUR SIDEBAR
+   ============================================================ */
 
 .tour-details-sidebar {
     position: sticky;
-
     top: 30px;
 }
 
@@ -1973,9 +2111,7 @@
     color: #168083;
 
     font-size: 0.7rem;
-
     font-weight: 800;
-
     letter-spacing: 0.13em;
 }
 
@@ -1985,7 +2121,6 @@
     color: #123f46;
 
     font-size: 1.55rem;
-
     line-height: 1.25;
 }
 
@@ -1995,22 +2130,19 @@
     color: #687779;
 
     font-size: 0.94rem;
-
     line-height: 1.7;
 }
 
 
 /* ============================================================
-   BOOKING PRICE
-============================================================ */
+   TOUR BOOKING PRICE
+   ============================================================ */
 
 .tour-booking-price {
     display: flex;
-
     flex-direction: column;
 
     margin: 30px 0;
-
     padding: 22px 0;
 
     border-top:
@@ -2022,7 +2154,6 @@
 
 .tour-booking-price small {
     color: #718083;
-
     margin-bottom: 4px;
 }
 
@@ -2030,7 +2161,6 @@
     color: #123f46;
 
     font-size: 2rem;
-
     line-height: 1.1;
 }
 
@@ -2045,23 +2175,19 @@
 
 /* ============================================================
    BOOK BUTTON
-============================================================ */
+   ============================================================ */
 
 .tour-book-button {
     display: flex;
-
     align-items: center;
-
     justify-content: center;
 
     width: 100%;
-
     min-height: 54px;
 
     border-radius: 12px;
 
     background: #168083;
-
     color: #ffffff;
 
     text-decoration: none;
@@ -2087,7 +2213,7 @@
 
 /* ============================================================
    BACK LINK
-============================================================ */
+   ============================================================ */
 
 .tour-back-link {
     display: block;
@@ -2110,19 +2236,16 @@
 
 /* ============================================================
    LIGHTBOX
-============================================================ */
+   ============================================================ */
 
 .tour-lightbox {
     position: fixed;
-
     inset: 0;
 
     z-index: 9999;
 
     display: flex;
-
     align-items: center;
-
     justify-content: center;
 
     padding: 40px;
@@ -2135,18 +2258,11 @@
         0.25s ease;
 }
 
-
-/* ============================================================
-   LIGHTBOX CONTENT
-============================================================ */
-
 .tour-lightbox-content {
     position: relative;
 
     display: flex;
-
     align-items: center;
-
     justify-content: center;
 
     width:
@@ -2156,20 +2272,13 @@
         min(80vh, 760px);
 }
 
-
-/* ============================================================
-   LIGHTBOX IMAGE
-============================================================ */
-
 .tour-lightbox-content img {
     display: block;
 
     max-width: 100%;
-
     max-height: 100%;
 
     width: auto;
-
     height: auto;
 
     object-fit: contain;
@@ -2179,28 +2288,19 @@
         rgba(0, 0, 0, 0.45);
 }
 
-
-/* ============================================================
-   LIGHTBOX CLOSE
-============================================================ */
-
 .tour-lightbox-close {
     position: absolute;
 
     top: 25px;
-
     right: 30px;
 
     z-index: 2;
 
     width: 48px;
-
     height: 48px;
 
     display: flex;
-
     align-items: center;
-
     justify-content: center;
 
     padding: 0;
@@ -2217,7 +2317,6 @@
     color: #ffffff;
 
     font-size: 30px;
-
     font-weight: 300;
 
     line-height: 1;
@@ -2239,7 +2338,7 @@
 
 /* ============================================================
    LIGHTBOX PREVIOUS / NEXT
-============================================================ */
+   ============================================================ */
 
 .tour-lightbox-prev,
 .tour-lightbox-next {
@@ -2253,13 +2352,10 @@
         translateY(-50%);
 
     width: 54px;
-
     height: 54px;
 
     display: flex;
-
     align-items: center;
-
     justify-content: center;
 
     padding: 0;
@@ -2276,7 +2372,6 @@
     color: #ffffff;
 
     font-size: 40px;
-
     font-weight: 200;
 
     line-height: 1;
@@ -2317,20 +2412,18 @@
 
 /* ============================================================
    LIGHTBOX CAPTION
-============================================================ */
+   ============================================================ */
 
 .tour-lightbox-caption {
     position: absolute;
 
     left: 50%;
-
     bottom: -42px;
 
     transform:
         translateX(-50%);
 
     width: max-content;
-
     max-width: 80vw;
 
     margin: 0;
@@ -2339,22 +2432,15 @@
         rgba(255, 255, 255, 0.8);
 
     font-size: 13px;
-
     line-height: 1.5;
 
     text-align: center;
 }
 
-
-/* ============================================================
-   LIGHTBOX COUNTER
-============================================================ */
-
 .tour-lightbox-counter {
     position: absolute;
 
     left: 50%;
-
     bottom: -72px;
 
     transform:
@@ -2364,7 +2450,6 @@
         rgba(255, 255, 255, 0.55);
 
     font-size: 11px;
-
     font-weight: 600;
 
     letter-spacing: 0.15em;
@@ -2373,10 +2458,9 @@
 
 /* ============================================================
    LIGHTBOX ANIMATION
-============================================================ */
+   ============================================================ */
 
 @keyframes tourLightboxFadeIn {
-
     from {
         opacity: 0;
     }
@@ -2384,37 +2468,31 @@
     to {
         opacity: 1;
     }
-
 }
 
 
 /* ============================================================
-   LOADING
-============================================================ */
+   TOUR DETAILS LOADING
+   ============================================================ */
 
 .tour-details-loading {
     min-height: 70vh;
 
     display: flex;
-
     align-items: center;
-
     justify-content: center;
 }
 
 .tour-details-loading-inner {
     text-align: center;
-
     color: #607174;
 }
 
 .loading-spinner {
     width: 42px;
-
     height: 42px;
 
-    margin:
-        0 auto 18px;
+    margin: 0 auto 18px;
 
     border:
         3px solid #dfeaea;
@@ -2429,25 +2507,21 @@
 }
 
 @keyframes tourSpinner {
-
     to {
         transform: rotate(360deg);
     }
-
 }
 
 
 /* ============================================================
-   ERROR
-============================================================ */
+   TOUR DETAILS ERROR
+   ============================================================ */
 
 .tour-details-error {
     min-height: 70vh;
 
     display: flex;
-
     align-items: center;
-
     justify-content: center;
 
     padding: 50px 0;
@@ -2455,7 +2529,6 @@
 
 .tour-details-error-inner {
     width: min(650px, 92%);
-
     text-align: center;
 }
 
@@ -2463,9 +2536,7 @@
     color: #b06d3c;
 
     font-size: 0.72rem;
-
     font-weight: 800;
-
     letter-spacing: 0.13em;
 }
 
@@ -2487,45 +2558,30 @@
 
 
 /* ============================================================
-   TABLET RESPONSIVE
-============================================================ */
+   TOUR DETAILS TABLET
+   ============================================================ */
 
 @media (max-width: 900px) {
-
-    /* =========================
-       TOUR DETAILS LAYOUT
-    ========================= */
-
     .tour-details-layout {
         grid-template-columns: 1fr;
-
         gap: 50px;
     }
-
 
     .tour-details-sidebar {
         position: static;
     }
 
-
     .tour-booking-card {
         max-width: 650px;
     }
-
-
-    /* =========================
-       GALLERY
-    ========================= */
 
     .tour-details-gallery {
         padding: 70px 0;
     }
 
-
     .tour-gallery-grid {
         gap: 12px;
     }
-
 
     .tour-gallery-grid:has(
         .tour-gallery-item:nth-child(3)
@@ -2538,12 +2594,10 @@
             repeat(2, 220px);
     }
 
-
     .tour-gallery-grid
     .tour-gallery-item {
         height: 300px;
     }
-
 
     .tour-gallery-grid:has(
         .tour-gallery-item:nth-child(3)
@@ -2552,45 +2606,30 @@
         height: 100%;
     }
 
-
-    /* =========================
-       LIGHTBOX
-    ========================= */
-
     .tour-lightbox {
         padding: 25px;
     }
 
-
     .tour-lightbox-content {
         width: 90vw;
-
         height: 75vh;
     }
-
 
     .tour-lightbox-prev {
         left: 15px;
     }
 
-
     .tour-lightbox-next {
         right: 15px;
     }
-
 }
 
 
 /* ============================================================
-   MOBILE RESPONSIVE
-============================================================ */
+   TOUR DETAILS MOBILE
+   ============================================================ */
 
 @media (max-width: 650px) {
-
-    /* =========================
-       TOUR DETAILS HERO
-    ========================= */
-
     .tour-details-hero {
         min-height: 520px;
 
@@ -2599,107 +2638,67 @@
             50px;
     }
 
-
     .tour-details-breadcrumb {
         flex-wrap: wrap;
-
         margin-bottom: 25px;
     }
-
 
     .tour-details-hero h1 {
         font-size: 2.6rem;
     }
 
-
     .tour-details-hero-content > p {
         font-size: 0.98rem;
     }
-
 
     .tour-details-quick-info {
         gap: 22px;
     }
 
-    
-
-
-    /* =========================
-       GALLERY
-    ========================= */
-
     .tour-details-gallery {
         padding: 55px 0;
     }
-
 
     .tour-gallery-header {
         margin-bottom: 25px;
     }
 
-
     .tour-gallery-header p {
         font-size: 0.94rem;
-
         line-height: 1.7;
     }
 
-
     .tour-gallery-grid {
         display: grid;
-
         grid-template-columns: 1fr;
-
         gap: 10px;
     }
-
 
     .tour-gallery-grid:has(
         .tour-gallery-item:nth-child(3)
     ) {
         grid-template-columns: 1fr;
-
         grid-template-rows: auto;
     }
-
 
     .tour-gallery-item,
     .tour-gallery-primary,
     .tour-gallery-grid
     .tour-gallery-primary {
         grid-row: auto;
-
         width: 100%;
-
         height: 260px;
     }
-
-
-    /*
-     * Primary image gets extra height.
-     */
 
     .tour-gallery-primary {
         height: 320px !important;
     }
 
-
-    /*
-     * Single image.
-     */
-
     .tour-gallery-grid
     .tour-gallery-item:only-child {
         height: 360px;
-
         min-height: 0;
     }
-
-
-    /*
-     * Always show the view label
-     * on touch devices.
-     */
 
     .tour-gallery-overlay {
         opacity: 1;
@@ -2714,135 +2713,92 @@
             );
     }
 
-
     .tour-gallery-overlay span {
         padding: 8px 12px;
-
         font-size: 9px;
     }
-
-
-    /* =========================
-       MAIN CONTENT
-    ========================= */
 
     .tour-details-content {
         padding: 60px 0;
     }
 
-
     .tour-details-section {
         padding-bottom: 50px;
-
         margin-bottom: 50px;
     }
-
-
-    /* =========================
-       INFORMATION GRID
-    ========================= */
 
     .tour-info-grid {
         grid-template-columns: 1fr;
     }
 
-
-    /* =========================
-       PRICING
-    ========================= */
-
     .tour-price-row {
         align-items: flex-start;
-
         padding: 20px;
     }
-
 
     .tour-booking-card {
         padding: 27px;
     }
 
-
-    /* =========================
-       LIGHTBOX
-    ========================= */
-
     .tour-lightbox {
         padding: 15px;
     }
 
-
     .tour-lightbox-content {
         width: 94vw;
-
         height: 72vh;
     }
 
-
     .tour-lightbox-close {
         top: 15px;
-
         right: 15px;
 
         width: 42px;
-
         height: 42px;
 
         font-size: 25px;
     }
 
-
     .tour-lightbox-prev,
     .tour-lightbox-next {
         width: 44px;
-
         height: 44px;
 
         font-size: 32px;
     }
 
-
     .tour-lightbox-prev {
         left: 8px;
     }
-
 
     .tour-lightbox-next {
         right: 8px;
     }
 
-
     .tour-lightbox-caption {
         bottom: -45px;
-
         font-size: 11px;
     }
 
-
     .tour-lightbox-counter {
         bottom: -68px;
-
         font-size: 10px;
     }
-
 }
 
 
 /* ============================================================
    EXTRA SMALL DEVICES
-============================================================ */
+   ============================================================ */
 
 @media (max-width: 420px) {
-
     .tour-details-container {
         width: 90%;
     }
 
-
     .tour-details-hero h1 {
         font-size: 2.25rem;
     }
-
 
     .tour-details-quick-info {
         display: grid;
@@ -2853,28 +2809,24 @@
         gap: 20px;
     }
 
-
     .tour-gallery-grid
     .tour-gallery-item:only-child {
         height: 300px;
     }
 
-
     .tour-gallery-primary {
         height: 280px !important;
     }
 
-
     .tour-lightbox-content {
         height: 65vh;
     }
-
 }
 
 
 /* ============================================================
-   ACCESSIBILITY
-============================================================ */
+   TOUR ACCESSIBILITY
+   ============================================================ */
 
 .tour-lightbox-close:focus-visible,
 .tour-lightbox-prev:focus-visible,
@@ -2886,13 +2838,7 @@
     outline-offset: 3px;
 }
 
-
-/* ============================================================
-   REDUCED MOTION
-============================================================ */
-
 @media (prefers-reduced-motion: reduce) {
-
     .tour-card,
     .tour-button,
     .tour-book-button,
@@ -2904,52 +2850,55 @@
     .tour-lightbox-next,
     .loading-spinner {
         animation: none;
-
         transition: none;
     }
-
 }
 
-/* =========================================================
+
+/* ============================================================
    ZAN GATES ADVENTURES
    ADMINISTRATION
-   ========================================================= */
+   ============================================================ */
 
 
-/* =========================================================
+/* ============================================================
    ADMIN LOGIN
-   ========================================================= */
+   ============================================================ */
 
 .admin-login-page {
     min-height: 100vh;
+
     background:
         linear-gradient(
             135deg,
-            #0c0c0c,
-            #171717 50%,
-            #21180d
+            #092f35,
+            #123f46 50%,
+            #0d6265
         );
+
     display: flex;
     align-items: center;
     justify-content: center;
+
     padding: 30px;
 }
-
 
 .admin-login-background {
     width: 100%;
     max-width: 470px;
 }
 
-
 .admin-login-card {
     background: #ffffff;
-    border-radius: 22px;
-    padding: 42px;
-    box-shadow:
-        0 30px 80px rgba(0, 0, 0, 0.35);
-}
 
+    border-radius: 22px;
+
+    padding: 42px;
+
+    box-shadow:
+        0 30px 80px
+        rgba(0, 0, 0, 0.35);
+}
 
 .admin-login-brand,
 .admin-sidebar-brand {
@@ -2958,46 +2907,46 @@
     gap: 13px;
 }
 
-
 .admin-brand-mark {
     width: 48px;
     height: 48px;
+
     border-radius: 12px;
 
     display: flex;
     align-items: center;
     justify-content: center;
 
-    background: #c99532;
+    background: #168083;
     color: #ffffff;
 
     font-weight: 800;
     letter-spacing: 1px;
 }
 
-
 .admin-login-brand strong,
 .admin-sidebar-brand strong {
     display: block;
+
     font-size: 15px;
     letter-spacing: 1.5px;
 }
 
-
 .admin-login-brand span,
 .admin-sidebar-brand span {
     display: block;
+
     margin-top: 3px;
+
     font-size: 10px;
     letter-spacing: 2px;
+
     color: #8a8a8a;
 }
-
 
 .admin-login-heading {
     margin-top: 42px;
 }
-
 
 .admin-login-heading > span,
 .admin-header > div > span,
@@ -3005,62 +2954,68 @@
     font-size: 11px;
     font-weight: 700;
     letter-spacing: 2px;
-    color: #b8862c;
-}
 
+    color: #168083;
+}
 
 .admin-login-heading h1 {
     margin: 8px 0;
+
     font-size: 34px;
+
     color: #151515;
 }
 
-
 .admin-login-heading p {
     margin: 0;
+
     color: #777777;
+
     line-height: 1.6;
 }
 
-
 .admin-login-error {
     margin-top: 25px;
+
     padding: 13px 15px;
+
     border-radius: 10px;
 
     background: #fff1f1;
+
     border: 1px solid #f0caca;
 
     color: #a52b2b;
+
     font-size: 14px;
 }
-
 
 .admin-login-form {
     margin-top: 28px;
 }
 
-
 .admin-form-group {
     margin-bottom: 20px;
 }
 
-
 .admin-form-group label {
     display: block;
+
     margin-bottom: 8px;
 
     font-size: 13px;
     font-weight: 600;
+
     color: #303030;
 }
 
-
 .admin-form-group input {
     width: 100%;
+
     box-sizing: border-box;
 
     border: 1px solid #dddddd;
+
     border-radius: 10px;
 
     padding: 14px 15px;
@@ -3074,29 +3029,25 @@
         box-shadow 0.2s ease;
 }
 
-
 .admin-form-group input:focus {
-    border-color: #c99532;
+    border-color: #168083;
 
     box-shadow:
-        0 0 0 3px rgba(
-            201,
-            149,
-            50,
-            0.12
-        );
+        0 0 0 3px
+        rgba(22, 128, 131, 0.12);
 }
-
 
 .admin-login-button {
     width: 100%;
 
     border: none;
+
     border-radius: 10px;
 
     padding: 15px;
 
-    background: #c99532;
+    background: #168083;
+
     color: #ffffff;
 
     font-size: 14px;
@@ -3109,19 +3060,18 @@
         background 0.2s ease;
 }
 
-
 .admin-login-button:hover {
-    background: #b58227;
+    background: #116b6e;
     transform: translateY(-1px);
 }
 
-
 .admin-login-button:disabled {
     opacity: 0.65;
+
     cursor: not-allowed;
+
     transform: none;
 }
-
 
 .admin-back-home {
     display: block;
@@ -3131,6 +3081,7 @@
     margin-top: 20px;
 
     border: none;
+
     background: transparent;
 
     color: #777777;
@@ -3138,25 +3089,27 @@
     cursor: pointer;
 }
 
+.admin-back-home:hover {
+    color: #168083;
+}
 
-/* =========================================================
+
+/* ============================================================
    ADMIN LOADING
-   ========================================================= */
+   ============================================================ */
 
 .admin-loading-screen {
     min-height: 100vh;
 
     display: flex;
     flex-direction: column;
-
     align-items: center;
     justify-content: center;
 
-    background: #f7f5f0;
+    background: #f5f7f6;
 
     color: #555555;
 }
-
 
 .admin-loading-spinner {
     width: 34px;
@@ -3165,35 +3118,34 @@
     border-radius: 50%;
 
     border: 3px solid #dddddd;
-    border-top-color: #c99532;
+    border-top-color: #168083;
 
     animation:
-        admin-spin 0.8s linear infinite;
+        admin-spin
+        0.8s linear infinite;
 }
 
-
 @keyframes admin-spin {
-
     to {
         transform: rotate(360deg);
     }
-
 }
 
 
-/* =========================================================
+/* ============================================================
    ADMIN LAYOUT
-   ========================================================= */
+   ============================================================ */
 
-.admin-page {
+.admin-page,
+.admin-layout {
     min-height: 100vh;
 
     display: flex;
 
-    background: #f6f5f2;
-    color: #202020;
-}
+    background: #f5f7f6;
 
+    color: #203536;
+}
 
 .admin-sidebar {
     position: fixed;
@@ -3211,23 +3163,20 @@
 
     padding: 28px 20px;
 
-    background: #111111;
-    color: #ffffff;
-}
+    background: #123f46;
 
+    color: #ffffff;
+
+    z-index: 100;
+}
 
 .admin-sidebar-brand {
     padding: 4px 10px 32px;
 
     border-bottom:
-        1px solid rgba(
-            255,
-            255,
-            255,
-            0.08
-        );
+        1px solid
+        rgba(255, 255, 255, 0.10);
 }
-
 
 .admin-sidebar-nav {
     display: flex;
@@ -3238,8 +3187,8 @@
     margin-top: 28px;
 }
 
-
-.admin-sidebar-nav button {
+.admin-sidebar-nav button,
+.admin-sidebar-nav .admin-nav-item {
     width: 100%;
 
     display: flex;
@@ -3248,72 +3197,69 @@
     gap: 13px;
 
     border: none;
+
     border-radius: 9px;
 
     padding: 13px 14px;
 
     background: transparent;
 
-    color: #a9a9a9;
+    color: rgba(255, 255, 255, 0.64);
 
     text-align: left;
 
     font-size: 14px;
 
     cursor: pointer;
+
+    text-decoration: none;
+
+    transition:
+        background 0.2s ease,
+        color 0.2s ease;
 }
 
-
 .admin-sidebar-nav button:hover,
-.admin-sidebar-nav button.active {
-    background: rgba(
-        201,
-        149,
-        50,
-        0.14
-    );
+.admin-sidebar-nav button.active,
+.admin-sidebar-nav .admin-nav-item:hover,
+.admin-sidebar-nav .admin-nav-item.active {
+    background:
+        rgba(22, 128, 131, 0.32);
 
     color: #ffffff;
 }
 
-
-.admin-sidebar-nav button.active {
+.admin-sidebar-nav button.active,
+.admin-sidebar-nav .admin-nav-item.active {
     border-left:
-        3px solid #c99532;
+        3px solid #7ac9c5;
 }
 
-
-.admin-sidebar-nav button span {
+.admin-sidebar-nav button span,
+.admin-nav-icon {
     width: 20px;
-
     font-size: 17px;
 }
 
-
-.admin-sidebar-footer {
+.admin-sidebar-footer,
+.admin-sidebar-bottom {
     margin-top: auto;
 }
-
 
 .admin-user {
     display: flex;
     align-items: center;
-
     gap: 10px;
 
     padding: 15px 10px;
 
     border-top:
-        1px solid rgba(
-            255,
-            255,
-            255,
-            0.08
-        );
+        1px solid
+        rgba(255, 255, 255, 0.08);
 }
 
-
-.admin-user-avatar {
+.admin-user-avatar,
+.admin-avatar {
     width: 36px;
     height: 36px;
 
@@ -3325,13 +3271,16 @@
 
     border-radius: 50%;
 
-    background: #c99532;
+    background: #168083;
 
     color: #ffffff;
 
     font-weight: 700;
 }
 
+.admin-user-info {
+    min-width: 0;
+}
 
 .admin-user strong {
     display: block;
@@ -3345,50 +3294,54 @@
     max-width: 150px;
 }
 
-
 .admin-user span {
     display: block;
 
     margin-top: 3px;
 
-    color: #858585;
+    color: rgba(255, 255, 255, 0.50);
 
     font-size: 10px;
 }
 
-
+.admin-signout,
 .admin-logout-button {
     width: 100%;
 
     padding: 11px;
 
     border:
-        1px solid rgba(
-            255,
-            255,
-            255,
-            0.1
-        );
+        1px solid
+        rgba(255, 255, 255, 0.12);
 
     border-radius: 8px;
 
     background: transparent;
 
-    color: #aaaaaa;
+    color: rgba(255, 255, 255, 0.64);
 
     cursor: pointer;
+
+    transition:
+        color 0.2s ease,
+        border-color 0.2s ease,
+        background 0.2s ease;
 }
 
-
+.admin-signout:hover,
 .admin-logout-button:hover {
     color: #ffffff;
-    border-color: #c99532;
+
+    border-color: #168083;
+
+    background:
+        rgba(22, 128, 131, 0.15);
 }
 
 
-/* =========================================================
+/* ============================================================
    ADMIN MAIN
-   ========================================================= */
+   ============================================================ */
 
 .admin-main {
     width: calc(100% - 260px);
@@ -3400,6 +3353,32 @@
     padding: 38px 45px 70px;
 }
 
+.admin-topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    min-height: 50px;
+
+    margin-bottom: 30px;
+}
+
+.admin-mobile-brand {
+    display: none;
+}
+
+.admin-topbar-website {
+    color: #168083;
+
+    font-size: 13px;
+    font-weight: 700;
+
+    text-decoration: none;
+}
+
+.admin-topbar-website:hover {
+    color: #116b6e;
+}
 
 .admin-header {
     display: flex;
@@ -3409,18 +3388,16 @@
     margin-bottom: 32px;
 }
 
-
 .admin-header h1 {
     margin: 7px 0 0;
 
     font-size: 32px;
 }
 
-
 .admin-header-actions button,
 .admin-section-heading button {
     border:
-        1px solid #dddddd;
+        1px solid #dce5e5;
 
     border-radius: 8px;
 
@@ -3431,19 +3408,107 @@
     cursor: pointer;
 
     color: #444444;
-}
 
+    transition:
+        border-color 0.2s ease,
+        color 0.2s ease,
+        background 0.2s ease;
+}
 
 .admin-header-actions button:hover,
 .admin-section-heading button:hover {
-    border-color: #c99532;
-    color: #9a6d1e;
+    border-color: #168083;
+
+    color: #116b6e;
+
+    background: #f4f9f8;
 }
 
 
-/* =========================================================
-   STATISTICS
-   ========================================================= */
+/* ============================================================
+   ADMIN CONTENT
+   ============================================================ */
+
+.admin-content {
+    width: 100%;
+}
+
+.admin-page-heading {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+
+    gap: 30px;
+
+    margin-bottom: 32px;
+}
+
+.admin-page-heading h1 {
+    margin: 8px 0 8px;
+
+    font-size: 34px;
+    line-height: 1.15;
+    font-weight: 700;
+
+    letter-spacing: -0.8px;
+}
+
+.admin-page-heading p {
+    margin: 0;
+
+    color: #718083;
+
+    font-size: 15px;
+}
+
+.admin-eyebrow {
+    font-size: 11px;
+    font-weight: 800;
+
+    letter-spacing: 1.8px;
+
+    color: #168083;
+}
+
+.admin-refresh-button {
+    border: 1px solid #dce5e5;
+
+    background: #ffffff;
+
+    color: #203536;
+
+    padding: 11px 17px;
+
+    border-radius: 8px;
+
+    font-size: 13px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        border-color 0.2s ease,
+        color 0.2s ease,
+        background 0.2s ease;
+}
+
+.admin-refresh-button:hover {
+    border-color: #168083;
+
+    color: #116b6e;
+
+    background: #f4f9f8;
+}
+
+.admin-refresh-button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+
+/* ============================================================
+   ADMIN STATISTICS
+   ============================================================ */
 
 .admin-stat-grid {
     display: grid;
@@ -3454,27 +3519,28 @@
     gap: 18px;
 }
 
-
 .admin-stat-card {
     padding: 24px;
 
     border:
-        1px solid #e7e4df;
+        1px solid #e1e9e8;
 
     border-radius: 14px;
 
     background: #ffffff;
-}
 
+    box-shadow:
+        0 5px 25px
+        rgba(16, 58, 62, 0.035);
+}
 
 .admin-stat-card span {
     display: block;
 
-    color: #777777;
+    color: #718083;
 
     font-size: 12px;
 }
-
 
 .admin-stat-card strong {
     display: block;
@@ -3482,28 +3548,28 @@
     margin-top: 12px;
 
     font-size: 32px;
-}
 
+    color: #123f46;
+}
 
 .admin-stat-card small {
     display: block;
 
     margin-top: 6px;
 
-    color: #999999;
+    color: #9aa7a8;
 
     font-size: 11px;
 }
 
 
-/* =========================================================
-   SECTIONS
-   ========================================================= */
+/* ============================================================
+   ADMIN SECTIONS
+   ============================================================ */
 
 .admin-section {
     margin-top: 34px;
 }
-
 
 .admin-section-heading {
     display: flex;
@@ -3513,17 +3579,18 @@
     margin-bottom: 15px;
 }
 
-
 .admin-section-heading h2 {
     margin: 6px 0 0;
 
     font-size: 21px;
+
+    color: #123f46;
 }
 
 
-/* =========================================================
-   FINANCIAL
-   ========================================================= */
+/* ============================================================
+   ADMIN FINANCIAL
+   ============================================================ */
 
 .admin-financial-grid {
     display: grid;
@@ -3534,26 +3601,24 @@
     gap: 18px;
 }
 
-
 .admin-financial-card {
     padding: 22px;
 
     border-radius: 14px;
 
-    background: #171717;
+    background: #123f46;
 
     color: #ffffff;
 }
 
-
 .admin-financial-card span {
-    color: #c99532;
+    color: #7ac9c5;
 
     font-size: 11px;
     font-weight: 700;
+
     letter-spacing: 1px;
 }
-
 
 .admin-financial-card strong {
     display: block;
@@ -3563,31 +3628,31 @@
     font-size: 25px;
 }
 
-
 .admin-financial-card small {
     display: block;
 
     margin-top: 5px;
 
-    color: #999999;
+    color: rgba(255, 255, 255, 0.55);
 }
 
 
-/* =========================================================
-   TABLE
-   ========================================================= */
+/* ============================================================
+   ADMIN TABLE
+   ============================================================ */
 
 .admin-table-wrapper {
+    width: 100%;
+
     overflow-x: auto;
 
     border:
-        1px solid #e6e3de;
+        1px solid #e1e9e8;
 
     border-radius: 14px;
 
     background: #ffffff;
 }
-
 
 .admin-table {
     width: 100%;
@@ -3597,19 +3662,17 @@
     min-width: 800px;
 }
 
-
 .admin-table th {
     padding: 15px 18px;
 
-    background: #faf9f7;
+    background: #f7faf9;
 
     border-bottom:
-        1px solid #e7e4df;
+        1px solid #e1e9e8;
 
-    color: #777777;
+    color: #718083;
 
     font-size: 10px;
-
     letter-spacing: 1px;
 
     text-align: left;
@@ -3617,48 +3680,48 @@
     text-transform: uppercase;
 }
 
-
 .admin-table td {
     padding: 17px 18px;
 
     border-bottom:
-        1px solid #eeeeee;
+        1px solid #edf1f0;
 
     font-size: 13px;
 }
-
 
 .admin-table tbody tr:last-child td {
     border-bottom: none;
 }
 
+.admin-table tbody tr:hover {
+    background: #fbfdfd;
+}
 
 .admin-table td strong,
 .admin-table td small {
     display: block;
 }
 
-
 .admin-table td small {
     margin-top: 4px;
 
-    color: #999999;
+    color: #9aa7a8;
 
     font-size: 11px;
 }
-
 
 .admin-table-empty {
     padding: 35px !important;
 
     text-align: center;
+
     color: #888888;
 }
 
 
-/* =========================================================
-   STATUS
-   ========================================================= */
+/* ============================================================
+   ADMIN STATUS
+   ============================================================ */
 
 .admin-status {
     display: inline-block;
@@ -3668,53 +3731,47 @@
     border-radius: 20px;
 
     font-size: 10px;
-
     font-weight: 700;
 
     letter-spacing: 0.4px;
 }
 
-
 .status-pending {
-    background: #fff4d8;
-    color: #9a6d1e;
+    background: #fff5df;
+    color: #a66b00;
 }
-
 
 .status-confirmed {
-    background: #e8f6ed;
-    color: #277344;
+    background: #eaf7ef;
+    color: #21723d;
 }
-
 
 .status-cancelled {
-    background: #fbeaea;
-    color: #a13b3b;
+    background: #fff0f0;
+    color: #a52d2d;
 }
-
 
 .status-completed {
-    background: #e9eef8;
-    color: #405b8c;
+    background: #edf3f8;
+    color: #3d617d;
 }
 
 
-/* =========================================================
+/* ============================================================
    UPCOMING BOOKINGS
-   ========================================================= */
+   ============================================================ */
 
 .admin-upcoming-list {
     display: flex;
     flex-direction: column;
 
     border:
-        1px solid #e6e3de;
+        1px solid #e1e9e8;
 
     border-radius: 14px;
 
     background: #ffffff;
 }
-
 
 .admin-upcoming-item {
     display: flex;
@@ -3725,14 +3782,12 @@
     padding: 17px 20px;
 
     border-bottom:
-        1px solid #eeeeee;
+        1px solid #edf1f0;
 }
-
 
 .admin-upcoming-item:last-child {
     border-bottom: none;
 }
-
 
 .admin-date-box {
     width: 55px;
@@ -3742,40 +3797,36 @@
 
     display: flex;
     flex-direction: column;
-
     align-items: center;
     justify-content: center;
 
     border-radius: 10px;
 
-    background: #f6f0e4;
+    background: #e5f4f3;
 }
-
 
 .admin-date-box strong {
     font-size: 20px;
-}
 
+    color: #123f46;
+}
 
 .admin-date-box span {
     font-size: 9px;
 
-    color: #a87822;
+    color: #168083;
 
     text-transform: uppercase;
 }
-
 
 .admin-upcoming-info {
     flex: 1;
 }
 
-
 .admin-upcoming-info strong,
 .admin-upcoming-info span {
     display: block;
 }
-
 
 .admin-upcoming-info span {
     margin-top: 5px;
@@ -3786,23 +3837,21 @@
 }
 
 
-/* =========================================================
+/* ============================================================
    TOUR PERFORMANCE
-   ========================================================= */
+   ============================================================ */
 
 .admin-tour-performance {
     border:
-        1px solid #e6e3de;
+        1px solid #e1e9e8;
 
     border-radius: 14px;
 
     background: #ffffff;
 }
 
-
 .admin-tour-row {
     display: flex;
-
     align-items: center;
     justify-content: space-between;
 
@@ -3811,20 +3860,17 @@
     padding: 19px 22px;
 
     border-bottom:
-        1px solid #eeeeee;
+        1px solid #edf1f0;
 }
-
 
 .admin-tour-row:last-child {
     border-bottom: none;
 }
 
-
 .admin-tour-row > div:first-child strong,
 .admin-tour-row > div:first-child span {
     display: block;
 }
-
 
 .admin-tour-row > div:first-child span {
     margin-top: 5px;
@@ -3833,7 +3879,6 @@
 
     font-size: 11px;
 }
-
 
 .admin-tour-metrics {
     display: flex;
@@ -3845,21 +3890,20 @@
     font-size: 11px;
 }
 
-
 .admin-tour-metrics strong {
     color: #333333;
 }
 
 
-/* =========================================================
-   EMPTY / ERROR
-   ========================================================= */
+/* ============================================================
+   ADMIN EMPTY / ERROR
+   ============================================================ */
 
 .admin-empty {
     padding: 30px;
 
     border:
-        1px solid #e6e3de;
+        1px solid #e1e9e8;
 
     border-radius: 14px;
 
@@ -3869,7 +3913,6 @@
 
     text-align: center;
 }
-
 
 .admin-error-state {
     max-width: 500px;
@@ -3885,24 +3928,17 @@
     text-align: center;
 
     box-shadow:
-        0 15px 50px rgba(
-            0,
-            0,
-            0,
-            0.08
-        );
+        0 15px 50px
+        rgba(16, 58, 62, 0.08);
 }
-
 
 .admin-error-state h2 {
     margin-top: 0;
 }
 
-
 .admin-error-state p {
     color: #777777;
 }
-
 
 .admin-error-state button {
     margin-top: 10px;
@@ -3910,210 +3946,33 @@
     padding: 11px 18px;
 
     border: none;
+
     border-radius: 8px;
 
-    background: #c99532;
+    background: #168083;
+
     color: #ffffff;
 
     cursor: pointer;
 }
 
-
-/* =========================================================
-   RESPONSIVE
-   ========================================================= */
-
-@media (max-width: 1100px) {
-
-    .admin-stat-grid {
-        grid-template-columns:
-            repeat(2, minmax(0, 1fr));
-    }
-
-    .admin-financial-grid {
-        grid-template-columns:
-            repeat(2, minmax(0, 1fr));
-    }
-
+.admin-error-state button:hover {
+    background: #116b6e;
 }
 
 
-@media (max-width: 800px) {
-
-    .admin-sidebar {
-        position: static;
-
-        width: 100%;
-
-        min-height: auto;
-    }
-
-
-    .admin-page {
-        display: block;
-    }
-
-
-    .admin-sidebar-nav {
-        flex-direction: row;
-
-        overflow-x: auto;
-    }
-
-
-    .admin-sidebar-nav button {
-        white-space: nowrap;
-    }
-
-
-    .admin-sidebar-footer {
-        margin-top: 20px;
-    }
-
-
-    .admin-main {
-        width: 100%;
-
-        margin-left: 0;
-
-        padding: 25px 18px 50px;
-    }
-
-
-    .admin-header {
-        align-items: flex-start;
-
-        gap: 15px;
-    }
-
-
-    .admin-stat-grid,
-    .admin-financial-grid {
-        grid-template-columns: 1fr;
-    }
-
-
-    .admin-tour-row {
-        align-items: flex-start;
-
-        flex-direction: column;
-    }
-
-
-    .admin-tour-metrics {
-        flex-wrap: wrap;
-    }
-
-}
-
-
-@media (max-width: 520px) {
-
-    .admin-login-page {
-        padding: 15px;
-    }
-
-
-    .admin-login-card {
-        padding: 28px 22px;
-    }
-
-
-    .admin-login-heading h1 {
-        font-size: 28px;
-    }
-
-
-    .admin-header {
-        flex-direction: column;
-    }
-
-
-    .admin-header-actions {
-        width: 100%;
-    }
-
-
-    .admin-header-actions button {
-        width: 100%;
-    }
-
-
-    .admin-upcoming-item {
-        align-items: flex-start;
-
-        flex-wrap: wrap;
-    }
-
-}
-
-/* ================================================================
+/* ============================================================
    ADMIN BOOKING MANAGEMENT
-================================================================ */
+   ============================================================ */
 
 
-/* ================================================================
-   PAGE HEADING
-================================================================ */
-
-.admin-page-heading {
-    display: flex;
-    align-items: flex-end;
-    justify-content: space-between;
-    gap: 30px;
-    margin-bottom: 32px;
-}
-
-.admin-page-heading h1 {
-    margin: 8px 0 8px;
-    font-size: 34px;
-    line-height: 1.15;
-    font-weight: 700;
-    letter-spacing: -0.8px;
-}
-
-.admin-page-heading p {
-    margin: 0;
-    color: #777;
-    font-size: 15px;
-}
-
-.admin-eyebrow {
-    font-size: 11px;
-    font-weight: 800;
-    letter-spacing: 1.8px;
-    color: #a87924;
-}
-
-.admin-refresh-button {
-    border: 1px solid #dedbd4;
-    background: #fff;
-    color: #222;
-    padding: 11px 17px;
-    border-radius: 8px;
-    font-size: 13px;
-    font-weight: 700;
-    cursor: pointer;
-    transition: all 0.2s ease;
-}
-
-.admin-refresh-button:hover {
-    border-color: #b28a43;
-    color: #a87924;
-}
-
-.admin-refresh-button:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-}
-
-
-/* ================================================================
-   FILTERS
-================================================================ */
+/* ============================================================
+   BOOKING FILTERS
+   ============================================================ */
 
 .booking-filters {
     display: grid;
+
     grid-template-columns:
         minmax(220px, 2fr)
         minmax(140px, 1fr)
@@ -4123,15 +3982,21 @@
         auto;
 
     gap: 12px;
+
     padding: 20px;
+
     margin-bottom: 18px;
 
-    background: #fff;
-    border: 1px solid #ebe8e1;
+    background: #ffffff;
+
+    border:
+        1px solid #e1e9e8;
+
     border-radius: 12px;
 
     box-shadow:
-        0 3px 18px rgba(0, 0, 0, 0.035);
+        0 3px 18px
+        rgba(16, 58, 62, 0.035);
 }
 
 .booking-filters > div {
@@ -4143,24 +4008,33 @@
 .booking-filters label {
     font-size: 11px;
     font-weight: 800;
+
     text-transform: uppercase;
+
     letter-spacing: 0.7px;
-    color: #777;
+
+    color: #718083;
 }
 
 .booking-filters input,
 .booking-filters select {
     width: 100%;
+
     height: 42px;
+
     padding: 0 12px;
 
-    border: 1px solid #dedbd4;
+    border:
+        1px solid #dce5e5;
+
     border-radius: 7px;
 
-    background: #fff;
-    color: #222;
+    background: #ffffff;
+
+    color: #203536;
 
     font-family: inherit;
+
     font-size: 13px;
 
     outline: none;
@@ -4172,25 +4046,31 @@
 
 .booking-filters input:focus,
 .booking-filters select:focus {
-    border-color: #b28a43;
+    border-color: #168083;
 
     box-shadow:
-        0 0 0 3px rgba(178, 138, 67, 0.10);
+        0 0 0 3px
+        rgba(22, 128, 131, 0.10);
 }
 
 .booking-clear-button {
     align-self: flex-end;
 
     height: 42px;
+
     padding: 0 15px;
 
-    border: 1px solid #dedbd4;
+    border:
+        1px solid #dce5e5;
+
     border-radius: 7px;
 
-    background: #f8f7f3;
-    color: #555;
+    background: #f4f8f7;
+
+    color: #56676a;
 
     font-family: inherit;
+
     font-size: 13px;
     font-weight: 700;
 
@@ -4198,14 +4078,14 @@
 }
 
 .booking-clear-button:hover {
-    background: #eeeae1;
-    color: #222;
+    background: #e5f4f3;
+    color: #123f46;
 }
 
 
-/* ================================================================
-   RESULTS SUMMARY
-================================================================ */
+/* ============================================================
+   BOOKING RESULTS SUMMARY
+   ============================================================ */
 
 .booking-results-summary {
     display: flex;
@@ -4213,6 +4093,7 @@
     justify-content: space-between;
 
     margin-bottom: 12px;
+
     padding: 0 3px;
 }
 
@@ -4224,11 +4105,11 @@
 
 .booking-results-summary strong {
     font-size: 17px;
-    color: #222;
+    color: #203536;
 }
 
 .booking-results-summary span {
-    color: #777;
+    color: #718083;
     font-size: 13px;
 }
 
@@ -4239,26 +4120,31 @@
 
     border-radius: 20px;
 
-    background: #f6efe1;
-    color: #9a6c1e !important;
+    background: #e5f4f3;
+
+    color: #137779 !important;
 
     font-size: 11px !important;
     font-weight: 800;
 }
 
 
-/* ================================================================
-   ERROR
-================================================================ */
+/* ============================================================
+   ADMIN ERROR BOX
+   ============================================================ */
 
 .admin-error-box {
     margin-bottom: 16px;
+
     padding: 13px 16px;
 
-    border: 1px solid #e6b8b8;
+    border:
+        1px solid #e6b8b8;
+
     border-radius: 8px;
 
     background: #fff4f4;
+
     color: #a52c2c;
 
     font-size: 13px;
@@ -4266,28 +4152,28 @@
 }
 
 
-/* ================================================================
-   TABLE CARD
-================================================================ */
+/* ============================================================
+   BOOKING TABLE CARD
+   ============================================================ */
 
 .admin-table-card {
     overflow: hidden;
 
-    background: #fff;
-    border: 1px solid #ebe8e1;
+    background: #ffffff;
+
+    border:
+        1px solid #e1e9e8;
+
     border-radius: 12px;
 
     box-shadow:
-        0 3px 20px rgba(0, 0, 0, 0.035);
-}
-
-.admin-table-wrapper {
-    width: 100%;
-    overflow-x: auto;
+        0 3px 20px
+        rgba(16, 58, 62, 0.035);
 }
 
 .admin-bookings-table {
     width: 100%;
+
     min-width: 1050px;
 
     border-collapse: collapse;
@@ -4296,15 +4182,18 @@
 .admin-bookings-table th {
     padding: 15px 17px;
 
-    background: #faf9f6;
-    border-bottom: 1px solid #e9e6df;
+    background: #f7faf9;
 
-    color: #777;
+    border-bottom:
+        1px solid #e1e9e8;
+
+    color: #718083;
 
     font-size: 10px;
     font-weight: 800;
 
     text-align: left;
+
     text-transform: uppercase;
 
     letter-spacing: 0.8px;
@@ -4313,7 +4202,8 @@
 .admin-bookings-table td {
     padding: 17px;
 
-    border-bottom: 1px solid #eeeae3;
+    border-bottom:
+        1px solid #edf1f0;
 
     vertical-align: middle;
 }
@@ -4323,17 +4213,18 @@
 }
 
 .admin-bookings-table tbody tr {
-    transition: background 0.2s ease;
+    transition:
+        background 0.2s ease;
 }
 
 .admin-bookings-table tbody tr:hover {
-    background: #fdfcf9;
+    background: #fbfdfd;
 }
 
 
-/* ================================================================
-   GUEST
-================================================================ */
+/* ============================================================
+   BOOKING GUEST
+   ============================================================ */
 
 .booking-guest {
     display: flex;
@@ -4342,25 +4233,26 @@
 }
 
 .booking-guest strong {
-    color: #222;
+    color: #203536;
+
     font-size: 13px;
     font-weight: 700;
 }
 
 .booking-guest span {
-    color: #777;
+    color: #718083;
     font-size: 11px;
 }
 
 .booking-guest small {
-    color: #999;
+    color: #9aa7a8;
     font-size: 10px;
 }
 
 
-/* ================================================================
-   TOUR
-================================================================ */
+/* ============================================================
+   BOOKING TOUR
+   ============================================================ */
 
 .booking-tour {
     display: flex;
@@ -4369,60 +4261,73 @@
 }
 
 .booking-tour strong {
-    color: #222;
+    color: #203536;
     font-size: 13px;
 }
 
 .booking-tour span {
-    color: #999;
+    color: #9aa7a8;
     font-size: 10px;
 }
 
 
-/* ================================================================
+/* ============================================================
    DATE / GUESTS / TOTAL
-================================================================ */
+   ============================================================ */
 
 .booking-date {
     color: #333;
+
     font-size: 12px;
     font-weight: 600;
+
     white-space: nowrap;
 }
 
 .booking-guests {
     color: #555;
+
     font-size: 12px;
+
     white-space: nowrap;
 }
 
 .booking-total {
-    color: #222;
+    color: #123f46;
+
     font-size: 13px;
+
     white-space: nowrap;
 }
 
 
-/* ================================================================
-   STATUS
-================================================================ */
+/* ============================================================
+   BOOKING STATUS
+   ============================================================ */
 
 .booking-status {
     display: inline-flex;
+
     align-items: center;
+    justify-content: center;
 
-    padding: 6px 9px;
+    min-height: 34px;
 
-    border-radius: 20px;
+    padding: 7px 14px;
 
-    font-size: 9px;
+    border-radius: 999px;
+
+    font-size: 11px;
     font-weight: 800;
 
-    letter-spacing: 0.7px;
+    letter-spacing: 0.02em;
+
+    white-space: nowrap;
 }
 
 .booking-status::before {
     content: "";
+
     width: 6px;
     height: 6px;
 
@@ -4431,59 +4336,63 @@
     border-radius: 50%;
 }
 
-.status-pending {
+.booking-status.status-pending {
     background: #fff5df;
     color: #a66b00;
 }
 
-.status-pending::before {
+.booking-status.status-pending::before {
     background: #d99000;
 }
 
-.status-confirmed {
+.booking-status.status-confirmed {
     background: #eaf7ef;
     color: #21723d;
 }
 
-.status-confirmed::before {
+.booking-status.status-confirmed::before {
     background: #2f9954;
 }
 
-.status-cancelled {
+.booking-status.status-cancelled {
     background: #fff0f0;
     color: #a52d2d;
 }
 
-.status-cancelled::before {
+.booking-status.status-cancelled::before {
     background: #c74747;
 }
 
-.status-completed {
+.booking-status.status-completed {
     background: #edf3f8;
     color: #3d617d;
 }
 
-.status-completed::before {
+.booking-status.status-completed::before {
     background: #527b99;
 }
 
 
-/* ================================================================
+/* ============================================================
    VIEW BUTTON
-================================================================ */
+   ============================================================ */
 
 .booking-view-button {
     display: inline-flex;
+
     align-items: center;
     justify-content: center;
 
     min-width: 55px;
+
     padding: 8px 12px;
 
-    border: 1px solid #dedbd4;
+    border:
+        1px solid #dce5e5;
+
     border-radius: 6px;
 
-    background: #fff;
+    background: #ffffff;
 
     color: #333;
 
@@ -4492,26 +4401,28 @@
 
     text-decoration: none;
 
-    transition: all 0.2s ease;
+    transition:
+        all 0.2s ease;
 }
 
 .booking-view-button:hover {
-    border-color: #b28a43;
-    background: #fbf7ee;
-    color: #9a6c1e;
+    border-color: #168083;
+
+    background: #f3f8f7;
+
+    color: #116b6e;
 }
 
 
-/* ================================================================
-   LOADING
-================================================================ */
+/* ============================================================
+   BOOKING TABLE LOADING
+   ============================================================ */
 
 .admin-table-loading {
     min-height: 330px;
 
     display: flex;
     flex-direction: column;
-
     align-items: center;
     justify-content: center;
 
@@ -4522,6 +4433,7 @@
     margin: 0;
 
     color: #888;
+
     font-size: 13px;
 }
 
@@ -4529,33 +4441,28 @@
     width: 30px;
     height: 30px;
 
-    border: 3px solid #e9e5dc;
-    border-top-color: #a87924;
+    border:
+        3px solid #e1e9e8;
+
+    border-top-color: #168083;
 
     border-radius: 50%;
 
-    animation: admin-spin 0.8s linear infinite;
-}
-
-@keyframes admin-spin {
-
-    to {
-        transform: rotate(360deg);
-    }
-
+    animation:
+        admin-spin
+        0.8s linear infinite;
 }
 
 
-/* ================================================================
-   EMPTY STATE
-================================================================ */
+/* ============================================================
+   BOOKING EMPTY STATE
+   ============================================================ */
 
 .admin-empty-state {
     min-height: 330px;
 
     display: flex;
     flex-direction: column;
-
     align-items: center;
     justify-content: center;
 
@@ -4576,8 +4483,9 @@
 
     border-radius: 50%;
 
-    background: #f5f1e8;
-    color: #a87924;
+    background: #e5f4f3;
+
+    color: #168083;
 
     font-size: 21px;
 }
@@ -4585,7 +4493,8 @@
 .admin-empty-state h3 {
     margin: 0 0 7px;
 
-    color: #222;
+    color: #203536;
+
     font-size: 17px;
 }
 
@@ -4595,7 +4504,9 @@
     margin: 0 0 20px;
 
     color: #888;
+
     font-size: 13px;
+
     line-height: 1.6;
 }
 
@@ -4603,25 +4514,33 @@
     padding: 10px 16px;
 
     border: none;
+
     border-radius: 7px;
 
-    background: #222;
-    color: #fff;
+    background: #123f46;
+
+    color: #ffffff;
 
     font-family: inherit;
+
     font-size: 12px;
     font-weight: 700;
 
     cursor: pointer;
 }
 
+.admin-empty-button:hover {
+    background: #116b6e;
+}
 
-/* ================================================================
+
+/* ============================================================
    PAGINATION
-================================================================ */
+   ============================================================ */
 
 .admin-pagination {
     display: flex;
+
     align-items: center;
     justify-content: space-between;
 
@@ -4633,13 +4552,17 @@
 .admin-pagination > button {
     padding: 9px 13px;
 
-    border: 1px solid #dedbd4;
+    border:
+        1px solid #dce5e5;
+
     border-radius: 7px;
 
-    background: #fff;
+    background: #ffffff;
+
     color: #444;
 
     font-family: inherit;
+
     font-size: 12px;
     font-weight: 700;
 
@@ -4647,8 +4570,8 @@
 }
 
 .admin-pagination > button:hover:not(:disabled) {
-    border-color: #b28a43;
-    color: #9a6c1e;
+    border-color: #168083;
+    color: #116b6e;
 }
 
 .admin-pagination > button:disabled {
@@ -4672,13 +4595,17 @@
     width: 34px;
     height: 34px;
 
-    border: 1px solid #dedbd4;
+    border:
+        1px solid #dce5e5;
+
     border-radius: 6px;
 
-    background: #fff;
+    background: #ffffff;
+
     color: #555;
 
     font-family: inherit;
+
     font-size: 12px;
     font-weight: 700;
 
@@ -4686,14 +4613,16 @@
 }
 
 .admin-pagination-pages button:hover {
-    border-color: #b28a43;
-    color: #9a6c1e;
+    border-color: #168083;
+    color: #116b6e;
 }
 
 .admin-pagination-pages button.active {
-    border-color: #222;
-    background: #222;
-    color: #fff;
+    border-color: #123f46;
+
+    background: #123f46;
+
+    color: #ffffff;
 }
 
 .pagination-dots {
@@ -4702,21 +4631,494 @@
 }
 
 
-/* ================================================================
-   MOBILE BRAND
-================================================================ */
+/* ============================================================
+   ADMIN MOBILE BRAND
+   ============================================================ */
 
 .admin-mobile-brand {
     display: none;
 }
 
 
-/* ================================================================
-   RESPONSIVE
-================================================================ */
+/* ============================================================
+   ADMIN BOOKING DETAILS
+   ============================================================ */
+
+.booking-detail-header {
+    display: flex;
+
+    align-items: flex-start;
+    justify-content: space-between;
+
+    gap: 30px;
+
+    margin-bottom: 30px;
+}
+
+.booking-detail-header h2 {
+    margin: 8px 0 6px;
+
+    font-size: 32px;
+
+    line-height: 1.15;
+
+    font-weight: 700;
+}
+
+.booking-detail-header p {
+    margin: 0;
+
+    color: #777;
+
+    font-size: 14px;
+}
+
+
+/* ============================================================
+   ADMIN BREADCRUMB
+   ============================================================ */
+
+.admin-breadcrumb {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+
+    gap: 8px;
+
+    margin-bottom: 28px;
+
+    color: #8a8a8a;
+
+    font-size: 13px;
+}
+
+.admin-breadcrumb a {
+    color: #718083;
+
+    text-decoration: none;
+}
+
+.admin-breadcrumb a:hover {
+    color: #168083;
+}
+
+.admin-breadcrumb strong {
+    color: #333;
+}
+
+
+/* ============================================================
+   BOOKING DETAIL GRID
+   ============================================================ */
+
+.booking-detail-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+    gap: 20px;
+}
+
+.booking-detail-card {
+    background: #ffffff;
+
+    border:
+        1px solid #e1e9e8;
+
+    border-radius: 16px;
+
+    padding: 26px;
+
+    box-shadow:
+        0 5px 20px
+        rgba(16, 58, 62, 0.035);
+}
+
+.booking-detail-card-full {
+    grid-column: 1 / -1;
+}
+
+.booking-detail-card-header {
+    margin-bottom: 22px;
+}
+
+.booking-detail-card-header h3 {
+    margin: 7px 0 0;
+
+    font-size: 19px;
+
+    line-height: 1.3;
+
+    font-weight: 700;
+
+    color: #123f46;
+}
+
+.booking-detail-list {
+    display: flex;
+    flex-direction: column;
+
+    gap: 0;
+}
+
+
+/* ============================================================
+   DETAIL ROW
+   ============================================================ */
+
+.booking-detail-row {
+    display: flex;
+
+    align-items: flex-start;
+    justify-content: space-between;
+
+    gap: 25px;
+
+    padding: 14px 0;
+
+    border-bottom:
+        1px solid #edf1f0;
+}
+
+.booking-detail-row:first-child {
+    padding-top: 0;
+}
+
+.booking-detail-row:last-child {
+    padding-bottom: 0;
+    border-bottom: none;
+}
+
+.booking-detail-row > span {
+    color: #858585;
+
+    font-size: 13px;
+
+    flex-shrink: 0;
+}
+
+.booking-detail-row strong,
+.booking-detail-row a {
+    color: #203536;
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    text-align: right;
+
+    text-decoration: none;
+
+    word-break: break-word;
+}
+
+.booking-detail-row a:hover {
+    color: #168083;
+}
+
+
+/* ============================================================
+   TOUR LINK
+   ============================================================ */
+
+.booking-tour-link {
+    margin-top: 22px;
+
+    padding-top: 18px;
+
+    border-top:
+        1px solid #edf1f0;
+}
+
+.booking-tour-link a {
+    color: #168083;
+
+    font-size: 13px;
+    font-weight: 700;
+
+    text-decoration: none;
+}
+
+.booking-tour-link a:hover {
+    text-decoration: underline;
+}
+
+
+/* ============================================================
+   BOOKING TOTAL
+   ============================================================ */
+
+.booking-total {
+    display: flex;
+
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 20px;
+
+    margin-bottom: 22px;
+
+    padding: 20px;
+
+    border-radius: 12px;
+
+    background: #f3f8f7;
+}
+
+.booking-total span {
+    color: #777;
+    font-size: 13px;
+}
+
+.booking-total strong {
+    color: #123f46;
+
+    font-size: 25px;
+
+    font-weight: 800;
+}
+
+
+/* ============================================================
+   CURRENT STATUS
+   ============================================================ */
+
+.booking-current-status {
+    margin-bottom: 24px;
+}
+
+
+/* ============================================================
+   BOOKING ACTIONS
+   ============================================================ */
+
+.booking-actions {
+    display: flex;
+    flex-wrap: wrap;
+
+    gap: 10px;
+
+    padding-top: 20px;
+
+    border-top:
+        1px solid #edf1f0;
+}
+
+.booking-actions .admin-btn {
+    min-height: 42px;
+
+    padding: 10px 17px;
+
+    border-radius: 8px;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        transform 0.2s ease;
+}
+
+.booking-actions .admin-btn:hover {
+    transform: translateY(-1px);
+}
+
+.admin-btn-success {
+    background: #207a4c;
+
+    color: #ffffff;
+
+    border: 1px solid #207a4c;
+}
+
+.admin-btn-success:hover {
+    background: #17613b;
+
+    border-color: #17613b;
+}
+
+.admin-btn-danger {
+    background: #b42318;
+
+    color: #ffffff;
+
+    border: 1px solid #b42318;
+}
+
+.admin-btn-danger:hover {
+    background: #921b12;
+
+    border-color: #921b12;
+}
+
+
+/* ============================================================
+   SPECIAL REQUIREMENTS
+   ============================================================ */
+
+.booking-notes {
+    min-height: 80px;
+
+    padding: 18px;
+
+    border-radius: 12px;
+
+    background: #f7faf9;
+}
+
+.booking-notes p {
+    margin: 0;
+
+    color: #444;
+
+    font-size: 14px;
+
+    line-height: 1.75;
+
+    white-space: pre-wrap;
+}
+
+.booking-notes span {
+    color: #999;
+    font-size: 14px;
+}
+
+
+/* ============================================================
+   RECORD GRID
+   ============================================================ */
+
+.booking-record-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+
+    gap: 25px;
+}
+
+.booking-record-grid .booking-detail-row {
+    flex-direction: column;
+
+    align-items: flex-start;
+
+    gap: 7px;
+
+    border-bottom: none;
+
+    padding: 0;
+}
+
+.booking-record-grid .booking-detail-row strong {
+    text-align: left;
+}
+
+
+/* ============================================================
+   DETAIL FOOTER
+   ============================================================ */
+
+.booking-detail-footer {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: flex-start;
+
+    margin-top: 25px;
+}
+
+
+/* ============================================================
+   ADMIN ALERT
+   ============================================================ */
+
+.admin-alert {
+    margin-bottom: 20px;
+
+    padding: 14px 17px;
+
+    border-radius: 10px;
+
+    font-size: 14px;
+
+    line-height: 1.5;
+}
+
+.admin-alert-error {
+    background: #fdecec;
+
+    border:
+        1px solid #f4caca;
+
+    color: #a51d1d;
+}
+
+
+/* ============================================================
+   ADMIN DETAIL LOADING
+   ============================================================ */
+
+.admin-loading {
+    padding: 60px 20px;
+
+    text-align: center;
+
+    color: #777;
+
+    font-size: 14px;
+}
+
+
+/* ============================================================
+   ADMIN DETAIL ERROR
+   ============================================================ */
+
+.admin-error {
+    padding: 35px;
+
+    background: #ffffff;
+
+    border:
+        1px solid #e1e9e8;
+
+    border-radius: 16px;
+}
+
+.admin-error strong {
+    display: block;
+
+    margin-bottom: 8px;
+
+    color: #252525;
+
+    font-size: 18px;
+}
+
+.admin-error p {
+    margin: 0 0 20px;
+
+    color: #777;
+
+    font-size: 14px;
+}
+
+.admin-error-actions {
+    display: flex;
+
+    flex-wrap: wrap;
+
+    gap: 10px;
+}
+
+
+/* ============================================================
+   ADMIN RESPONSIVE
+   ============================================================ */
 
 @media (max-width: 1200px) {
-
     .booking-filters {
         grid-template-columns:
             repeat(3, 1fr);
@@ -4725,12 +5127,48 @@
     .booking-filter-search {
         grid-column: span 2;
     }
-
 }
 
+@media (max-width: 1100px) {
+    .admin-stat-grid {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+
+    .admin-financial-grid {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 1000px) {
+    .booking-detail-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .booking-detail-card-full {
+        grid-column: auto;
+    }
+
+    .booking-record-grid {
+        grid-template-columns: 1fr;
+        gap: 0;
+    }
+
+    .booking-record-grid
+    .booking-detail-row {
+        padding: 14px 0;
+        border-bottom:
+            1px solid #edf1f0;
+    }
+
+    .booking-record-grid
+    .booking-detail-row:last-child {
+        border-bottom: none;
+    }
+}
 
 @media (max-width: 850px) {
-
     .admin-page-heading {
         align-items: flex-start;
         flex-direction: column;
@@ -4748,18 +5186,121 @@
     .booking-clear-button {
         align-self: stretch;
     }
-
 }
 
+@media (max-width: 800px) {
+    .admin-sidebar {
+        position: static;
+
+        width: 100%;
+
+        min-height: auto;
+    }
+
+    .admin-page,
+    .admin-layout {
+        display: block;
+    }
+
+    .admin-sidebar-nav {
+        flex-direction: row;
+
+        overflow-x: auto;
+    }
+
+    .admin-sidebar-nav button,
+    .admin-sidebar-nav .admin-nav-item {
+        white-space: nowrap;
+    }
+
+    .admin-sidebar-footer,
+    .admin-sidebar-bottom {
+        margin-top: 20px;
+    }
+
+    .admin-main {
+        width: 100%;
+
+        margin-left: 0;
+
+        padding: 25px 18px 50px;
+    }
+
+    .admin-header {
+        align-items: flex-start;
+
+        gap: 15px;
+    }
+
+    .admin-stat-grid,
+    .admin-financial-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .admin-tour-row {
+        align-items: flex-start;
+
+        flex-direction: column;
+    }
+
+    .admin-tour-metrics {
+        flex-wrap: wrap;
+    }
+}
+
+@media (max-width: 700px) {
+    .booking-detail-header {
+        flex-direction: column;
+
+        gap: 15px;
+    }
+
+    .booking-detail-header h2 {
+        font-size: 26px;
+    }
+
+    .booking-detail-card {
+        padding: 20px;
+
+        border-radius: 13px;
+    }
+
+    .booking-detail-row {
+        flex-direction: column;
+
+        gap: 7px;
+    }
+
+    .booking-detail-row strong,
+    .booking-detail-row a {
+        text-align: left;
+    }
+
+    .booking-total {
+        align-items: flex-start;
+
+        flex-direction: column;
+
+        gap: 8px;
+    }
+
+    .booking-actions {
+        flex-direction: column;
+    }
+
+    .booking-actions .admin-btn {
+        width: 100%;
+    }
+}
 
 @media (max-width: 600px) {
-
     .admin-page-heading h1 {
         font-size: 28px;
     }
 
     .booking-filters {
         grid-template-columns: 1fr;
+
         padding: 15px;
     }
 
@@ -4769,13 +5310,89 @@
 
     .booking-results-summary {
         align-items: flex-start;
+
         flex-direction: column;
+
         gap: 10px;
     }
 
     .admin-pagination {
         flex-wrap: wrap;
+
         justify-content: center;
     }
+}
 
+@media (max-width: 520px) {
+    .admin-login-page {
+        padding: 15px;
+    }
+
+    .admin-login-card {
+        padding: 28px 22px;
+    }
+
+    .admin-login-heading h1 {
+        font-size: 28px;
+    }
+
+    .admin-header {
+        flex-direction: column;
+    }
+
+    .admin-header-actions {
+        width: 100%;
+    }
+
+    .admin-header-actions button {
+        width: 100%;
+    }
+
+    .admin-upcoming-item {
+        align-items: flex-start;
+
+        flex-wrap: wrap;
+    }
+
+    .admin-main {
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+}
+
+
+/* ============================================================
+   FINAL ACCESSIBILITY / FOCUS
+   ============================================================ */
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+    outline:
+        3px solid
+        rgba(22, 128, 131, 0.28);
+
+    outline-offset: 2px;
+}
+
+
+/* ============================================================
+   GLOBAL REDUCED MOTION
+   ============================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
 }

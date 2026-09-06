@@ -4,19 +4,16 @@ import {
     Route,
 } from "react-router-dom";
 
-
 import Home from "./pages/Home";
 import TourDetails from "./pages/TourDetails";
 import Booking from "./pages/Booking";
 
-
 import AdminLogin from "./pages/admin/AdminLogin";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import AdminBookings from "./pages/admin/AdminBookings";
-
+import AdminBookingDetails from "./pages/admin/AdminBookingDetails";
 
 import ProtectedRoute from "./components/admin/ProtectedRoute";
-
 
 import {
     AuthProvider,
@@ -26,28 +23,26 @@ import {
 function App() {
 
     return (
+
         <BrowserRouter>
 
             <AuthProvider>
 
                 <Routes>
 
-
-                    {/* ==================================================
+                    {/* =====================================================
                         PUBLIC WEBSITE
-                    ================================================== */}
+                    ===================================================== */}
 
                     <Route
                         path="/"
                         element={<Home />}
                     />
 
-
                     <Route
                         path="/tours/:slug"
                         element={<TourDetails />}
                     />
-
 
                     <Route
                         path="/book/:slug"
@@ -55,10 +50,9 @@ function App() {
                     />
 
 
-
-                    {/* ==================================================
+                    {/* =====================================================
                         ADMIN LOGIN
-                    ================================================== */}
+                    ===================================================== */}
 
                     <Route
                         path="/admin/login"
@@ -66,25 +60,30 @@ function App() {
                     />
 
 
-
-                    {/* ==================================================
+                    {/* =====================================================
                         PROTECTED ADMIN AREA
-                    ================================================== */}
+                    ===================================================== */}
 
-                    <Route element={<ProtectedRoute />}>
+                    <Route
+                        element={<ProtectedRoute />}
+                    >
 
                         <Route
                             path="/admin/dashboard"
                             element={<AdminDashboard />}
                         />
 
-                         <Route
+                        <Route
                             path="/admin/bookings"
                             element={<AdminBookings />}
                         />
 
-                    </Route>
+                        <Route
+                            path="/admin/bookings/:id"
+                            element={<AdminBookingDetails />}
+                        />
 
+                    </Route>
 
                 </Routes>
 

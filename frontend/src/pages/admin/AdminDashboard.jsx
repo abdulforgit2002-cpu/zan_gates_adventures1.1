@@ -15,6 +15,12 @@ import {
 import adminApi from "../../services/adminApi";
 
 
+/*
+|--------------------------------------------------------------------------
+| FORMAT CURRENCY
+|--------------------------------------------------------------------------
+*/
+
 const formatCurrency = (
     amount,
     currency = "USD"
@@ -23,17 +29,114 @@ const formatCurrency = (
     const numericAmount =
         Number(amount || 0);
 
+    try {
 
-    return new Intl.NumberFormat(
-        "en-US",
-        {
-            style: "currency",
-            currency,
-            minimumFractionDigits: 2,
-        }
-    ).format(numericAmount);
+        return new Intl.NumberFormat(
+            "en-US",
+            {
+                style: "currency",
+                currency,
+                minimumFractionDigits: 2,
+            }
+        ).format(numericAmount);
+
+    } catch {
+
+        return `${currency} ${numericAmount.toFixed(2)}`;
+    }
 };
 
+
+/*
+|--------------------------------------------------------------------------
+| FORMAT DATE
+|--------------------------------------------------------------------------
+*/
+
+const formatDate = (
+    value
+) => {
+
+    if (!value) {
+        return "—";
+    }
+
+    const date =
+        new Date(
+            `${value}T00:00:00`
+        );
+
+    if (
+        Number.isNaN(
+            date.getTime()
+        )
+    ) {
+
+        return value;
+    }
+
+    return date.toLocaleDateString(
+        "en-US",
+        {
+            day: "2-digit",
+            month: "short",
+            year: "numeric",
+        }
+    );
+};
+
+
+/*
+|--------------------------------------------------------------------------
+| FORMAT SHORT DATE
+|--------------------------------------------------------------------------
+*/
+
+const formatShortDate = (
+    value
+) => {
+
+    if (!value) {
+        return {
+            day: "—",
+            month: "",
+        };
+    }
+
+    const date =
+        new Date(
+            `${value}T00:00:00`
+        );
+
+    if (
+        Number.isNaN(
+            date.getTime()
+        )
+    ) {
+
+        return {
+            day: value,
+            month: "",
+        };
+    }
+
+    return {
+        day: date.getDate(),
+        month: date.toLocaleDateString(
+            "en-US",
+            {
+                month: "short",
+            }
+        ),
+    };
+};
+
+
+/*
+|--------------------------------------------------------------------------
+| STATUS CLASS
+|--------------------------------------------------------------------------
+*/
 
 const statusClass = (
     status
@@ -45,10 +148,17 @@ const statusClass = (
 };
 
 
+/*
+|--------------------------------------------------------------------------
+| ADMIN DASHBOARD
+|--------------------------------------------------------------------------
+*/
+
 const AdminDashboard = () => {
 
     const navigate =
         useNavigate();
+
 
     const {
         admin,
@@ -56,14 +166,28 @@ const AdminDashboard = () => {
     } = useAuth();
 
 
-    const [dashboard, setDashboard] =
-        useState(null);
+    const [
+        dashboard,
+        setDashboard,
+    ] = useState(null);
 
-    const [loading, setLoading] =
-        useState(true);
 
-    const [error, setError] =
-        useState("");
+    const [
+        loading,
+        setLoading,
+    ] = useState(true);
+
+
+    const [
+        refreshing,
+        setRefreshing,
+    ] = useState(false);
+
+
+    const [
+        error,
+        setError,
+    ] = useState("");
 
 
     /*
@@ -73,58 +197,96 @@ const AdminDashboard = () => {
     */
 
     const loadDashboard =
-        useCallback(async () => {
+        useCallback(
+            async ({
+                showLoading = true,
+            } = {}) => {
 
-            try {
+                try {
 
-                setLoading(true);
-
-                setError("");
-
-
-                const response =
-                    await adminApi.dashboard();
+                    if (showLoading) {
+                        setLoading(true);
+                    } else {
+                        setRefreshing(true);
+                    }
 
 
-                setDashboard(
-                    response.data
-                );
+                    setError("");
 
-            } catch (err) {
 
-                if (
-                    err.code ===
-                    "AUTH_EXPIRED"
-                ) {
+                    const response =
+                        await adminApi.dashboard();
 
-                    logout();
 
-                    navigate(
-                        "/admin/login",
-                        {
-                            replace: true,
-                        }
+                    setDashboard(
+                        response?.data || null
                     );
 
-                    return;
+                } catch (err) {
+
+                    console.error(
+                        "Failed to load dashboard:",
+                        err
+                    );
+
+
+                    if (
+                        err?.code ===
+                        "AUTH_EXPIRED" ||
+                        err?.code ===
+                        "AUTH_REQUIRED"
+                    ) {
+
+                        logout();
+
+                        navigate(
+                            "/admin/login",
+                            {
+                                replace: true,
+                            }
+                        );
+
+                        return;
+                    }
+
+
+                    if (
+                        err?.code ===
+                        "FORBIDDEN"
+                    ) {
+
+                        setError(
+                            "You do not have permission to access the administrator dashboard."
+                        );
+
+                        return;
+                    }
+
+
+                    setError(
+                        err?.message ||
+                        "Unable to load dashboard."
+                    );
+
+                } finally {
+
+                    setLoading(false);
+                    setRefreshing(false);
                 }
 
+            },
+            [
+                logout,
+                navigate,
+            ]
+        );
 
-                setError(
-                    err.message ||
-                    "Unable to load dashboard."
-                );
 
-            } finally {
-
-                setLoading(false);
-            }
-
-        }, [
-            logout,
-            navigate,
-        ]);
-
+    /*
+    |--------------------------------------------------------------------------
+    | INITIAL LOAD
+    |--------------------------------------------------------------------------
+    */
 
     useEffect(() => {
 
@@ -198,7 +360,10 @@ const AdminDashboard = () => {
                     </p>
 
                     <button
-                        onClick={loadDashboard}
+                        type="button"
+                        onClick={() =>
+                            loadDashboard()
+                        }
                     >
                         Try Again
                     </button>
@@ -215,14 +380,53 @@ const AdminDashboard = () => {
     }
 
 
-    const {
-        statistics,
-        financial_summary,
-        recent_bookings,
-        upcoming_bookings,
-        tour_performance,
-    } = dashboard;
+    /*
+    |--------------------------------------------------------------------------
+    | DASHBOARD DATA
+    |--------------------------------------------------------------------------
+    */
 
+    const statistics =
+        dashboard.statistics || {};
+
+
+    const financialSummary =
+        Array.isArray(
+            dashboard.financial_summary
+        )
+            ? dashboard.financial_summary
+            : [];
+
+
+    const recentBookings =
+        Array.isArray(
+            dashboard.recent_bookings
+        )
+            ? dashboard.recent_bookings
+            : [];
+
+
+    const upcomingBookings =
+        Array.isArray(
+            dashboard.upcoming_bookings
+        )
+            ? dashboard.upcoming_bookings
+            : [];
+
+
+    const tourPerformance =
+        Array.isArray(
+            dashboard.tour_performance
+        )
+            ? dashboard.tour_performance
+            : [];
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | RENDER
+    |--------------------------------------------------------------------------
+    */
 
     return (
         <div className="admin-page">
@@ -258,6 +462,7 @@ const AdminDashboard = () => {
                 <nav className="admin-sidebar-nav">
 
                     <button
+                        type="button"
                         className="active"
                         onClick={() =>
                             navigate(
@@ -271,6 +476,7 @@ const AdminDashboard = () => {
 
 
                     <button
+                        type="button"
                         onClick={() =>
                             navigate(
                                 "/admin/bookings"
@@ -283,6 +489,7 @@ const AdminDashboard = () => {
 
 
                     <button
+                        type="button"
                         onClick={() =>
                             navigate("/")
                         }
@@ -299,11 +506,14 @@ const AdminDashboard = () => {
                     <div className="admin-user">
 
                         <div className="admin-user-avatar">
+
                             {admin?.full_name
                                 ?.charAt(0)
                                 ?.toUpperCase() || "A"
                             }
+
                         </div>
+
 
                         <div>
 
@@ -323,6 +533,7 @@ const AdminDashboard = () => {
 
 
                     <button
+                        type="button"
                         className="admin-logout-button"
                         onClick={handleLogout}
                     >
@@ -335,13 +546,15 @@ const AdminDashboard = () => {
 
 
             {/* ==================================================
-                MAIN CONTENT
+                MAIN
             ================================================== */}
 
             <main className="admin-main">
 
 
-                {/* Header */}
+                {/* ==================================================
+                    HEADER
+                ================================================== */}
 
                 <header className="admin-header">
 
@@ -361,9 +574,18 @@ const AdminDashboard = () => {
                     <div className="admin-header-actions">
 
                         <button
-                            onClick={loadDashboard}
+                            type="button"
+                            onClick={() =>
+                                loadDashboard({
+                                    showLoading: false,
+                                })
+                            }
+                            disabled={refreshing}
                         >
-                            Refresh
+                            {refreshing
+                                ? "Refreshing..."
+                                : "Refresh"
+                            }
                         </button>
 
                     </div>
@@ -385,7 +607,9 @@ const AdminDashboard = () => {
                         </span>
 
                         <strong>
-                            {statistics.total_bookings}
+                            {Number(
+                                statistics.total_bookings || 0
+                            )}
                         </strong>
 
                         <small>
@@ -402,7 +626,9 @@ const AdminDashboard = () => {
                         </span>
 
                         <strong>
-                            {statistics.pending_bookings}
+                            {Number(
+                                statistics.pending_bookings || 0
+                            )}
                         </strong>
 
                         <small>
@@ -419,7 +645,9 @@ const AdminDashboard = () => {
                         </span>
 
                         <strong>
-                            {statistics.confirmed_bookings}
+                            {Number(
+                                statistics.confirmed_bookings || 0
+                            )}
                         </strong>
 
                         <small>
@@ -436,7 +664,9 @@ const AdminDashboard = () => {
                         </span>
 
                         <strong>
-                            {statistics.completed_bookings}
+                            {Number(
+                                statistics.completed_bookings || 0
+                            )}
                         </strong>
 
                         <small>
@@ -445,6 +675,24 @@ const AdminDashboard = () => {
 
                     </div>
 
+
+                    <div className="admin-stat-card">
+
+                        <span>
+                            Cancelled
+                        </span>
+
+                        <strong>
+                            {Number(
+                                statistics.cancelled_bookings || 0
+                            )}
+                        </strong>
+
+                        <small>
+                            Cancelled enquiries
+                        </small>
+
+                    </div>
 
                 </section>
 
@@ -474,24 +722,30 @@ const AdminDashboard = () => {
 
                     <div className="admin-financial-grid">
 
-                        {financial_summary.length === 0 ? (
+                        {financialSummary.length === 0 ? (
 
                             <div className="admin-empty">
+
                                 No financial data available.
+
                             </div>
 
                         ) : (
 
-                            financial_summary.map(
+                            financialSummary.map(
                                 (financial) => (
 
                                     <div
                                         className="admin-financial-card"
-                                        key={financial.currency}
+                                        key={
+                                            financial.currency
+                                        }
                                     >
 
                                         <span>
-                                            {financial.currency}
+                                            {
+                                                financial.currency
+                                            }
                                         </span>
 
                                         <strong>
@@ -505,7 +759,12 @@ const AdminDashboard = () => {
                                             {
                                                 financial.booking_count
                                             }{" "}
-                                            bookings
+                                            booking
+                                            {
+                                                financial.booking_count !== 1
+                                                    ? "s"
+                                                    : ""
+                                            }
                                         </small>
 
                                     </div>
@@ -541,6 +800,7 @@ const AdminDashboard = () => {
 
 
                         <button
+                            type="button"
                             onClick={() =>
                                 navigate(
                                     "/admin/bookings"
@@ -592,7 +852,7 @@ const AdminDashboard = () => {
 
                             <tbody>
 
-                                {recent_bookings.length === 0 ? (
+                                {recentBookings.length === 0 ? (
 
                                     <tr>
 
@@ -607,7 +867,7 @@ const AdminDashboard = () => {
 
                                 ) : (
 
-                                    recent_bookings.map(
+                                    recentBookings.map(
                                         (booking) => (
 
                                             <tr
@@ -634,40 +894,48 @@ const AdminDashboard = () => {
 
 
                                                 <td>
+
                                                     {
-                                                        booking.tour_title
+                                                        booking.tour_title ||
+                                                        "Unknown Tour"
                                                     }
+
                                                 </td>
 
 
                                                 <td>
-                                                    {
+
+                                                    {formatDate(
                                                         booking.travel_date
-                                                    }
+                                                    )}
+
                                                 </td>
 
 
                                                 <td>
-                                                    {
-                                                        booking.adults
-                                                    }{" "}
+
+                                                    {booking.adults}{" "}
                                                     adult
-                                                    {booking.adults !== 1
-                                                        ? "s"
-                                                        : ""
+                                                    {
+                                                        booking.adults !== 1
+                                                            ? "s"
+                                                            : ""
                                                     }
 
                                                     {booking.children > 0 &&
                                                         ` + ${booking.children} child${booking.children !== 1 ? "ren" : ""}`
                                                     }
+
                                                 </td>
 
 
                                                 <td>
+
                                                     {formatCurrency(
                                                         booking.estimated_total,
                                                         booking.currency
                                                     )}
+
                                                 </td>
 
 
@@ -725,86 +993,98 @@ const AdminDashboard = () => {
 
                     <div className="admin-upcoming-list">
 
-                        {upcoming_bookings.length === 0 ? (
+                        {upcomingBookings.length === 0 ? (
 
                             <div className="admin-empty">
+
                                 No upcoming bookings.
+
                             </div>
 
                         ) : (
 
-                            upcoming_bookings.map(
-                                (booking) => (
+                            upcomingBookings.map(
+                                (booking) => {
 
-                                    <div
-                                        className="admin-upcoming-item"
-                                        key={booking.id}
-                                    >
+                                    const date =
+                                        formatShortDate(
+                                            booking.travel_date
+                                        );
 
-                                        <div className="admin-date-box">
+                                    return (
 
-                                            <strong>
-                                                {
-                                                    new Date(
-                                                        `${booking.travel_date}T00:00:00`
-                                                    ).getDate()
-                                                }
-                                            </strong>
-
-                                            <span>
-                                                {
-                                                    new Date(
-                                                        `${booking.travel_date}T00:00:00`
-                                                    ).toLocaleDateString(
-                                                        "en-US",
-                                                        {
-                                                            month: "short",
-                                                        }
-                                                    )
-                                                }
-                                            </span>
-
-                                        </div>
-
-
-                                        <div className="admin-upcoming-info">
-
-                                            <strong>
-                                                {
-                                                    booking.tour_title
-                                                }
-                                            </strong>
-
-                                            <span>
-                                                {
-                                                    booking.full_name
-                                                }
-                                                {" · "}
-                                                {
-                                                    booking.adults
-                                                }{" "}
-                                                adults
-                                                {booking.children > 0 &&
-                                                    ` · ${booking.children} children`
-                                                }
-                                            </span>
-
-                                        </div>
-
-
-                                        <span
-                                            className={`admin-status ${statusClass(
-                                                booking.status
-                                            )}`}
-                                        >
-                                            {
-                                                booking.status
+                                        <div
+                                            className="admin-upcoming-item"
+                                            key={
+                                                booking.id
                                             }
-                                        </span>
+                                        >
 
-                                    </div>
+                                            <div className="admin-date-box">
 
-                                )
+                                                <strong>
+                                                    {
+                                                        date.day
+                                                    }
+                                                </strong>
+
+                                                <span>
+                                                    {
+                                                        date.month
+                                                    }
+                                                </span>
+
+                                            </div>
+
+
+                                            <div className="admin-upcoming-info">
+
+                                                <strong>
+                                                    {
+                                                        booking.tour_title
+                                                    }
+                                                </strong>
+
+                                                <span>
+
+                                                    {
+                                                        booking.full_name
+                                                    }
+
+                                                    {" · "}
+
+                                                    {
+                                                        booking.adults
+                                                    }{" "}
+                                                    adult
+                                                    {
+                                                        booking.adults !== 1
+                                                            ? "s"
+                                                            : ""
+                                                    }
+
+                                                    {booking.children > 0 &&
+                                                        ` · ${booking.children} child${booking.children !== 1 ? "ren" : ""}`
+                                                    }
+
+                                                </span>
+
+                                            </div>
+
+
+                                            <span
+                                                className={`admin-status ${statusClass(
+                                                    booking.status
+                                                )}`}
+                                            >
+                                                {
+                                                    booking.status
+                                                }
+                                            </span>
+
+                                        </div>
+                                    );
+                                }
                             )
                         )}
 
@@ -838,31 +1118,44 @@ const AdminDashboard = () => {
 
                     <div className="admin-tour-performance">
 
-                        {tour_performance.length === 0 ? (
+                        {tourPerformance.length === 0 ? (
 
                             <div className="admin-empty">
+
                                 No tour performance data available.
+
                             </div>
 
                         ) : (
 
-                            tour_performance.map(
+                            tourPerformance.map(
                                 (tour) => (
 
                                     <div
                                         className="admin-tour-row"
-                                        key={tour.id}
+                                        key={
+                                            tour.id
+                                        }
                                     >
 
                                         <div>
 
                                             <strong>
-                                                {tour.title}
+                                                {
+                                                    tour.title
+                                                }
                                             </strong>
 
                                             <span>
-                                                {tour.booking_count}{" "}
-                                                total bookings
+                                                {
+                                                    tour.booking_count
+                                                }{" "}
+                                                total booking
+                                                {
+                                                    tour.booking_count !== 1
+                                                        ? "s"
+                                                        : ""
+                                                }
                                             </span>
 
                                         </div>

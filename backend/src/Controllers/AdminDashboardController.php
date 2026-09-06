@@ -23,14 +23,24 @@ class AdminDashboardController
 
     public function index(): never
     {
+        /*
+        |--------------------------------------------------------------------------
+        | REQUIRE ADMIN AUTHENTICATION
+        |--------------------------------------------------------------------------
+        */
+
         AuthMiddleware::requireAdmin();
+
 
         try {
 
             /*
             |--------------------------------------------------------------------------
-            | Booking Statistics
+            | BOOKING STATISTICS
             |--------------------------------------------------------------------------
+            |
+            | Counts all booking enquiries by status.
+            |
             */
 
             $statsStmt = $this->db->query(
@@ -58,17 +68,26 @@ class AdminDashboardController
                 "
             );
 
-            $stats = $statsStmt->fetch();
+            $stats = $statsStmt->fetch(
+                PDO::FETCH_ASSOC
+            );
 
 
             /*
             |--------------------------------------------------------------------------
-            | Estimated Booking Value
+            | FINANCIAL SUMMARY
             |--------------------------------------------------------------------------
             |
-            | Currently the system stores booking currency.
-            | Therefore totals are grouped by currency rather
-            | than incorrectly combining USD, EUR, etc.
+            | Cancelled bookings are excluded from estimated revenue.
+            |
+            | We do NOT combine currencies.
+            |
+            | Example:
+            |
+            | USD 1,500
+            | EUR 800
+            |
+            | These remain separate.
             |
             */
 
@@ -76,28 +95,40 @@ class AdminDashboardController
                 "
                 SELECT
                     currency,
+
                     COUNT(*) AS booking_count,
+
                     COALESCE(
                         SUM(estimated_total),
                         0
                     ) AS estimated_total
+
                 FROM booking_enquiries
-                WHERE estimated_total IS NOT NULL
-                GROUP BY currency
-                ORDER BY currency ASC
+
+                WHERE
+                    estimated_total IS NOT NULL
+                    AND status <> 'CANCELLED'
+
+                GROUP BY
+                    currency
+
+                ORDER BY
+                    currency ASC
                 "
             );
 
             $financialSummary =
-                $financialStmt->fetchAll();
+                $financialStmt->fetchAll(
+                    PDO::FETCH_ASSOC
+                );
 
 
             /*
             |--------------------------------------------------------------------------
-            | Recent Bookings
+            | RECENT BOOKINGS
             |--------------------------------------------------------------------------
             |
-            | Latest 10 enquiries.
+            | Shows the latest 10 booking enquiries.
             |
             */
 
@@ -106,17 +137,23 @@ class AdminDashboardController
                 SELECT
                     be.id,
                     be.tour_id,
+
                     t.title AS tour_title,
                     t.slug AS tour_slug,
+
                     be.travel_date,
                     be.adults,
                     be.children,
+
                     be.full_name,
                     be.email,
                     be.phone,
+
                     be.status,
+
                     be.estimated_total,
                     be.currency,
+
                     be.created_at,
                     be.updated_at
 
@@ -134,16 +171,22 @@ class AdminDashboardController
             );
 
             $recentBookings =
-                $recentStmt->fetchAll();
+                $recentStmt->fetchAll(
+                    PDO::FETCH_ASSOC
+                );
 
 
             /*
             |--------------------------------------------------------------------------
-            | Upcoming Bookings
+            | UPCOMING BOOKINGS
             |--------------------------------------------------------------------------
             |
-            | Exclude cancelled bookings.
-            | Include today and future travel dates.
+            | Only active enquiries are shown:
+            |
+            | PENDING
+            | CONFIRMED
+            |
+            | Cancelled and completed bookings are excluded.
             |
             */
 
@@ -152,15 +195,20 @@ class AdminDashboardController
                 SELECT
                     be.id,
                     be.tour_id,
+
                     t.title AS tour_title,
                     t.slug AS tour_slug,
+
                     be.travel_date,
                     be.adults,
                     be.children,
+
                     be.full_name,
                     be.email,
                     be.phone,
+
                     be.status,
+
                     be.estimated_total,
                     be.currency
 
@@ -171,7 +219,11 @@ class AdminDashboardController
 
                 WHERE
                     be.travel_date >= CURRENT_DATE
-                    AND be.status <> 'CANCELLED'
+
+                    AND be.status IN (
+                        'PENDING',
+                        'CONFIRMED'
+                    )
 
                 ORDER BY
                     be.travel_date ASC,
@@ -182,15 +234,20 @@ class AdminDashboardController
             );
 
             $upcomingBookings =
-                $upcomingStmt->fetchAll();
+                $upcomingStmt->fetchAll(
+                    PDO::FETCH_ASSOC
+                );
 
 
             /*
             |--------------------------------------------------------------------------
-            | Tour Performance
+            | TOUR PERFORMANCE
             |--------------------------------------------------------------------------
             |
-            | Shows how many bookings each tour has received.
+            | Shows booking performance for every tour.
+            |
+            | LEFT JOIN ensures tours with zero bookings
+            | are also included.
             |
             */
 
@@ -238,114 +295,213 @@ class AdminDashboardController
             );
 
             $tourPerformance =
-                $tourStmt->fetchAll();
+                $tourStmt->fetchAll(
+                    PDO::FETCH_ASSOC
+                );
 
 
             /*
             |--------------------------------------------------------------------------
-            | Normalize Numeric Values
+            | NORMALIZE STATISTICS
             |--------------------------------------------------------------------------
             */
 
             $stats = [
                 'total_bookings' =>
-                    (int) ($stats['total_bookings'] ?? 0),
+                    (int) (
+                        $stats['total_bookings']
+                        ?? 0
+                    ),
 
                 'pending_bookings' =>
-                    (int) ($stats['pending_bookings'] ?? 0),
+                    (int) (
+                        $stats['pending_bookings']
+                        ?? 0
+                    ),
 
                 'confirmed_bookings' =>
-                    (int) ($stats['confirmed_bookings'] ?? 0),
+                    (int) (
+                        $stats['confirmed_bookings']
+                        ?? 0
+                    ),
 
                 'cancelled_bookings' =>
-                    (int) ($stats['cancelled_bookings'] ?? 0),
+                    (int) (
+                        $stats['cancelled_bookings']
+                        ?? 0
+                    ),
 
                 'completed_bookings' =>
-                    (int) ($stats['completed_bookings'] ?? 0)
+                    (int) (
+                        $stats['completed_bookings']
+                        ?? 0
+                    ),
             ];
 
+
+            /*
+            |--------------------------------------------------------------------------
+            | NORMALIZE FINANCIAL DATA
+            |--------------------------------------------------------------------------
+            */
 
             foreach ($financialSummary as &$financial) {
 
                 $financial['booking_count'] =
-                    (int) $financial['booking_count'];
+                    (int) (
+                        $financial['booking_count']
+                        ?? 0
+                    );
 
                 $financial['estimated_total'] =
-                    (float) $financial['estimated_total'];
+                    (float) (
+                        $financial['estimated_total']
+                        ?? 0
+                    );
             }
 
             unset($financial);
 
 
+            /*
+            |--------------------------------------------------------------------------
+            | NORMALIZE RECENT BOOKINGS
+            |--------------------------------------------------------------------------
+            */
+
             foreach ($recentBookings as &$booking) {
 
                 $booking['id'] =
-                    (int) $booking['id'];
+                    (int) (
+                        $booking['id']
+                        ?? 0
+                    );
 
                 $booking['tour_id'] =
-                    (int) $booking['tour_id'];
+                    (int) (
+                        $booking['tour_id']
+                        ?? 0
+                    );
 
                 $booking['adults'] =
-                    (int) $booking['adults'];
+                    (int) (
+                        $booking['adults']
+                        ?? 0
+                    );
 
                 $booking['children'] =
-                    (int) $booking['children'];
+                    (int) (
+                        $booking['children']
+                        ?? 0
+                    );
+
 
                 if (
-                    $booking['estimated_total'] !== null
+                    $booking['estimated_total']
+                    !== null
                 ) {
+
                     $booking['estimated_total'] =
-                        (float) $booking['estimated_total'];
+                        (float) $booking[
+                            'estimated_total'
+                        ];
                 }
             }
 
             unset($booking);
 
+
+            /*
+            |--------------------------------------------------------------------------
+            | NORMALIZE UPCOMING BOOKINGS
+            |--------------------------------------------------------------------------
+            */
 
             foreach ($upcomingBookings as &$booking) {
 
                 $booking['id'] =
-                    (int) $booking['id'];
+                    (int) (
+                        $booking['id']
+                        ?? 0
+                    );
 
                 $booking['tour_id'] =
-                    (int) $booking['tour_id'];
+                    (int) (
+                        $booking['tour_id']
+                        ?? 0
+                    );
 
                 $booking['adults'] =
-                    (int) $booking['adults'];
+                    (int) (
+                        $booking['adults']
+                        ?? 0
+                    );
 
                 $booking['children'] =
-                    (int) $booking['children'];
+                    (int) (
+                        $booking['children']
+                        ?? 0
+                    );
+
 
                 if (
-                    $booking['estimated_total'] !== null
+                    $booking['estimated_total']
+                    !== null
                 ) {
+
                     $booking['estimated_total'] =
-                        (float) $booking['estimated_total'];
+                        (float) $booking[
+                            'estimated_total'
+                        ];
                 }
             }
 
             unset($booking);
 
 
+            /*
+            |--------------------------------------------------------------------------
+            | NORMALIZE TOUR PERFORMANCE
+            |--------------------------------------------------------------------------
+            */
+
             foreach ($tourPerformance as &$tour) {
 
                 $tour['id'] =
-                    (int) $tour['id'];
+                    (int) (
+                        $tour['id']
+                        ?? 0
+                    );
 
                 $tour['booking_count'] =
-                    (int) $tour['booking_count'];
+                    (int) (
+                        $tour['booking_count']
+                        ?? 0
+                    );
 
                 $tour['pending_count'] =
-                    (int) $tour['pending_count'];
+                    (int) (
+                        $tour['pending_count']
+                        ?? 0
+                    );
 
                 $tour['confirmed_count'] =
-                    (int) $tour['confirmed_count'];
+                    (int) (
+                        $tour['confirmed_count']
+                        ?? 0
+                    );
 
                 $tour['cancelled_count'] =
-                    (int) $tour['cancelled_count'];
+                    (int) (
+                        $tour['cancelled_count']
+                        ?? 0
+                    );
 
                 $tour['completed_count'] =
-                    (int) $tour['completed_count'];
+                    (int) (
+                        $tour['completed_count']
+                        ?? 0
+                    );
             }
 
             unset($tour);
@@ -353,13 +509,14 @@ class AdminDashboardController
 
             /*
             |--------------------------------------------------------------------------
-            | Response
+            | RESPONSE
             |--------------------------------------------------------------------------
             */
 
             Response::success(
                 [
-                    'statistics' => $stats,
+                    'statistics' =>
+                        $stats,
 
                     'financial_summary' =>
                         $financialSummary,
@@ -371,17 +528,25 @@ class AdminDashboardController
                         $upcomingBookings,
 
                     'tour_performance' =>
-                        $tourPerformance
+                        $tourPerformance,
                 ],
+
                 'Dashboard data retrieved successfully.'
             );
 
         } catch (PDOException $e) {
 
+            /*
+            |--------------------------------------------------------------------------
+            | DATABASE ERROR
+            |--------------------------------------------------------------------------
+            */
+
             error_log(
-                'Admin dashboard database error: ' .
-                $e->getMessage()
+                'Admin dashboard database error: '
+                . $e->getMessage()
             );
+
 
             Response::error(
                 'Unable to retrieve dashboard data at this time.',
@@ -390,10 +555,17 @@ class AdminDashboardController
 
         } catch (Throwable $e) {
 
+            /*
+            |--------------------------------------------------------------------------
+            | APPLICATION ERROR
+            |--------------------------------------------------------------------------
+            */
+
             error_log(
-                'Admin dashboard application error: ' .
-                $e->getMessage()
+                'Admin dashboard application error: '
+                . $e->getMessage()
             );
+
 
             Response::error(
                 'Unable to retrieve dashboard data at this time.',
