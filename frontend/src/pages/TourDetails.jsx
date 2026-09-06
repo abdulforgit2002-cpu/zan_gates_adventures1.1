@@ -1,53 +1,344 @@
-import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import {
+    useEffect,
+    useMemo,
+    useState,
+} from "react";
 
 import {
+    Link,
+    useParams,
+} from "react-router-dom";
+
+import {
+    createBookingEnquiry,
     getTourBySlug,
-    getTourPrices,
     getTourImages,
+    getTourPrices,
 } from "../services/tourService";
 
-const TourDetails = () => {
-    const { slug } = useParams();
+import "./TourDetails.css";
 
-    const [tour, setTour] = useState(null);
-    const [prices, setPrices] = useState([]);
-    const [images, setImages] = useState([]);
 
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState("");
+/*
+|--------------------------------------------------------------------------
+| HELPERS
+|--------------------------------------------------------------------------
+*/
+
+const normalizeTour = (response) => {
+    const data =
+        response?.data ??
+        response ??
+        null;
+
+    if (!data) {
+        return null;
+    }
+
+    if (data.tour) {
+        return {
+            ...data.tour,
+            prices:
+                data.tour.prices ??
+                data.prices ??
+                [],
+            images:
+                data.tour.images ??
+                data.images ??
+                [],
+        };
+    }
+
+    return data;
+};
+
+
+const normalizeArray = (value) => {
+    if (Array.isArray(value)) {
+        return value;
+    }
+
+    if (Array.isArray(value?.data)) {
+        return value.data;
+    }
+
+    if (Array.isArray(value?.images)) {
+        return value.images;
+    }
+
+    if (Array.isArray(value?.prices)) {
+        return value.prices;
+    }
+
+    return [];
+};
+
+
+const getImageUrl = (image) => {
+    if (!image) {
+        return "";
+    }
+
+    if (typeof image === "string") {
+        return image;
+    }
+
+    return (
+        image.image_url ||
+        image.url ||
+        image.secure_url ||
+        image.src ||
+        ""
+    );
+};
+
+
+const getImageAlt = (
+    image,
+    fallback
+) => {
+    return (
+        image?.alt_text ||
+        image?.alt ||
+        image?.caption ||
+        fallback
+    );
+};
+
+
+const formatMoney = (
+    amount,
+    currency = "USD"
+) => {
+    const numeric =
+        Number(amount);
+
+    if (
+        !Number.isFinite(numeric)
+    ) {
+        return "—";
+    }
+
+    try {
+        return new Intl.NumberFormat(
+            "en-US",
+            {
+                style: "currency",
+                currency:
+                    currency || "USD",
+                minimumFractionDigits:
+                    0,
+                maximumFractionDigits:
+                    2,
+            }
+        ).format(numeric);
+    } catch {
+        return `${currency || "USD"} ${numeric.toLocaleString("en-US")}`;
+    }
+};
+
+
+const formatPricingRange = (
+    price
+) => {
+    const min =
+        Number(
+            price?.min_people || 1
+        );
+
+    const max =
+        price?.max_people === null ||
+        price?.max_people === undefined ||
+        price?.max_people === ""
+            ? null
+            : Number(
+                price.max_people
+            );
+
+    if (
+        max === null ||
+        !Number.isFinite(max)
+    ) {
+        return `${min}+ people`;
+    }
+
+    if (min === max) {
+        return `${min} people`;
+    }
+
+    return `${min} – ${max} people`;
+};
+
+
+const getPrimaryImage = (
+    images
+) => {
+    if (!Array.isArray(images) ||
+        images.length === 0) {
+        return "";
+    }
+
+    const primary =
+        images.find(
+            (image) =>
+                image?.is_primary === true ||
+                image?.is_primary === 1 ||
+                image?.is_primary === "1"
+        );
+
+    return (
+        getImageUrl(primary) ||
+        getImageUrl(images[0])
+    );
+};
+
+
+const todayString = () => {
+    const date =
+        new Date();
+
+    const year =
+        date.getFullYear();
+
+    const month =
+        String(
+            date.getMonth() + 1
+        ).padStart(2, "0");
+
+    const day =
+        String(
+            date.getDate()
+        ).padStart(2, "0");
+
+    return `${year}-${month}-${day}`;
+};
+
+
+const isPerPerson = (
+    price
+) => {
+    return (
+        String(
+            price?.pricing_type || ""
+        ).toUpperCase() ===
+        "PER_PERSON"
+    );
+};
+
+
+const isFeatured = (tour) => {
+    return (
+        tour?.featured === true ||
+        tour?.featured === 1 ||
+        tour?.featured === "1"
+    );
+};
+
+
+/*
+|--------------------------------------------------------------------------
+| COMPONENT
+|--------------------------------------------------------------------------
+*/
+
+function TourDetails() {
+
+    const {
+        slug,
+    } = useParams();
+
 
     /*
-     * ============================================================
-     * GALLERY / LIGHTBOX STATE
-     * ============================================================
-     */
+    |--------------------------------------------------------------------------
+    | TOUR STATE
+    |--------------------------------------------------------------------------
+    */
 
-    const [selectedImageIndex, setSelectedImageIndex] =
-        useState(null);
+    const [
+        tour,
+        setTour,
+    ] = useState(null);
+
+    const [
+        prices,
+        setPrices,
+    ] = useState([]);
+
+    const [
+        images,
+        setImages,
+    ] = useState([]);
+
+    const [
+        selectedImage,
+        setSelectedImage,
+    ] = useState("");
+
+    const [
+        imageIndex,
+        setImageIndex,
+    ] = useState(0);
+
+    const [
+        lightboxOpen,
+        setLightboxOpen,
+    ] = useState(false);
+
+    const [
+        loading,
+        setLoading,
+    ] = useState(true);
+
+    const [
+        error,
+        setError,
+    ] = useState("");
 
 
     /*
-     * ============================================================
-     * LOAD TOUR
-     * ============================================================
-     *
-     * URL example:
-     *
-     * /tours/safari-blue-zanzibar
-     *
-     * API:
-     *
-     * GET /api/tours/slug/safari-blue-zanzibar
-     *
-     * Then:
-     *
-     * GET /api/tours/{id}/prices
-     *
-     * GET /api/tours/{id}/images
-     */
+    |--------------------------------------------------------------------------
+    | BOOKING STATE
+    |--------------------------------------------------------------------------
+    */
+
+    const [
+        submitting,
+        setSubmitting,
+    ] = useState(false);
+
+    const [
+        submitted,
+        setSubmitted,
+    ] = useState(false);
+
+    const [
+        bookingError,
+        setBookingError,
+    ] = useState("");
+
+    const [
+        form,
+        setForm,
+    ] = useState({
+        full_name: "",
+        email: "",
+        phone: "",
+        travel_date: "",
+        adults: 1,
+        children: 0,
+        message: "",
+    });
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | LOAD TOUR
+    |--------------------------------------------------------------------------
+    */
 
     useEffect(() => {
+
+        let mounted = true;
 
         const loadTour = async () => {
 
@@ -56,214 +347,261 @@ const TourDetails = () => {
                 setLoading(true);
                 setError("");
 
-                /*
-                 * Make sure a slug exists.
-                 */
-
-                if (!slug) {
-
-                    throw new Error(
-                        "No tour was specified."
+                const response =
+                    await getTourBySlug(
+                        slug
                     );
 
+                const normalizedTour =
+                    normalizeTour(
+                        response
+                    );
+
+                if (!normalizedTour) {
+                    throw new Error(
+                        "Tour could not be found."
+                    );
+                }
+
+                if (!mounted) {
+                    return;
+                }
+
+                setTour(
+                    normalizedTour
+                );
+
+
+                /*
+                |--------------------------------------------------------------------------
+                | PRICES
+                |--------------------------------------------------------------------------
+                */
+
+                let loadedPrices =
+                    normalizeArray(
+                        normalizedTour.prices
+                    );
+
+                if (
+                    loadedPrices.length === 0 &&
+                    normalizedTour.id
+                ) {
+                    const priceResponse =
+                        await getTourPrices(
+                            normalizedTour.id
+                        );
+
+                    loadedPrices =
+                        normalizeArray(
+                            priceResponse
+                        );
                 }
 
 
                 /*
-                 * Retrieve the tour directly by slug.
-                 */
+                |--------------------------------------------------------------------------
+                | IMAGES
+                |--------------------------------------------------------------------------
+                */
 
-                const tourData =
-                    await getTourBySlug(slug);
-
-
-                if (!tourData) {
-
-                    throw new Error(
-                        "The requested tour could not be found."
+                let loadedImages =
+                    normalizeArray(
+                        normalizedTour.images
                     );
 
+                if (
+                    loadedImages.length === 0 &&
+                    normalizedTour.id
+                ) {
+                    const imageResponse =
+                        await getTourImages(
+                            normalizedTour.id
+                        );
+
+                    loadedImages =
+                        normalizeArray(
+                            imageResponse
+                        );
                 }
 
 
-                /*
-                 * Retrieve pricing options.
-                 */
+                if (!mounted) {
+                    return;
+                }
 
-                const priceData =
-                    await getTourPrices(
-                        tourData.id
+
+                setPrices(
+                    loadedPrices
+                );
+
+                setImages(
+                    loadedImages
+                );
+
+
+                const primary =
+                    getPrimaryImage(
+                        loadedImages
                     );
 
+                setSelectedImage(
+                    primary
+                );
 
-                /*
-                 * Retrieve tour images.
-                 */
-
-                const imageData =
-                    await getTourImages(
-                        tourData.id
+                const primaryIndex =
+                    loadedImages.findIndex(
+                        (image) =>
+                            getImageUrl(image) ===
+                            primary
                     );
 
+                setImageIndex(
+                    primaryIndex >= 0
+                        ? primaryIndex
+                        : 0
+                );
 
-                /*
-                 * Save data into React state.
-                 */
-
-                setTour(tourData);
-                setPrices(priceData);
-                setImages(imageData);
-
-            } catch (error) {
+            } catch (err) {
 
                 console.error(
                     "Failed to load tour:",
-                    error
+                    err
                 );
 
-                setTour(null);
-                setPrices([]);
-                setImages([]);
-
-                setError(
-                    error.message ||
-                    "Unable to load this tour. Please try again."
-                );
+                if (mounted) {
+                    setError(
+                        err?.message ||
+                        "Unable to load this tour."
+                    );
+                }
 
             } finally {
 
-                setLoading(false);
-
+                if (mounted) {
+                    setLoading(false);
+                }
             }
-
         };
 
 
-        loadTour();
+        if (slug) {
+            loadTour();
+        } else {
+            setLoading(false);
+            setError(
+                "No tour was specified."
+            );
+        }
+
+
+        return () => {
+            mounted = false;
+        };
 
     }, [slug]);
 
 
     /*
-     * ============================================================
-     * LIGHTBOX FUNCTIONS
-     * ============================================================
-     */
+    |--------------------------------------------------------------------------
+    | IMAGE NAVIGATION
+    |--------------------------------------------------------------------------
+    */
 
+    const selectImage = (
+        image,
+        index
+    ) => {
 
-    /*
-     * Open selected image.
-     */
+        const url =
+            getImageUrl(image);
 
-    const openLightbox = (index) => {
+        if (!url) {
+            return;
+        }
 
-        setSelectedImageIndex(index);
+        setSelectedImage(
+            url
+        );
 
+        setImageIndex(
+            index
+        );
     };
 
-
-    /*
-     * Close lightbox.
-     */
-
-    const closeLightbox = () => {
-
-        setSelectedImageIndex(null);
-
-    };
-
-
-    /*
-     * Show previous image.
-     */
 
     const showPreviousImage = () => {
 
-        if (
-            selectedImageIndex === null ||
-            images.length === 0
-        ) {
+        if (images.length <= 1) {
             return;
         }
 
+        const nextIndex =
+            imageIndex <= 0
+                ? images.length - 1
+                : imageIndex - 1;
 
-        setSelectedImageIndex(
-            (selectedImageIndex - 1 + images.length) %
-            images.length
+        selectImage(
+            images[nextIndex],
+            nextIndex
         );
-
     };
 
-
-    /*
-     * Show next image.
-     */
 
     const showNextImage = () => {
 
-        if (
-            selectedImageIndex === null ||
-            images.length === 0
-        ) {
+        if (images.length <= 1) {
             return;
         }
 
+        const nextIndex =
+            imageIndex >= images.length - 1
+                ? 0
+                : imageIndex + 1;
 
-        setSelectedImageIndex(
-            (selectedImageIndex + 1) %
-            images.length
+        selectImage(
+            images[nextIndex],
+            nextIndex
         );
-
     };
 
 
     /*
-     * ============================================================
-     * KEYBOARD NAVIGATION
-     * ============================================================
-     *
-     * ESC   → close
-     * ←     → previous
-     * →     → next
-     */
+    |--------------------------------------------------------------------------
+    | LIGHTBOX KEYBOARD
+    |--------------------------------------------------------------------------
+    */
 
     useEffect(() => {
 
-        const handleKeyDown = (event) => {
+        if (!lightboxOpen) {
+            return undefined;
+        }
 
-            if (selectedImageIndex === null) {
-                return;
-            }
-
+        const handleKeyDown = (
+            event
+        ) => {
 
             if (event.key === "Escape") {
-
-                closeLightbox();
-
+                setLightboxOpen(false);
             }
-
 
             if (event.key === "ArrowLeft") {
-
                 showPreviousImage();
-
             }
-
 
             if (event.key === "ArrowRight") {
-
                 showNextImage();
-
             }
-
         };
-
 
         document.addEventListener(
             "keydown",
             handleKeyDown
         );
 
+        document.body.style.overflow =
+            "hidden";
 
         return () => {
 
@@ -272,211 +610,527 @@ const TourDetails = () => {
                 handleKeyDown
             );
 
+            document.body.style.overflow =
+                "";
         };
 
     }, [
-        selectedImageIndex,
-        images.length
+        lightboxOpen,
+        imageIndex,
+        images,
     ]);
 
 
     /*
-     * ============================================================
-     * PREVENT BODY SCROLL WHEN LIGHTBOX IS OPEN
-     * ============================================================
-     */
+    |--------------------------------------------------------------------------
+    | DERIVED VALUES
+    |--------------------------------------------------------------------------
+    */
 
-    useEffect(() => {
-
-        if (selectedImageIndex !== null) {
-
-            document.body.style.overflow = "hidden";
-
-        } else {
-
-            document.body.style.overflow = "";
-
-        }
+    const primaryImage =
+        selectedImage ||
+        getPrimaryImage(
+            images
+        );
 
 
-        return () => {
+    const startingPrice =
+        useMemo(() => {
 
-            document.body.style.overflow = "";
+            if (
+                !Array.isArray(prices) ||
+                prices.length === 0
+            ) {
+                return null;
+            }
 
-        };
+            const validPrices =
+                prices.filter(
+                    (price) =>
+                        Number.isFinite(
+                            Number(
+                                price?.price
+                            )
+                        )
+                );
 
-    }, [selectedImageIndex]);
+            if (
+                validPrices.length === 0
+            ) {
+                return null;
+            }
+
+            return validPrices.reduce(
+                (
+                    lowest,
+                    current
+                ) => {
+
+                    if (!lowest) {
+                        return current;
+                    }
+
+                    return Number(
+                        current.price
+                    ) <
+                    Number(
+                        lowest.price
+                    )
+                        ? current
+                        : lowest;
+
+                },
+                null
+            );
+
+        }, [
+            prices,
+        ]);
+
+
+    const currency =
+        startingPrice?.currency ||
+        tour?.currency ||
+        "USD";
+
+
+    const guestCount =
+        Number(form.adults || 0) +
+        Number(form.children || 0);
 
 
     /*
-     * ============================================================
-     * LOADING STATE
-     * ============================================================
-     */
+    |--------------------------------------------------------------------------
+    | ESTIMATED PRICE
+    |--------------------------------------------------------------------------
+    */
+
+    const estimatedPrice =
+        useMemo(() => {
+
+            if (
+                !prices.length ||
+                guestCount <= 0
+            ) {
+                return null;
+            }
+
+
+            const perPersonPrices =
+                prices
+                    .filter(
+                        isPerPerson
+                    )
+                    .filter(
+                        (price) =>
+                            Number.isFinite(
+                                Number(
+                                    price.price
+                                )
+                            )
+                    )
+                    .sort(
+                        (
+                            a,
+                            b
+                        ) =>
+                            Number(
+                                a.min_people || 1
+                            ) -
+                            Number(
+                                b.min_people || 1
+                            )
+                    );
+
+
+            const matching =
+                perPersonPrices.find(
+                    (price) => {
+
+                        const min =
+                            Number(
+                                price.min_people || 1
+                            );
+
+                        const max =
+                            price.max_people === null ||
+                            price.max_people === undefined ||
+                            price.max_people === ""
+                                ? Infinity
+                                : Number(
+                                    price.max_people
+                                );
+
+                        return (
+                            guestCount >= min &&
+                            guestCount <= max
+                        );
+                    }
+                );
+
+
+            if (matching) {
+
+                return {
+                    amount:
+                        Number(
+                            matching.price
+                        ) *
+                        guestCount,
+
+                    currency:
+                        matching.currency ||
+                        currency,
+                };
+            }
+
+
+            if (
+                perPersonPrices.length
+            ) {
+
+                const fallback =
+                    perPersonPrices[0];
+
+                return {
+                    amount:
+                        Number(
+                            fallback.price
+                        ) *
+                        guestCount,
+
+                    currency:
+                        fallback.currency ||
+                        currency,
+                };
+            }
+
+
+            return null;
+
+        }, [
+            prices,
+            guestCount,
+            currency,
+        ]);
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | FORM HANDLING
+    |--------------------------------------------------------------------------
+    */
+
+    const handleChange = (
+        event
+    ) => {
+
+        const {
+            name,
+            value,
+        } = event.target;
+
+        setForm(
+            (previous) => ({
+                ...previous,
+                [name]: value,
+            })
+        );
+
+        setBookingError("");
+    };
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | SUBMIT BOOKING
+    |--------------------------------------------------------------------------
+    */
+
+    const handleSubmit = async (
+        event
+    ) => {
+
+        event.preventDefault();
+
+        setBookingError("");
+
+
+        const fullName =
+            form.full_name.trim();
+
+        const email =
+            form.email.trim();
+
+        const phone =
+            form.phone.trim();
+
+        const adults =
+            Number(
+                form.adults
+            );
+
+        const children =
+            Number(
+                form.children
+            );
+
+
+        if (!fullName) {
+            setBookingError(
+                "Please enter your full name."
+            );
+            return;
+        }
+
+
+        if (!email) {
+            setBookingError(
+                "Please enter your email address."
+            );
+            return;
+        }
+
+
+        if (!form.travel_date) {
+            setBookingError(
+                "Please select your preferred travel date."
+            );
+            return;
+        }
+
+
+        if (
+            form.travel_date <
+            todayString()
+        ) {
+            setBookingError(
+                "Travel date cannot be in the past."
+            );
+            return;
+        }
+
+
+        if (
+            !Number.isInteger(adults) ||
+            adults < 1
+        ) {
+            setBookingError(
+                "At least one adult is required."
+            );
+            return;
+        }
+
+
+        if (
+            !Number.isInteger(children) ||
+            children < 0
+        ) {
+            setBookingError(
+                "Number of children is invalid."
+            );
+            return;
+        }
+
+
+        if (!tour?.id) {
+            setBookingError(
+                "Tour information is unavailable."
+            );
+            return;
+        }
+
+
+        setSubmitting(true);
+
+        try {
+
+            const payload = {
+
+                tour_id:
+                    Number(
+                        tour.id
+                    ),
+
+                full_name:
+                    fullName,
+
+                email,
+
+                phone:
+                    phone || null,
+
+                travel_date:
+                    form.travel_date,
+
+                adults,
+
+                children,
+
+                message:
+                    form.message.trim() ||
+                    null,
+
+                estimated_total:
+                    estimatedPrice
+                        ? estimatedPrice.amount
+                        : null,
+
+                currency:
+                    estimatedPrice?.currency ||
+                    currency,
+            };
+
+
+            const response =
+                await createBookingEnquiry(
+                    payload
+                );
+
+
+            console.log(
+                "Booking enquiry created:",
+                response
+            );
+
+
+            setSubmitted(
+                true
+            );
+
+            setForm({
+                full_name: "",
+                email: "",
+                phone: "",
+                travel_date: "",
+                adults: 1,
+                children: 0,
+                message: "",
+            });
+
+        } catch (err) {
+
+            console.error(
+                "Booking submission failed:",
+                err
+            );
+
+            setBookingError(
+                err?.message ||
+                "We could not submit your enquiry. Please try again."
+            );
+
+        } finally {
+
+            setSubmitting(false);
+        }
+    };
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | LOADING
+    |--------------------------------------------------------------------------
+    */
 
     if (loading) {
 
         return (
+            <div className="tour-details-loading">
 
-            <main className="tour-details-page">
+                <div className="tour-details-loading-inner">
 
-                <section className="tour-details-loading">
+                    <div className="loading-spinner" />
 
-                    <div className="tour-details-loading-inner">
+                    <span>
+                        ZAN GATES ADVENTURES
+                    </span>
 
-                        <div className="loading-spinner"></div>
+                    <p>
+                        Preparing your Zanzibar experience...
+                    </p>
 
-                        <p>
-                            Preparing your Zanzibar experience...
-                        </p>
+                </div>
 
-                    </div>
-
-                </section>
-
-            </main>
-
+            </div>
         );
-
     }
 
 
     /*
-     * ============================================================
-     * ERROR STATE
-     * ============================================================
-     */
+    |--------------------------------------------------------------------------
+    | ERROR
+    |--------------------------------------------------------------------------
+    */
 
-    if (error) {
+    if (error || !tour) {
 
         return (
+            <div className="tour-details-error">
 
-            <main className="tour-details-page">
+                <div className="tour-details-error-inner">
 
-                <section className="tour-details-error">
+                    <span>
+                        TOUR NOT FOUND
+                    </span>
 
-                    <div className="tour-details-error-inner">
+                    <h1>
+                        This experience is unavailable.
+                    </h1>
 
+                    <p>
+                        We could not find the tour
+                        you requested. Please return
+                        to our experiences and choose
+                        another Zanzibar adventure.
+                    </p>
+
+                    <Link
+                        to="/#tours"
+                        className="tour-error-button"
+                    >
+                        Explore Tours
                         <span>
-                            TOUR UNAVAILABLE
+                            →
                         </span>
+                    </Link>
 
-                        <h1>
-                            We couldn't find this experience
-                        </h1>
+                </div>
 
-                        <p>
-                            {error}
-                        </p>
-
-                        <Link
-                            to="/"
-                            className="primary-button"
-                        >
-                            Back to Tours
-                        </Link>
-
-                    </div>
-
-                </section>
-
-            </main>
-
+            </div>
         );
-
     }
 
 
     /*
-     * ============================================================
-     * SAFETY CHECK
-     * ============================================================
-     */
-
-    if (!tour) {
-
-        return null;
-
-    }
-
-
-    /*
-     * ============================================================
-     * PRICE CALCULATIONS
-     * ============================================================
-     */
-
-    const numericPrices = prices
-        .map((price) => Number(price.price))
-        .filter(
-            (price) => !Number.isNaN(price)
-        );
-
-
-    /*
-     * Find the lowest available price.
-     */
-
-    const lowestPrice =
-        numericPrices.length > 0
-            ? Math.min(...numericPrices)
-            : null;
-
-
-    /*
-     * Determine currency.
-     */
-
-    const currency =
-        prices.length > 0 &&
-        prices[0].currency
-            ? prices[0].currency
-            : "USD";
-
-
-    /*
-     * Display USD using "$".
-     *
-     * Other currencies use the currency code.
-     */
-
-    const currencySymbol =
-        currency === "USD"
-            ? "$"
-            : currency;
-
-
-    /*
-     * ============================================================
-     * SELECTED LIGHTBOX IMAGE
-     * ============================================================
-     */
-
-    const selectedImage =
-        selectedImageIndex !== null
-            ? images[selectedImageIndex]
-            : null;
-
+    |--------------------------------------------------------------------------
+    | RENDER
+    |--------------------------------------------------------------------------
+    */
 
     return (
+        <div className="tour-details-page">
 
-        <main className="tour-details-page">
 
+            {/* ==========================================================
+                HERO
+            ========================================================== */}
 
-            {/* ==================================================
-                TOUR HERO
-            ================================================== */}
+            <section
+                className="tour-details-hero"
+                style={
+                    primaryImage
+                        ? {
+                            backgroundImage:
+                                `url("${primaryImage}")`,
+                        }
+                        : undefined
+                }
+            >
 
-            <section className="tour-details-hero">
-
-                <div className="tour-details-hero-overlay"></div>
+                <div className="tour-details-hero-overlay" />
 
                 <div className="tour-details-container">
-
-
-                    {/* ==============================
-                        BREADCRUMB
-                    ============================== */}
 
                     <div className="tour-details-breadcrumb">
 
@@ -484,17 +1138,13 @@ const TourDetails = () => {
                             Home
                         </Link>
 
-                        <span>
-                            /
-                        </span>
+                        <span>•</span>
 
-                        <span>
-                            Tours
-                        </span>
+                        <Link to="/#tours">
+                            Experiences
+                        </Link>
 
-                        <span>
-                            /
-                        </span>
+                        <span>•</span>
 
                         <span>
                             {tour.title}
@@ -503,16 +1153,21 @@ const TourDetails = () => {
                     </div>
 
 
-                    {/* ==============================
-                        HERO CONTENT
-                    ============================== */}
-
                     <div className="tour-details-hero-content">
 
-                        <div className="tour-details-category">
+                        <div className="tour-details-category-row">
 
-                            {tour.category_name ||
-                                "Zanzibar Experience"}
+                            {isFeatured(tour) && (
+                                <span className="tour-details-featured">
+                                    Featured experience
+                                </span>
+                            )}
+
+                            <span className="tour-details-category">
+                                {tour.category_name ||
+                                    tour.category?.name ||
+                                    "Zanzibar Experience"}
+                            </span>
 
                         </div>
 
@@ -522,77 +1177,127 @@ const TourDetails = () => {
                         </h1>
 
 
-                        <p>
-                            {tour.short_description ||
-                                "Discover an unforgettable Zanzibar experience."}
-                        </p>
+                        {tour.short_description && (
+                            <p>
+                                {tour.short_description}
+                            </p>
+                        )}
 
-
-                        {/* ==============================
-                            QUICK INFORMATION
-                        ============================== */}
 
                         <div className="tour-details-quick-info">
 
-
-                            {/* DESTINATION */}
-
                             <div>
-
-                                <span>
-                                    DESTINATION
+                                <span className="quick-info-icon">
+                                    <svg
+                                        viewBox="0 0 24 24"
+                                        aria-hidden="true"
+                                    >
+                                        <path
+                                            d="M12 21s7-6.1 7-12a7 7 0 1 0-14 0c0 5.9 7 12 7 12Z"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            strokeWidth="1.7"
+                                        />
+                                        <circle
+                                            cx="12"
+                                            cy="9"
+                                            r="2.2"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            strokeWidth="1.7"
+                                        />
+                                    </svg>
                                 </span>
-
-                                <strong>
-                                    {tour.destination_name ||
-                                        "Zanzibar"}
-                                </strong>
-
-                            </div>
-
-
-                            {/* DURATION */}
-
-                            <div>
-
-                                <span>
-                                    DURATION
-                                </span>
-
-                                <strong>
-                                    {tour.duration ||
-                                        "Flexible"}
-                                </strong>
-
-                            </div>
-
-
-                            {/* LOWEST PRICE */}
-
-                            {lowestPrice !== null && (
 
                                 <div>
-
-                                    <span>
-                                        FROM
-                                    </span>
+                                    <small>
+                                        Destination
+                                    </small>
 
                                     <strong>
-
-                                        {currencySymbol}
-
-                                        {lowestPrice.toLocaleString(
-                                            "en-US",
-                                            {
-                                                minimumFractionDigits: 2,
-                                                maximumFractionDigits: 2,
-                                            }
-                                        )}
-
+                                        {tour.destination_name ||
+                                            tour.destination?.name ||
+                                            "Zanzibar"}
                                     </strong>
-
                                 </div>
+                            </div>
 
+
+                            <div>
+                                <span className="quick-info-icon">
+                                    <svg
+                                        viewBox="0 0 24 24"
+                                        aria-hidden="true"
+                                    >
+                                        <circle
+                                            cx="12"
+                                            cy="12"
+                                            r="8.5"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            strokeWidth="1.7"
+                                        />
+                                        <path
+                                            d="M12 7v5l3.2 2"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            strokeWidth="1.7"
+                                            strokeLinecap="round"
+                                        />
+                                    </svg>
+                                </span>
+
+                                <div>
+                                    <small>
+                                        Duration
+                                    </small>
+
+                                    <strong>
+                                        {tour.duration ||
+                                            "Flexible"}
+                                    </strong>
+                                </div>
+                            </div>
+
+
+                            {startingPrice && (
+                                <div>
+                                    <span className="quick-info-icon">
+                                        <svg
+                                            viewBox="0 0 24 24"
+                                            aria-hidden="true"
+                                        >
+                                            <path
+                                                d="M12 3v18M16.5 7.5c-.7-1.1-2-1.8-4-1.8-2.4 0-4 1.1-4 2.8 0 4.2 8 2 8 6.2 0 1.8-1.7 3.1-4.1 3.1-2 0-3.6-.7-4.4-2"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                strokeWidth="1.7"
+                                                strokeLinecap="round"
+                                            />
+                                        </svg>
+                                    </span>
+
+                                    <div>
+                                        <small>
+                                            Starting from
+                                        </small>
+
+                                        <strong>
+                                            {formatMoney(
+                                                startingPrice.price,
+                                                startingPrice.currency
+                                            )}
+                                        </strong>
+
+                                        {isPerPerson(
+                                            startingPrice
+                                        ) && (
+                                            <span>
+                                                per person
+                                            </span>
+                                        )}
+                                    </div>
+                                </div>
                             )}
 
                         </div>
@@ -601,112 +1306,25 @@ const TourDetails = () => {
 
                 </div>
 
+
+                <div className="tour-hero-bottom">
+                    <span>
+                        ZAN GATES ADVENTURES
+                    </span>
+
+                    <span>
+                        ZANZIBAR • TANZANIA
+                    </span>
+                </div>
+
             </section>
 
 
-            {/* ==================================================
-                TOUR GALLERY
-            ================================================== */}
+            {/* ==========================================================
+                MAIN
+            ========================================================== */}
 
-            {images.length > 0 && (
-
-                <section className="tour-details-gallery">
-
-                    <div className="tour-details-container">
-
-
-                        {/* ==============================
-                            GALLERY HEADER
-                        ============================== */}
-
-                        <div className="tour-gallery-header">
-
-                            <span className="tour-section-label">
-                                EXPERIENCE GALLERY
-                            </span>
-
-                            <h2>
-                                Explore {tour.title}
-                            </h2>
-
-                            <p>
-                                Discover the places, scenery and
-                                experiences that make this journey
-                                special.
-                            </p>
-
-                        </div>
-
-
-                        {/* ==============================
-                            GALLERY GRID
-                        ============================== */}
-
-                        <div className="tour-gallery-grid">
-
-                            {images.map(
-                                (image, index) => (
-
-                                    <button
-                                        type="button"
-                                        key={image.id}
-                                        className={
-                                            image.is_primary
-                                                ? "tour-gallery-item tour-gallery-primary"
-                                                : "tour-gallery-item"
-                                        }
-                                        onClick={() =>
-                                            openLightbox(index)
-                                        }
-                                        aria-label={`View image ${index + 1} of ${images.length}`}
-                                    >
-
-                                        <img
-                                            src={image.image_url}
-                                            alt={
-                                                image.alt_text ||
-                                                `${tour.title} experience in ${
-                                                    tour.destination_name ||
-                                                    "Zanzibar"
-                                                }`
-                                            }
-                                            loading={
-                                                image.is_primary
-                                                    ? "eager"
-                                                    : "lazy"
-                                            }
-                                        />
-
-
-                                        {/* IMAGE OVERLAY */}
-
-                                        <span className="tour-gallery-overlay">
-
-                                            <span>
-                                                View Image
-                                            </span>
-
-                                        </span>
-
-                                    </button>
-
-                                )
-                            )}
-
-                        </div>
-
-                    </div>
-
-                </section>
-
-            )}
-
-
-            {/* ==================================================
-                TOUR CONTENT
-            ================================================== */}
-
-            <section className="tour-details-content">
+            <main className="tour-details-content">
 
                 <div className="tour-details-container">
 
@@ -721,403 +1339,894 @@ const TourDetails = () => {
 
 
                             {/* ==================================================
-                                THE EXPERIENCE
+                                GALLERY
                             ================================================== */}
 
-                            <div className="tour-details-section">
+                            <section className="tour-details-section tour-gallery-section">
 
-                                <span className="tour-section-label">
-                                    THE EXPERIENCE
-                                </span>
+                                <div className="tour-gallery-heading">
+
+                                    <div>
+                                        <span className="tour-section-eyebrow">
+                                            VISUAL JOURNEY
+                                        </span>
+
+                                        <h2>
+                                            Explore the experience
+                                        </h2>
+                                    </div>
+
+                                    {images.length > 0 && (
+                                        <span className="tour-gallery-count">
+                                            {imageIndex + 1}
+                                            {" "}
+                                            /{" "}
+                                            {images.length}
+                                        </span>
+                                    )}
+
+                                </div>
 
 
-                                <h2>
-                                    Discover {tour.title}
-                                </h2>
+                                {primaryImage ? (
+
+                                    <div className="tour-gallery">
+
+                                        <button
+                                            type="button"
+                                            className="tour-gallery-main"
+                                            onClick={() =>
+                                                setLightboxOpen(
+                                                    true
+                                                )
+                                            }
+                                            aria-label="Open tour image"
+                                        >
+
+                                            <img
+                                                src={
+                                                    primaryImage
+                                                }
+                                                alt={
+                                                    getImageAlt(
+                                                        images[imageIndex],
+                                                        tour.title
+                                                    )
+                                                }
+                                                onError={(event) => {
+                                                    event.currentTarget.style.display =
+                                                        "none";
+                                                }}
+                                            />
+
+                                            <span className="tour-gallery-open">
+                                                <svg
+                                                    viewBox="0 0 24 24"
+                                                    aria-hidden="true"
+                                                >
+                                                    <path
+                                                        d="M8 3H3v5M16 3h5v5M8 21H3v-5M21 16v5h-5"
+                                                        fill="none"
+                                                        stroke="currentColor"
+                                                        strokeWidth="1.7"
+                                                        strokeLinecap="round"
+                                                    />
+                                                </svg>
+
+                                                View gallery
+                                            </span>
 
 
-                                <p>
-                                    {tour.description ||
-                                        "Experience the beauty, culture and unforgettable moments of Zanzibar."}
-                                </p>
+                                            {images.length > 1 && (
+                                                <>
+                                                    <button
+                                                        type="button"
+                                                        className="tour-gallery-arrow tour-gallery-arrow-left"
+                                                        onClick={(event) => {
+                                                            event.stopPropagation();
+                                                            showPreviousImage();
+                                                        }}
+                                                        aria-label="Previous image"
+                                                    >
+                                                        ←
+                                                    </button>
 
-                            </div>
+                                                    <button
+                                                        type="button"
+                                                        className="tour-gallery-arrow tour-gallery-arrow-right"
+                                                        onClick={(event) => {
+                                                            event.stopPropagation();
+                                                            showNextImage();
+                                                        }}
+                                                        aria-label="Next image"
+                                                    >
+                                                        →
+                                                    </button>
+                                                </>
+                                            )}
+
+                                        </button>
+
+
+                                        {images.length > 1 && (
+                                            <div className="tour-gallery-thumbnails">
+
+                                                {images.map(
+                                                    (
+                                                        image,
+                                                        index
+                                                    ) => {
+
+                                                        const url =
+                                                            getImageUrl(
+                                                                image
+                                                            );
+
+                                                        if (!url) {
+                                                            return null;
+                                                        }
+
+                                                        return (
+                                                            <button
+                                                                key={
+                                                                    image.id ||
+                                                                    url ||
+                                                                    index
+                                                                }
+                                                                type="button"
+                                                                className={
+                                                                    imageIndex ===
+                                                                    index
+                                                                        ? "active"
+                                                                        : ""
+                                                                }
+                                                                onClick={() =>
+                                                                    selectImage(
+                                                                        image,
+                                                                        index
+                                                                    )
+                                                                }
+                                                            >
+
+                                                                <img
+                                                                    src={
+                                                                        url
+                                                                    }
+                                                                    alt={
+                                                                        getImageAlt(
+                                                                            image,
+                                                                            `${tour.title} ${index + 1}`
+                                                                        )
+                                                                    }
+                                                                />
+
+                                                            </button>
+                                                        );
+                                                    }
+                                                )}
+
+                                            </div>
+                                        )}
+
+                                    </div>
+
+                                ) : (
+
+                                    <div className="tour-gallery-placeholder">
+                                        <span>
+                                            ZAN GATES
+                                        </span>
+                                        <strong>
+                                            ZANZIBAR
+                                        </strong>
+                                    </div>
+                                )}
+
+                            </section>
 
 
                             {/* ==================================================
-                                EXPERIENCE HIGHLIGHTS
+                                DESCRIPTION
                             ================================================== */}
 
-                            <div className="tour-details-section">
+                            <section className="tour-details-section">
 
-                                <span className="tour-section-label">
-                                    EXPERIENCE HIGHLIGHTS
+                                <span className="tour-section-eyebrow">
+                                    THE EXPERIENCE
                                 </span>
 
+                                <h2>
+                                    About this experience
+                                </h2>
+
+                                <div className="tour-description">
+
+                                    {tour.description ? (
+                                        String(
+                                            tour.description
+                                        )
+                                            .split(
+                                                /\n\s*\n/
+                                            )
+                                            .map(
+                                                (
+                                                    paragraph,
+                                                    index
+                                                ) => (
+                                                    <p
+                                                        key={
+                                                            index
+                                                        }
+                                                    >
+                                                        {
+                                                            paragraph
+                                                        }
+                                                    </p>
+                                                )
+                                            )
+                                    ) : (
+                                        <p>
+                                            Discover an unforgettable
+                                            Zanzibar experience with
+                                            our local team.
+                                        </p>
+                                    )}
+
+                                </div>
+
+                            </section>
+
+
+                            {/* ==================================================
+                                TOUR INFORMATION
+                            ================================================== */}
+
+                            <section className="tour-details-section">
+
+                                <span className="tour-section-eyebrow">
+                                    TOUR INFORMATION
+                                </span>
 
                                 <h2>
-                                    What You'll Experience
+                                    Everything you need to know
                                 </h2>
 
 
-                                <div className="tour-highlights">
+                                <div className="tour-info-grid">
 
-
-                                    {/* HIGHLIGHT 01 */}
-
-                                    <div className="tour-highlight">
-
-                                        <div className="tour-highlight-icon">
+                                    <div className="tour-info-card">
+                                        <span className="tour-info-number">
                                             01
-                                        </div>
-
+                                        </span>
 
                                         <div>
+                                            <span>
+                                                Destination
+                                            </span>
 
-                                            <h3>
-                                                Authentic Zanzibar
-                                            </h3>
-
-
-                                            <p>
-                                                Discover the island
-                                                through experiences
-                                                shaped by local culture,
-                                                nature and traditions.
-                                            </p>
-
+                                            <strong>
+                                                {tour.destination_name ||
+                                                    tour.destination?.name ||
+                                                    "Zanzibar"}
+                                            </strong>
                                         </div>
-
                                     </div>
 
 
-                                    {/* HIGHLIGHT 02 */}
-
-                                    <div className="tour-highlight">
-
-                                        <div className="tour-highlight-icon">
+                                    <div className="tour-info-card">
+                                        <span className="tour-info-number">
                                             02
-                                        </div>
-
+                                        </span>
 
                                         <div>
+                                            <span>
+                                                Duration
+                                            </span>
 
-                                            <h3>
-                                                Local Expertise
-                                            </h3>
-
-
-                                            <p>
-                                                Travel with knowledgeable
-                                                local guides who help you
-                                                experience Zanzibar with
-                                                confidence.
-                                            </p>
-
+                                            <strong>
+                                                {tour.duration ||
+                                                    "Flexible"}
+                                            </strong>
                                         </div>
-
                                     </div>
 
 
-                                    {/* HIGHLIGHT 03 */}
-
-                                    <div className="tour-highlight">
-
-                                        <div className="tour-highlight-icon">
+                                    <div className="tour-info-card">
+                                        <span className="tour-info-number">
                                             03
-                                        </div>
-
+                                        </span>
 
                                         <div>
+                                            <span>
+                                                Category
+                                            </span>
 
-                                            <h3>
-                                                Memorable Moments
-                                            </h3>
-
-
-                                            <p>
-                                                Enjoy carefully planned
-                                                activities designed to
-                                                create unforgettable
-                                                memories.
-                                            </p>
-
+                                            <strong>
+                                                {tour.category_name ||
+                                                    tour.category?.name ||
+                                                    "Experience"}
+                                            </strong>
                                         </div>
+                                    </div>
 
+
+                                    <div className="tour-info-card">
+                                        <span className="tour-info-number">
+                                            04
+                                        </span>
+
+                                        <div>
+                                            <span>
+                                                Availability
+                                            </span>
+
+                                            <strong>
+                                                Daily enquiry
+                                            </strong>
+                                        </div>
                                     </div>
 
                                 </div>
 
-                            </div>
+                            </section>
 
 
                             {/* ==================================================
                                 PRICING
                             ================================================== */}
 
-                            {prices.length > 0 && (
+                            <section className="tour-details-section">
 
-                                <div className="tour-details-section">
+                                <span className="tour-section-eyebrow">
+                                    PRICING
+                                </span>
 
-                                    <span className="tour-section-label">
-                                        TOUR PRICING
-                                    </span>
-
-
-                                    <h2>
-                                        Choose Your Group Size
-                                    </h2>
+                                <h2>
+                                    Simple, transparent pricing
+                                </h2>
 
 
-                                    <div className="tour-pricing-table">
+                                {prices.length > 0 ? (
 
-                                        {prices.map((price) => {
+                                    <div className="tour-pricing-list">
 
-                                            const amount =
-                                                Number(price.price);
-
-
-                                            const formattedAmount =
-                                                !Number.isNaN(amount)
-                                                    ? amount.toLocaleString(
-                                                        "en-US",
-                                                        {
-                                                            minimumFractionDigits: 2,
-                                                            maximumFractionDigits: 2,
-                                                        }
-                                                    )
-                                                    : "On Request";
-
-
-                                            const groupLabel =
-                                                price.max_people
-                                                    ? `${price.min_people}–${price.max_people} people`
-                                                    : `${price.min_people}+ people`;
-
-
-                                            return (
+                                        {prices.map(
+                                            (
+                                                price,
+                                                index
+                                            ) => (
 
                                                 <div
                                                     className="tour-price-row"
-                                                    key={price.id}
+                                                    key={
+                                                        price.id ||
+                                                        index
+                                                    }
                                                 >
 
-                                                    <div>
+                                                    <div className="tour-price-description">
+
+                                                        <span className="tour-price-type">
+                                                            {String(
+                                                                price.pricing_type ||
+                                                                "PRICING"
+                                                            ).replace(
+                                                                /_/g,
+                                                                " "
+                                                            )}
+                                                        </span>
 
                                                         <strong>
-                                                            {groupLabel}
+                                                            {formatPricingRange(
+                                                                price
+                                                            )}
                                                         </strong>
-
-
-                                                        <span>
-
-                                                            {price.pricing_type ===
-                                                            "PER_PERSON"
-                                                                ? "Price per person"
-                                                                : "Group price"}
-
-                                                        </span>
 
                                                     </div>
 
 
-                                                    <strong>
+                                                    <div className="tour-price-value">
 
-                                                        {currencySymbol}
+                                                        <strong>
+                                                            {formatMoney(
+                                                                price.price,
+                                                                price.currency
+                                                            )}
+                                                        </strong>
 
-                                                        {formattedAmount}
+                                                        {isPerPerson(
+                                                            price
+                                                        ) && (
+                                                            <span>
+                                                                per person
+                                                            </span>
+                                                        )}
 
-                                                    </strong>
+                                                    </div>
 
                                                 </div>
-
-                                            );
-
-                                        })}
+                                            )
+                                        )}
 
                                     </div>
 
-                                </div>
+                                ) : (
 
-                            )}
+                                    <div className="tour-no-pricing">
+
+                                        <strong>
+                                            Pricing available on request
+                                        </strong>
+
+                                        <span>
+                                            Send us your travel details
+                                            and our team will prepare
+                                            the right arrangement for you.
+                                        </span>
+
+                                    </div>
+                                )}
+
+                            </section>
 
 
                             {/* ==================================================
-                                IMPORTANT INFORMATION
+                                WHY ZAN GATES
                             ================================================== */}
 
-                            <div className="tour-details-section">
+                            <section className="tour-details-section tour-benefits-section">
 
-                                <span className="tour-section-label">
-                                    PLAN WITH CONFIDENCE
+                                <span className="tour-section-eyebrow">
+                                    WHY ZAN GATES
                                 </span>
 
-
                                 <h2>
-                                    Your Zanzibar Adventure
+                                    Travel with a local team
                                 </h2>
 
 
-                                <div className="tour-info-grid">
+                                <div className="tour-benefits">
 
+                                    <div>
+                                        <span>
+                                            01
+                                        </span>
 
-                                    {/* LOCAL SUPPORT */}
+                                        <div>
+                                            <strong>
+                                                Local knowledge
+                                            </strong>
 
-                                    <div className="tour-info-card">
-
-                                        <strong>
-                                            Local Support
-                                        </strong>
-
-
-                                        <p>
-                                            Our team is available to
-                                            help you plan and coordinate
-                                            your experience.
-                                        </p>
-
+                                            <p>
+                                                Experience Zanzibar
+                                                with people who know
+                                                the island, its waters
+                                                and its hidden places.
+                                            </p>
+                                        </div>
                                     </div>
 
 
-                                    {/* FLEXIBLE ENQUIRIES */}
+                                    <div>
+                                        <span>
+                                            02
+                                        </span>
 
-                                    <div className="tour-info-card">
+                                        <div>
+                                            <strong>
+                                                Personal service
+                                            </strong>
 
-                                        <strong>
-                                            Flexible Enquiries
-                                        </strong>
-
-
-                                        <p>
-                                            Tell us your preferred date,
-                                            group size and requirements.
-                                        </p>
-
+                                            <p>
+                                                We tailor your
+                                                experience around
+                                                your travel plans
+                                                and preferences.
+                                            </p>
+                                        </div>
                                     </div>
 
 
-                                    {/* EXPERIENCED GUIDES */}
+                                    <div>
+                                        <span>
+                                            03
+                                        </span>
 
-                                    <div className="tour-info-card">
+                                        <div>
+                                            <strong>
+                                                Easy enquiry
+                                            </strong>
 
-                                        <strong>
-                                            Experienced Guides
-                                        </strong>
-
-
-                                        <p>
-                                            Enjoy your experience with
-                                            knowledgeable local support.
-                                        </p>
-
-                                    </div>
-
-
-                                    {/* PERSONAL SERVICE */}
-
-                                    <div className="tour-info-card">
-
-                                        <strong>
-                                            Personal Service
-                                        </strong>
-
-
-                                        <p>
-                                            We focus on creating a smooth
-                                            and memorable Zanzibar journey.
-                                        </p>
-
+                                            <p>
+                                                Send your request
+                                                online and our team
+                                                will contact you to
+                                                confirm the details.
+                                            </p>
+                                        </div>
                                     </div>
 
                                 </div>
 
-                            </div>
+                            </section>
 
                         </div>
 
 
                         {/* ==================================================
-                            BOOKING SIDEBAR
+                            SIDEBAR
                         ================================================== */}
 
                         <aside className="tour-details-sidebar">
 
                             <div className="tour-booking-card">
 
+                                <div className="tour-booking-top">
 
-                                <span>
-                                    PLAN YOUR EXPERIENCE
-                                </span>
+                                    <span className="tour-booking-label">
+                                        PLAN YOUR EXPERIENCE
+                                    </span>
+
+                                    {startingPrice && (
+                                        <div className="tour-booking-starting-price">
+
+                                            <small>
+                                                From
+                                            </small>
+
+                                            <strong>
+                                                {formatMoney(
+                                                    startingPrice.price,
+                                                    startingPrice.currency
+                                                )}
+                                            </strong>
+
+                                            {isPerPerson(
+                                                startingPrice
+                                            ) && (
+                                                <span>
+                                                    / person
+                                                </span>
+                                            )}
+
+                                        </div>
+                                    )}
+
+                                </div>
 
 
                                 <h3>
-                                    Ready to explore Zanzibar?
+                                    Enquire about this tour
                                 </h3>
 
-
                                 <p>
-                                    Send us an enquiry with your
-                                    preferred date and number of
-                                    travellers. Our team will help
-                                    arrange the experience for you.
+                                    Tell us when you would like
+                                    to travel and how many guests
+                                    will be joining you.
                                 </p>
 
 
-                                {/* STARTING PRICE */}
+                                {submitted ? (
 
-                                {lowestPrice !== null && (
+                                    <div className="booking-success">
 
-                                    <div className="tour-booking-price">
+                                        <div className="booking-success-icon">
+                                            ✓
+                                        </div>
 
-                                        <small>
-                                            Starting from
-                                        </small>
-
-
-                                        <strong>
-
-                                            {currencySymbol}
-
-                                            {lowestPrice.toLocaleString(
-                                                "en-US",
-                                                {
-                                                    minimumFractionDigits: 2,
-                                                    maximumFractionDigits: 2,
-                                                }
-                                            )}
-
-                                        </strong>
-
-
-                                        <span>
-                                            per person
+                                        <span className="booking-success-label">
+                                            REQUEST RECEIVED
                                         </span>
+
+                                        <h4>
+                                            Thank you.
+                                        </h4>
+
+                                        <p>
+                                            Your enquiry has been
+                                            successfully received.
+                                            Our team will review
+                                            your request and contact
+                                            you shortly.
+                                        </p>
+
+                                        <button
+                                            type="button"
+                                            onClick={() =>
+                                                setSubmitted(
+                                                    false
+                                                )
+                                            }
+                                        >
+                                            Send another enquiry
+                                        </button>
 
                                     </div>
 
+                                ) : (
+
+                                    <form
+                                        className="tour-booking-form"
+                                        onSubmit={
+                                            handleSubmit
+                                        }
+                                    >
+
+                                        {bookingError && (
+                                            <div
+                                                className="booking-error"
+                                                role="alert"
+                                            >
+                                                <span>!</span>
+                                                <p>
+                                                    {bookingError}
+                                                </p>
+                                            </div>
+                                        )}
+
+
+                                        <div className="booking-field">
+
+                                            <label htmlFor="full_name">
+                                                Full name
+                                            </label>
+
+                                            <input
+                                                id="full_name"
+                                                type="text"
+                                                name="full_name"
+                                                value={
+                                                    form.full_name
+                                                }
+                                                onChange={
+                                                    handleChange
+                                                }
+                                                placeholder="Your full name"
+                                                autoComplete="name"
+                                                required
+                                            />
+
+                                        </div>
+
+
+                                        <div className="booking-field">
+
+                                            <label htmlFor="email">
+                                                Email address
+                                            </label>
+
+                                            <input
+                                                id="email"
+                                                type="email"
+                                                name="email"
+                                                value={
+                                                    form.email
+                                                }
+                                                onChange={
+                                                    handleChange
+                                                }
+                                                placeholder="you@example.com"
+                                                autoComplete="email"
+                                                required
+                                            />
+
+                                        </div>
+
+
+                                        <div className="booking-field">
+
+                                            <label htmlFor="phone">
+                                                Phone number
+                                                <span>
+                                                    Optional
+                                                </span>
+                                            </label>
+
+                                            <input
+                                                id="phone"
+                                                type="tel"
+                                                name="phone"
+                                                value={
+                                                    form.phone
+                                                }
+                                                onChange={
+                                                    handleChange
+                                                }
+                                                placeholder="+255 ..."
+                                                autoComplete="tel"
+                                            />
+
+                                        </div>
+
+
+                                        <div className="booking-field">
+
+                                            <label htmlFor="travel_date">
+                                                Preferred travel date
+                                            </label>
+
+                                            <input
+                                                id="travel_date"
+                                                type="date"
+                                                name="travel_date"
+                                                value={
+                                                    form.travel_date
+                                                }
+                                                min={
+                                                    todayString()
+                                                }
+                                                onChange={
+                                                    handleChange
+                                                }
+                                                required
+                                            />
+
+                                        </div>
+
+
+                                        <div className="booking-form-row">
+
+                                            <div className="booking-field">
+
+                                                <label htmlFor="adults">
+                                                    Adults
+                                                </label>
+
+                                                <input
+                                                    id="adults"
+                                                    type="number"
+                                                    name="adults"
+                                                    min="1"
+                                                    max="100"
+                                                    value={
+                                                        form.adults
+                                                    }
+                                                    onChange={
+                                                        handleChange
+                                                    }
+                                                    required
+                                                />
+
+                                            </div>
+
+
+                                            <div className="booking-field">
+
+                                                <label htmlFor="children">
+                                                    Children
+                                                </label>
+
+                                                <input
+                                                    id="children"
+                                                    type="number"
+                                                    name="children"
+                                                    min="0"
+                                                    max="100"
+                                                    value={
+                                                        form.children
+                                                    }
+                                                    onChange={
+                                                        handleChange
+                                                    }
+                                                />
+
+                                            </div>
+
+                                        </div>
+
+
+                                        <div className="booking-field">
+
+                                            <label htmlFor="message">
+                                                Message
+                                                <span>
+                                                    Optional
+                                                </span>
+                                            </label>
+
+                                            <textarea
+                                                id="message"
+                                                name="message"
+                                                value={
+                                                    form.message
+                                                }
+                                                onChange={
+                                                    handleChange
+                                                }
+                                                rows="4"
+                                                placeholder="Tell us anything we should know about your trip..."
+                                            />
+
+                                        </div>
+
+
+                                        {estimatedPrice && (
+
+                                            <div className="tour-booking-price">
+
+                                                <div>
+                                                    <span>
+                                                        Estimated total
+                                                    </span>
+
+                                                    <strong>
+                                                        {formatMoney(
+                                                            estimatedPrice.amount,
+                                                            estimatedPrice.currency
+                                                        )}
+                                                    </strong>
+                                                </div>
+
+                                                <small>
+                                                    Based on{" "}
+                                                    {guestCount}{" "}
+                                                    guest
+                                                    {guestCount === 1
+                                                        ? ""
+                                                        : "s"}
+                                                </small>
+
+                                            </div>
+                                        )}
+
+
+                                        <button
+                                            type="submit"
+                                            className="tour-book-button"
+                                            disabled={
+                                                submitting
+                                            }
+                                        >
+
+                                            {submitting ? (
+                                                <>
+                                                    <span className="button-spinner" />
+                                                    Sending enquiry...
+                                                </>
+                                            ) : (
+                                                <>
+                                                    Send Enquiry
+                                                    <span>
+                                                        →
+                                                    </span>
+                                                </>
+                                            )}
+
+                                        </button>
+
+
+                                        <div className="booking-security">
+
+                                            <span>
+                                                ✓
+                                            </span>
+
+                                            <p>
+                                                No payment required.
+                                                Availability and final
+                                                arrangements are confirmed
+                                                by our team.
+                                            </p>
+
+                                        </div>
+
+                                    </form>
+
                                 )}
 
-
-                                {/* BOOKING BUTTON */}
-
-                                <Link
-                                    to={`/book/${tour.slug}`}
-                                    className="tour-book-button"
-                                >
-                                    Book / Enquire Now
-                                </Link>
-
-
-                                {/* BACK TO TOURS */}
-
-                                <Link
-                                    to="/"
-                                    className="tour-back-link"
-                                >
-                                    ← Explore More Tours
-                                </Link>
-
                             </div>
+
+
+                            <Link
+                                to="/#tours"
+                                className="tour-back-link"
+                            >
+                                <span>
+                                    ←
+                                </span>
+
+                                Back to all experiences
+                            </Link>
 
                         </aside>
 
@@ -1125,64 +2234,49 @@ const TourDetails = () => {
 
                 </div>
 
-            </section>
+            </main>
 
 
-            {/* ==================================================
-                IMAGE LIGHTBOX
-            ================================================== */}
+            {/* ==========================================================
+                LIGHTBOX
+            ========================================================== */}
 
-            {selectedImage && (
-
+            {lightboxOpen &&
+                primaryImage && (
                 <div
                     className="tour-lightbox"
                     role="dialog"
                     aria-modal="true"
-                    aria-label="Tour image viewer"
-                    onClick={closeLightbox}
+                    aria-label="Tour image gallery"
+                    onClick={() =>
+                        setLightboxOpen(false)
+                    }
                 >
-
-                    {/* ==============================
-                        CLOSE BUTTON
-                    ============================== */}
 
                     <button
                         type="button"
                         className="tour-lightbox-close"
-                        onClick={closeLightbox}
-                        aria-label="Close image viewer"
+                        onClick={() =>
+                            setLightboxOpen(false)
+                        }
+                        aria-label="Close gallery"
                     >
                         ×
                     </button>
 
 
-                    {/* ==============================
-                        PREVIOUS BUTTON
-                    ============================== */}
+                    <button
+                        type="button"
+                        className="tour-lightbox-arrow tour-lightbox-left"
+                        onClick={(event) => {
+                            event.stopPropagation();
+                            showPreviousImage();
+                        }}
+                        aria-label="Previous image"
+                    >
+                        ←
+                    </button>
 
-                    {images.length > 1 && (
-
-                        <button
-                            type="button"
-                            className="tour-lightbox-prev"
-                            onClick={(event) => {
-
-                                event.stopPropagation();
-
-                                showPreviousImage();
-
-                            }}
-                            aria-label="Previous image"
-                        >
-                            ‹
-                        </button>
-
-                    )}
-
-
-                    {/* ==============================
-                        IMAGE
-                    ============================== */}
 
                     <div
                         className="tour-lightbox-content"
@@ -1192,78 +2286,50 @@ const TourDetails = () => {
                     >
 
                         <img
-                            src={selectedImage.image_url}
+                            src={
+                                primaryImage
+                            }
                             alt={
-                                selectedImage.alt_text ||
-                                `${tour.title} experience in ${
-                                    tour.destination_name ||
-                                    "Zanzibar"
-                                }`
+                                getImageAlt(
+                                    images[imageIndex],
+                                    tour.title
+                                )
                             }
                         />
 
+                        <div className="tour-lightbox-caption">
+                            <span>
+                                {tour.title}
+                            </span>
 
-                        {/* ==============================
-                            IMAGE CAPTION
-                        ============================== */}
-
-                        {selectedImage.alt_text && (
-
-                            <p className="tour-lightbox-caption">
-
-                                {selectedImage.alt_text}
-
-                            </p>
-
-                        )}
-
-
-                        {/* ==============================
-                            IMAGE COUNTER
-                        ============================== */}
-
-                        <div className="tour-lightbox-counter">
-
-                            {selectedImageIndex + 1}
-                            {" / "}
-                            {images.length}
-
+                            <small>
+                                {imageIndex + 1}
+                                {" / "}
+                                {images.length}
+                            </small>
                         </div>
 
                     </div>
 
 
-                    {/* ==============================
-                        NEXT BUTTON
-                    ============================== */}
-
-                    {images.length > 1 && (
-
-                        <button
-                            type="button"
-                            className="tour-lightbox-next"
-                            onClick={(event) => {
-
-                                event.stopPropagation();
-
-                                showNextImage();
-
-                            }}
-                            aria-label="Next image"
-                        >
-                            ›
-                        </button>
-
-                    )}
+                    <button
+                        type="button"
+                        className="tour-lightbox-arrow tour-lightbox-right"
+                        onClick={(event) => {
+                            event.stopPropagation();
+                            showNextImage();
+                        }}
+                        aria-label="Next image"
+                    >
+                        →
+                    </button>
 
                 </div>
-
             )}
 
-        </main>
-
+        </div>
     );
+}
 
-};
 
 export default TourDetails;

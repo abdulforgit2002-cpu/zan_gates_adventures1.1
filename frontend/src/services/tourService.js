@@ -1,10 +1,15 @@
 import api from "./api";
 
-/**
- * Get all active tours.
- */
+
+/*
+|--------------------------------------------------------------------------
+| GET ALL ACTIVE TOURS
+|--------------------------------------------------------------------------
+*/
+
 export const getTours = async () => {
-    const response = await api.get("/tours");
+    const response =
+        await api.get("/tours");
 
     return Array.isArray(response.data)
         ? response.data
@@ -12,38 +17,85 @@ export const getTours = async () => {
 };
 
 
-/**
- * Get a single tour by ID.
- */
+/*
+|--------------------------------------------------------------------------
+| GET TOUR BY ID
+|--------------------------------------------------------------------------
+*/
+
 export const getTour = async (id) => {
-    const response = await api.get(`/tours/${id}`);
+    if (
+        id === null ||
+        id === undefined ||
+        id === ""
+    ) {
+        return null;
+    }
+
+    const response =
+        await api.get(
+            `/tours/${encodeURIComponent(
+                String(id)
+            )}`
+        );
 
     return response.data ?? null;
 };
 
 
-/**
- * Get a single tour by slug.
- *
- * Example:
- * /api/tours/slug/safari-blue-zanzibar
- */
-export const getTourBySlug = async (slug) => {
-    const response = await api.get(
-        `/tours/slug/${encodeURIComponent(slug)}`
-    );
+/*
+|--------------------------------------------------------------------------
+| GET TOUR BY SLUG
+|--------------------------------------------------------------------------
+|
+| Preferred endpoint for public pages.
+|
+*/
+
+export const getTourBySlug = async (
+    slug
+) => {
+    if (
+        !slug ||
+        typeof slug !== "string"
+    ) {
+        return null;
+    }
+
+    const response =
+        await api.get(
+            `/tours/slug/${encodeURIComponent(
+                slug
+            )}`
+        );
 
     return response.data ?? null;
 };
 
 
-/**
- * Get prices for a specific tour.
- */
-export const getTourPrices = async (id) => {
-    const response = await api.get(
-        `/tours/${id}/prices`
-    );
+/*
+|--------------------------------------------------------------------------
+| GET TOUR PRICES
+|--------------------------------------------------------------------------
+*/
+
+export const getTourPrices = async (
+    id
+) => {
+    if (
+        id === null ||
+        id === undefined ||
+        id === ""
+    ) {
+        return [];
+    }
+
+    const response =
+        await api.get(
+            `/tours/${encodeURIComponent(
+                String(id)
+            )}/prices`
+        );
 
     return Array.isArray(response.data)
         ? response.data
@@ -51,18 +103,50 @@ export const getTourPrices = async (id) => {
 };
 
 
-/**
- * Get all images for a specific tour.
- *
- * Endpoint:
- * GET /api/tours/{id}/images
- */
-export const getTourImages = async (id) => {
-    const response = await api.get(
-        `/tours/${id}/images`
-    );
+/*
+|--------------------------------------------------------------------------
+| GET TOUR IMAGES
+|--------------------------------------------------------------------------
+*/
+
+export const getTourImages = async (
+    id
+) => {
+    if (
+        id === null ||
+        id === undefined ||
+        id === ""
+    ) {
+        return [];
+    }
+
+    const response =
+        await api.get(
+            `/tours/${encodeURIComponent(
+                String(id)
+            )}/images`
+        );
 
     return Array.isArray(response.data)
         ? response.data
         : [];
 };
+
+
+/*
+|--------------------------------------------------------------------------
+| CREATE BOOKING ENQUIRY
+|--------------------------------------------------------------------------
+*/
+
+export const createBookingEnquiry =
+    async (bookingData) => {
+
+        const response =
+            await api.post(
+                "/booking-enquiries",
+                bookingData
+            );
+
+        return response.data ?? null;
+    };

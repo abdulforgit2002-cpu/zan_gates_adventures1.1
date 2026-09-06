@@ -5396,3 +5396,1937 @@ select:focus-visible {
         scroll-behavior: auto !important;
     }
 }
+
+/* ============================================================
+   ZAN GATES — PREMIUM PUBLIC HOME
+   ============================================================ */
+
+.home-page {
+    width: 100%;
+    overflow: hidden;
+    background: #ffffff;
+}
+
+
+/* ============================================================
+   HERO
+   ============================================================ */
+
+.home-hero {
+    position: relative;
+    min-height: 780px;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    isolation: isolate;
+    background:
+        linear-gradient(
+            120deg,
+            #103d43,
+            #1b6d70
+        );
+}
+
+
+.home-hero-background {
+    position: absolute;
+    inset: 0;
+    z-index: -3;
+
+    background-image:
+        url("https://res.cloudinary.com/djczmay2i/image/upload/v1779459602/Safari_Blue_Experience_bxzxj6.webp");
+
+    background-size: cover;
+    background-position: center;
+    transform: scale(1.02);
+}
+
+
+.home-hero-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: -2;
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(8, 42, 47, 0.92) 0%,
+            rgba(8, 42, 47, 0.72) 42%,
+            rgba(8, 42, 47, 0.25) 75%,
+            rgba(8, 42, 47, 0.15) 100%
+        );
+}
+
+
+.home-hero-content {
+    width: min(1250px, 86%);
+    margin: 0 auto;
+    padding: 130px 0 100px;
+    color: #ffffff;
+}
+
+
+.home-hero-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+
+    margin-bottom: 25px;
+
+    color: #a7dfda;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 3px;
+}
+
+
+.home-hero-eyebrow::before {
+    content: "";
+
+    width: 35px;
+    height: 1px;
+
+    background: #7ac9c5;
+}
+
+
+.home-hero h1 {
+    max-width: 850px;
+
+    margin: 0;
+
+    font-size: clamp(
+        52px,
+        7vw,
+        92px
+    );
+
+    line-height: 0.98;
+    letter-spacing: -3px;
+    font-weight: 700;
+}
+
+
+.home-hero h1 span {
+    color: #9bd9d5;
+}
+
+
+.home-hero-content > p {
+    max-width: 600px;
+
+    margin: 32px 0 0;
+
+    color: rgba(255,255,255,0.78);
+
+    font-size: 17px;
+    line-height: 1.8;
+}
+
+
+.home-hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+
+    margin-top: 38px;
+}
+
+
+.home-primary-button,
+.home-secondary-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+
+    min-height: 52px;
+
+    padding: 0 23px;
+
+    border-radius: 6px;
+
+    font-size: 13px;
+    font-weight: 800;
+
+    text-decoration: none;
+
+    transition:
+        transform 0.25s ease,
+        background 0.25s ease,
+        border-color 0.25s ease;
+}
+
+
+.home-primary-button {
+    background: #ffffff;
+    color: #123f46;
+}
+
+
+.home-primary-button:hover {
+    transform: translateY(-3px);
+    background: #e5f4f3;
+}
+
+
+.home-primary-button span,
+.home-secondary-button span {
+    font-size: 18px;
+}
+
+
+.home-secondary-button {
+    border: 1px solid rgba(255,255,255,0.35);
+    color: #ffffff;
+    background: rgba(255,255,255,0.06);
+    backdrop-filter: blur(8px);
+}
+
+
+.home-secondary-button:hover {
+    transform: translateY(-3px);
+    border-color: rgba(255,255,255,0.7);
+    background: rgba(255,255,255,0.12);
+}
+
+
+.home-hero-trust {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 35px;
+
+    margin-top: 75px;
+}
+
+
+.home-hero-trust > div {
+    padding-left: 15px;
+
+    border-left:
+        1px solid
+        rgba(255,255,255,0.25);
+}
+
+
+.home-hero-trust strong,
+.home-hero-trust span {
+    display: block;
+}
+
+
+.home-hero-trust strong {
+    color: #ffffff;
+    font-size: 13px;
+}
+
+
+.home-hero-trust span {
+    margin-top: 5px;
+
+    color: rgba(255,255,255,0.55);
+
+    font-size: 11px;
+}
+
+
+.home-scroll-indicator {
+    position: absolute;
+    right: 6%;
+    bottom: 38px;
+
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    color: rgba(255,255,255,0.7);
+
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+
+    text-decoration: none;
+
+    writing-mode: vertical-rl;
+}
+
+
+.home-scroll-indicator strong {
+    font-size: 20px;
+}
+
+
+/* ============================================================
+   INTRO
+   ============================================================ */
+
+.home-intro {
+    padding: 115px 7%;
+    background: #f8f7f3;
+}
+
+
+.home-intro-inner {
+    max-width: 1250px;
+    margin: auto;
+
+    display: grid;
+    grid-template-columns: 0.7fr 2fr;
+    gap: 80px;
+}
+
+
+.home-intro-label {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+}
+
+
+.home-intro-label span {
+    width: 32px;
+    height: 1px;
+    margin-top: 7px;
+    background: #168083;
+}
+
+
+.home-intro-label p {
+    margin: 0;
+
+    color: #168083;
+
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 2px;
+}
+
+
+.home-intro-content h2 {
+    max-width: 800px;
+
+    margin: 0;
+
+    color: #123f46;
+
+    font-size: clamp(
+        38px,
+        5vw,
+        64px
+    );
+
+    line-height: 1.05;
+    letter-spacing: -2px;
+}
+
+
+.home-intro-content h2 span {
+    color: #168083;
+}
+
+
+.home-intro-content > p {
+    max-width: 650px;
+
+    margin: 30px 0 0;
+
+    color: #667678;
+
+    font-size: 16px;
+    line-height: 1.9;
+}
+
+
+/* ============================================================
+   TOURS
+   ============================================================ */
+
+.home-tours-section {
+    padding: 120px 7%;
+    background: #ffffff;
+}
+
+
+.home-section-heading {
+    max-width: 1250px;
+
+    margin: 0 auto 55px;
+
+    display: grid;
+    grid-template-columns: 1.4fr 0.8fr;
+    align-items: end;
+    gap: 70px;
+}
+
+
+.home-section-eyebrow {
+    display: block;
+
+    margin-bottom: 13px;
+
+    color: #168083;
+
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 2.5px;
+}
+
+
+.home-section-heading h2 {
+    max-width: 650px;
+
+    margin: 0;
+
+    color: #123f46;
+
+    font-size: clamp(
+        38px,
+        4.5vw,
+        58px
+    );
+
+    line-height: 1.05;
+    letter-spacing: -2px;
+}
+
+
+.home-section-heading > p {
+    margin: 0;
+
+    color: #718083;
+
+    font-size: 14px;
+    line-height: 1.8;
+}
+
+
+.home-tours-grid {
+    max-width: 1250px;
+    margin: auto;
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(
+            auto-fit,
+            minmax(310px, 1fr)
+        );
+
+    gap: 25px;
+}
+
+
+/* ============================================================
+   TOUR CARD
+   ============================================================ */
+
+.tour-card {
+    min-width: 0;
+
+    overflow: hidden;
+
+    background: #ffffff;
+
+    border:
+        1px solid
+        #e3e9e8;
+
+    border-radius: 14px;
+
+    box-shadow:
+        0 12px 45px
+        rgba(16,58,62,0.07);
+
+    transition:
+        transform 0.35s cubic-bezier(.22,1,.36,1),
+        box-shadow 0.35s ease,
+        border-color 0.35s ease;
+}
+
+
+.tour-card:hover {
+    transform: translateY(-8px);
+
+    border-color:
+        rgba(22,128,131,0.25);
+
+    box-shadow:
+        0 25px 65px
+        rgba(16,58,62,0.13);
+}
+
+
+/* ============================================================
+   CARD IMAGE
+   ============================================================ */
+
+.tour-card-image {
+    position: relative;
+
+    height: 285px;
+
+    overflow: hidden;
+
+    background:
+        linear-gradient(
+            135deg,
+            #164e63,
+            #0f766e
+        );
+}
+
+
+.tour-card-image img {
+    display: block;
+
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+
+    transition:
+        transform 0.7s
+        cubic-bezier(.22,1,.36,1);
+}
+
+
+.tour-card:hover
+.tour-card-image img {
+    transform: scale(1.055);
+}
+
+
+.tour-card-image-shade {
+    position: absolute;
+    inset: 0;
+
+    pointer-events: none;
+
+    background:
+        linear-gradient(
+            to bottom,
+            rgba(0,0,0,0.18),
+            transparent 42%,
+            rgba(0,0,0,0.32)
+        );
+}
+
+
+.tour-card-placeholder {
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    color: rgba(255,255,255,0.8);
+
+    background:
+        linear-gradient(
+            135deg,
+            #123f46,
+            #168083
+        );
+}
+
+
+.tour-card-placeholder span {
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 3px;
+}
+
+
+.tour-card-placeholder strong {
+    margin-top: 7px;
+
+    font-size: 28px;
+    letter-spacing: 4px;
+}
+
+
+/* ============================================================
+   CARD BADGE
+   ============================================================ */
+
+.tour-card-badge {
+    position: absolute;
+
+    top: 17px;
+    left: 17px;
+
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+
+    padding: 8px 11px;
+
+    border-radius: 999px;
+
+    background: rgba(255,255,255,0.94);
+
+    color: #123f46;
+
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.4px;
+
+    box-shadow:
+        0 5px 20px
+        rgba(0,0,0,0.12);
+}
+
+
+.tour-card-badge-dot {
+    width: 6px;
+    height: 6px;
+
+    border-radius: 50%;
+
+    background: #168083;
+}
+
+
+.tour-card-image-label {
+    position: absolute;
+
+    right: 17px;
+    bottom: 16px;
+
+    color: rgba(255,255,255,0.85);
+
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 2px;
+}
+
+
+/* ============================================================
+   CARD CONTENT
+   ============================================================ */
+
+.tour-card-content {
+    padding: 23px 24px 24px;
+}
+
+
+.tour-card-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+
+    margin-bottom: 15px;
+}
+
+
+.tour-card-meta span {
+    min-width: 0;
+
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+
+    color: #78888a;
+
+    font-size: 10px;
+    font-weight: 700;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+
+.tour-card-meta svg {
+    width: 14px;
+    height: 14px;
+
+    flex-shrink: 0;
+
+    color: #168083;
+}
+
+
+.tour-card h3 {
+    margin: 0;
+
+    min-height: 58px;
+
+    color: #123f46;
+
+    font-size: 21px;
+    line-height: 1.35;
+    letter-spacing: -0.4px;
+}
+
+
+.tour-card-description {
+    display: -webkit-box;
+
+    min-height: 69px;
+
+    margin: 12px 0 0;
+
+    overflow: hidden;
+
+    color: #718083;
+
+    font-size: 13px;
+    line-height: 1.75;
+
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+}
+
+
+/* ============================================================
+   CARD FOOTER
+   ============================================================ */
+
+.tour-card-footer {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+
+    gap: 15px;
+
+    margin-top: 22px;
+    padding-top: 18px;
+
+    border-top:
+        1px solid
+        #edf1f0;
+}
+
+
+.tour-card-price > span {
+    display: block;
+
+    margin-bottom: 3px;
+
+    color: #8a999a;
+
+    font-size: 9px;
+    font-weight: 700;
+
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+
+.tour-card-price div {
+    display: flex;
+    align-items: baseline;
+    gap: 4px;
+}
+
+
+.tour-card-price strong {
+    color: #123f46;
+
+    font-size: 25px;
+    line-height: 1.1;
+
+    letter-spacing: -0.5px;
+}
+
+
+.tour-card-price small {
+    color: #8a999a;
+
+    font-size: 10px;
+}
+
+
+.tour-card-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+
+    min-height: 40px;
+
+    padding: 0 14px;
+
+    border-radius: 6px;
+
+    background: #123f46;
+
+    color: #ffffff;
+
+    font-size: 11px;
+    font-weight: 800;
+
+    text-decoration: none;
+
+    transition:
+        background 0.25s ease,
+        transform 0.25s ease;
+}
+
+
+.tour-card-button svg {
+    width: 15px;
+    height: 15px;
+}
+
+
+.tour-card-button:hover {
+    background: #168083;
+    transform: translateY(-2px);
+}
+
+
+/* ============================================================
+   TOUR LOADING / MESSAGE
+   ============================================================ */
+
+.home-tour-loading {
+    min-height: 250px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    color: #718083;
+}
+
+
+.home-loading-spinner {
+    width: 32px;
+    height: 32px;
+
+    margin-bottom: 15px;
+
+    border:
+        3px solid
+        #e1e9e8;
+
+    border-top-color: #168083;
+
+    border-radius: 50%;
+
+    animation:
+        home-spin
+        0.8s linear infinite;
+}
+
+
+@keyframes home-spin {
+
+    to {
+        transform: rotate(360deg);
+    }
+
+}
+
+
+.home-tour-loading p {
+    margin: 0;
+
+    font-size: 12px;
+}
+
+
+.home-tour-message {
+    max-width: 500px;
+
+    margin: 30px auto;
+
+    padding: 45px 30px;
+
+    text-align: center;
+
+    border:
+        1px solid
+        #e1e9e8;
+
+    border-radius: 14px;
+
+    background: #f8faf9;
+}
+
+
+.home-message-icon {
+    width: 45px;
+    height: 45px;
+
+    margin: 0 auto 15px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: #e5f4f3;
+
+    color: #168083;
+
+    font-weight: 800;
+}
+
+
+.home-tour-message h3 {
+    margin: 0;
+
+    color: #123f46;
+
+    font-size: 18px;
+}
+
+
+.home-tour-message p {
+    margin: 9px 0 18px;
+
+    color: #718083;
+
+    font-size: 13px;
+    line-height: 1.7;
+}
+
+
+.home-tour-message button {
+    border: none;
+
+    padding: 11px 18px;
+
+    border-radius: 6px;
+
+    background: #123f46;
+
+    color: #ffffff;
+
+    font-size: 12px;
+    font-weight: 700;
+
+    cursor: pointer;
+}
+
+
+/* ============================================================
+   ABOUT
+   ============================================================ */
+
+.home-about-section {
+    max-width: 1400px;
+
+    margin: 0 auto;
+
+    padding: 100px 7% 120px;
+
+    display: grid;
+
+    grid-template-columns:
+        1fr 1fr;
+
+    gap: 100px;
+
+    align-items: center;
+}
+
+
+.home-about-visual {
+    position: relative;
+
+    min-height: 590px;
+}
+
+
+.home-about-image {
+    position: absolute;
+
+    inset: 0 45px 35px 0;
+
+    border-radius: 12px;
+
+    background-image:
+        url("https://res.cloudinary.com/djczmay2i/image/upload/v1779459601/Dolphin_Adventure2_k2nd15.avif");
+
+    background-size: cover;
+    background-position: center;
+
+    box-shadow:
+        0 25px 70px
+        rgba(16,58,62,0.13);
+}
+
+
+.home-about-stat {
+    position: absolute;
+
+    right: 0;
+    bottom: 0;
+
+    width: 170px;
+    min-height: 170px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    padding: 25px;
+
+    border-radius: 10px;
+
+    background: #123f46;
+
+    color: #ffffff;
+
+    box-shadow:
+        0 20px 50px
+        rgba(16,58,62,0.22);
+}
+
+
+.home-about-stat strong {
+    font-size: 38px;
+    line-height: 1;
+}
+
+
+.home-about-stat span {
+    margin-top: 12px;
+
+    color: #9bd9d5;
+
+    font-size: 11px;
+    line-height: 1.5;
+}
+
+
+.home-about-content h2 {
+    margin: 0;
+
+    color: #123f46;
+
+    font-size: clamp(
+        40px,
+        4.5vw,
+        62px
+    );
+
+    line-height: 1.03;
+    letter-spacing: -2px;
+}
+
+
+.home-about-content h2 span {
+    color: #168083;
+}
+
+
+.home-about-content > p {
+    max-width: 560px;
+
+    margin: 28px 0 0;
+
+    color: #718083;
+
+    font-size: 15px;
+    line-height: 1.9;
+}
+
+
+.home-about-features {
+    margin-top: 35px;
+
+    display: flex;
+    flex-direction: column;
+}
+
+
+.home-about-feature {
+    display: grid;
+
+    grid-template-columns: 35px 1fr;
+
+    gap: 12px;
+
+    padding: 16px 0;
+
+    border-bottom:
+        1px solid
+        #edf1f0;
+}
+
+
+.home-about-feature > span {
+    color: #168083;
+
+    font-size: 10px;
+    font-weight: 800;
+}
+
+
+.home-about-feature strong {
+    display: block;
+
+    color: #203536;
+
+    font-size: 13px;
+}
+
+
+.home-about-feature p {
+    margin: 5px 0 0;
+
+    color: #8a999a;
+
+    font-size: 11px;
+    line-height: 1.5;
+}
+
+
+.home-about-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 18px;
+
+    margin-top: 30px;
+
+    color: #123f46;
+
+    font-size: 12px;
+    font-weight: 800;
+
+    text-decoration: none;
+}
+
+
+.home-about-button span {
+    font-size: 18px;
+
+    transition:
+        transform 0.25s ease;
+}
+
+
+.home-about-button:hover span {
+    transform: translateX(5px);
+}
+
+
+/* ============================================================
+   FINAL CTA
+   ============================================================ */
+
+.home-cta {
+    position: relative;
+
+    min-height: 520px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    overflow: hidden;
+
+    background-image:
+        url("https://res.cloudinary.com/djczmay2i/image/upload/v1779459602/Safari_Blue_Experience_bxzxj6.webp");
+
+    background-size: cover;
+    background-position: center;
+}
+
+
+.home-cta-overlay {
+    position: absolute;
+    inset: 0;
+
+    background:
+        rgba(10,50,55,0.76);
+}
+
+
+.home-cta-content {
+    position: relative;
+
+    max-width: 750px;
+
+    padding: 80px 7%;
+
+    text-align: center;
+
+    color: #ffffff;
+}
+
+
+.home-cta-content .home-section-eyebrow {
+    color: #9bd9d5;
+}
+
+
+.home-cta-content h2 {
+    margin: 10px 0 20px;
+
+    font-size: clamp(
+        44px,
+        6vw,
+        72px
+    );
+
+    line-height: 1;
+
+    letter-spacing: -2px;
+}
+
+
+.home-cta-content p {
+    margin: 0;
+
+    color: rgba(255,255,255,0.72);
+
+    font-size: 15px;
+}
+
+
+.home-cta-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 18px;
+
+    margin-top: 32px;
+
+    min-height: 50px;
+
+    padding: 0 22px;
+
+    border-radius: 6px;
+
+    background: #ffffff;
+
+    color: #123f46;
+
+    font-size: 12px;
+    font-weight: 800;
+
+    text-decoration: none;
+
+    transition:
+        transform 0.25s ease,
+        background 0.25s ease;
+}
+
+
+.home-cta-button:hover {
+    transform: translateY(-3px);
+
+    background: #e5f4f3;
+}
+
+
+.home-cta-button span {
+    font-size: 18px;
+}
+
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+
+@media (max-width: 1000px) {
+
+    .home-hero {
+        min-height: 700px;
+    }
+
+
+    .home-hero-content {
+        width: 88%;
+    }
+
+
+    .home-intro-inner {
+        grid-template-columns: 1fr;
+        gap: 30px;
+    }
+
+
+    .home-section-heading {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+
+    .home-about-section {
+        grid-template-columns: 1fr;
+        gap: 60px;
+    }
+
+
+    .home-about-visual {
+        min-height: 520px;
+    }
+
+}
+
+
+@media (max-width: 700px) {
+
+    .home-hero {
+        min-height: 680px;
+    }
+
+
+    .home-hero-background {
+        background-position: 58% center;
+    }
+
+
+    .home-hero-overlay {
+        background:
+            linear-gradient(
+                90deg,
+                rgba(8,42,47,0.88),
+                rgba(8,42,47,0.55)
+            );
+    }
+
+
+    .home-hero-content {
+        width: 90%;
+        padding: 100px 0 80px;
+    }
+
+
+    .home-hero h1 {
+        font-size: clamp(
+            45px,
+            13vw,
+            65px
+        );
+
+        letter-spacing: -2px;
+    }
+
+
+    .home-hero-content > p {
+        font-size: 14px;
+    }
+
+
+    .home-hero-trust {
+        gap: 18px;
+        margin-top: 50px;
+    }
+
+
+    .home-hero-trust > div {
+        flex: 1;
+        min-width: 120px;
+    }
+
+
+    .home-scroll-indicator {
+        display: none;
+    }
+
+
+    .home-intro,
+    .home-tours-section {
+        padding: 75px 6%;
+    }
+
+
+    .home-intro-content h2,
+    .home-section-heading h2 {
+        font-size: 39px;
+        letter-spacing: -1.5px;
+    }
+
+
+    .home-tours-grid {
+        grid-template-columns: 1fr;
+    }
+
+
+    .tour-card-image {
+        height: 255px;
+    }
+
+
+    .home-about-section {
+        padding: 70px 6% 85px;
+    }
+
+
+    .home-about-visual {
+        min-height: 430px;
+    }
+
+
+    .home-about-image {
+        inset: 0 25px 25px 0;
+    }
+
+
+    .home-about-stat {
+        width: 140px;
+        min-height: 140px;
+    }
+
+
+    .home-about-content h2 {
+        font-size: 42px;
+        letter-spacing: -1.5px;
+    }
+
+
+    .home-cta {
+        min-height: 450px;
+    }
+
+}
+
+
+@media (max-width: 480px) {
+
+    .home-hero-actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+
+    .home-primary-button,
+    .home-secondary-button {
+        width: 100%;
+    }
+
+
+    .home-hero-trust {
+        display: grid;
+        grid-template-columns: 1fr;
+    }
+
+
+    .home-section-heading h2 {
+        font-size: 36px;
+    }
+
+
+    .tour-card-content {
+        padding: 20px;
+    }
+
+
+    .tour-card-footer {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+
+    .tour-card-button {
+        width: 100%;
+    }
+
+
+    .home-about-visual {
+        min-height: 350px;
+    }
+
+
+    .home-about-image {
+        inset: 0 15px 20px 0;
+    }
+
+
+    .home-about-stat {
+        width: 115px;
+        min-height: 115px;
+        padding: 18px;
+    }
+
+
+    .home-about-stat strong {
+        font-size: 28px;
+    }
+
+
+    .home-about-stat span {
+        font-size: 9px;
+    }
+
+}
+
+/* =========================================================
+   CINEMATIC HOME HERO
+========================================================= */
+
+.home-hero {
+    position: relative;
+    min-height: 780px;
+    overflow: hidden;
+    isolation: isolate;
+    background: #062f32;
+}
+
+
+/* =========================================================
+   HERO IMAGE LAYER
+========================================================= */
+
+.home-hero-background {
+    position: absolute;
+    inset: 0;
+    z-index: -3;
+    overflow: hidden;
+    background: #062f32;
+}
+
+
+.home-hero-image {
+    position: absolute;
+    inset: -3%;
+    width: 106%;
+    height: 106%;
+    object-fit: cover;
+    object-position: center;
+    opacity: 0;
+    transform: scale(1.08);
+    filter: saturate(1.05) contrast(1.03);
+    transition:
+        opacity 1.5s ease,
+        transform 8s cubic-bezier(
+            0.16,
+            1,
+            0.3,
+            1
+        );
+}
+
+
+.home-hero-image.active {
+    opacity: 1;
+    transform: scale(1);
+    animation: homeHeroKenBurns 9s ease-out forwards;
+}
+
+
+@keyframes homeHeroKenBurns {
+
+    0% {
+        transform:
+            scale(1.08)
+            translate3d(0, 0, 0);
+    }
+
+    100% {
+        transform:
+            scale(1.01)
+            translate3d(
+                -1.2%,
+                -0.8%,
+                0
+            );
+    }
+
+}
+
+
+/* =========================================================
+   CINEMATIC IMAGE GLOW
+========================================================= */
+
+.home-hero-image-glow {
+    position: absolute;
+    inset: 0;
+
+    background:
+        radial-gradient(
+            circle at 75% 40%,
+            rgba(255, 255, 255, 0.12),
+            transparent 32%
+        );
+
+    pointer-events: none;
+    animation: heroGlowMove 8s ease-in-out infinite;
+}
+
+
+@keyframes heroGlowMove {
+
+    0%,
+    100% {
+        opacity: 0.45;
+        transform: scale(1);
+    }
+
+    50% {
+        opacity: 0.8;
+        transform: scale(1.08);
+    }
+
+}
+
+
+/* =========================================================
+   OVERLAY
+========================================================= */
+
+.home-hero-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: -2;
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(3, 31, 34, 0.88) 0%,
+            rgba(3, 31, 34, 0.72) 38%,
+            rgba(3, 31, 34, 0.38) 68%,
+            rgba(3, 31, 34, 0.52) 100%
+        ),
+        linear-gradient(
+            180deg,
+            rgba(3, 31, 34, 0.28) 0%,
+            transparent 40%,
+            rgba(3, 31, 34, 0.72) 100%
+        );
+}
+
+
+/* =========================================================
+   HERO CONTENT ANIMATION
+========================================================= */
+
+.home-hero-content {
+    opacity: 0;
+    transform: translateY(35px);
+    transition:
+        opacity 1s ease,
+        transform 1s
+        cubic-bezier(
+            0.16,
+            1,
+            0.3,
+            1
+        );
+}
+
+
+.home-hero-content.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+
+.home-hero-content.visible
+.home-hero-eyebrow {
+    animation:
+        heroFadeUp 0.8s
+        0.1s both;
+}
+
+
+.home-hero-content.visible h1 {
+    animation:
+        heroFadeUp 0.9s
+        0.25s both;
+}
+
+
+.home-hero-content.visible > p {
+    animation:
+        heroFadeUp 0.9s
+        0.4s both;
+}
+
+
+.home-hero-content.visible
+.home-hero-actions {
+    animation:
+        heroFadeUp 0.9s
+        0.55s both;
+}
+
+
+.home-hero-content.visible
+.home-hero-trust {
+    animation:
+        heroFadeUp 0.9s
+        0.7s both;
+}
+
+
+@keyframes heroFadeUp {
+
+    from {
+        opacity: 0;
+        transform: translateY(22px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+}
+
+
+/* =========================================================
+   IMAGE COUNTER
+========================================================= */
+
+.home-hero-image-counter {
+    position: absolute;
+    right: 7%;
+    bottom: 120px;
+
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    color: rgba(
+        255,
+        255,
+        255,
+        0.75
+    );
+
+    font-size: 12px;
+    letter-spacing: 0.16em;
+    font-weight: 600;
+
+    z-index: 5;
+}
+
+
+.home-hero-image-counter strong {
+    color: #ffffff;
+    font-size: 17px;
+}
+
+
+/* =========================================================
+   IMAGE PROGRESS
+========================================================= */
+
+.home-hero-progress {
+    position: absolute;
+    right: 7%;
+    bottom: 82px;
+
+    display: flex;
+    gap: 7px;
+
+    z-index: 5;
+}
+
+
+.home-hero-progress button {
+    width: 34px;
+    height: 3px;
+
+    padding: 0;
+    border: 0;
+
+    cursor: pointer;
+
+    background: rgba(
+        255,
+        255,
+        255,
+        0.35
+    );
+
+    transition:
+        width 0.35s ease,
+        background 0.35s ease;
+}
+
+
+.home-hero-progress button:hover,
+.home-hero-progress button.active {
+    width: 55px;
+    background: #ffffff;
+}
+
+
+/* =========================================================
+   SCROLL INDICATOR
+========================================================= */
+
+.home-scroll-indicator {
+    transition:
+        transform 0.35s ease,
+        opacity 0.35s ease;
+}
+
+
+.home-scroll-indicator:hover {
+    transform: translateY(5px);
+}
+
+
+.home-scroll-indicator strong {
+    animation:
+        heroScrollBounce 1.8s
+        ease-in-out infinite;
+}
+
+
+@keyframes heroScrollBounce {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(7px);
+    }
+
+}
+
+
+/* =========================================================
+   IMAGE PLACEHOLDER
+========================================================= */
+
+.home-hero-image-placeholder {
+    position: absolute;
+    inset: 0;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    background:
+        linear-gradient(
+            135deg,
+            #063b3d,
+            #075e5d
+        );
+
+    color: rgba(
+        255,
+        255,
+        255,
+        0.85
+    );
+}
+
+
+.home-hero-image-placeholder span {
+    font-size: 13px;
+    letter-spacing: 0.3em;
+    font-weight: 700;
+}
+
+
+.home-hero-image-placeholder strong {
+    margin-top: 8px;
+
+    font-size: clamp(
+        50px,
+        8vw,
+        110px
+    );
+
+    letter-spacing: -0.05em;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 900px) {
+
+    .home-hero {
+        min-height: 720px;
+    }
+
+    .home-hero-overlay {
+        background:
+            linear-gradient(
+                90deg,
+                rgba(3, 31, 34, 0.82),
+                rgba(3, 31, 34, 0.58)
+            ),
+            linear-gradient(
+                180deg,
+                rgba(3, 31, 34, 0.22),
+                rgba(3, 31, 34, 0.78)
+            );
+    }
+
+    .home-hero-image-counter {
+        right: 5%;
+        bottom: 110px;
+    }
+
+    .home-hero-progress {
+        right: 5%;
+        bottom: 75px;
+    }
+
+}
+
+
+@media (max-width: 650px) {
+
+    .home-hero {
+        min-height: 680px;
+    }
+
+    .home-hero-image {
+        object-position: 58% center;
+    }
+
+    .home-hero-overlay {
+        background:
+            linear-gradient(
+                180deg,
+                rgba(3, 31, 34, 0.38) 0%,
+                rgba(3, 31, 34, 0.62) 45%,
+                rgba(3, 31, 34, 0.92) 100%
+            );
+    }
+
+    .home-hero-image-counter {
+        right: 6%;
+        bottom: 95px;
+    }
+
+    .home-hero-progress {
+        right: 6%;
+        bottom: 65px;
+    }
+
+    .home-hero-progress button {
+        width: 24px;
+    }
+
+    .home-hero-progress button.active {
+        width: 40px;
+    }
+
+}
+
+
+/* =========================================================
+   ACCESSIBILITY
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    .home-hero-image,
+    .home-hero-image.active,
+    .home-hero-image-glow,
+    .home-hero-content,
+    .home-hero-content.visible,
+    .home-scroll-indicator strong {
+        animation: none !important;
+        transition: none !important;
+        transform: none !important;
+    }
+
+}

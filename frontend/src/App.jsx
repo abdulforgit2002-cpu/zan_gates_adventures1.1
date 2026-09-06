@@ -2,6 +2,7 @@ import {
     BrowserRouter,
     Routes,
     Route,
+    Navigate,
 } from "react-router-dom";
 
 import Home from "./pages/Home";
@@ -37,17 +38,23 @@ function App() {
 
                     <Route
                         path="/"
-                        element={<Home />}
+                        element={
+                            <Home />
+                        }
                     />
 
                     <Route
                         path="/tours/:slug"
-                        element={<TourDetails />}
+                        element={
+                            <TourDetails />
+                        }
                     />
 
                     <Route
                         path="/book/:slug"
-                        element={<Booking />}
+                        element={
+                            <Booking />
+                        }
                     />
 
 
@@ -57,7 +64,9 @@ function App() {
 
                     <Route
                         path="/admin/login"
-                        element={<AdminLogin />}
+                        element={
+                            <AdminLogin />
+                        }
                     />
 
 
@@ -66,8 +75,14 @@ function App() {
                     ===================================================== */}
 
                     <Route
-                        element={<ProtectedRoute />}
+                        element={
+                            <ProtectedRoute />
+                        }
                     >
+
+                        {/* -------------------------------------------------
+                            ADMIN DASHBOARD
+                        ------------------------------------------------- */}
 
                         <Route
                             path="/admin/dashboard"
@@ -75,6 +90,11 @@ function App() {
                                 <AdminDashboard />
                             }
                         />
+
+
+                        {/* -------------------------------------------------
+                            ADMIN BOOKINGS
+                        ------------------------------------------------- */}
 
                         <Route
                             path="/admin/bookings"
@@ -90,9 +110,10 @@ function App() {
                             }
                         />
 
-                        {/* =================================================
-                            TOUR MANAGEMENT
-                        ================================================= */}
+
+                        {/* -------------------------------------------------
+                            ADMIN TOUR MANAGEMENT
+                        ------------------------------------------------- */}
 
                         <Route
                             path="/admin/tours"
@@ -116,6 +137,24 @@ function App() {
                         />
 
                     </Route>
+
+
+                    {/* =====================================================
+                        FALLBACK
+                    =====================================================
+
+                        Any unknown URL is redirected to the homepage.
+                    */}
+
+                    <Route
+                        path="*"
+                        element={
+                            <Navigate
+                                to="/"
+                                replace
+                            />
+                        }
+                    />
 
                 </Routes>
 
