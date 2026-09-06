@@ -37,6 +37,7 @@ require_once __DIR__ . '/../src/Controllers/BookingEnquiryController.php';
 require_once __DIR__ . '/../src/Controllers/AdminAuthController.php';
 require_once __DIR__ . '/../src/Controllers/AdminBookingController.php';
 require_once __DIR__ . '/../src/Controllers/AdminDashboardController.php';
+require_once __DIR__ . '/../src/Controllers/AdminTourController.php';
 
 
 /*
@@ -88,6 +89,9 @@ $adminBookingController =
 
 $adminDashboardController =
     new AdminDashboardController($db);
+
+$adminTourController =
+    new AdminTourController($db);
 
 
 /*
@@ -387,6 +391,262 @@ $router->get(
 $router->put(
     '/api/admin/bookings/{id}/status',
     [$adminBookingController, 'updateStatus']
+);
+
+/*
+|--------------------------------------------------------------------------
+| ADMIN TOUR MANAGEMENT
+|--------------------------------------------------------------------------
+|
+| All endpoints below are protected by
+| AuthMiddleware::requireAdmin().
+|
+|--------------------------------------------------------------------------
+*/
+
+
+/*
+|--------------------------------------------------------------------------
+| TOUR LIST
+|--------------------------------------------------------------------------
+*/
+
+/*
+ * Get all tours including ACTIVE and INACTIVE.
+ *
+ * GET /api/admin/tours
+ *
+ * Optional:
+ *
+ * page
+ * per_page
+ * search
+ * status
+ * category_id
+ * destination_id
+ * featured
+ */
+$router->get(
+    '/api/admin/tours',
+    [$adminTourController, 'index']
+);
+
+
+/*
+|--------------------------------------------------------------------------
+| TOUR CREATE
+|--------------------------------------------------------------------------
+*/
+
+/*
+ * Create a new tour.
+ *
+ * POST /api/admin/tours
+ */
+$router->post(
+    '/api/admin/tours',
+    [$adminTourController, 'store']
+);
+
+
+/*
+|--------------------------------------------------------------------------
+| TOUR DETAIL
+|--------------------------------------------------------------------------
+*/
+
+/*
+ * Get complete admin tour information.
+ *
+ * GET /api/admin/tours/{id}
+ *
+ * Includes:
+ * - tour
+ * - prices
+ * - images
+ */
+$router->get(
+    '/api/admin/tours/{id}',
+    [$adminTourController, 'show']
+);
+
+
+/*
+|--------------------------------------------------------------------------
+| TOUR UPDATE
+|--------------------------------------------------------------------------
+*/
+
+/*
+ * Update complete tour information.
+ *
+ * PUT /api/admin/tours/{id}
+ */
+$router->put(
+    '/api/admin/tours/{id}',
+    [$adminTourController, 'update']
+);
+
+
+/*
+|--------------------------------------------------------------------------
+| TOUR STATUS
+|--------------------------------------------------------------------------
+*/
+
+/*
+ * Activate / deactivate tour.
+ *
+ * PUT /api/admin/tours/{id}/status
+ *
+ * {
+ *     "status": "ACTIVE"
+ * }
+ */
+$router->put(
+    '/api/admin/tours/{id}/status',
+    [$adminTourController, 'updateStatus']
+);
+
+
+/*
+|--------------------------------------------------------------------------
+| TOUR FEATURED
+|--------------------------------------------------------------------------
+*/
+
+/*
+ * Change featured status.
+ *
+ * PUT /api/admin/tours/{id}/featured
+ *
+ * {
+ *     "featured": true
+ * }
+ */
+$router->put(
+    '/api/admin/tours/{id}/featured',
+    [$adminTourController, 'updateFeatured']
+);
+
+
+/*
+|--------------------------------------------------------------------------
+| TOUR PRICES
+|--------------------------------------------------------------------------
+*/
+
+/*
+ * Get prices.
+ *
+ * GET /api/admin/tours/{id}/prices
+ */
+$router->get(
+    '/api/admin/tours/{id}/prices',
+    [$adminTourController, 'prices']
+);
+
+
+/*
+ * Create price.
+ *
+ * POST /api/admin/tours/{id}/prices
+ */
+$router->post(
+    '/api/admin/tours/{id}/prices',
+    [$adminTourController, 'storePrice']
+);
+
+
+/*
+ * Update price.
+ *
+ * PUT /api/admin/tours/{id}/prices/{priceId}
+ */
+$router->put(
+    '/api/admin/tours/{id}/prices/{priceId}',
+    [$adminTourController, 'updatePrice']
+);
+
+
+/*
+ * Delete price.
+ *
+ * DELETE /api/admin/tours/{id}/prices/{priceId}
+ */
+$router->delete(
+    '/api/admin/tours/{id}/prices/{priceId}',
+    [$adminTourController, 'destroyPrice']
+);
+
+
+/*
+|--------------------------------------------------------------------------
+| TOUR IMAGES
+|--------------------------------------------------------------------------
+*/
+
+/*
+ * Get images.
+ *
+ * GET /api/admin/tours/{id}/images
+ */
+$router->get(
+    '/api/admin/tours/{id}/images',
+    [$adminTourController, 'images']
+);
+
+
+/*
+ * Create image.
+ *
+ * POST /api/admin/tours/{id}/images
+ */
+$router->post(
+    '/api/admin/tours/{id}/images',
+    [$adminTourController, 'storeImage']
+);
+
+
+/*
+ * Update image.
+ *
+ * PUT /api/admin/tours/{id}/images/{imageId}
+ */
+$router->put(
+    '/api/admin/tours/{id}/images/{imageId}',
+    [$adminTourController, 'updateImage']
+);
+
+
+/*
+ * Delete image.
+ *
+ * DELETE /api/admin/tours/{id}/images/{imageId}
+ */
+$router->delete(
+    '/api/admin/tours/{id}/images/{imageId}',
+    [$adminTourController, 'destroyImage']
+);
+
+
+/*
+|--------------------------------------------------------------------------
+| TOUR DELETE
+|--------------------------------------------------------------------------
+*/
+
+/*
+ * Delete tour.
+ *
+ * DELETE /api/admin/tours/{id}
+ *
+ * A tour with existing booking enquiries
+ * cannot be deleted.
+ */
+$router->delete(
+    '/api/admin/tours/{id}',
+    [$adminTourController, 'destroy']
 );
 
 

@@ -12,6 +12,8 @@ import AdminLogin from "./pages/admin/AdminLogin";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import AdminBookings from "./pages/admin/AdminBookings";
 import AdminBookingDetails from "./pages/admin/AdminBookingDetails";
+import AdminTours from "./pages/admin/AdminTours";
+import AdminTourForm from "./pages/admin/AdminTourForm";
 
 import ProtectedRoute from "./components/admin/ProtectedRoute";
 
@@ -23,7 +25,6 @@ import {
 function App() {
 
     return (
-
         <BrowserRouter>
 
             <AuthProvider>
@@ -51,7 +52,7 @@ function App() {
 
 
                     {/* =====================================================
-                        ADMIN LOGIN
+                        ADMIN AUTHENTICATION
                     ===================================================== */}
 
                     <Route
@@ -70,17 +71,48 @@ function App() {
 
                         <Route
                             path="/admin/dashboard"
-                            element={<AdminDashboard />}
+                            element={
+                                <AdminDashboard />
+                            }
                         />
 
                         <Route
                             path="/admin/bookings"
-                            element={<AdminBookings />}
+                            element={
+                                <AdminBookings />
+                            }
                         />
 
                         <Route
                             path="/admin/bookings/:id"
-                            element={<AdminBookingDetails />}
+                            element={
+                                <AdminBookingDetails />
+                            }
+                        />
+
+                        {/* =================================================
+                            TOUR MANAGEMENT
+                        ================================================= */}
+
+                        <Route
+                            path="/admin/tours"
+                            element={
+                                <AdminTours />
+                            }
+                        />
+
+                        <Route
+                            path="/admin/tours/new"
+                            element={
+                                <AdminTourForm />
+                            }
+                        />
+
+                        <Route
+                            path="/admin/tours/:id/edit"
+                            element={
+                                <AdminTourForm />
+                            }
                         />
 
                     </Route>
