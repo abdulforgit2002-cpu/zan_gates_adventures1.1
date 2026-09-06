@@ -12,6 +12,7 @@ import Booking from "./pages/Booking";
 
 import AdminLogin from "./pages/admin/AdminLogin";
 import AdminDashboard from "./pages/admin/AdminDashboard";
+import AdminBookings from "./pages/admin/AdminBookings";
 
 
 import ProtectedRoute from "./components/admin/ProtectedRoute";
@@ -75,6 +76,11 @@ function App() {
                         <Route
                             path="/admin/dashboard"
                             element={<AdminDashboard />}
+                        />
+
+                         <Route
+                            path="/admin/bookings"
+                            element={<AdminBookings />}
                         />
 
                     </Route>

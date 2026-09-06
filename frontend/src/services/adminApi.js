@@ -1,18 +1,62 @@
 import api from "./api";
 
 
-const TOKEN_KEY = "zan_gates_admin_token";
+/*
+|--------------------------------------------------------------------------
+| CONFIGURATION
+|--------------------------------------------------------------------------
+|
+| Vite exposes variables beginning with VITE_ to the frontend.
+|
+| If VITE_API_BASE_URL is not configured, this falls back to the
+| local PHP development API.
+|
+| Example:
+|
+| VITE_API_BASE_URL=http://localhost:8000/api
+|
+|--------------------------------------------------------------------------
+*/
 
+const API_BASE_URL =
+    import.meta.env.VITE_API_BASE_URL ||
+    "http://localhost:8000/api";
+
+
+/*
+|--------------------------------------------------------------------------
+| STORAGE
+|--------------------------------------------------------------------------
+*/
+
+const TOKEN_KEY =
+    "zan_gates_admin_token";
+
+
+/*
+|--------------------------------------------------------------------------
+| ADMIN API
+|--------------------------------------------------------------------------
+*/
 
 const adminApi = {
+
 
     /*
     |--------------------------------------------------------------------------
     | LOGIN
     |--------------------------------------------------------------------------
+    |
+    | Public endpoint.
+    |
+    | POST /api/admin/login
+    |
     */
 
-    login: async (username, password) => {
+    login: async (
+        username,
+        password
+    ) => {
 
         const response = await api.post(
             "/admin/login",
@@ -22,18 +66,33 @@ const adminApi = {
             }
         );
 
-        const token = response?.data?.token;
 
-        if (!token) {
+        const token =
+            response?.data?.token;
+
+
+        if (
+            !token ||
+            typeof token !== "string"
+        ) {
+
             throw new Error(
                 "Authentication token was not returned by the server."
             );
         }
 
+
+        /*
+        |--------------------------------------------------------------------------
+        | Store JWT
+        |--------------------------------------------------------------------------
+        */
+
         localStorage.setItem(
             TOKEN_KEY,
             token
         );
+
 
         return response;
     },
@@ -69,8 +128,34 @@ const adminApi = {
 
     /*
     |--------------------------------------------------------------------------
+    | CHECK AUTHENTICATION
+    |--------------------------------------------------------------------------
+    */
+
+    isAuthenticated: () => {
+
+        return Boolean(
+            adminApi.getToken()
+        );
+    },
+
+
+    /*
+    |--------------------------------------------------------------------------
     | AUTHENTICATED REQUEST
     |--------------------------------------------------------------------------
+    |
+    | All protected administrator API requests pass through this method.
+    |
+    | Automatically:
+    |
+    | - reads JWT
+    | | adds Authorization header
+    | - handles JSON
+    | - handles 401
+    | - clears expired token
+    | - returns API response
+    |
     */
 
     authenticatedRequest: async (
@@ -78,42 +163,189 @@ const adminApi = {
         options = {}
     ) => {
 
+
+        /*
+        |--------------------------------------------------------------------------
+        | TOKEN
+        |--------------------------------------------------------------------------
+        */
+
         const token =
             adminApi.getToken();
 
+
         if (!token) {
-            throw new Error(
-                "Administrator authentication is required."
-            );
+
+            const error =
+                new Error(
+                    "Administrator authentication is required."
+                );
+
+            error.code =
+                "AUTH_REQUIRED";
+
+            throw error;
         }
 
 
-        const headers = {
-            ...(options.headers || {}),
-            Authorization: `Bearer ${token}`,
+        /*
+        |--------------------------------------------------------------------------
+        | REQUEST OPTIONS
+        |--------------------------------------------------------------------------
+        */
+
+        const requestOptions = {
+            ...options,
         };
 
 
-        const response = await fetch(
-            `http://localhost:8000/api${endpoint}`,
-            {
-                ...options,
-                headers,
-            }
-        );
+        /*
+        |--------------------------------------------------------------------------
+        | HEADERS
+        |--------------------------------------------------------------------------
+        */
+
+        const headers = {
+            Accept:
+                "application/json",
+
+            ...(options.headers || {}),
+
+            Authorization:
+                `Bearer ${token}`,
+        };
 
 
-        let data;
+        /*
+        |--------------------------------------------------------------------------
+        | JSON CONTENT TYPE
+        |--------------------------------------------------------------------------
+        |
+        | Only add Content-Type automatically when a body exists.
+        |
+        */
+
+        if (
+            requestOptions.body &&
+            !headers["Content-Type"] &&
+            !headers["content-type"]
+        ) {
+
+            headers["Content-Type"] =
+                "application/json";
+        }
+
+
+        requestOptions.headers =
+            headers;
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | REQUEST
+        |--------------------------------------------------------------------------
+        */
+
+        let response;
 
         try {
-            data = await response.json();
 
-        } catch {
+            response =
+                await fetch(
+                    `${API_BASE_URL}${endpoint}`,
+                    requestOptions
+                );
+
+        } catch (error) {
+
+            console.error(
+                "Admin API network error:",
+                error
+            );
+
+
             throw new Error(
-                "The server returned an invalid response."
+                "Unable to connect to the server. Please make sure the PHP API is running."
             );
         }
 
+
+        /*
+        |--------------------------------------------------------------------------
+        | HANDLE EMPTY RESPONSE
+        |--------------------------------------------------------------------------
+        */
+
+        let data = null;
+
+
+        const contentType =
+            response.headers.get(
+                "content-type"
+            );
+
+
+        if (
+            contentType &&
+            contentType.includes(
+                "application/json"
+            )
+        ) {
+
+            try {
+
+                data =
+                    await response.json();
+
+            } catch (error) {
+
+                console.error(
+                    "Invalid JSON response:",
+                    error
+                );
+
+
+                throw new Error(
+                    "The server returned an invalid JSON response."
+                );
+            }
+
+        } else {
+
+            /*
+            |--------------------------------------------------------------------------
+            | Try JSON anyway if the response has content
+            |--------------------------------------------------------------------------
+            */
+
+            const text =
+                await response.text();
+
+
+            if (text.trim() !== "") {
+
+                try {
+
+                    data =
+                        JSON.parse(text);
+
+                } catch {
+
+                    throw new Error(
+                        "The server returned an invalid response."
+                    );
+                }
+
+            }
+
+        }
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | AUTHENTICATION EXPIRED / INVALID
+        |--------------------------------------------------------------------------
+        */
 
         if (
             response.status === 401
@@ -121,28 +353,81 @@ const adminApi = {
 
             adminApi.logout();
 
+
             const error =
                 new Error(
                     "Your administrator session has expired."
                 );
 
-            error.code = "AUTH_EXPIRED";
+
+            error.code =
+                "AUTH_EXPIRED";
+
 
             throw error;
         }
 
 
+        /*
+        |--------------------------------------------------------------------------
+        | FORBIDDEN
+        |--------------------------------------------------------------------------
+        */
+
         if (
-            !response.ok ||
-            data.success === false
+            response.status === 403
         ) {
 
-            throw new Error(
-                data.message ||
-                "API request failed."
-            );
+            const error =
+                new Error(
+                    data?.message ||
+                    "Administrator access is required."
+                );
+
+
+            error.code =
+                "FORBIDDEN";
+
+
+            throw error;
         }
 
+
+        /*
+        |--------------------------------------------------------------------------
+        | OTHER API ERRORS
+        |--------------------------------------------------------------------------
+        */
+
+        if (
+            !response.ok ||
+            data?.success === false
+        ) {
+
+            const error =
+                new Error(
+                    data?.message ||
+                    "API request failed."
+                );
+
+
+            error.status =
+                response.status;
+
+
+            error.response =
+                data;
+
+
+            throw error;
+        }
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | SUCCESS
+        |--------------------------------------------------------------------------
+        */
 
         return data;
     },
@@ -152,6 +437,9 @@ const adminApi = {
     |--------------------------------------------------------------------------
     | CURRENT ADMIN
     |--------------------------------------------------------------------------
+    |
+    | GET /api/admin/me
+    |
     */
 
     me: async () => {
@@ -166,6 +454,9 @@ const adminApi = {
     |--------------------------------------------------------------------------
     | DASHBOARD
     |--------------------------------------------------------------------------
+    |
+    | GET /api/admin/dashboard
+    |
     */
 
     dashboard: async () => {
@@ -180,9 +471,22 @@ const adminApi = {
     |--------------------------------------------------------------------------
     | BOOKINGS
     |--------------------------------------------------------------------------
+    |
+    | GET /api/admin/bookings
+    |
+    | Examples:
+    |
+    | adminApi.bookings()
+    |
+    | adminApi.bookings(
+    |     "?page=1&per_page=10"
+    | )
+    |
     */
 
-    bookings: async (query = "") => {
+    bookings: async (
+        query = ""
+    ) => {
 
         return adminApi.authenticatedRequest(
             `/admin/bookings${query}`
@@ -194,12 +498,35 @@ const adminApi = {
     |--------------------------------------------------------------------------
     | BOOKING DETAILS
     |--------------------------------------------------------------------------
+    |
+    | GET /api/admin/bookings/{id}
+    |
     */
 
-    booking: async (id) => {
+    booking: async (
+        id
+    ) => {
+
+        if (
+            id === null ||
+            id === undefined ||
+            id === ""
+        ) {
+
+            throw new Error(
+                "Booking ID is required."
+            );
+        }
+
+
+        const bookingId =
+            encodeURIComponent(
+                String(id)
+            );
+
 
         return adminApi.authenticatedRequest(
-            `/admin/bookings/${id}`
+            `/admin/bookings/${bookingId}`
         );
     },
 
@@ -208,6 +535,9 @@ const adminApi = {
     |--------------------------------------------------------------------------
     | UPDATE BOOKING STATUS
     |--------------------------------------------------------------------------
+    |
+    | PUT /api/admin/bookings/{id}/status
+    |
     */
 
     updateBookingStatus: async (
@@ -215,8 +545,52 @@ const adminApi = {
         status
     ) => {
 
+        if (
+            id === null ||
+            id === undefined ||
+            id === ""
+        ) {
+
+            throw new Error(
+                "Booking ID is required."
+            );
+        }
+
+
+        const allowedStatuses = [
+            "PENDING",
+            "CONFIRMED",
+            "CANCELLED",
+            "COMPLETED",
+        ];
+
+
+        const normalizedStatus =
+            String(status || "")
+                .trim()
+                .toUpperCase();
+
+
+        if (
+            !allowedStatuses.includes(
+                normalizedStatus
+            )
+        ) {
+
+            throw new Error(
+                "Invalid booking status."
+            );
+        }
+
+
+        const bookingId =
+            encodeURIComponent(
+                String(id)
+            );
+
+
         return adminApi.authenticatedRequest(
-            `/admin/bookings/${id}/status`,
+            `/admin/bookings/${bookingId}/status`,
             {
                 method: "PUT",
 
@@ -226,7 +600,8 @@ const adminApi = {
                 },
 
                 body: JSON.stringify({
-                    status,
+                    status:
+                        normalizedStatus,
                 }),
             }
         );
