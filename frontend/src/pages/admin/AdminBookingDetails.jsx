@@ -122,6 +122,18 @@ function AdminBookingDetails() {
                     return;
                 }
 
+                if (
+                    err?.code ===
+                        "FORBIDDEN"
+                ) {
+
+                    setError(
+                        "You do not have permission to view this booking."
+                    );
+
+                    return;
+                }
+
                 setError(
                     err?.message ||
                     "Unable to load booking details."
@@ -156,6 +168,101 @@ function AdminBookingDetails() {
 
     /*
     |--------------------------------------------------------------------------
+    | BOOKING STATUS
+    |--------------------------------------------------------------------------
+    |
+    | Must mirror the backend transition rules.
+    |
+    | PENDING
+    |   -> CONFIRMED
+    |   -> CANCELLED
+    |
+    | CONFIRMED
+    |   -> COMPLETED
+    |   -> CANCELLED
+    |
+    | CANCELLED
+    |   -> terminal
+    |
+    | COMPLETED
+    |   -> terminal
+    |
+    |--------------------------------------------------------------------------
+    */
+
+    const getAllowedNextStatuses =
+        (status) => {
+
+            const normalizedStatus =
+                String(status || "")
+                    .trim()
+                    .toUpperCase();
+
+            switch (
+                normalizedStatus
+            ) {
+
+                case "PENDING":
+
+                    return [
+                        "CONFIRMED",
+                        "CANCELLED",
+                    ];
+
+                case "CONFIRMED":
+
+                    return [
+                        "COMPLETED",
+                        "CANCELLED",
+                    ];
+
+                case "CANCELLED":
+
+                    return [];
+
+                case "COMPLETED":
+
+                    return [];
+
+                default:
+
+                    return [];
+            }
+        };
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | STATUS ACTION LABEL
+    |--------------------------------------------------------------------------
+    */
+
+    const statusActionLabel =
+        (status) => {
+
+            switch (
+                String(status || "")
+                    .trim()
+                    .toUpperCase()
+            ) {
+
+                case "CONFIRMED":
+                    return "Confirm Booking";
+
+                case "CANCELLED":
+                    return "Cancel Booking";
+
+                case "COMPLETED":
+                    return "Mark Completed";
+
+                default:
+                    return "Update Status";
+            }
+        };
+
+
+    /*
+    |--------------------------------------------------------------------------
     | UPDATE STATUS
     |--------------------------------------------------------------------------
     */
@@ -163,28 +270,105 @@ function AdminBookingDetails() {
     const updateStatus =
         async (status) => {
 
-            if (!booking?.id) {
+            if (
+                !booking?.id ||
+                updating
+            ) {
                 return;
             }
 
             const normalizedStatus =
-                String(status)
+                String(status || "")
                     .trim()
                     .toUpperCase();
 
+            const currentStatus =
+                String(
+                    booking.status || ""
+                )
+                    .trim()
+                    .toUpperCase();
+
+
+            /*
+             * Validate requested status.
+             */
+
+            const allowedStatuses = [
+                "PENDING",
+                "CONFIRMED",
+                "CANCELLED",
+                "COMPLETED",
+            ];
+
+            if (
+                !allowedStatuses.includes(
+                    normalizedStatus
+                )
+            ) {
+
+                setActionError(
+                    "Invalid booking status."
+                );
+
+                return;
+            }
+
+
+            /*
+             * Prevent invalid frontend transitions
+             * before making an API request.
+             */
+
+            const allowedNextStatuses =
+                getAllowedNextStatuses(
+                    currentStatus
+                );
+
+            if (
+                !allowedNextStatuses.includes(
+                    normalizedStatus
+                )
+            ) {
+
+                setActionError(
+                    `Invalid booking status transition: ${formatStatus(
+                        currentStatus
+                    )} → ${formatStatus(
+                        normalizedStatus
+                    )}.`
+                );
+
+                return;
+            }
+
+
+            /*
+             * Confirmation messages.
+             */
+
             const messages = {
+
                 CONFIRMED:
                     "Are you sure you want to confirm this booking?",
+
                 CANCELLED:
                     "Are you sure you want to cancel this booking?",
+
                 COMPLETED:
                     "Are you sure you want to mark this booking as completed?",
             };
+
 
             const confirmation =
                 messages[
                     normalizedStatus
                 ];
+
+
+            /*
+             * Ask administrator for confirmation.
+             */
 
             if (
                 confirmation &&
@@ -195,8 +379,10 @@ function AdminBookingDetails() {
                 return;
             }
 
+
             setUpdating(true);
             setActionError("");
+
 
             try {
 
@@ -206,6 +392,7 @@ function AdminBookingDetails() {
                         normalizedStatus
                     );
 
+
                 const updatedData =
                     response?.data;
 
@@ -213,12 +400,9 @@ function AdminBookingDetails() {
                     updatedData?.booking ||
                     updatedData;
 
+
                 /*
-                 * If backend returns the updated
-                 * booking, use it directly.
-                 *
-                 * Otherwise update only the status
-                 * locally.
+                 * Use returned booking if available.
                  */
 
                 if (
@@ -233,6 +417,11 @@ function AdminBookingDetails() {
 
                 } else {
 
+                    /*
+                     * Otherwise update the status
+                     * locally.
+                     */
+
                     setBooking(
                         previous => ({
                             ...previous,
@@ -242,12 +431,62 @@ function AdminBookingDetails() {
                     );
                 }
 
+
+                /*
+                 * Reload from server so the detail
+                 * page always reflects the canonical
+                 * database state.
+                 */
+
+                try {
+
+                    const refreshedResponse =
+                        await adminApi.booking(
+                            booking.id
+                        );
+
+                    const refreshedData =
+                        refreshedResponse?.data;
+
+                    const refreshedBooking =
+                        refreshedData?.booking ||
+                        refreshedData;
+
+                    if (
+                        refreshedBooking &&
+                        typeof refreshedBooking === "object"
+                    ) {
+
+                        setBooking(
+                            refreshedBooking
+                        );
+                    }
+
+                } catch (refreshError) {
+
+                    /*
+                     * The status update already succeeded.
+                     * Do not turn a successful update into
+                     * an error just because the refresh failed.
+                     */
+
+                    console.warn(
+                        "Booking was updated, but refreshing the booking failed:",
+                        refreshError
+                    );
+                }
+
             } catch (err) {
 
                 console.error(
                     "Unable to update booking status:",
                     err
                 );
+
+
+                /*
+                 * Authentication expired.
+                 */
 
                 if (
                     err?.code ===
@@ -267,6 +506,102 @@ function AdminBookingDetails() {
 
                     return;
                 }
+
+
+                /*
+                 * Permission denied.
+                 */
+
+                if (
+                    err?.code ===
+                        "FORBIDDEN"
+                ) {
+
+                    setActionError(
+                        "You do not have permission to update this booking."
+                    );
+
+                    return;
+                }
+
+
+                /*
+                 * Backend rejected the transition.
+                 *
+                 * Example:
+                 *
+                 * COMPLETED → CANCELLED
+                 */
+
+                if (
+                    err?.status === 409
+                ) {
+
+                    const backendErrors =
+                        err?.response?.errors ||
+                        err?.errors ||
+                        null;
+
+                    if (
+                        backendErrors?.current_status &&
+                        backendErrors?.requested_status
+                    ) {
+
+                        const backendCurrentStatus =
+                            String(
+                                backendErrors.current_status
+                            )
+                                .trim()
+                                .toUpperCase();
+
+                        const backendRequestedStatus =
+                            String(
+                                backendErrors.requested_status
+                            )
+                                .trim()
+                                .toUpperCase();
+
+                        setActionError(
+                            `Invalid booking status transition: ${formatStatus(
+                                backendCurrentStatus
+                            )} → ${formatStatus(
+                                backendRequestedStatus
+                            )}.`
+                        );
+
+                    } else {
+
+                        setActionError(
+                            err?.message ||
+                            "This booking status change is not allowed."
+                        );
+                    }
+
+
+                    /*
+                     * Refresh because another admin/user
+                     * may have changed the booking.
+                     */
+
+                    try {
+
+                        await loadBooking();
+
+                    } catch (refreshError) {
+
+                        console.warn(
+                            "Unable to refresh booking after status conflict:",
+                            refreshError
+                        );
+                    }
+
+                    return;
+                }
+
+
+                /*
+                 * General error.
+                 */
 
                 setActionError(
                     err?.message ||
@@ -438,6 +773,7 @@ function AdminBookingDetails() {
                     <div className="admin-topbar">
 
                         <div>
+
                             <span className="admin-eyebrow">
                                 ADMINISTRATION
                             </span>
@@ -445,9 +781,11 @@ function AdminBookingDetails() {
                             <h1>
                                 Booking Details
                             </h1>
+
                         </div>
 
                     </div>
+
 
                     <section className="admin-content">
 
@@ -484,6 +822,7 @@ function AdminBookingDetails() {
                     <div className="admin-topbar">
 
                         <div>
+
                             <span className="admin-eyebrow">
                                 ADMINISTRATION
                             </span>
@@ -491,9 +830,11 @@ function AdminBookingDetails() {
                             <h1>
                                 Booking Details
                             </h1>
+
                         </div>
 
                     </div>
+
 
                     <section className="admin-content">
 
@@ -508,6 +849,7 @@ function AdminBookingDetails() {
                                     "The requested booking could not be found."}
                             </p>
 
+
                             <div className="admin-error-actions">
 
                                 <button
@@ -517,6 +859,7 @@ function AdminBookingDetails() {
                                 >
                                     Try Again
                                 </button>
+
 
                                 <Link
                                     to="/admin/bookings"
@@ -550,27 +893,64 @@ function AdminBookingDetails() {
         booking.title ||
         "Tour";
 
+
     const tourSlug =
         booking.tour_slug ||
         booking.slug ||
         "";
 
+
     const currency =
         booking.currency ||
         "USD";
+
 
     const adults =
         Number(
             booking.adults || 0
         );
 
+
     const children =
         Number(
             booking.children || 0
         );
 
+
     const totalGuests =
         adults + children;
+
+
+    const normalizedBookingStatus =
+        String(
+            booking.status || ""
+        )
+            .trim()
+            .toUpperCase();
+
+
+    const allowedNextStatuses =
+        getAllowedNextStatuses(
+            normalizedBookingStatus
+        );
+
+
+    const canConfirm =
+        allowedNextStatuses.includes(
+            "CONFIRMED"
+        );
+
+
+    const canCancel =
+        allowedNextStatuses.includes(
+            "CANCELLED"
+        );
+
+
+    const canComplete =
+        allowedNextStatuses.includes(
+            "COMPLETED"
+        );
 
 
     /*
@@ -745,6 +1125,7 @@ function AdminBookingDetails() {
                                     }
                                 />
 
+
                                 <DetailRow
                                     label="Email"
                                     value={
@@ -757,6 +1138,7 @@ function AdminBookingDetails() {
                                             : null
                                     }
                                 />
+
 
                                 <DetailRow
                                     label="Phone"
@@ -804,6 +1186,7 @@ function AdminBookingDetails() {
                                     value={tourTitle}
                                 />
 
+
                                 <DetailRow
                                     label="Travel Date"
                                     value={formatDate(
@@ -811,15 +1194,18 @@ function AdminBookingDetails() {
                                     )}
                                 />
 
+
                                 <DetailRow
                                     label="Adults"
                                     value={`${adults}`}
                                 />
 
+
                                 <DetailRow
                                     label="Children"
                                     value={`${children}`}
                                 />
+
 
                                 <DetailRow
                                     label="Total Guests"
@@ -933,10 +1319,12 @@ function AdminBookingDetails() {
                             </div>
 
 
+                            {/* STATUS ACTIONS */}
+
                             <div className="booking-actions">
 
-                                {booking.status !==
-                                    "CONFIRMED" && (
+                                {canConfirm && (
+
                                     <button
                                         type="button"
                                         className="admin-btn admin-btn-success"
@@ -949,13 +1337,16 @@ function AdminBookingDetails() {
                                     >
                                         {updating
                                             ? "Updating..."
-                                            : "Confirm Booking"}
+                                            : statusActionLabel(
+                                                "CONFIRMED"
+                                            )}
                                     </button>
+
                                 )}
 
 
-                                {booking.status !==
-                                    "CANCELLED" && (
+                                {canCancel && (
+
                                     <button
                                         type="button"
                                         className="admin-btn admin-btn-danger"
@@ -968,13 +1359,16 @@ function AdminBookingDetails() {
                                     >
                                         {updating
                                             ? "Updating..."
-                                            : "Cancel Booking"}
+                                            : statusActionLabel(
+                                                "CANCELLED"
+                                            )}
                                     </button>
+
                                 )}
 
 
-                                {booking.status !==
-                                    "COMPLETED" && (
+                                {canComplete && (
+
                                     <button
                                         type="button"
                                         className="admin-btn admin-btn-primary"
@@ -987,8 +1381,28 @@ function AdminBookingDetails() {
                                     >
                                         {updating
                                             ? "Updating..."
-                                            : "Mark Completed"}
+                                            : statusActionLabel(
+                                                "COMPLETED"
+                                            )}
                                     </button>
+
+                                )}
+
+
+                                {/* TERMINAL STATUS MESSAGE */}
+
+                                {!canConfirm &&
+                                    !canCancel &&
+                                    !canComplete && (
+
+                                    <div className="booking-status-terminal">
+
+                                        <span>
+                                            This booking is in a final status.
+                                        </span>
+
+                                    </div>
+
                                 )}
 
                             </div>
@@ -1020,15 +1434,19 @@ function AdminBookingDetails() {
                             <div className="booking-notes">
 
                                 {booking.special_requirements ? (
+
                                     <p>
                                         {
                                             booking.special_requirements
                                         }
                                     </p>
+
                                 ) : (
+
                                     <span>
                                         No special requirements were provided.
                                     </span>
+
                                 )}
 
                             </div>
@@ -1064,12 +1482,14 @@ function AdminBookingDetails() {
                                     value={`#${booking.id}`}
                                 />
 
+
                                 <DetailRow
                                     label="Created"
                                     value={formatDateTime(
                                         booking.created_at
                                     )}
                                 />
+
 
                                 <DetailRow
                                     label="Last Updated"
@@ -1126,16 +1546,21 @@ function DetailRow({
                 {label}
             </span>
 
+
             {link ? (
+
                 <a
                     href={link}
                 >
                     {value}
                 </a>
+
             ) : (
+
                 <strong>
                     {value}
                 </strong>
+
             )}
 
         </div>
@@ -1181,6 +1606,7 @@ function AdminSidebar({
                         ZG
                     </span>
 
+
                     <span className="admin-brand-name">
 
                         <strong>
@@ -1209,6 +1635,7 @@ function AdminSidebar({
                     to="/admin/dashboard"
                     className="admin-nav-link"
                 >
+
                     <span className="admin-nav-icon">
                         ▦
                     </span>
@@ -1216,6 +1643,7 @@ function AdminSidebar({
                     <span>
                         Dashboard
                     </span>
+
                 </Link>
 
 
@@ -1223,6 +1651,7 @@ function AdminSidebar({
                     to="/admin/bookings"
                     className="admin-nav-link active"
                 >
+
                     <span className="admin-nav-icon">
                         ▤
                     </span>
@@ -1230,6 +1659,7 @@ function AdminSidebar({
                     <span>
                         Bookings
                     </span>
+
                 </Link>
 
             </nav>
@@ -1241,6 +1671,7 @@ function AdminSidebar({
                     to="/"
                     className="admin-nav-link"
                 >
+
                     <span className="admin-nav-icon">
                         ↗
                     </span>
@@ -1248,6 +1679,7 @@ function AdminSidebar({
                     <span>
                         View Website
                     </span>
+
                 </Link>
 
 
@@ -1256,6 +1688,7 @@ function AdminSidebar({
                     <div className="admin-user-avatar">
                         S
                     </div>
+
 
                     <div className="admin-user-info">
 
