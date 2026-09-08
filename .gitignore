@@ -20,3 +20,6 @@ frontend/dist/
 # IDE/editor
 .vscode/
 .idea/
+
+# Local office/project documents
+*.odt
