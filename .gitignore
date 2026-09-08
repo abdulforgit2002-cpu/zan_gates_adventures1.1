@@ -1,0 +1,21 @@
+# Environment / secrets
+.env
+.env.*
+!.env.example
+
+# PHP local/runtime files
+*.log
+
+# OS/editor temporary files
+.DS_Store
+.~lock.*
+*.swp
+*.swo
+
+# Node
+node_modules/
+dist/
+
+# IDE/editor
+.vscode/
+.idea/

@@ -1,6 +1,17 @@
 <?php
 
 // ===============================
+// ENVIRONMENT CONFIGURATION
+// ===============================
+
+require_once __DIR__ . '/../src/Core/Env.php';
+
+Env::load(
+    dirname(__DIR__, 2) . '/.env'
+);
+
+
+// ===============================
 // CORS CONFIGURATION
 // ===============================
 
@@ -13,6 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     http_response_code(204);
     exit;
 }
+
 
 // ===============================
 // LOAD API ROUTES
