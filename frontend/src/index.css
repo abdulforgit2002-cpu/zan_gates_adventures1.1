@@ -3,6 +3,12 @@
    GLOBAL / PUBLIC WEBSITE / ADMINISTRATION
    ============================================================ */
 
+/* Tailwind directives (when Tailwind is installed/builds are run) */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
 /* ============================================================
    GLOBAL FOUNDATION
    ============================================================ */
