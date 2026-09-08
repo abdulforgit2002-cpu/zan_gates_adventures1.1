@@ -11,7 +11,8 @@ import {
     getTours,
 } from "../services/tourService";
 
-import TourCard from "../components/TourCard";
+import TailwindHero from "../components/TailwindHero";
+import TailwindTourCard from "../components/TailwindTourCard";
 
 
 /*
@@ -20,251 +21,8 @@ import TourCard from "../components/TourCard";
 |--------------------------------------------------------------------------
 |
 | Each image represents a different Zanzibar experience.
-|
-| duration = how long the slide remains visible.
-|
-*/
-
-const HOME_HERO_SLIDES = [
-
-    {
-        id: 1,
-
-        image:
-            "https://res.cloudinary.com/djczmay2i/image/upload/v1779540443/aaa_faq_ixagv2.webp",
-
-        eyebrow:
-            "DISCOVER ZANZIBAR",
-
-        title:
-            "Where every journey becomes a story.",
-
-        experience:
-            "The Spirit of Zanzibar",
-
-        description:
-            "Experience the island through unforgettable places, people, culture and adventure.",
-
-        duration:
-            7000,
-
-        position:
-            "center center",
-
-        motion:
-            "zoom-in",
-    },
-
-
-    {
-        id: 2,
-
-        image:
-            "https://res.cloudinary.com/djczmay2i/image/upload/v1779537151/Prison_Island_wa08hw.jpg",
-
-        eyebrow:
-            "PRISON ISLAND",
-
-        title:
-            "History, turquoise waters and unforgettable encounters.",
-
-        experience:
-            "Prison Island Adventure",
-
-        description:
-            "Discover a legendary island surrounded by the crystal waters of the Indian Ocean.",
-
-        duration:
-            8000,
-
-        position:
-            "center 45%",
-
-        motion:
-            "pan-left",
-    },
-
-
-    {
-        id: 3,
-
-        image:
-            "https://res.cloudinary.com/djczmay2i/image/upload/v1779537152/Prison_Island2_nbupim.avif",
-
-        eyebrow:
-            "OCEAN ADVENTURES",
-
-        title:
-            "Dive into the beauty of Zanzibar.",
-
-        experience:
-            "Island & Ocean Escape",
-
-        description:
-            "Explore the breathtaking waters, hidden beauty and unforgettable marine experiences of Zanzibar.",
-
-        duration:
-            7000,
-
-        position:
-            "center center",
-
-        motion:
-            "zoom-out",
-    },
-
-
-    {
-        id: 4,
-
-        image:
-            "https://res.cloudinary.com/djczmay2i/image/upload/v1779459606/Jozani_Forest_Tour8_c21zcx.jpg",
-
-        eyebrow:
-            "JOZANI FOREST",
-
-        title:
-            "Discover Zanzibar's wild side.",
-
-        experience:
-            "Jozani Forest Experience",
-
-        description:
-            "Walk beneath ancient trees and discover the natural world that makes Zanzibar unique.",
-
-        duration:
-            9000,
-
-        position:
-            "center 35%",
-
-        motion:
-            "pan-right",
-    },
-
-
-    {
-        id: 5,
-
-        image:
-            "https://res.cloudinary.com/djczmay2i/image/upload/v1779286801/nungwi_car4_zqc7ba.avif",
-
-        eyebrow:
-            "NUNGWI",
-
-        title:
-            "Where the island meets the Indian Ocean.",
-
-        experience:
-            "Nungwi Escape",
-
-        description:
-            "Experience the beauty of Zanzibar's northern coast, turquoise waters and unforgettable sunsets.",
-
-        duration:
-            8000,
-
-        position:
-            "center center",
-
-        motion:
-            "zoom-in",
-    },
-
-];
-
-
-const Home = () => {
-
-    const [
-        tours,
-        setTours,
-    ] = useState([]);
-
-
-    const [
-        loading,
-        setLoading,
-    ] = useState(true);
-
-
-    const [
-        error,
-        setError,
-    ] = useState("");
-
-
-    const [
-        activeHeroImage,
-        setActiveHeroImage,
-    ] = useState(0);
-
-
-    const [
-        heroVisible,
-        setHeroVisible,
-    ] = useState(false);
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | LOAD TOURS
-    |--------------------------------------------------------------------------
-    */
-
-    useEffect(() => {
-
-        const loadTours = async () => {
-
-            try {
-
-                setLoading(true);
-
-                setError("");
-
-
-                const tourData =
-                    await getTours();
-
-
-                setTours(
-                    Array.isArray(
-                        tourData
-                    )
-                        ? tourData
-                        : []
-                );
-
-
-            } catch (error) {
-
-                console.error(
-                    "Failed to load tours:",
-                    error
-                );
-
-
-                setTours([]);
-
-
-                setError(
-                    "Unable to load our experiences right now."
-                );
-
-
-            } finally {
-
-                setLoading(false);
-
-            }
-
-        };
-
-
-        loadTours();
-
-    }, []);
-
+            <TailwindHero slides={HOME_HERO_SLIDES} active={activeHeroImage} onChange={handleHeroChange} />
+            
 
     /*
     |--------------------------------------------------------------------------
@@ -298,6 +56,10 @@ const Home = () => {
     }, []);
 
 
+                
+                {!loading &&
+                    !error &&
+                    tours.length > 0 && (
     /*
     |--------------------------------------------------------------------------
     | PRELOAD ALL HERO IMAGES
@@ -324,10 +86,10 @@ const Home = () => {
     }, []);
 
 
-    /*
+                    <div className="home-tours-grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
     |--------------------------------------------------------------------------
     | HERO SLIDESHOW
-    |--------------------------------------------------------------------------
+                                <TailwindTourCard
     */
 
     useEffect(() => {
@@ -609,71 +371,10 @@ const Home = () => {
 
 
                 {/* -----------------------------------------------------
-                    CURRENT EXPERIENCE
-                ----------------------------------------------------- */}
-
-                <div
-                    key={
-                        `experience-${currentHeroSlide.id}`
-                    }
-
-                    className="home-hero-experience"
-                >
-
-                    <span>
-                        ZAN GATES EXPERIENCE
-                    </span>
-
-                    <strong>
-                        {
-                            currentHeroSlide.experience
-                        }
-                    </strong>
-
-                </div>
-
-
-                {/* -----------------------------------------------------
-                    SLIDE COUNTER
-                ----------------------------------------------------- */}
-
-                <div
-                    className="home-hero-counter"
-                    aria-live="polite"
-                    aria-atomic="true"
-                >
-
-                    <strong>
-                        {
-                            String(
-                                activeHeroImage + 1
-                            ).padStart(
-                                2,
-                                "0"
-                            )
-                        }
-                    </strong>
-
-                    <span>
-                        /
-                    </span>
-
-                    <span>
-                        {
-                            String(
-                                HOME_HERO_SLIDES.length
-                            ).padStart(
-                                2,
-                                "0"
-                            )
-                        }
-                    </span>
-
-                </div>
-
-
-                {/* -----------------------------------------------------
                     SLIDE NAVIGATION
+                    -----------------------------------------------------
+                    The experience label, slide counter and scroll
+                    indicator have intentionally been removed.
                 ----------------------------------------------------- */}
 
                 <div
@@ -729,27 +430,6 @@ const Home = () => {
                     )}
 
                 </div>
-
-
-                {/* -----------------------------------------------------
-                    SCROLL INDICATOR
-                ----------------------------------------------------- */}
-
-                <a
-                    href="#tours"
-                    className="home-hero-scroll"
-                    aria-label="Scroll to experiences"
-                >
-
-                    <span>
-                        SCROLL TO EXPLORE
-                    </span>
-
-                    <strong>
-                        ↓
-                    </strong>
-
-                </a>
 
 
             </section>
