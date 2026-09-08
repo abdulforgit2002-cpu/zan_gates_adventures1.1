@@ -173,8 +173,10 @@ const formatPricingRange = (
 const getPrimaryImage = (
     images
 ) => {
-    if (!Array.isArray(images) ||
-        images.length === 0) {
+    if (
+        !Array.isArray(images) ||
+        images.length === 0
+    ) {
         return "";
     }
 
@@ -563,6 +565,50 @@ function TourDetails() {
             images[nextIndex],
             nextIndex
         );
+    };
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | OPEN LIGHTBOX
+    |--------------------------------------------------------------------------
+    */
+
+    const openLightbox = () => {
+
+        if (!primaryImage) {
+            return;
+        }
+
+        setLightboxOpen(
+            true
+        );
+    };
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | MAIN GALLERY KEYBOARD
+    |--------------------------------------------------------------------------
+    |
+    | The gallery itself is now a div instead of a button because it
+    | contains independent previous/next button controls.
+    |
+    */
+
+    const handleGalleryKeyDown = (
+        event
+    ) => {
+
+        if (
+            event.key === "Enter" ||
+            event.key === " "
+        ) {
+
+            event.preventDefault();
+
+            openLightbox();
+        }
     };
 
 
@@ -1109,7 +1155,7 @@ function TourDetails() {
     */
 
     return (
-        <div className="tour-details-page">
+        <div className="tour-details-page bg-white min-h-screen">
 
 
             {/* ==========================================================
@@ -1117,7 +1163,7 @@ function TourDetails() {
             ========================================================== */}
 
             <section
-                className="tour-details-hero"
+                className="tour-details-hero relative bg-cover bg-center"
                 style={
                     primaryImage
                         ? {
@@ -1130,7 +1176,7 @@ function TourDetails() {
 
                 <div className="tour-details-hero-overlay" />
 
-                <div className="tour-details-container">
+                <div className="tour-details-container max-w-7xl mx-auto px-6">
 
                     <div className="tour-details-breadcrumb">
 
@@ -1153,7 +1199,7 @@ function TourDetails() {
                     </div>
 
 
-                    <div className="tour-details-hero-content">
+                    <div className="tour-details-hero-content max-w-3xl">
 
                         <div className="tour-details-category-row">
 
@@ -1198,6 +1244,7 @@ function TourDetails() {
                                             stroke="currentColor"
                                             strokeWidth="1.7"
                                         />
+
                                         <circle
                                             cx="12"
                                             cy="9"
@@ -1237,6 +1284,7 @@ function TourDetails() {
                                             stroke="currentColor"
                                             strokeWidth="1.7"
                                         />
+
                                         <path
                                             d="M12 7v5l3.2 2"
                                             fill="none"
@@ -1308,6 +1356,7 @@ function TourDetails() {
 
 
                 <div className="tour-hero-bottom">
+
                     <span>
                         ZAN GATES ADVENTURES
                     </span>
@@ -1315,6 +1364,7 @@ function TourDetails() {
                     <span>
                         ZANZIBAR • TANZANIA
                     </span>
+
                 </div>
 
             </section>
@@ -1326,16 +1376,16 @@ function TourDetails() {
 
             <main className="tour-details-content">
 
-                <div className="tour-details-container">
+                <div className="tour-details-container max-w-7xl mx-auto px-6">
 
-                    <div className="tour-details-layout">
+                    <div className="tour-details-layout grid grid-cols-1 lg:grid-cols-3 gap-10">
 
 
                         {/* ==================================================
                             MAIN CONTENT
                         ================================================== */}
 
-                        <div className="tour-details-main">
+                        <div className="tour-details-main lg:col-span-2">
 
 
                             {/* ==================================================
@@ -1347,6 +1397,7 @@ function TourDetails() {
                                 <div className="tour-gallery-heading">
 
                                     <div>
+
                                         <span className="tour-section-eyebrow">
                                             VISUAL JOURNEY
                                         </span>
@@ -1354,14 +1405,23 @@ function TourDetails() {
                                         <h2>
                                             Explore the experience
                                         </h2>
+
                                     </div>
+
 
                                     {images.length > 0 && (
                                         <span className="tour-gallery-count">
+
                                             {imageIndex + 1}
+
                                             {" "}
-                                            /{" "}
+
+                                            /
+
+                                            {" "}
+
                                             {images.length}
+
                                         </span>
                                     )}
 
@@ -1372,15 +1432,27 @@ function TourDetails() {
 
                                     <div className="tour-gallery">
 
-                                        <button
-                                            type="button"
+
+                                        {/* ==================================================
+                                            MAIN IMAGE
+
+                                            IMPORTANT:
+                                            This is a DIV rather than a BUTTON because
+                                            the previous/next controls are independent
+                                            buttons inside this gallery area.
+                                        ================================================== */}
+
+                                        <div
                                             className="tour-gallery-main"
-                                            onClick={() =>
-                                                setLightboxOpen(
-                                                    true
-                                                )
+                                            role="button"
+                                            tabIndex={0}
+                                            onClick={
+                                                openLightbox
                                             }
-                                            aria-label="Open tour image"
+                                            onKeyDown={
+                                                handleGalleryKeyDown
+                                            }
+                                            aria-label="Open tour image gallery"
                                         >
 
                                             <img
@@ -1399,11 +1471,14 @@ function TourDetails() {
                                                 }}
                                             />
 
+
                                             <span className="tour-gallery-open">
+
                                                 <svg
                                                     viewBox="0 0 24 24"
                                                     aria-hidden="true"
                                                 >
+
                                                     <path
                                                         d="M8 3H3v5M16 3h5v5M8 21H3v-5M21 16v5h-5"
                                                         fill="none"
@@ -1411,42 +1486,63 @@ function TourDetails() {
                                                         strokeWidth="1.7"
                                                         strokeLinecap="round"
                                                     />
+
                                                 </svg>
 
                                                 View gallery
+
                                             </span>
 
 
-                                            {images.length > 1 && (
-                                                <>
-                                                    <button
-                                                        type="button"
-                                                        className="tour-gallery-arrow tour-gallery-arrow-left"
-                                                        onClick={(event) => {
-                                                            event.stopPropagation();
-                                                            showPreviousImage();
-                                                        }}
-                                                        aria-label="Previous image"
-                                                    >
-                                                        ←
-                                                    </button>
+                                            {/* ==================================================
+                                                PREVIOUS IMAGE
+                                            ================================================== */}
 
-                                                    <button
-                                                        type="button"
-                                                        className="tour-gallery-arrow tour-gallery-arrow-right"
-                                                        onClick={(event) => {
-                                                            event.stopPropagation();
-                                                            showNextImage();
-                                                        }}
-                                                        aria-label="Next image"
-                                                    >
-                                                        →
-                                                    </button>
-                                                </>
+                                            {images.length > 1 && (
+                                                <button
+                                                    type="button"
+                                                    className="tour-gallery-arrow tour-gallery-arrow-left"
+                                                    onClick={(event) => {
+
+                                                        event.stopPropagation();
+
+                                                        showPreviousImage();
+
+                                                    }}
+                                                    aria-label="Previous image"
+                                                >
+                                                    ←
+                                                </button>
                                             )}
 
-                                        </button>
 
+                                            {/* ==================================================
+                                                NEXT IMAGE
+                                            ================================================== */}
+
+                                            {images.length > 1 && (
+                                                <button
+                                                    type="button"
+                                                    className="tour-gallery-arrow tour-gallery-arrow-right"
+                                                    onClick={(event) => {
+
+                                                        event.stopPropagation();
+
+                                                        showNextImage();
+
+                                                    }}
+                                                    aria-label="Next image"
+                                                >
+                                                    →
+                                                </button>
+                                            )}
+
+                                        </div>
+
+
+                                        {/* ==================================================
+                                            THUMBNAILS
+                                        ================================================== */}
 
                                         {images.length > 1 && (
                                             <div className="tour-gallery-thumbnails">
@@ -1502,6 +1598,7 @@ function TourDetails() {
 
                                                             </button>
                                                         );
+
                                                     }
                                                 )}
 
@@ -1513,13 +1610,17 @@ function TourDetails() {
                                 ) : (
 
                                     <div className="tour-gallery-placeholder">
+
                                         <span>
                                             ZAN GATES
                                         </span>
+
                                         <strong>
                                             ZANZIBAR
                                         </strong>
+
                                     </div>
+
                                 )}
 
                             </section>
@@ -1542,6 +1643,7 @@ function TourDetails() {
                                 <div className="tour-description">
 
                                     {tour.description ? (
+
                                         String(
                                             tour.description
                                         )
@@ -1553,6 +1655,7 @@ function TourDetails() {
                                                     paragraph,
                                                     index
                                                 ) => (
+
                                                     <p
                                                         key={
                                                             index
@@ -1562,14 +1665,18 @@ function TourDetails() {
                                                             paragraph
                                                         }
                                                     </p>
+
                                                 )
                                             )
+
                                     ) : (
+
                                         <p>
                                             Discover an unforgettable
                                             Zanzibar experience with
                                             our local team.
                                         </p>
+
                                     )}
 
                                 </div>
@@ -1595,11 +1702,13 @@ function TourDetails() {
                                 <div className="tour-info-grid">
 
                                     <div className="tour-info-card">
+
                                         <span className="tour-info-number">
                                             01
                                         </span>
 
                                         <div>
+
                                             <span>
                                                 Destination
                                             </span>
@@ -1609,16 +1718,20 @@ function TourDetails() {
                                                     tour.destination?.name ||
                                                     "Zanzibar"}
                                             </strong>
+
                                         </div>
+
                                     </div>
 
 
                                     <div className="tour-info-card">
+
                                         <span className="tour-info-number">
                                             02
                                         </span>
 
                                         <div>
+
                                             <span>
                                                 Duration
                                             </span>
@@ -1627,16 +1740,20 @@ function TourDetails() {
                                                 {tour.duration ||
                                                     "Flexible"}
                                             </strong>
+
                                         </div>
+
                                     </div>
 
 
                                     <div className="tour-info-card">
+
                                         <span className="tour-info-number">
                                             03
                                         </span>
 
                                         <div>
+
                                             <span>
                                                 Category
                                             </span>
@@ -1646,16 +1763,20 @@ function TourDetails() {
                                                     tour.category?.name ||
                                                     "Experience"}
                                             </strong>
+
                                         </div>
+
                                     </div>
 
 
                                     <div className="tour-info-card">
+
                                         <span className="tour-info-number">
                                             04
                                         </span>
 
                                         <div>
+
                                             <span>
                                                 Availability
                                             </span>
@@ -1663,7 +1784,9 @@ function TourDetails() {
                                             <strong>
                                                 Daily enquiry
                                             </strong>
+
                                         </div>
+
                                     </div>
 
                                 </div>
@@ -1707,6 +1830,7 @@ function TourDetails() {
                                                     <div className="tour-price-description">
 
                                                         <span className="tour-price-type">
+
                                                             {String(
                                                                 price.pricing_type ||
                                                                 "PRICING"
@@ -1714,6 +1838,7 @@ function TourDetails() {
                                                                 /_/g,
                                                                 " "
                                                             )}
+
                                                         </span>
 
                                                         <strong>
@@ -1745,6 +1870,7 @@ function TourDetails() {
                                                     </div>
 
                                                 </div>
+
                                             )
                                         )}
 
@@ -1765,6 +1891,7 @@ function TourDetails() {
                                         </span>
 
                                     </div>
+
                                 )}
 
                             </section>
@@ -1788,11 +1915,13 @@ function TourDetails() {
                                 <div className="tour-benefits">
 
                                     <div>
+
                                         <span>
                                             01
                                         </span>
 
                                         <div>
+
                                             <strong>
                                                 Local knowledge
                                             </strong>
@@ -1803,16 +1932,20 @@ function TourDetails() {
                                                 the island, its waters
                                                 and its hidden places.
                                             </p>
+
                                         </div>
+
                                     </div>
 
 
                                     <div>
+
                                         <span>
                                             02
                                         </span>
 
                                         <div>
+
                                             <strong>
                                                 Personal service
                                             </strong>
@@ -1823,16 +1956,20 @@ function TourDetails() {
                                                 your travel plans
                                                 and preferences.
                                             </p>
+
                                         </div>
+
                                     </div>
 
 
                                     <div>
+
                                         <span>
                                             03
                                         </span>
 
                                         <div>
+
                                             <strong>
                                                 Easy enquiry
                                             </strong>
@@ -1843,7 +1980,9 @@ function TourDetails() {
                                                 will contact you to
                                                 confirm the details.
                                             </p>
+
                                         </div>
+
                                     </div>
 
                                 </div>
@@ -1857,7 +1996,7 @@ function TourDetails() {
                             SIDEBAR
                         ================================================== */}
 
-                        <aside className="tour-details-sidebar">
+                        <aside className="tour-details-sidebar lg:col-span-1">
 
                             <div className="tour-booking-card">
 
@@ -1868,6 +2007,7 @@ function TourDetails() {
                                     </span>
 
                                     {startingPrice && (
+
                                         <div className="tour-booking-starting-price">
 
                                             <small>
@@ -1890,6 +2030,7 @@ function TourDetails() {
                                             )}
 
                                         </div>
+
                                     )}
 
                                 </div>
@@ -1953,15 +2094,22 @@ function TourDetails() {
                                     >
 
                                         {bookingError && (
+
                                             <div
                                                 className="booking-error"
                                                 role="alert"
                                             >
-                                                <span>!</span>
+
+                                                <span>
+                                                    !
+                                                </span>
+
                                                 <p>
                                                     {bookingError}
                                                 </p>
+
                                             </div>
+
                                         )}
 
 
@@ -2016,10 +2164,13 @@ function TourDetails() {
                                         <div className="booking-field">
 
                                             <label htmlFor="phone">
+
                                                 Phone number
+
                                                 <span>
                                                     Optional
                                                 </span>
+
                                             </label>
 
                                             <input
@@ -2118,10 +2269,13 @@ function TourDetails() {
                                         <div className="booking-field">
 
                                             <label htmlFor="message">
+
                                                 Message
+
                                                 <span>
                                                     Optional
                                                 </span>
+
                                             </label>
 
                                             <textarea
@@ -2145,6 +2299,7 @@ function TourDetails() {
                                             <div className="tour-booking-price">
 
                                                 <div>
+
                                                     <span>
                                                         Estimated total
                                                     </span>
@@ -2155,18 +2310,26 @@ function TourDetails() {
                                                             estimatedPrice.currency
                                                         )}
                                                     </strong>
+
                                                 </div>
 
                                                 <small>
+
                                                     Based on{" "}
-                                                    {guestCount}{" "}
+
+                                                    {guestCount}
+
+                                                    {" "}
+
                                                     guest
                                                     {guestCount === 1
                                                         ? ""
                                                         : "s"}
+
                                                 </small>
 
                                             </div>
+
                                         )}
 
 
@@ -2179,17 +2342,27 @@ function TourDetails() {
                                         >
 
                                             {submitting ? (
+
                                                 <>
+
                                                     <span className="button-spinner" />
+
                                                     Sending enquiry...
+
                                                 </>
+
                                             ) : (
+
                                                 <>
+
                                                     Send Enquiry
+
                                                     <span>
                                                         →
                                                     </span>
+
                                                 </>
+
                                             )}
 
                                         </button>
@@ -2221,11 +2394,13 @@ function TourDetails() {
                                 to="/#tours"
                                 className="tour-back-link"
                             >
+
                                 <span>
                                     ←
                                 </span>
 
                                 Back to all experiences
+
                             </Link>
 
                         </aside>
@@ -2243,6 +2418,7 @@ function TourDetails() {
 
             {lightboxOpen &&
                 primaryImage && (
+
                 <div
                     className="tour-lightbox"
                     role="dialog"
@@ -2269,8 +2445,11 @@ function TourDetails() {
                         type="button"
                         className="tour-lightbox-arrow tour-lightbox-left"
                         onClick={(event) => {
+
                             event.stopPropagation();
+
                             showPreviousImage();
+
                         }}
                         aria-label="Previous image"
                     >
@@ -2297,7 +2476,9 @@ function TourDetails() {
                             }
                         />
 
+
                         <div className="tour-lightbox-caption">
+
                             <span>
                                 {tour.title}
                             </span>
@@ -2307,6 +2488,7 @@ function TourDetails() {
                                 {" / "}
                                 {images.length}
                             </small>
+
                         </div>
 
                     </div>
@@ -2316,8 +2498,11 @@ function TourDetails() {
                         type="button"
                         className="tour-lightbox-arrow tour-lightbox-right"
                         onClick={(event) => {
+
                             event.stopPropagation();
+
                             showNextImage();
+
                         }}
                         aria-label="Next image"
                     >
@@ -2325,6 +2510,7 @@ function TourDetails() {
                     </button>
 
                 </div>
+
             )}
 
         </div>
