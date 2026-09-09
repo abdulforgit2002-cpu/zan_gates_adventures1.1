@@ -19,6 +19,12 @@ function Navbar() {
     ] = useState(false);
 
 
+    /*
+    |--------------------------------------------------------------------------
+    | CLOSE MOBILE MENU WHEN WINDOW BECOMES DESKTOP
+    |--------------------------------------------------------------------------
+    */
+
     useEffect(() => {
 
         const handleResize = () => {
@@ -50,6 +56,12 @@ function Navbar() {
     }, []);
 
 
+    /*
+    |--------------------------------------------------------------------------
+    | PREVENT BODY SCROLL WHEN MOBILE MENU IS OPEN
+    |--------------------------------------------------------------------------
+    */
+
     useEffect(() => {
 
         if (mobileMenu) {
@@ -78,12 +90,24 @@ function Navbar() {
     }, [mobileMenu]);
 
 
+    /*
+    |--------------------------------------------------------------------------
+    | CLOSE MENU
+    |--------------------------------------------------------------------------
+    */
+
     const closeMobileMenu = () => {
 
         setMobileMenu(false);
 
     };
 
+
+    /*
+    |--------------------------------------------------------------------------
+    | NAVIGATION LINK CLASS
+    |--------------------------------------------------------------------------
+    */
 
     const navLinkClass = ({
         isActive,
@@ -98,15 +122,26 @@ function Navbar() {
     };
 
 
+    /*
+    |--------------------------------------------------------------------------
+    | RENDER
+    |--------------------------------------------------------------------------
+    */
+
     return (
 
         <header className="navbar">
+
+
+            {/* =========================================================
+                NAVBAR CONTAINER
+            ========================================================= */}
 
             <div className="navbar-container">
 
 
                 {/* =====================================================
-                    LOGO
+                    BRAND / LOGO
                 ===================================================== */}
 
                 <Link
@@ -119,6 +154,19 @@ function Navbar() {
                     <Logo
                         variant="navbar"
                     />
+
+
+                    <span className="navbar-brand-text">
+
+                        <strong>
+                            ZAN GATES
+                        </strong>
+
+                        <small>
+                            ADVENTURES
+                        </small>
+
+                    </span>
 
                 </Link>
 
@@ -137,7 +185,11 @@ function Navbar() {
                         end
                         className={navLinkClass}
                     >
-                        Home
+
+                        <span>
+                            Home
+                        </span>
+
                     </NavLink>
 
 
@@ -145,7 +197,11 @@ function Navbar() {
                         to="/tours"
                         className={navLinkClass}
                     >
-                        Tours
+
+                        <span>
+                            Tours
+                        </span>
+
                     </NavLink>
 
 
@@ -153,7 +209,11 @@ function Navbar() {
                         to="/about"
                         className={navLinkClass}
                     >
-                        About Us
+
+                        <span>
+                            About Us
+                        </span>
+
                     </NavLink>
 
 
@@ -161,17 +221,22 @@ function Navbar() {
                         to="/contact"
                         className={navLinkClass}
                     >
-                        Contact
+
+                        <span>
+                            Contact
+                        </span>
+
                     </NavLink>
 
                 </nav>
 
 
                 {/* =====================================================
-                    BOOKING BUTTON
+                    RIGHT SIDE ACTIONS
                 ===================================================== */}
 
                 <div className="navbar-actions">
+
 
                     <Link
                         to="/booking"
@@ -215,7 +280,7 @@ function Navbar() {
 
 
                 {/* =====================================================
-                    MOBILE BUTTON
+                    MOBILE MENU BUTTON
                 ===================================================== */}
 
                 <button
@@ -264,47 +329,88 @@ function Navbar() {
                 }`}
             >
 
-                <nav
-                    className="navbar-mobile-navigation"
-                    aria-label="Mobile navigation"
-                >
+                <div className="navbar-mobile-inner">
 
-                    <NavLink
-                        to="/"
-                        end
-                        className={navLinkClass}
-                        onClick={closeMobileMenu}
+
+                    <nav
+                        className="navbar-mobile-navigation"
+                        aria-label="Mobile navigation"
                     >
-                        Home
-                    </NavLink>
+
+                        <NavLink
+                            to="/"
+                            end
+                            className={navLinkClass}
+                            onClick={closeMobileMenu}
+                        >
+
+                            <span className="mobile-nav-number">
+                                01
+                            </span>
+
+                            <span>
+                                Home
+                            </span>
+
+                        </NavLink>
 
 
-                    <NavLink
-                        to="/tours"
-                        className={navLinkClass}
-                        onClick={closeMobileMenu}
-                    >
-                        Tours
-                    </NavLink>
+                        <NavLink
+                            to="/tours"
+                            className={navLinkClass}
+                            onClick={closeMobileMenu}
+                        >
+
+                            <span className="mobile-nav-number">
+                                02
+                            </span>
+
+                            <span>
+                                Tours
+                            </span>
+
+                        </NavLink>
 
 
-                    <NavLink
-                        to="/about"
-                        className={navLinkClass}
-                        onClick={closeMobileMenu}
-                    >
-                        About Us
-                    </NavLink>
+                        <NavLink
+                            to="/about"
+                            className={navLinkClass}
+                            onClick={closeMobileMenu}
+                        >
+
+                            <span className="mobile-nav-number">
+                                03
+                            </span>
+
+                            <span>
+                                About Us
+                            </span>
+
+                        </NavLink>
 
 
-                    <NavLink
-                        to="/contact"
-                        className={navLinkClass}
-                        onClick={closeMobileMenu}
-                    >
-                        Contact
-                    </NavLink>
+                        <NavLink
+                            to="/contact"
+                            className={navLinkClass}
+                            onClick={closeMobileMenu}
+                        >
 
+                            <span className="mobile-nav-number">
+                                04
+                            </span>
+
+                            <span>
+                                Contact
+                            </span>
+
+                        </NavLink>
+
+                    </nav>
+
+
+                    {/* =================================================
+                        MOBILE BOOKING CTA
+                    ================================================= */}
 
                     <Link
                         to="/booking"
@@ -312,41 +418,48 @@ function Navbar() {
                         onClick={closeMobileMenu}
                     >
 
-                        <span>
-                            Book Your Adventure
+                        <div>
+
+                            <small>
+                                START YOUR JOURNEY
+                            </small>
+
+                            <strong>
+                                Book Your Adventure
+                            </strong>
+
+                        </div>
+
+
+                        <span className="navbar-mobile-booking-arrow">
+
+                            →
+
                         </span>
-
-
-                        <svg
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            xmlns="http://www.w3.org/2000/svg"
-                            aria-hidden="true"
-                        >
-
-                            <path
-                                d="M5 12H19"
-                                stroke="currentColor"
-                                strokeWidth="1.8"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                            />
-
-                            <path
-                                d="M13 6L19 12L13 18"
-                                stroke="currentColor"
-                                strokeWidth="1.8"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                            />
-
-                        </svg>
 
                     </Link>
 
-                </nav>
+
+                    {/* =================================================
+                        MOBILE BRAND LINE
+                    ================================================= */}
+
+                    <div className="navbar-mobile-footer">
+
+                        <span>
+                            ZAN GATES ADVENTURES
+                        </span>
+
+                        <span>
+                            ZANZIBAR · TANZANIA
+                        </span>
+
+                    </div>
+
+                </div>
 
             </div>
+
 
         </header>
 

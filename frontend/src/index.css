@@ -8246,20 +8246,522 @@ body.navbar-menu-open {
 
 }
 
+/* =========================================================
+   MODERN TRANSPARENT CENTERED NAVBAR
+   ========================================================= */
+
 .navbar {
-    position: sticky;
-    top: 0;
+    position: fixed;
+    top: 18px;
+    left: 50%;
     z-index: 1000;
-    width: 100%;
+
+    width: min(1240px, calc(100% - 40px));
+    height: 72px;
+
+    transform: translateX(-50%);
+
+    background: rgba(8, 39, 45, 0.52);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 28px;
+
+    backdrop-filter: blur(20px) saturate(140%);
+    -webkit-backdrop-filter: blur(20px) saturate(140%);
+
+    box-shadow:
+        0 10px 35px rgba(0, 0, 0, 0.18),
+        inset 0 1px 0 rgba(255, 255, 255, 0.08);
+
+    transition:
+        background 0.3s ease,
+        box-shadow 0.3s ease,
+        transform 0.3s ease;
 }
 
-.public-site {
-    width: 100%;
-    min-height: 100vh;
+.navbar:hover {
+    background: rgba(8, 39, 45, 0.62);
+
+    box-shadow:
+        0 14px 40px rgba(0, 0, 0, 0.22),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
 
-.public-site .navbar {
-    position: sticky;
-    top: 0;
-    z-index: 1000;
+
+/* =========================================================
+   NAVBAR CONTAINER
+   ========================================================= */
+
+.navbar-container {
+    position: relative;
+
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 0 18px 0 22px;
+}
+
+
+/* =========================================================
+   BRAND / LOGO
+   ========================================================= */
+
+.navbar-brand {
+    position: relative;
+    z-index: 2;
+
+    display: flex;
+    align-items: center;
+    gap: 11px;
+
+    color: #ffffff;
+    text-decoration: none;
+
+    white-space: nowrap;
+}
+
+.navbar-brand img {
+    width: 46px;
+    height: 46px;
+
+    object-fit: cover;
+
+    border-radius: 50%;
+
+    border: 2px solid rgba(255, 255, 255, 0.75);
+
+    box-shadow:
+        0 5px 18px rgba(0, 0, 0, 0.2),
+        0 0 0 4px rgba(255, 255, 255, 0.06);
+}
+
+.navbar-brand-text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.05;
+}
+
+.navbar-brand-title {
+    color: #ffffff;
+
+    font-size: 16px;
+    font-weight: 800;
+    letter-spacing: 0.8px;
+}
+
+.navbar-brand-subtitle {
+    margin-top: 3px;
+
+    color: rgba(255, 255, 255, 0.72);
+
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+
+/* =========================================================
+   CENTER NAVIGATION
+   ========================================================= */
+
+.navbar-navigation {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    z-index: 1;
+
+    display: flex;
+    align-items: center;
+    gap: 6px;
+
+    transform: translate(-50%, -50%);
+}
+
+.navbar-link {
+    position: relative;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    min-height: 42px;
+    padding: 0 15px;
+
+    color: rgba(255, 255, 255, 0.84);
+
+    font-size: 13px;
+    font-weight: 650;
+    letter-spacing: 0.2px;
+
+    text-decoration: none;
+
+    border-radius: 14px;
+
+    transition:
+        color 0.25s ease,
+        background 0.25s ease,
+        transform 0.25s ease;
+}
+
+.navbar-link::after {
+    content: "";
+
+    position: absolute;
+    left: 50%;
+    bottom: 6px;
+
+    width: 0;
+    height: 2px;
+
+    border-radius: 999px;
+
+    background: #ffffff;
+
+    transform: translateX(-50%);
+
+    transition: width 0.25s ease;
+}
+
+.navbar-link:hover {
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.09);
+
+    transform: translateY(-1px);
+}
+
+.navbar-link:hover::after,
+.navbar-link.active::after {
+    width: 18px;
+}
+
+.navbar-link.active {
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.11);
+}
+
+
+/* =========================================================
+   RIGHT SIDE ACTIONS
+   ========================================================= */
+
+.navbar-actions {
+    position: relative;
+    z-index: 2;
+
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.navbar-booking-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    min-height: 44px;
+    padding: 0 20px;
+
+    color: #08272d;
+    background: #ffffff;
+
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    border-radius: 999px;
+
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.4px;
+
+    text-decoration: none;
+
+    box-shadow:
+        0 7px 20px rgba(0, 0, 0, 0.16);
+
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease,
+        background 0.25s ease;
+}
+
+.navbar-booking-button:hover {
+    color: #08272d;
+    background: #f4f8f8;
+
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 10px 25px rgba(0, 0, 0, 0.22);
+}
+
+
+/* =========================================================
+   MOBILE MENU BUTTON
+   ========================================================= */
+
+.navbar-menu-toggle {
+    display: none;
+
+    width: 44px;
+    height: 44px;
+
+    align-items: center;
+    justify-content: center;
+
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.09);
+
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 14px;
+
+    cursor: pointer;
+
+    transition:
+        background 0.25s ease,
+        transform 0.25s ease;
+}
+
+.navbar-menu-toggle:hover {
+    background: rgba(255, 255, 255, 0.16);
+    transform: translateY(-1px);
+}
+
+.navbar-menu-toggle span {
+    position: relative;
+
+    display: block;
+
+    width: 20px;
+    height: 2px;
+
+    background: #ffffff;
+
+    border-radius: 999px;
+
+    transition: 0.25s ease;
+}
+
+.navbar-menu-toggle span::before,
+.navbar-menu-toggle span::after {
+    content: "";
+
+    position: absolute;
+    left: 0;
+
+    width: 20px;
+    height: 2px;
+
+    background: #ffffff;
+
+    border-radius: 999px;
+
+    transition: 0.25s ease;
+}
+
+.navbar-menu-toggle span::before {
+    top: -7px;
+}
+
+.navbar-menu-toggle span::after {
+    top: 7px;
+}
+
+
+/* =========================================================
+   TABLET
+   ========================================================= */
+
+@media (max-width: 1050px) {
+    .navbar {
+        width: calc(100% - 28px);
+    }
+
+    .navbar-navigation {
+        gap: 2px;
+    }
+
+    .navbar-link {
+        padding: 0 10px;
+        font-size: 12px;
+    }
+
+    .navbar-booking-button {
+        padding: 0 15px;
+    }
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 900px) {
+    .navbar {
+        top: 12px;
+
+        width: calc(100% - 24px);
+        height: 64px;
+
+        border-radius: 22px;
+    }
+
+    .navbar-container {
+        padding: 0 12px 0 16px;
+    }
+
+    .navbar-navigation {
+        position: fixed;
+        top: calc(100% + 10px);
+        left: 0;
+
+        width: 100%;
+        height: auto;
+
+        padding: 12px;
+
+        display: none;
+        flex-direction: column;
+        align-items: stretch;
+
+        background: rgba(8, 39, 45, 0.94);
+
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        border-radius: 22px;
+
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+
+        box-shadow:
+            0 15px 40px rgba(0, 0, 0, 0.25);
+
+        transform: none;
+    }
+
+    .navbar-navigation.open {
+        display: flex;
+    }
+
+    .navbar-link {
+        width: 100%;
+        min-height: 48px;
+
+        justify-content: flex-start;
+
+        padding: 0 16px;
+
+        border-radius: 13px;
+
+        font-size: 13px;
+    }
+
+    .navbar-link::after {
+        display: none;
+    }
+
+    .navbar-link:hover,
+    .navbar-link.active {
+        background: rgba(255, 255, 255, 0.1);
+    }
+
+    .navbar-menu-toggle {
+        display: flex;
+    }
+
+    .navbar-actions {
+        gap: 7px;
+    }
+
+    .navbar-booking-button {
+        min-height: 40px;
+        padding: 0 14px;
+
+        font-size: 11px;
+    }
+
+    .navbar-brand img {
+        width: 40px;
+        height: 40px;
+    }
+
+    .navbar-brand-title {
+        font-size: 14px;
+    }
+
+    .navbar-brand-subtitle {
+        font-size: 8px;
+    }
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+   ========================================================= */
+
+@media (max-width: 600px) {
+    .navbar {
+        width: calc(100% - 18px);
+    }
+
+    .navbar-brand-subtitle {
+        display: none;
+    }
+
+    .navbar-booking-button {
+        display: none;
+    }
+}
+
+
+/* =========================================================
+   VERY SMALL SCREENS
+   ========================================================= */
+
+@media (max-width: 380px) {
+    .navbar {
+        top: 8px;
+        height: 60px;
+
+        border-radius: 20px;
+    }
+
+    .navbar-container {
+        padding: 0 9px 0 12px;
+    }
+
+    .navbar-brand {
+        gap: 8px;
+    }
+
+    .navbar-brand img {
+        width: 37px;
+        height: 37px;
+    }
+
+    .navbar-brand-title {
+        font-size: 12px;
+    }
+
+    .navbar-menu-toggle {
+        width: 40px;
+        height: 40px;
+    }
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+    .navbar,
+    .navbar-link,
+    .navbar-booking-button,
+    .navbar-menu-toggle,
+    .navbar-menu-toggle span,
+    .navbar-menu-toggle span::before,
+    .navbar-menu-toggle span::after {
+        transition: none;
+    }
 }
