@@ -3,12 +3,6 @@
    GLOBAL / PUBLIC WEBSITE / ADMINISTRATION
    ============================================================ */
 
-/* Tailwind directives (when Tailwind is installed/builds are run) */
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-
 /* ============================================================
    GLOBAL FOUNDATION
    ============================================================ */
@@ -7427,4 +7421,845 @@ select:focus-visible {
         text-align: center;
     }
 
+}
+
+/* ==========================================================================
+   ZAN GATES ADVENTURES
+   LOGO SYSTEM
+   ========================================================================== */
+
+.site-logo {
+    display: block;
+    width: auto;
+    height: auto;
+    max-width: 100%;
+    object-fit: contain;
+}
+
+/* --------------------------------------------------------------------------
+   LOGO VARIANTS
+   -------------------------------------------------------------------------- */
+
+.site-logo-navbar {
+    width: 185px;
+}
+
+.site-logo-hero {
+    width: 150px;
+}
+
+.site-logo-footer {
+    width: 190px;
+}
+
+.site-logo-watermark {
+    width: 105px;
+    opacity: 0.9;
+    filter:
+        drop-shadow(
+            0 3px 10px
+            rgba(0, 0, 0, 0.30)
+        );
+}
+
+.site-logo-booking {
+    width: 160px;
+}
+
+.site-logo-admin {
+    width: 135px;
+}
+
+/* --------------------------------------------------------------------------
+   CLICKABLE LOGO
+   -------------------------------------------------------------------------- */
+
+.site-logo-link {
+    display: inline-flex;
+    align-items: center;
+    flex-shrink: 0;
+    line-height: 0;
+    text-decoration: none;
+}
+
+.site-logo-link:focus-visible {
+    outline: 2px solid #168083;
+    outline-offset: 5px;
+    border-radius: 4px;
+}
+
+/* --------------------------------------------------------------------------
+   TOUR CARD BRANDING
+   -------------------------------------------------------------------------- */
+
+.tour-card-brand {
+    position: absolute;
+    right: 17px;
+    bottom: 16px;
+    z-index: 3;
+    pointer-events: none;
+}
+
+.tour-card-brand .site-logo-watermark {
+    width: 105px;
+}
+
+/* --------------------------------------------------------------------------
+   RESPONSIVE
+   -------------------------------------------------------------------------- */
+
+@media (max-width: 768px) {
+
+    .site-logo-navbar {
+        width: 155px;
+    }
+
+    .site-logo-hero {
+        width: 135px;
+    }
+
+    .site-logo-footer {
+        width: 165px;
+    }
+
+    .site-logo-booking {
+        width: 145px;
+    }
+
+    .site-logo-admin {
+        width: 120px;
+    }
+
+    .tour-card-brand {
+        right: 14px;
+        bottom: 14px;
+    }
+
+    .tour-card-brand .site-logo-watermark {
+        width: 90px;
+    }
+}
+
+/* ==========================================================================
+   ZAN GATES ADVENTURES
+   NAVBAR
+   ========================================================================== */
+
+.navbar {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    width: 100%;
+    background: rgba(255, 255, 255, 0.96);
+    border-bottom: 1px solid rgba(18, 63, 70, 0.08);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+}
+
+.navbar-container {
+    width: min(1250px, calc(100% - 48px));
+    min-height: 82px;
+    margin: 0 auto;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 35px;
+}
+
+/* ==========================================================================
+   BRAND
+   ========================================================================== */
+
+.navbar-brand {
+    display: inline-flex;
+    align-items: center;
+    flex-shrink: 0;
+
+    line-height: 0;
+    text-decoration: none;
+}
+
+.navbar-brand .site-logo-navbar {
+    display: block;
+    width: 185px;
+    height: auto;
+}
+
+/* ==========================================================================
+   DESKTOP NAVIGATION
+   ========================================================================== */
+
+.navbar-navigation {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 34px;
+    margin-left: auto;
+}
+
+.navbar-link {
+    position: relative;
+
+    display: inline-flex;
+    align-items: center;
+
+    min-height: 82px;
+
+    color: #5d7072;
+
+    font-size: 11px;
+    font-weight: 800;
+
+    letter-spacing: 0.5px;
+
+    text-decoration: none;
+
+    transition:
+        color 0.25s ease;
+}
+
+.navbar-link::after {
+    content: "";
+
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+
+    width: 0;
+    height: 2px;
+
+    border-radius: 999px;
+
+    background: #168083;
+
+    transform:
+        translateX(-50%);
+
+    transition:
+        width 0.25s ease;
+}
+
+.navbar-link:hover {
+    color: #123f46;
+}
+
+.navbar-link.active {
+    color: #123f46;
+}
+
+.navbar-link.active::after {
+    width: 22px;
+}
+
+/* ==========================================================================
+   DESKTOP ACTION
+   ========================================================================== */
+
+.navbar-actions {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+.navbar-booking-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 9px;
+
+    min-height: 43px;
+
+    padding: 0 17px;
+
+    border-radius: 6px;
+
+    background: #123f46;
+    color: #ffffff;
+
+    font-size: 10px;
+    font-weight: 800;
+
+    letter-spacing: 0.25px;
+
+    text-decoration: none;
+
+    box-shadow:
+        0 8px 25px rgba(
+            18,
+            63,
+            70,
+            0.13
+        );
+
+    transition:
+        background 0.25s ease,
+        transform 0.25s ease,
+        box-shadow 0.25s ease;
+}
+
+.navbar-booking-button svg {
+    width: 15px;
+    height: 15px;
+    flex-shrink: 0;
+}
+
+.navbar-booking-button:hover {
+    background: #168083;
+
+    transform:
+        translateY(-2px);
+
+    box-shadow:
+        0 12px 30px rgba(
+            18,
+            63,
+            70,
+            0.18
+        );
+}
+
+/* ==========================================================================
+   MOBILE MENU TOGGLE
+   ========================================================================== */
+
+.navbar-menu-toggle {
+    display: none;
+
+    width: 44px;
+    height: 44px;
+
+    padding: 0;
+
+    border: 0;
+    border-radius: 6px;
+
+    background: transparent;
+
+    cursor: pointer;
+
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+
+    gap: 5px;
+}
+
+.navbar-menu-toggle span {
+    display: block;
+
+    width: 21px;
+    height: 2px;
+
+    border-radius: 999px;
+
+    background: #123f46;
+
+    transition:
+        transform 0.25s ease,
+        opacity 0.25s ease;
+}
+
+.navbar-menu-toggle:hover {
+    background: #f1f6f5;
+}
+
+/* ==========================================================================
+   MOBILE MENU ANIMATION
+   ========================================================================== */
+
+.navbar-menu-toggle.is-open span:nth-child(1) {
+    transform:
+        translateY(7px)
+        rotate(45deg);
+}
+
+.navbar-menu-toggle.is-open span:nth-child(2) {
+    opacity: 0;
+}
+
+.navbar-menu-toggle.is-open span:nth-child(3) {
+    transform:
+        translateY(-7px)
+        rotate(-45deg);
+}
+
+/* ==========================================================================
+   MOBILE NAVIGATION
+   ========================================================================== */
+
+.navbar-mobile {
+    display: none;
+}
+
+.navbar-mobile-navigation {
+    display: flex;
+    flex-direction: column;
+
+    padding: 8px 24px 28px;
+}
+
+.navbar-mobile-navigation .navbar-link {
+    min-height: 52px;
+
+    justify-content: flex-start;
+
+    border-bottom: 1px solid #edf1f0;
+}
+
+.navbar-mobile-navigation .navbar-link::after {
+    display: none;
+}
+
+.navbar-mobile-navigation .navbar-link.active {
+    color: #168083;
+}
+
+/* ==========================================================================
+   MOBILE BOOKING BUTTON
+   ========================================================================== */
+
+.navbar-mobile-booking {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    min-height: 48px;
+
+    margin-top: 18px;
+    padding: 0 17px;
+
+    border-radius: 6px;
+
+    background: #123f46;
+    color: #ffffff;
+
+    font-size: 10px;
+    font-weight: 800;
+
+    text-decoration: none;
+
+    transition:
+        background 0.25s ease,
+        transform 0.25s ease;
+}
+
+.navbar-mobile-booking svg {
+    width: 16px;
+    height: 16px;
+}
+
+.navbar-mobile-booking:hover {
+    background: #168083;
+}
+
+/* ==========================================================================
+   BODY LOCK
+   ========================================================================== */
+
+body.navbar-menu-open {
+    overflow: hidden;
+}
+
+/* ==========================================================================
+   RESPONSIVE
+   ========================================================================== */
+
+@media (max-width: 900px) {
+
+    .navbar-container {
+        width: min(
+            100%,
+            calc(100% - 32px)
+        );
+
+        min-height: 72px;
+    }
+
+    .navbar-brand .site-logo-navbar {
+        width: 155px;
+    }
+
+    .navbar-navigation,
+    .navbar-actions {
+        display: none;
+    }
+
+    .navbar-menu-toggle {
+        display: inline-flex;
+    }
+
+    .navbar-mobile {
+        display: block;
+
+        max-height: 0;
+
+        overflow: hidden;
+
+        background: #ffffff;
+
+        border-top: 1px solid transparent;
+
+        opacity: 0;
+
+        transition:
+            max-height 0.35s ease,
+            opacity 0.25s ease,
+            border-color 0.25s ease;
+    }
+
+    .navbar-mobile.is-open {
+        max-height: 500px;
+
+        border-top-color:
+            rgba(
+                18,
+                63,
+                70,
+                0.08
+            );
+
+        opacity: 1;
+
+        box-shadow:
+            0 20px 40px rgba(
+                16,
+                58,
+                62,
+                0.08
+            );
+    }
+}
+
+@media (max-width: 480px) {
+
+    .navbar-container {
+        width: calc(100% - 24px);
+    }
+
+    .navbar-container {
+        min-height: 68px;
+    }
+
+    .navbar-brand .site-logo-navbar {
+        width: 140px;
+    }
+
+    .navbar-menu-toggle {
+        width: 40px;
+        height: 40px;
+    }
+
+    .navbar-mobile-navigation {
+        padding-left: 18px;
+        padding-right: 18px;
+    }
+}
+
+/* =========================================================
+   ZAN GATES LOGO
+========================================================= */
+
+.site-logo-wrapper {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    overflow: hidden;
+
+    flex-shrink: 0;
+
+    line-height: 0;
+}
+
+
+/* =========================================================
+   NAVBAR ROUND LOGO
+========================================================= */
+
+.site-logo-wrapper-navbar {
+
+    width: 58px;
+    height: 58px;
+
+    border-radius: 50%;
+
+    background: #ffffff;
+
+    border: 2px solid rgba(
+        22,
+        128,
+        131,
+        0.20
+    );
+
+    box-shadow:
+        0 5px 20px rgba(
+            18,
+            63,
+            70,
+            0.12
+        );
+
+    transition:
+        transform 0.3s ease,
+        box-shadow 0.3s ease;
+}
+
+
+.site-logo-wrapper-navbar:hover {
+
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 9px 28px rgba(
+            18,
+            63,
+            70,
+            0.18
+        );
+}
+
+
+.site-logo-navbar {
+
+    display: block;
+
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+
+    object-position: center;
+
+}
+
+
+/* =========================================================
+   OTHER LOGO VARIANTS
+========================================================= */
+
+.site-logo-wrapper-default {
+
+    width: 180px;
+}
+
+.site-logo-default {
+
+    width: 100%;
+    height: auto;
+}
+
+
+.site-logo-wrapper-hero {
+
+    width: 150px;
+}
+
+.site-logo-hero {
+
+    width: 100%;
+    height: auto;
+}
+
+
+.site-logo-wrapper-footer {
+
+    width: 190px;
+}
+
+.site-logo-footer {
+
+    width: 100%;
+    height: auto;
+}
+
+
+.site-logo-wrapper-watermark {
+
+    width: 105px;
+    height: 105px;
+
+    border-radius: 50%;
+
+    opacity: 0.92;
+
+    filter:
+        drop-shadow(
+            0 3px 10px
+            rgba(
+                0,
+                0,
+                0,
+                0.30
+            )
+        );
+}
+
+.site-logo-watermark {
+
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+}
+
+
+.site-logo-wrapper-booking {
+
+    width: 160px;
+}
+
+.site-logo-booking {
+
+    width: 100%;
+    height: auto;
+}
+
+
+.site-logo-wrapper-admin {
+
+    width: 135px;
+}
+
+.site-logo-admin {
+
+    width: 100%;
+    height: auto;
+}
+
+
+.site-logo-link {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    flex-shrink: 0;
+
+    line-height: 0;
+
+    text-decoration: none;
+}
+
+
+.site-logo-link:focus-visible {
+
+    outline:
+        2px solid #168083;
+
+    outline-offset: 5px;
+
+    border-radius: 50%;
+}
+
+
+/* =========================================================
+   TOUR CARD WATERMARK
+========================================================= */
+
+.tour-card-brand {
+
+    position: absolute;
+
+    right: 17px;
+    bottom: 16px;
+
+    z-index: 3;
+
+    pointer-events: none;
+}
+
+
+.tour-card-brand
+.site-logo-wrapper-watermark {
+
+    width: 78px;
+    height: 78px;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 768px) {
+
+    .site-logo-wrapper-navbar {
+
+        width: 52px;
+        height: 52px;
+    }
+
+
+    .site-logo-wrapper-hero {
+
+        width: 135px;
+    }
+
+
+    .site-logo-wrapper-footer {
+
+        width: 165px;
+    }
+
+
+    .site-logo-wrapper-booking {
+
+        width: 145px;
+    }
+
+
+    .site-logo-wrapper-admin {
+
+        width: 120px;
+    }
+
+
+    .tour-card-brand {
+
+        right: 14px;
+        bottom: 14px;
+    }
+
+
+    .tour-card-brand
+    .site-logo-wrapper-watermark {
+
+        width: 68px;
+        height: 68px;
+    }
+
+}
+
+
+@media (max-width: 480px) {
+
+    .site-logo-wrapper-navbar {
+
+        width: 48px;
+        height: 48px;
+    }
+
+}
+
+.navbar {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    width: 100%;
+}
+
+.public-site {
+    width: 100%;
+    min-height: 100vh;
+}
+
+.public-site .navbar {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
 }

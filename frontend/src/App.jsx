@@ -5,9 +5,35 @@ import {
     Navigate,
 } from "react-router-dom";
 
+
+/*
+|--------------------------------------------------------------------------
+| PUBLIC PAGES
+|--------------------------------------------------------------------------
+*/
+
 import Home from "./pages/Home";
+import Tours from "./pages/Tours";
 import TourDetails from "./pages/TourDetails";
+import About from "./pages/About";
+import Contact from "./pages/Contact";
 import Booking from "./pages/Booking";
+
+
+/*
+|--------------------------------------------------------------------------
+| PUBLIC LAYOUT
+|--------------------------------------------------------------------------
+*/
+
+import PublicLayout from "./components/PublicLayout";
+
+
+/*
+|--------------------------------------------------------------------------
+| ADMIN PAGES
+|--------------------------------------------------------------------------
+*/
 
 import AdminLogin from "./pages/admin/AdminLogin";
 import AdminDashboard from "./pages/admin/AdminDashboard";
@@ -15,6 +41,13 @@ import AdminBookings from "./pages/admin/AdminBookings";
 import AdminBookingDetails from "./pages/admin/AdminBookingDetails";
 import AdminTours from "./pages/admin/AdminTours";
 import AdminTourForm from "./pages/admin/AdminTourForm";
+
+
+/*
+|--------------------------------------------------------------------------
+| ADMIN AUTHENTICATION
+|--------------------------------------------------------------------------
+*/
 
 import ProtectedRoute from "./components/admin/ProtectedRoute";
 
@@ -26,36 +59,118 @@ import {
 function App() {
 
     return (
+
         <BrowserRouter>
 
             <AuthProvider>
 
                 <Routes>
 
+
                     {/* =====================================================
                         PUBLIC WEBSITE
+                        SHARED NAVBAR
                     ===================================================== */}
 
                     <Route
-                        path="/"
                         element={
-                            <Home />
+                            <PublicLayout />
                         }
-                    />
+                    >
 
-                    <Route
-                        path="/tours/:slug"
-                        element={
-                            <TourDetails />
-                        }
-                    />
 
-                    <Route
-                        path="/book/:slug"
-                        element={
-                            <Booking />
-                        }
-                    />
+                        {/* -------------------------------------------------
+                            HOME
+                            /
+                        ------------------------------------------------- */}
+
+                        <Route
+                            path="/"
+                            element={
+                                <Home />
+                            }
+                        />
+
+
+                        {/* -------------------------------------------------
+                            TOURS
+                            /tours
+                        ------------------------------------------------- */}
+
+                        <Route
+                            path="/tours"
+                            element={
+                                <Tours />
+                            }
+                        />
+
+
+                        {/* -------------------------------------------------
+                            TOUR DETAILS
+                            /tours/:slug
+                        ------------------------------------------------- */}
+
+                        <Route
+                            path="/tours/:slug"
+                            element={
+                                <TourDetails />
+                            }
+                        />
+
+
+                        {/* -------------------------------------------------
+                            ABOUT
+                            /about
+                        ------------------------------------------------- */}
+
+                        <Route
+                            path="/about"
+                            element={
+                                <About />
+                            }
+                        />
+
+
+                        {/* -------------------------------------------------
+                            CONTACT
+                            /contact
+                        ------------------------------------------------- */}
+
+                        <Route
+                            path="/contact"
+                            element={
+                                <Contact />
+                            }
+                        />
+
+
+                        {/* -------------------------------------------------
+                            GENERAL BOOKING
+                            /booking
+                        ------------------------------------------------- */}
+
+                        <Route
+                            path="/booking"
+                            element={
+                                <Booking />
+                            }
+                        />
+
+
+                        {/* -------------------------------------------------
+                            SPECIFIC TOUR BOOKING
+                            /book/:slug
+                        ------------------------------------------------- */}
+
+                        <Route
+                            path="/book/:slug"
+                            element={
+                                <Booking />
+                            }
+                        />
+
+
+                    </Route>
 
 
                     {/* =====================================================
@@ -80,8 +195,9 @@ function App() {
                         }
                     >
 
+
                         {/* -------------------------------------------------
-                            ADMIN DASHBOARD
+                            DASHBOARD
                         ------------------------------------------------- */}
 
                         <Route
@@ -93,7 +209,7 @@ function App() {
 
 
                         {/* -------------------------------------------------
-                            ADMIN BOOKINGS
+                            BOOKINGS
                         ------------------------------------------------- */}
 
                         <Route
@@ -102,6 +218,11 @@ function App() {
                                 <AdminBookings />
                             }
                         />
+
+
+                        {/* -------------------------------------------------
+                            BOOKING DETAILS
+                        ------------------------------------------------- */}
 
                         <Route
                             path="/admin/bookings/:id"
@@ -112,7 +233,7 @@ function App() {
 
 
                         {/* -------------------------------------------------
-                            ADMIN TOUR MANAGEMENT
+                            TOURS
                         ------------------------------------------------- */}
 
                         <Route
@@ -122,12 +243,22 @@ function App() {
                             }
                         />
 
+
+                        {/* -------------------------------------------------
+                            CREATE TOUR
+                        ------------------------------------------------- */}
+
                         <Route
                             path="/admin/tours/new"
                             element={
                                 <AdminTourForm />
                             }
                         />
+
+
+                        {/* -------------------------------------------------
+                            EDIT TOUR
+                        ------------------------------------------------- */}
 
                         <Route
                             path="/admin/tours/:id/edit"
@@ -136,15 +267,13 @@ function App() {
                             }
                         />
 
+
                     </Route>
 
 
                     {/* =====================================================
                         FALLBACK
-                    =====================================================
-
-                        Any unknown URL is redirected to the homepage.
-                    */}
+                    ===================================================== */}
 
                     <Route
                         path="*"
@@ -156,12 +285,15 @@ function App() {
                         }
                     />
 
+
                 </Routes>
 
             </AuthProvider>
 
         </BrowserRouter>
+
     );
+
 }
 
 

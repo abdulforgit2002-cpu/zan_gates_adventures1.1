@@ -11,8 +11,7 @@ import {
     getTours,
 } from "../services/tourService";
 
-import TailwindHero from "../components/TailwindHero";
-import TailwindTourCard from "../components/TailwindTourCard";
+import TourCard from "../components/TourCard";
 
 
 /*
@@ -21,8 +20,263 @@ import TailwindTourCard from "../components/TailwindTourCard";
 |--------------------------------------------------------------------------
 |
 | Each image represents a different Zanzibar experience.
-            <TailwindHero slides={HOME_HERO_SLIDES} active={activeHeroImage} onChange={handleHeroChange} />
-            
+|
+| duration = how long the slide remains visible.
+|
+*/
+
+const HOME_HERO_SLIDES = [
+
+    {
+        id: 1,
+
+        image:
+            "https://res.cloudinary.com/djczmay2i/image/upload/v1779540443/aaa_faq_ixagv2.webp",
+
+        eyebrow:
+            "DISCOVER ZANZIBAR",
+
+        title:
+            "Where every journey becomes a story.",
+
+        experience:
+            "The Spirit of Zanzibar",
+
+        description:
+            "Experience the island through unforgettable places, people, culture and adventure.",
+
+        duration:
+            7000,
+
+        position:
+            "center center",
+
+        motion:
+            "zoom-in",
+    },
+
+
+    {
+        id: 2,
+
+        image:
+            "https://res.cloudinary.com/djczmay2i/image/upload/v1779537151/Prison_Island_wa08hw.jpg",
+
+        eyebrow:
+            "PRISON ISLAND",
+
+        title:
+            "History, turquoise waters and unforgettable encounters.",
+
+        experience:
+            "Prison Island Adventure",
+
+        description:
+            "Discover a legendary island surrounded by the crystal waters of the Indian Ocean.",
+
+        duration:
+            8000,
+
+        position:
+            "center 45%",
+
+        motion:
+            "pan-left",
+    },
+
+
+    {
+        id: 3,
+
+        image:
+            "https://res.cloudinary.com/djczmay2i/image/upload/v1779537152/Prison_Island2_nbupim.avif",
+
+        eyebrow:
+            "OCEAN ADVENTURES",
+
+        title:
+            "Dive into the beauty of Zanzibar.",
+
+        experience:
+            "Island & Ocean Escape",
+
+        description:
+            "Explore the breathtaking waters, hidden beauty and unforgettable marine experiences of Zanzibar.",
+
+        duration:
+            7000,
+
+        position:
+            "center center",
+
+        motion:
+            "zoom-out",
+    },
+
+
+    {
+        id: 4,
+
+        image:
+            "https://res.cloudinary.com/djczmay2i/image/upload/v1779459606/Jozani_Forest_Tour8_c21zcx.jpg",
+
+        eyebrow:
+            "JOZANI FOREST",
+
+        title:
+            "Discover Zanzibar's wild side.",
+
+        experience:
+            "Jozani Forest Experience",
+
+        description:
+            "Walk beneath ancient trees and discover the natural world that makes Zanzibar unique.",
+
+        duration:
+            9000,
+
+        position:
+            "center 35%",
+
+        motion:
+            "pan-right",
+    },
+
+
+    {
+        id: 5,
+
+        image:
+            "https://res.cloudinary.com/djczmay2i/image/upload/v1779286801/nungwi_car4_zqc7ba.avif",
+
+        eyebrow:
+            "NUNGWI",
+
+        title:
+            "Where the island meets the Indian Ocean.",
+
+        experience:
+            "Nungwi Escape",
+
+        description:
+            "Experience the beauty of Zanzibar's northern coast, turquoise waters and unforgettable sunsets.",
+
+        duration:
+            8000,
+
+        position:
+            "center center",
+
+        motion:
+            "zoom-in",
+    },
+
+];
+
+
+const Home = () => {
+
+    /*
+    |--------------------------------------------------------------------------
+    | TOURS STATE
+    |--------------------------------------------------------------------------
+    */
+
+    const [
+        tours,
+        setTours,
+    ] = useState([]);
+
+
+    const [
+        loading,
+        setLoading,
+    ] = useState(true);
+
+
+    const [
+        error,
+        setError,
+    ] = useState("");
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | HERO STATE
+    |--------------------------------------------------------------------------
+    */
+
+    const [
+        activeHeroImage,
+        setActiveHeroImage,
+    ] = useState(0);
+
+
+    const [
+        heroVisible,
+        setHeroVisible,
+    ] = useState(false);
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | LOAD TOURS
+    |--------------------------------------------------------------------------
+    */
+
+    useEffect(() => {
+
+        const loadTours = async () => {
+
+            try {
+
+                setLoading(true);
+
+                setError("");
+
+
+                const tourData =
+                    await getTours();
+
+
+                setTours(
+                    Array.isArray(
+                        tourData
+                    )
+                        ? tourData
+                        : []
+                );
+
+
+            } catch (error) {
+
+                console.error(
+                    "Failed to load tours:",
+                    error
+                );
+
+
+                setTours([]);
+
+
+                setError(
+                    "Unable to load our experiences right now."
+                );
+
+
+            } finally {
+
+                setLoading(false);
+
+            }
+
+        };
+
+
+        loadTours();
+
+    }, []);
+
 
     /*
     |--------------------------------------------------------------------------
@@ -56,17 +310,10 @@ import TailwindTourCard from "../components/TailwindTourCard";
     }, []);
 
 
-                
-                {!loading &&
-                    !error &&
-                    tours.length > 0 && (
     /*
     |--------------------------------------------------------------------------
     | PRELOAD ALL HERO IMAGES
     |--------------------------------------------------------------------------
-    |
-    | Hero images should already be available before they become active.
-    |
     */
 
     useEffect(() => {
@@ -86,10 +333,10 @@ import TailwindTourCard from "../components/TailwindTourCard";
     }, []);
 
 
-                    <div className="home-tours-grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+    /*
     |--------------------------------------------------------------------------
     | HERO SLIDESHOW
-                                <TailwindTourCard
+    |--------------------------------------------------------------------------
     */
 
     useEffect(() => {
@@ -175,9 +422,18 @@ import TailwindTourCard from "../components/TailwindTourCard";
         };
 
 
+    /*
+    |--------------------------------------------------------------------------
+    | RENDER
+    |--------------------------------------------------------------------------
+    */
+
     return (
 
-        <main className="home-page">
+        <main
+            id="home"
+            className="home-page"
+        >
 
 
             {/* =========================================================
@@ -218,9 +474,10 @@ import TailwindTourCard from "../components/TailwindTourCard";
 
                                 className={`
                                     home-hero-image
-                                    ${index === activeHeroImage
-                                        ? "active"
-                                        : ""
+                                    ${
+                                        index === activeHeroImage
+                                            ? "active"
+                                            : ""
                                     }
                                     home-hero-motion-${slide.motion}
                                 `}
@@ -233,7 +490,7 @@ import TailwindTourCard from "../components/TailwindTourCard";
                                 loading={
                                     index === 0
                                         ? "eager"
-                                        : "eager"
+                                        : "lazy"
                                 }
 
                                 fetchPriority={
@@ -336,8 +593,8 @@ import TailwindTourCard from "../components/TailwindTourCard";
                         <div className="home-hero-actions">
 
 
-                            <a
-                                href="#tours"
+                            <Link
+                                to="/tours"
                                 className="home-primary-button"
                             >
 
@@ -349,17 +606,17 @@ import TailwindTourCard from "../components/TailwindTourCard";
                                     →
                                 </strong>
 
-                            </a>
+                            </Link>
 
 
-                            <a
-                                href="#about"
+                            <Link
+                                to="/about"
                                 className="home-secondary-button"
                             >
 
-                                Discover Zan Gates
+                                Discover ZAN GATES
 
-                            </a>
+                            </Link>
 
 
                         </div>
@@ -372,9 +629,6 @@ import TailwindTourCard from "../components/TailwindTourCard";
 
                 {/* -----------------------------------------------------
                     SLIDE NAVIGATION
-                    -----------------------------------------------------
-                    The experience label, slide counter and scroll
-                    indicator have intentionally been removed.
                 ----------------------------------------------------- */}
 
                 <div
@@ -760,11 +1014,11 @@ import TailwindTourCard from "../components/TailwindTourCard";
 
 
                     <Link
-                        to="/"
+                        to="/tours"
                         className="home-about-button"
                     >
 
-                        Discover Zan Gates
+                        Discover Our Experiences
 
                         <span>
                             →
@@ -810,8 +1064,8 @@ import TailwindTourCard from "../components/TailwindTourCard";
                     </p>
 
 
-                    <a
-                        href="#tours"
+                    <Link
+                        to="/tours"
                         className="home-cta-button"
                     >
 
@@ -821,7 +1075,7 @@ import TailwindTourCard from "../components/TailwindTourCard";
                             →
                         </span>
 
-                    </a>
+                    </Link>
 
                 </div>
 
