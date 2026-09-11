@@ -18,42 +18,113 @@ const HOME_HERO_SLIDES = [
         id: 1,
         experience: "Safari Blue",
         eyebrow: "OCEAN ADVENTURES",
-        title: "Sail into Zanzibar's turquoise paradise.",
+        title: "Sail through Zanzibar's turquoise waters.",
         description:
-            "Discover sandbanks, crystal-clear waters, marine life and unforgettable dhow adventures.",
+            "Cruise across crystal-clear waters, discover beautiful sandbanks and enjoy an unforgettable day on Zanzibar's ocean.",
         image:
-            "https://res.cloudinary.com/djczmay2i/image/upload/v1788254388/ZAN_GATES_ADVENTURES_k59crf.jpg",
+            "https://res.cloudinary.com/djczmay2i/image/upload/v1779540443/aaa_faq_ixagv2.webp",
         position: "center",
         motion: "zoom",
         duration: 6000,
     },
+
     {
         id: 2,
         experience: "Jozani Forest",
         eyebrow: "WILDLIFE & NATURE",
-        title: "Discover the wild heart of Zanzibar.",
+        title: "Walk into the wild heart of Zanzibar.",
         description:
-            "Explore lush tropical forest and encounter the unique wildlife of Zanzibar.",
+            "Explore the lush Jozani Forest, discover its unique ecosystem and encounter the famous red colobus monkeys of Zanzibar.",
         image:
-            "https://res.cloudinary.com/djczmay2i/image/upload/v1779459607/Jozani_Forest_Tour9_dz9pcv.jpg",
+            "https://res.cloudinary.com/djczmay2i/image/upload/v1779459606/Jozani_Forest_Tour8_c21zcx.jpg",
         position: "center",
         motion: "zoom",
         duration: 6000,
     },
+
     {
         id: 3,
-        experience: "Zanzibar Adventures",
-        eyebrow: "ISLAND DISCOVERY",
-        title: "Your gateway to unforgettable Zanzibar adventures.",
+        experience: "Prison Island",
+        eyebrow: "HISTORY & DISCOVERY",
+        title: "Step into Zanzibar's fascinating history.",
         description:
-            "Experience the ocean, nature, culture and unforgettable destinations of Zanzibar.",
+            "Journey across the Indian Ocean to Prison Island and discover its historic heritage, beautiful beaches and giant Aldabra tortoises.",
         image:
-            "https://res.cloudinary.com/djczmay2i/image/upload/v1788254388/ZAN_GATES_ADVENTURES_k59crf.jpg",
+            "https://res.cloudinary.com/djczmay2i/image/upload/v1779537151/Prison_Island_wa08hw.jpg",
+        position: "center",
+        motion: "zoom",
+        duration: 6000,
+    },
+
+    {
+        id: 4,
+        experience: "Prison Island Escape",
+        eyebrow: "ISLAND EXPERIENCES",
+        title: "Discover an island where history meets paradise.",
+        description:
+            "Escape to the beautiful waters of Prison Island and experience a perfect blend of tropical scenery, culture, history and adventure.",
+        image:
+            "https://res.cloudinary.com/djczmay2i/image/upload/v1779537152/Prison_Island2_nbupim.avif",
         position: "center",
         motion: "zoom",
         duration: 6000,
     },
 ];
+
+// const HOME_HERO_SLIDES = [
+//     {
+//         id: 1,
+//         experience: "Safari Blue",
+//         eyebrow: "OCEAN ADVENTURES",
+//         title: "Sail into Zanzibar's turquoise paradise.",
+//         description:
+//             "Discover sandbanks, crystal-clear waters, marine life and unforgettable dhow adventures.",
+//         image:
+//             "https://res.cloudinary.com/djczmay2i/image/upload/v1779540443/aaa_faq_ixagv2.webp",
+//         position: "center",
+//         motion: "zoom",
+//         duration: 6000,
+//     },
+//     {
+//         id: 1,
+//         experience: "Safari Blue",
+//         eyebrow: "OCEAN ADVENTURES",
+//         title: "Sail into Zanzibar's turquoise paradise.",
+//         description:
+//             "Discover sandbanks, crystal-clear waters, marine life and unforgettable dhow adventures.",
+//         image:
+//             "https://res.cloudinary.com/djczmay2i/image/upload/v1779459606/Jozani_Forest_Tour8_c21zcx.jpg",
+//         position: "center",
+//         motion: "zoom",
+//         duration: 6000,
+//     },
+//     {
+//         id: 2,
+//         experience: "Jozani Forest",
+//         eyebrow: "WILDLIFE & NATURE",
+//         title: "Discover the wild heart of Zanzibar.",
+//         description:
+//             "Explore lush tropical forest and encounter the unique wildlife of Zanzibar.",
+//         image:
+//             "https://res.cloudinary.com/djczmay2i/image/upload/v1779537151/Prison_Island_wa08hw.jpg",
+//         position: "center",
+//         motion: "zoom",
+//         duration: 6000,
+//     },
+//     {
+//         id: 3,
+//         experience: "Zanzibar Adventures",
+//         eyebrow: "ISLAND DISCOVERY",
+//         title: "Your gateway to unforgettable Zanzibar adventures.",
+//         description:
+//             "Experience the ocean, nature, culture and unforgettable destinations of Zanzibar.",
+//         image:
+//             "https://res.cloudinary.com/djczmay2i/image/upload/v1779537152/Prison_Island2_nbupim.avif",
+//         position: "center",
+//         motion: "zoom",
+//         duration: 6000,
+//     },
+// ];
 
 /*
 |--------------------------------------------------------------------------

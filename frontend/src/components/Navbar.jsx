@@ -13,6 +13,7 @@ import {
 } from "react-i18next";
 
 import Logo from "./Logo";
+import LanguageSwitcher from "./LanguageSwitcher";
 
 
 function Navbar() {
@@ -61,41 +62,6 @@ function Navbar() {
             );
 
         };
-
-    }, []);
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | INITIALIZE GLOBAL LANGUAGE WIDGET AFTER THE NAVBAR MOUNT
-    |--------------------------------------------------------------------------
-    */
-
-    useEffect(() => {
-
-        window.gtranslateSettings = {
-            default_language: "en",
-            languages: ["en", "de", "it", "fr", "pl"],
-            wrapper_selector: "#gtranslate-wrapper",
-        };
-
-
-        const existingScript = document.querySelector(
-            'script[src*="gtranslate.net"]'
-        );
-
-
-        if (!existingScript) {
-
-            const script = document.createElement("script");
-
-            script.src = "https://cdn.gtranslate.net/widgets/latest/dropdown.js";
-            script.async = true;
-            script.defer = true;
-
-            document.body.appendChild(script);
-
-        }
 
     }, []);
 
@@ -285,12 +251,7 @@ function Navbar() {
 
                 <div className="navbar-actions">
 
-                    <div
-                        id="gtranslate-wrapper"
-                        className="gtranslate_wrapper"
-                        aria-label="Language selector"
-                    />
-
+                    <LanguageSwitcher />
 
                     <Link
                         to="/tours"
