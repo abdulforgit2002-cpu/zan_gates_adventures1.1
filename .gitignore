@@ -23,3 +23,6 @@ frontend/dist/
 
 # Local office/project documents
 *.odt
+
+# Local database backups
+backups/
