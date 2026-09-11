@@ -9,4 +9,4 @@ WORKDIR /app
 
 COPY . .
 
-CMD ["sh", "-c", "php -S 0.0.0.0:${PORT} -t public public/index.php"]
+CMD ["sh", "-c", "php -S 0.0.0.0:${PORT:-8080} -t public public/index.php"]
