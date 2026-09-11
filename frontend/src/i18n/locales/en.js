@@ -190,6 +190,168 @@ const en = {
         },
     },
 
+    tourDetails: {
+        backToExperiences: "Back to all experiences",
+
+        gallery: {
+            tourImageGallery: "Tour image gallery",
+            closeGallery: "Close gallery",
+            previousImage: "Previous image",
+            nextImage: "Next image",
+            openImage: "Open image gallery",
+            viewGallery: "View gallery",
+        },
+
+        destination: "Destination",
+        duration: "Duration",
+        category: "Category",
+        availability: "Availability",
+        dailyEnquiry: "Daily enquiry available",
+        price: "Price",
+        perPerson: "per person",
+        from: "From",
+        featured: "Featured",
+        people: "people",
+        bookThisTour: "Book this tour",
+        enquireNow: "Enquire now",
+        overview: "Overview",
+        highlights: "Highlights",
+        included: "Included",
+        excluded: "Not included",
+        itinerary: "Itinerary",
+        availableOnRequest: "Available on request",
+        noImages: "No images are available for this tour right now.",
+        tourNotFound: "Tour not found.",
+        loading: "Loading tour details...",
+        error: "Unable to load this experience.",
+        defaultDescription:
+            "Discover an unforgettable Zanzibar experience crafted for you.",
+        experienceEyebrow: "THE EXPERIENCE",
+        aboutTitle: "About this experience",
+        informationEyebrow: "AT A GLANCE",
+        informationTitle: "Tour information",
+        pricingEyebrow: "PRICING",
+        pricingTitle: "Pricing & availability",
+        pricingOnRequest: "Pricing on request",
+        pricingOnRequestDescription:
+            "Please enquire for the most accurate rate based on your travel dates.",
+        whyZanGates: "WHY ZAN GATES",
+        localTeamTitle: "The local team behind your experience",
+        benefits: {
+            localKnowledge: {
+                title: "Local expertise",
+                description:
+                    "Our team knows Zanzibar inside and out, from hidden beaches to local cultural highlights.",
+            },
+            personalService: {
+                title: "Personalised service",
+                description:
+                    "We guide you with care, attention, and clarity from planning to departure.",
+            },
+            easyEnquiry: {
+                title: "Easy enquiry",
+                description:
+                    "We make it simple to ask questions and plan the trip that fits your style.",
+            },
+        },
+        booking: {
+            planYourExperience: "Plan your experience",
+            from: "From",
+            perPerson: "per person",
+            enquireTitle: "Send your enquiry",
+            enquireDescription:
+                "Tell us about your trip and our team will help you plan the best Zanzibar experience.",
+            requestReceived: "Request received",
+            thankYou: "Thank you",
+            requestReceivedDescription:
+                "Your enquiry has been submitted successfully. Our team will get back to you shortly.",
+            sendAnother: "Send another enquiry",
+            fullName: "Full name",
+            fullNamePlaceholder: "Your full name",
+            emailAddress: "Email address",
+            emailPlaceholder: "you@example.com",
+            phoneNumber: "Phone number",
+            optional: "optional",
+            preferredTravelDate: "Preferred travel date",
+            adults: "Adults",
+            children: "Children",
+            message: "Message",
+            messagePlaceholder: "Tell us about your preferred trip details",
+            estimatedTotal: "Estimated total",
+            basedOnGuest: "Based on 1 guest",
+            basedOnGuests: "Based on {{count}} guests",
+            sendEnquiry: "Send enquiry",
+            sendingEnquiry: "Sending enquiry...",
+            noPaymentRequired: "No payment required",
+            availabilityConfirmation: "Availability will be confirmed after review.",
+            startJourney: "Start your journey",
+        },
+    },
+
+    booking: {
+        title: "Book your adventure",
+        subtitle:
+            "Send us your travel dates and our team will help organise your Zanzibar experience.",
+        chooseDate: "Choose a date",
+        chooseDateDescription:
+            "Select your preferred travel date and group size.",
+        removeAdult: "Remove adult",
+        addAdult: "Add adult",
+        removeChild: "Remove child",
+        addChild: "Add child",
+        childrenPricingNote:
+            "Children are noted for planning purposes; pricing will be confirmed by our team.",
+        yourDetails: "Your details",
+        yourDetailsDescription:
+            "Tell us how to contact you and plan your trip.",
+        fullName: "Full name",
+        fullNamePlaceholder: "Your full name",
+        emailAddress: "Email address",
+        emailPlaceholder: "you@example.com",
+        phoneWhatsApp: "Phone / WhatsApp",
+        phonePlaceholder: "+255 ...",
+        specialRequirements: "Special requirements",
+        specialRequirementsPlaceholder:
+            "Dietary needs, accessibility requests, special occasions, or other information...",
+        sendEnquiry: "Send enquiry",
+        sendingEnquiry: "Sending enquiry...",
+        disclaimer:
+            "No payment is required at this stage. Your enquiry will be reviewed by our team before the trip is confirmed.",
+        tripSummary: "TRIP SUMMARY",
+        destination: "DESTINATION",
+        duration: "DURATION",
+        travelDate: "Travel date",
+        adults: "Adults",
+        children: "Children",
+        estimatedTotal: "Estimated total",
+        adultsChargedPerPerson: "Adults charged per person",
+        noPaymentRequired: "No payment required",
+        noPaymentDescription:
+            "This is an enquiry, not an online payment. Our team will confirm availability and final arrangements with you.",
+        travelWithConfidence: "Travel with confidence",
+        localSupport: "Local support",
+        experiencedGuides: "Experienced guides",
+        flexibleEnquiries: "Flexible enquiries",
+        personalService: "Personal service",
+        sending: "Sending...",
+        successTitle: "Enquiry sent successfully",
+        successDescription:
+            "Thank you for contacting ZAN GATES ADVENTURES. Our team will review your request and get back to you soon.",
+        backToTour: "Back to tour",
+    },
+
+    validation: {
+        noTourSpecified: "No tour was specified.",
+        tourNotFound: "The requested tour could not be found.",
+        travelDateRequired: "Please select your preferred travel date.",
+        adultRequired: "At least one adult is required.",
+        fullNameRequired: "Please enter your full name.",
+        emailRequired: "Please enter your email address.",
+        phoneRequired: "Please enter your phone or WhatsApp number.",
+        submitFailed: "Your enquiry could not be sent. Please try again.",
+        loadFailed: "This experience could not be loaded.",
+    },
+
     accessibility: {
         home: "ZAN GATES Adventures home page",
         logoAlt: "ZAN GATES ADVENTURES logo",
@@ -200,9 +362,6 @@ const en = {
         openMenu: "Open navigation menu",
         selectLanguage: "Select website language",
     },
-
-    // Keep your existing home, booking,
-    // tourDetails, gallery, etc. below this.
 };
 
 export default en;

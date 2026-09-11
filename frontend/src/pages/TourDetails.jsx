@@ -1286,7 +1286,7 @@ function TourDetails() {
                             •
                         </span>
 
-                        <Link to="/#tours">
+                        <Link to="/tours">
                             {t("navigation.tours")}
                         </Link>
 
@@ -2551,7 +2551,7 @@ function TourDetails() {
                             {/* BACK */}
 
                             <Link
-                                to="/#tours"
+                                to="/tours"
                                 className="tour-back-link"
                             >
 

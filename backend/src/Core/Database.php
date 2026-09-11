@@ -11,7 +11,7 @@ class Database
     public function __construct()
     {
         $this->host =
-            getenv('DB_HOST') !== false
+            getenv('DB_HOST') !== false       
                 ? getenv('DB_HOST')
                 : 'localhost';
 

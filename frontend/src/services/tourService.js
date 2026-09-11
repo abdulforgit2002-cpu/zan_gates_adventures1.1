@@ -1,5 +1,23 @@
 import api from "./api";
 
+import i18n from "../i18n/config";
+
+
+const getPreferredLanguage = () => {
+    const language =
+        i18n.language || "en";
+
+    return [
+        "en",
+        "de",
+        "it",
+        "fr",
+        "pl",
+    ].includes(language)
+        ? language
+        : "en";
+};
+
 
 /*
 |--------------------------------------------------------------------------
@@ -16,7 +34,9 @@ import api from "./api";
 
 export const getTours = async () => {
     const response =
-        await api.get("/tours");
+        await api.get(
+            `/tours?lang=${getPreferredLanguage()}`
+        );
 
     const tours =
         Array.isArray(response.data)
@@ -156,7 +176,7 @@ export const getTour = async (id) => {
         await api.get(
             `/tours/${encodeURIComponent(
                 String(id)
-            )}`
+            )}?lang=${getPreferredLanguage()}`
         );
 
     return response.data ?? null;
@@ -187,7 +207,7 @@ export const getTourBySlug = async (
         await api.get(
             `/tours/slug/${encodeURIComponent(
                 slug
-            )}`
+            )}?lang=${getPreferredLanguage()}`
         );
 
     return response.data ?? null;

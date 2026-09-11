@@ -4,9 +4,60 @@ class TourController
 {
     private PDO $db;
 
+    private const SUPPORTED_LANGUAGES = [
+        'en',
+        'de',
+        'it',
+        'fr',
+        'pl',
+    ];
+
     public function __construct(PDO $db)
     {
         $this->db = $db;
+    }
+
+    private function normalizeLanguage(?string $language): string
+    {
+        $normalized = strtolower(
+            trim((string) ($language ?? 'en'))
+        );
+
+        return in_array(
+            $normalized,
+            self::SUPPORTED_LANGUAGES,
+            true
+        )
+            ? $normalized
+            : 'en';
+    }
+
+    private function shouldUseTourTranslations(): bool
+    {
+        try {
+            $stmt = $this->db->prepare(
+                "SELECT EXISTS (
+                    SELECT 1
+                    FROM information_schema.tables
+                    WHERE table_schema = current_schema()
+                      AND table_name = 'tour_translations'
+                )"
+            );
+
+            $stmt->execute();
+
+            return filter_var(
+                $stmt->fetchColumn(),
+                FILTER_VALIDATE_BOOLEAN
+            );
+        } catch (Throwable $e) {
+            error_log(
+                'Unable to detect tour translation table: ' .
+                $e->getMessage()
+            );
+
+            return false;
+        }
     }
 
     /**
@@ -22,53 +73,115 @@ class TourController
     public function index(): never
     {
         try {
-
-            $stmt = $this->db->query(
-                "SELECT
-                    t.id,
-                    t.title,
-                    t.slug,
-                    t.short_description,
-                    t.description,
-                    t.duration,
-                    t.featured,
-                    t.status,
-
-                    t.category_id,
-                    c.name AS category_name,
-
-                    t.destination_id,
-                    d.name AS destination_name,
-
-                    tp.price,
-                    tp.currency,
-                    tp.pricing_type
-
-                FROM tours t
-
-                INNER JOIN categories c
-                    ON c.id = t.category_id
-
-                INNER JOIN destinations d
-                    ON d.id = t.destination_id
-
-                LEFT JOIN LATERAL (
-                    SELECT
-                        price,
-                        currency,
-                        pricing_type
-                    FROM tour_prices
-                    WHERE tour_id = t.id
-                    ORDER BY price ASC
-                    LIMIT 1
-                ) tp ON TRUE
-
-                WHERE t.status = 'ACTIVE'
-
-                ORDER BY
-                    t.featured DESC,
-                    t.id ASC"
+            $language = $this->normalizeLanguage(
+                $_GET['lang'] ?? 'en'
             );
+
+            $useTranslations = $this->shouldUseTourTranslations();
+
+            if ($useTranslations) {
+                $stmt = $this->db->prepare(
+                    "SELECT
+                        t.id,
+                        COALESCE(tt.title, t.title) AS title,
+                        COALESCE(tt.slug, t.slug) AS slug,
+                        COALESCE(tt.short_description, t.short_description) AS short_description,
+                        COALESCE(tt.description, t.description) AS description,
+                        COALESCE(tt.duration, t.duration) AS duration,
+                        t.featured,
+                        t.status,
+
+                        t.category_id,
+                        c.name AS category_name,
+
+                        t.destination_id,
+                        d.name AS destination_name,
+
+                        tp.price,
+                        tp.currency,
+                        tp.pricing_type
+
+                    FROM tours t
+
+                    INNER JOIN categories c
+                        ON c.id = t.category_id
+
+                    INNER JOIN destinations d
+                        ON d.id = t.destination_id
+
+                    LEFT JOIN tour_translations tt
+                        ON tt.tour_id = t.id
+                       AND tt.language = :language
+
+                    LEFT JOIN LATERAL (
+                        SELECT
+                            price,
+                            currency,
+                            pricing_type
+                        FROM tour_prices
+                        WHERE tour_id = t.id
+                        ORDER BY price ASC
+                        LIMIT 1
+                    ) tp ON TRUE
+
+                    WHERE t.status = 'ACTIVE'
+
+                    ORDER BY
+                        t.featured DESC,
+                        t.id ASC"
+                );
+
+                $stmt->execute([
+                    ':language' => $language,
+                ]);
+            } else {
+                $stmt = $this->db->query(
+                    "SELECT
+                        t.id,
+                        t.title,
+                        t.slug,
+                        t.short_description,
+                        t.description,
+                        t.duration,
+                        t.featured,
+                        t.status,
+
+                        t.category_id,
+                        c.name AS category_name,
+
+                        t.destination_id,
+                        d.name AS destination_name,
+
+                        tp.price,
+                        tp.currency,
+                        tp.pricing_type
+
+                    FROM tours t
+
+                    INNER JOIN categories c
+                        ON c.id = t.category_id
+
+                    INNER JOIN destinations d
+                        ON d.id = t.destination_id
+
+                    LEFT JOIN LATERAL (
+                        SELECT
+                            price,
+                            currency,
+                            pricing_type
+                        FROM tour_prices
+                        WHERE tour_id = t.id
+                        ORDER BY price ASC
+                        LIMIT 1
+                    ) tp ON TRUE
+
+                    WHERE t.status = 'ACTIVE'
+
+                    ORDER BY
+                        t.featured DESC,
+                        t.id ASC"
+                );
+            }
 
             $tours = $stmt->fetchAll();
 
@@ -140,41 +253,88 @@ class TourController
 public function showBySlug(string $slug): never
 {
     try {
-
-        $stmt = $this->db->prepare(
-            "SELECT
-                t.id,
-                t.title,
-                t.slug,
-                t.short_description,
-                t.description,
-                t.duration,
-                t.featured,
-                t.status,
-
-                c.id AS category_id,
-                c.name AS category_name,
-
-                d.id AS destination_id,
-                d.name AS destination_name
-
-             FROM tours t
-
-             INNER JOIN categories c
-                ON c.id = t.category_id
-
-             INNER JOIN destinations d
-                ON d.id = t.destination_id
-
-             WHERE t.slug = :slug
-             AND t.status = 'ACTIVE'
-
-             LIMIT 1"
+        $language = $this->normalizeLanguage(
+            $_GET['lang'] ?? 'en'
         );
 
-        $stmt->execute([
-            'slug' => $slug
-        ]);
+        $useTranslations = $this->shouldUseTourTranslations();
+
+        if ($useTranslations) {
+            $stmt = $this->db->prepare(
+                "SELECT
+                    t.id,
+                    COALESCE(tt.title, t.title) AS title,
+                    COALESCE(tt.slug, t.slug) AS slug,
+                    COALESCE(tt.short_description, t.short_description) AS short_description,
+                    COALESCE(tt.description, t.description) AS description,
+                    COALESCE(tt.duration, t.duration) AS duration,
+                    t.featured,
+                    t.status,
+
+                    c.id AS category_id,
+                    c.name AS category_name,
+
+                    d.id AS destination_id,
+                    d.name AS destination_name
+
+                 FROM tours t
+
+                 INNER JOIN categories c
+                    ON c.id = t.category_id
+
+                 INNER JOIN destinations d
+                    ON d.id = t.destination_id
+
+                 LEFT JOIN tour_translations tt
+                    ON tt.tour_id = t.id
+                   AND tt.language = :language
+
+                 WHERE (COALESCE(tt.slug, t.slug) = :slug OR t.slug = :slug)
+                 AND t.status = 'ACTIVE'
+
+                 LIMIT 1"
+            );
+
+            $stmt->execute([
+                ':language' => $language,
+                ':slug' => $slug,
+            ]);
+        } else {
+            $stmt = $this->db->prepare(
+                "SELECT
+                    t.id,
+                    t.title,
+                    t.slug,
+                    t.short_description,
+                    t.description,
+                    t.duration,
+                    t.featured,
+                    t.status,
+
+                    c.id AS category_id,
+                    c.name AS category_name,
+
+                    d.id AS destination_id,
+                    d.name AS destination_name
+
+                 FROM tours t
+
+                 INNER JOIN categories c
+                    ON c.id = t.category_id
+
+                 INNER JOIN destinations d
+                    ON d.id = t.destination_id
+
+                 WHERE t.slug = :slug
+                 AND t.status = 'ACTIVE'
+
+                 LIMIT 1"
+            );
+
+            $stmt->execute([
+                ':slug' => $slug,
+            ]);
+        }
 
         $tour = $stmt->fetch();
 
@@ -227,39 +387,84 @@ public function showBySlug(string $slug): never
     public function show(int $id): never
     {
         try {
-
-            $stmt = $this->db->prepare(
-                "SELECT
-                    t.id,
-                    t.title,
-                    t.slug,
-                    t.short_description,
-                    t.description,
-                    t.duration,
-                    t.featured,
-                    t.status,
-
-                    c.id AS category_id,
-                    c.name AS category_name,
-
-                    d.id AS destination_id,
-                    d.name AS destination_name
-
-                 FROM tours t
-
-                 INNER JOIN categories c
-                    ON c.id = t.category_id
-
-                 INNER JOIN destinations d
-                    ON d.id = t.destination_id
-
-                 WHERE t.id = :id
-                 AND t.status = 'ACTIVE'"
+            $language = $this->normalizeLanguage(
+                $_GET['lang'] ?? 'en'
             );
 
-            $stmt->execute([
-                'id' => $id
-            ]);
+            $useTranslations = $this->shouldUseTourTranslations();
+
+            if ($useTranslations) {
+                $stmt = $this->db->prepare(
+                    "SELECT
+                        t.id,
+                        COALESCE(tt.title, t.title) AS title,
+                        COALESCE(tt.slug, t.slug) AS slug,
+                        COALESCE(tt.short_description, t.short_description) AS short_description,
+                        COALESCE(tt.description, t.description) AS description,
+                        COALESCE(tt.duration, t.duration) AS duration,
+                        t.featured,
+                        t.status,
+
+                        c.id AS category_id,
+                        c.name AS category_name,
+
+                        d.id AS destination_id,
+                        d.name AS destination_name
+
+                     FROM tours t
+
+                     INNER JOIN categories c
+                        ON c.id = t.category_id
+
+                     INNER JOIN destinations d
+                        ON d.id = t.destination_id
+
+                     LEFT JOIN tour_translations tt
+                        ON tt.tour_id = t.id
+                       AND tt.language = :language
+
+                     WHERE t.id = :id
+                     AND t.status = 'ACTIVE'"
+                );
+
+                $stmt->execute([
+                    ':language' => $language,
+                    ':id' => $id,
+                ]);
+            } else {
+                $stmt = $this->db->prepare(
+                    "SELECT
+                        t.id,
+                        t.title,
+                        t.slug,
+                        t.short_description,
+                        t.description,
+                        t.duration,
+                        t.featured,
+                        t.status,
+
+                        c.id AS category_id,
+                        c.name AS category_name,
+
+                        d.id AS destination_id,
+                        d.name AS destination_name
+
+                     FROM tours t
+
+                     INNER JOIN categories c
+                        ON c.id = t.category_id
+
+                     INNER JOIN destinations d
+                        ON d.id = t.destination_id
+
+                     WHERE t.id = :id
+                     AND t.status = 'ACTIVE'"
+                );
+
+                $stmt->execute([
+                    ':id' => $id,
+                ]);
+            }
 
             $tour = $stmt->fetch();
 
