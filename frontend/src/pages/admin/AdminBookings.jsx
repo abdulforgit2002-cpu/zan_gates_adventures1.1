@@ -1489,6 +1489,11 @@ function AdminBookings() {
                     </Link>
 
 
+                </nav>
+
+
+                <div className="admin-sidebar-bottom">
+
                     <Link
                         to="/"
                         className="admin-nav-item"
@@ -1502,8 +1507,7 @@ function AdminBookings() {
 
                     </Link>
 
-
-                </nav>
+                </div>
 
 
                 <div className="admin-sidebar-footer">
@@ -1577,13 +1581,6 @@ function AdminBookings() {
 
                     </div>
 
-
-                    <Link
-                        to="/"
-                        className="admin-topbar-website"
-                    >
-                        View Website ↗
-                    </Link>
 
                 </header>
 
