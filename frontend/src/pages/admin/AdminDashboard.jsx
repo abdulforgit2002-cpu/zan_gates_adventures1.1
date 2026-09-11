@@ -446,9 +446,11 @@ const AdminDashboard = () => {
                         className="admin-brand-link"
                     >
 
-                        <div className="admin-brand-mark">
-                            ZG
-                        </div>
+                        <img
+                            src="https://res.cloudinary.com/djczmay2i/image/upload/v1788254388/ZAN_GATES_ADVENTURES_k59crf.jpg"
+                            alt="ZAN GATES Adventures"
+                            className="admin-brand-mark admin-brand-image"
+                        />
 
                         <div className="admin-brand-text">
 

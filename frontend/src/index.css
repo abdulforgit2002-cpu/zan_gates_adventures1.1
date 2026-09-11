@@ -3206,11 +3206,10 @@ a {
     width: 42px;
     height: 42px;
 
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    border-radius: 12px;
+    display: block;
+    object-fit: cover;
+    border-radius: 50%;
+    overflow: hidden;
 
     background: linear-gradient(135deg, #6ed7d3, #1ea3a3);
     color: #0b2d2f;
@@ -3218,6 +3217,11 @@ a {
     font-size: 13px;
     font-weight: 800;
     letter-spacing: 0.12em;
+}
+
+.admin-brand-image {
+    border: 2px solid rgba(255, 255, 255, 0.28);
+    box-shadow: 0 6px 16px rgba(11, 45, 47, 0.2);
 }
 
 .admin-sidebar-brand strong,
