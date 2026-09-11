@@ -10,6 +10,7 @@ function Tours() {
 
     const {
         t,
+        i18n,
     } = useTranslation();
 
 
@@ -103,7 +104,7 @@ function Tours() {
             mounted = false;
         };
 
-    }, [t]);
+    }, [t, i18n.language]);
 
 
     return (

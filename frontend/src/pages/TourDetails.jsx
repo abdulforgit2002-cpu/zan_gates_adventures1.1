@@ -552,6 +552,7 @@ function TourDetails() {
     }, [
         slug,
         t,
+        i18n.language,
     ]);
 
 

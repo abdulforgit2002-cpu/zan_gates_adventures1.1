@@ -6,8 +6,16 @@ import {
     Link,
 } from "react-router-dom";
 
+import {
+    useTranslation,
+} from "react-i18next";
+
 
 const TourCard = ({ tour }) => {
+
+    const {
+        t,
+    } = useTranslation();
 
     if (!tour) {
         return null;
@@ -227,7 +235,7 @@ const TourCard = ({ tour }) => {
                             aria-hidden="true"
                         />
 
-                        Featured
+                        {t("common.featured")}
 
                     </span>
 
@@ -362,7 +370,7 @@ const TourCard = ({ tour }) => {
                     <div className="tour-card-price">
 
                         <span>
-                            From
+                            {t("common.from")}
                         </span>
 
 
@@ -378,21 +386,21 @@ const TourCard = ({ tour }) => {
 
                                 {pricingType === "PER_PERSON" && (
 
-                                    <small>
-                                        / person
-                                    </small>
-
-                                )}
-
-                            </div>
-
-                        ) : (
-
-                            <strong>
-                                On Request
-                            </strong>
+                            <small>
+                                {` / ${t("common.perPerson")}`}
+                            </small>
 
                         )}
+
+                    </div>
+
+                ) : (
+
+                    <strong>
+                        {t("common.onRequest")}
+                    </strong>
+
+                )}
 
                     </div>
 
@@ -405,11 +413,11 @@ const TourCard = ({ tour }) => {
                         <Link
                             to={`/tours/${encodeURIComponent(tourSlug)}`}
                             className="tour-card-button"
-                            aria-label={`View ${title}`}
+                            aria-label={`${t("actions.viewTour")} ${title}`}
                         >
 
                             <span>
-                                View Tour
+                                {t("actions.viewTour")}
                             </span>
 
                             <svg
@@ -441,7 +449,7 @@ const TourCard = ({ tour }) => {
                         >
 
                             <span>
-                                View Tour
+                                {t("actions.viewTour")}
                             </span>
 
                         </span>

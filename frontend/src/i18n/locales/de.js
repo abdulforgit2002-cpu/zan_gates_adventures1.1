@@ -205,20 +205,32 @@ const de = {
 
   tourDetails: {
     backToExperiences: "Zurück zu allen Erlebnissen",
+    startingFrom: "Start ab",
+    errorLabel: "Hoppla",
+    errorTitle: "Dieses Erlebnis konnte nicht geladen werden",
+    errorDescription: "Bitte versuchen Sie es in einem Moment erneut.",
 
     gallery: {
+      eyebrow: "GALERIE",
+      title: "Erleben Sie die Reise",
       tourImageGallery: "Tour-Bildergalerie",
       closeGallery: "Galerie schließen",
       previousImage: "Vorheriges Bild",
       nextImage: "Nächstes Bild",
+      openImage: "Galerie öffnen",
+      viewGallery: "Galerie ansehen",
     },
 
     destination: "Reiseziel",
     duration: "Dauer",
+    category: "Kategorie",
+    availability: "Verfügbarkeit",
+    dailyEnquiry: "Täglich auf Anfrage verfügbar",
     price: "Preis",
     perPerson: "pro Person",
     from: "Ab",
     featured: "Empfohlen",
+    people: "Personen",
     bookThisTour: "Diese Tour buchen",
     enquireNow: "Jetzt anfragen",
     overview: "Überblick",
@@ -231,6 +243,68 @@ const de = {
     tourNotFound: "Tour nicht gefunden.",
     loading: "Tour wird geladen...",
     error: "Dieses Erlebnis konnte nicht geladen werden.",
+    defaultDescription:
+      "Entdecken Sie ein unvergessliches Sansibar-Erlebnis, das für Sie gestaltet wurde.",
+    experienceEyebrow: "DAS ERLEBNIS",
+    aboutTitle: "Über dieses Erlebnis",
+    informationEyebrow: "AUF EINEN BLICK",
+    informationTitle: "Tourinformationen",
+    pricingEyebrow: "PREISE",
+    pricingTitle: "Preise & Verfügbarkeit",
+    pricingOnRequest: "Preis auf Anfrage",
+    pricingOnRequestDescription:
+      "Bitte fragen Sie nach dem genauesten Preis für Ihre Reisedaten an.",
+    whyZanGates: "WARUM ZAN GATES",
+    localTeamTitle: "Das lokale Team hinter Ihrem Erlebnis",
+    benefits: {
+      localKnowledge: {
+        title: "Lokales Fachwissen",
+        description:
+          "Unser Team kennt Sansibar von innen und außen – von versteckten Stränden bis zu kulturellen Highlights.",
+      },
+      personalService: {
+        title: "Persönlicher Service",
+        description:
+          "Wir begleiten Sie mit Aufmerksamkeit und Klarheit von der Planung bis zur Abreise.",
+      },
+      easyEnquiry: {
+        title: "Einfache Anfrage",
+        description:
+          "Wir machen es einfach, Fragen zu stellen und die passende Reise zu planen.",
+      },
+    },
+    booking: {
+      planYourExperience: "Planen Sie Ihr Erlebnis",
+      from: "Ab",
+      perPerson: "pro Person",
+      enquireTitle: "Senden Sie Ihre Anfrage",
+      enquireDescription:
+        "Erzählen Sie uns von Ihrer Reise und unser Team hilft Ihnen, das beste Sansibar-Erlebnis zu planen.",
+      requestReceived: "Anfrage erhalten",
+      thankYou: "Vielen Dank",
+      requestReceivedDescription:
+        "Ihre Anfrage wurde erfolgreich gesendet. Unser Team meldet sich bald bei Ihnen.",
+      sendAnother: "Weitere Anfrage senden",
+      fullName: "Vollständiger Name",
+      fullNamePlaceholder: "Ihr vollständiger Name",
+      emailAddress: "E-Mail-Adresse",
+      emailPlaceholder: "sie@beispiel.de",
+      phoneNumber: "Telefonnummer",
+      optional: "optional",
+      preferredTravelDate: "Bevorzugtes Reisedatum",
+      adults: "Erwachsene",
+      children: "Kinder",
+      message: "Nachricht",
+      messagePlaceholder: "Teilen Sie uns Ihre Reisevorlieben mit",
+      estimatedTotal: "Geschätzter Gesamtpreis",
+      basedOnGuest: "Basierend auf 1 Gast",
+      basedOnGuests: "Basierend auf {{count}} Gästen",
+      sendEnquiry: "Anfrage senden",
+      sendingEnquiry: "Anfrage wird gesendet...",
+      noPaymentRequired: "Keine Zahlung erforderlich",
+      availabilityConfirmation: "Die Verfügbarkeit wird nach Prüfung bestätigt.",
+      startJourney: "Starten Sie Ihre Reise",
+    },
   },
 
   booking: {

@@ -1,5 +1,6 @@
 import {
     useEffect,
+    useRef,
     useState,
 } from "react";
 
@@ -19,22 +20,27 @@ const LANGUAGE_OPTIONS = [
     {
         code: "en",
         label: "English",
+        flag: "🇬🇧",
     },
     {
         code: "de",
         label: "Deutsch",
+        flag: "🇩🇪",
     },
     {
         code: "it",
         label: "Italiano",
+        flag: "🇮🇹",
     },
     {
         code: "fr",
         label: "Français",
+        flag: "🇫🇷",
     },
     {
         code: "pl",
         label: "Polski",
+        flag: "🇵🇱",
     },
 ];
 
@@ -48,15 +54,25 @@ function LanguageSelector({
         i18n,
     } = useTranslation();
 
+    const containerRef =
+        useRef(null);
+
+    const [open, setOpen] =
+        useState(false);
+
     const currentLanguage =
         i18n.language || "en";
 
-    const handleLanguageChange = (
-        event
-    ) => {
+    const currentOption =
+        LANGUAGE_OPTIONS.find(
+            (option) =>
+                option.code ===
+                currentLanguage
+        ) || LANGUAGE_OPTIONS[0];
 
-        const nextLanguage =
-            event.target.value;
+    const handleLanguageChange = (
+        nextLanguage
+    ) => {
 
         if (
             nextLanguage &&
@@ -68,11 +84,45 @@ function LanguageSelector({
             );
         }
 
+        setOpen(false);
+
     };
+
+    useEffect(() => {
+
+        const handleClickOutside = (
+            event
+        ) => {
+
+            if (
+                containerRef.current &&
+                !containerRef.current.contains(
+                    event.target
+                )
+            ) {
+                setOpen(false);
+            }
+
+        };
+
+        document.addEventListener(
+            "mousedown",
+            handleClickOutside
+        );
+
+        return () => {
+            document.removeEventListener(
+                "mousedown",
+                handleClickOutside
+            );
+        };
+
+    }, []);
 
     return (
 
         <div
+            ref={containerRef}
             className={
                 compact
                     ? "navbar-language navbar-language-compact"
@@ -80,45 +130,83 @@ function LanguageSelector({
             }
         >
 
-            <label
-                htmlFor={
-                    compact
-                        ? "mobile-language-select"
-                        : "desktop-language-select"
+            <button
+                type="button"
+                className="navbar-language-trigger"
+                onClick={() =>
+                    setOpen(
+                        (current) =>
+                            !current
+                    )
                 }
-                className="navbar-language-label"
-            >
-                {t("language.select")}
-            </label>
-
-            <select
-                id={
-                    compact
-                        ? "mobile-language-select"
-                        : "desktop-language-select"
-                }
-                className="navbar-language-select"
-                value={currentLanguage}
-                onChange={handleLanguageChange}
+                aria-expanded={open}
                 aria-label={t(
                     "accessibility.selectLanguage"
                 )}
             >
 
-                {LANGUAGE_OPTIONS.map(
-                    (option) => (
+                <span
+                    className="navbar-language-icon"
+                    aria-hidden="true"
+                >
+                    {currentOption.flag}
+                </span>
 
-                        <option
-                            key={option.code}
-                            value={option.code}
-                        >
-                            {option.label}
-                        </option>
+                <span className="navbar-language-value">
+                    {currentOption.label}
+                </span>
 
-                    )
-                )}
+                <span
+                    className="navbar-language-caret"
+                    aria-hidden="true"
+                >
+                    ▾
+                </span>
 
-            </select>
+            </button>
+
+            {open && (
+                <div className="navbar-language-menu" role="listbox" aria-label={t("accessibility.selectLanguage")}>
+                    {LANGUAGE_OPTIONS.map(
+                        (option) => (
+                            <button
+                                key={option.code}
+                                type="button"
+                                className={
+                                    option.code ===
+                                    currentLanguage
+                                        ? "navbar-language-option is-selected"
+                                        : "navbar-language-option"
+                                }
+                                onClick={() =>
+                                    handleLanguageChange(
+                                        option.code
+                                    )
+                                }
+                                role="option"
+                                aria-selected={
+                                    option.code ===
+                                    currentLanguage
+                                }
+                            >
+                                <span className="navbar-language-option-flag" aria-hidden="true">
+                                    {option.flag}
+                                </span>
+
+                                <span className="navbar-language-option-label">
+                                    {option.label}
+                                </span>
+
+                                {option.code === currentLanguage && (
+                                    <span className="navbar-language-check" aria-hidden="true">
+                                        ✓
+                                    </span>
+                                )}
+                            </button>
+                        )
+                    )}
+                </div>
+            )}
 
         </div>
 

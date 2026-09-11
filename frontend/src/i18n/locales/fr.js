@@ -205,20 +205,32 @@ const fr = {
 
   tourDetails: {
     backToExperiences: "Retour à toutes les expériences",
+    startingFrom: "À partir de",
+    errorLabel: "Oups",
+    errorTitle: "Cette expérience n'a pas pu être chargée",
+    errorDescription: "Veuillez réessayer dans un instant.",
 
     gallery: {
+      eyebrow: "GALERIE",
+      title: "Découvrez l'expérience",
       tourImageGallery: "Galerie d'images de l'excursion",
       closeGallery: "Fermer la galerie",
       previousImage: "Image précédente",
       nextImage: "Image suivante",
+      openImage: "Ouvrir la galerie",
+      viewGallery: "Voir la galerie",
     },
 
     destination: "Destination",
     duration: "Durée",
+    category: "Catégorie",
+    availability: "Disponibilité",
+    dailyEnquiry: "Disponible en demande quotidienne",
     price: "Prix",
     perPerson: "par personne",
     from: "À partir de",
     featured: "À la une",
+    people: "personnes",
     bookThisTour: "Réserver cette excursion",
     enquireNow: "Demander des informations",
     overview: "Présentation",
@@ -231,6 +243,68 @@ const fr = {
     tourNotFound: "Excursion introuvable.",
     loading: "Chargement de l'excursion...",
     error: "Impossible de charger cette expérience.",
+    defaultDescription:
+      "Découvrez une expérience inoubliable à Zanzibar spécialement conçue pour vous.",
+    experienceEyebrow: "L'EXPÉRIENCE",
+    aboutTitle: "À propos de cette expérience",
+    informationEyebrow: "À L'HORIZON",
+    informationTitle: "Informations sur l'excursion",
+    pricingEyebrow: "PRIX",
+    pricingTitle: "Prix & disponibilité",
+    pricingOnRequest: "Prix sur demande",
+    pricingOnRequestDescription:
+      "Veuillez demander le tarif le plus précis selon vos dates de voyage.",
+    whyZanGates: "POURQUOI ZAN GATES",
+    localTeamTitle: "L'équipe locale derrière votre expérience",
+    benefits: {
+      localKnowledge: {
+        title: "Expertise locale",
+        description:
+          "Notre équipe connaît Zanzibar sur le bout des doigts, des plages cachées aux points forts culturels.",
+      },
+      personalService: {
+        title: "Service personnalisé",
+        description:
+          "Nous vous accompagnons avec soin, attention et clarté de la planification au départ.",
+      },
+      easyEnquiry: {
+        title: "Demande simple",
+        description:
+          "Nous simplifions les questions pour vous aider à planifier le voyage qui vous convient.",
+      },
+    },
+    booking: {
+      planYourExperience: "Planifiez votre expérience",
+      from: "À partir de",
+      perPerson: "par personne",
+      enquireTitle: "Envoyez votre demande",
+      enquireDescription:
+        "Parlez-nous de votre voyage et notre équipe vous aidera à planifier la meilleure expérience à Zanzibar.",
+      requestReceived: "Demande reçue",
+      thankYou: "Merci",
+      requestReceivedDescription:
+        "Votre demande a bien été envoyée. Notre équipe vous répondra rapidement.",
+      sendAnother: "Envoyer une autre demande",
+      fullName: "Nom complet",
+      fullNamePlaceholder: "Votre nom complet",
+      emailAddress: "Adresse e-mail",
+      emailPlaceholder: "vous@exemple.com",
+      phoneNumber: "Numéro de téléphone",
+      optional: "optionnel",
+      preferredTravelDate: "Date de voyage préférée",
+      adults: "Adultes",
+      children: "Enfants",
+      message: "Message",
+      messagePlaceholder: "Parlez-nous de votre voyage idéal",
+      estimatedTotal: "Total estimé",
+      basedOnGuest: "Sur la base de 1 personne",
+      basedOnGuests: "Sur la base de {{count}} personnes",
+      sendEnquiry: "Envoyer la demande",
+      sendingEnquiry: "Envoi de la demande...",
+      noPaymentRequired: "Aucun paiement requis",
+      availabilityConfirmation: "La disponibilité sera confirmée après vérification.",
+      startJourney: "Commencez votre voyage",
+    },
   },
 
   booking: {

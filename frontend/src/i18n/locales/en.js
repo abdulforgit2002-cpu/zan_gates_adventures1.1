@@ -39,6 +39,7 @@ const en = {
         from: "From",
         perPerson: "per person",
         onRequest: "On Request",
+        zanzibarAdventure: "Zanzibar Adventure",
         guest: "guest",
         guests: "guests",
     },
@@ -192,8 +193,14 @@ const en = {
 
     tourDetails: {
         backToExperiences: "Back to all experiences",
+        startingFrom: "Starting from",
+        errorLabel: "Oops",
+        errorTitle: "This experience could not be loaded",
+        errorDescription: "Please try again in a moment.",
 
         gallery: {
+            eyebrow: "GALLERY",
+            title: "Explore the experience",
             tourImageGallery: "Tour image gallery",
             closeGallery: "Close gallery",
             previousImage: "Previous image",
