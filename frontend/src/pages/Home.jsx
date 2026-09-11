@@ -1,22 +1,8 @@
-import {
-    useEffect,
-    useState,
-} from "react";
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
-import {
-    Link,
-} from "react-router-dom";
-
-import {
-    useTranslation,
-} from "react-i18next";
-
-import {
-    getTours,
-} from "../services/tourService";
-
+import { getTours } from "../services/tourService";
 import TourCard from "../components/TourCard";
-
 
 /*
 |--------------------------------------------------------------------------
@@ -25,206 +11,63 @@ import TourCard from "../components/TourCard";
 |
 | Each image represents a different Zanzibar experience.
 |
-| duration = how long the slide remains visible.
-|
 */
 
 const HOME_HERO_SLIDES = [
-
     {
         id: 1,
-
-        image:
-            "https://res.cloudinary.com/djczmay2i/image/upload/v1779540443/aaa_faq_ixagv2.webp",
-
-        eyebrow:
-            "DISCOVER ZANZIBAR",
-
-        title:
-            "Where every journey becomes a story.",
-
-        experience:
-            "The Spirit of Zanzibar",
-
+        experience: "Safari Blue",
+        eyebrow: "OCEAN ADVENTURES",
+        title: "Sail into Zanzibar's turquoise paradise.",
         description:
-            "Experience the island through unforgettable places, people, culture and adventure.",
-
-        duration:
-            7000,
-
-        position:
-            "center center",
-
-        motion:
-            "zoom-in",
+            "Discover sandbanks, crystal-clear waters, marine life and unforgettable dhow adventures.",
+        image:
+            "https://res.cloudinary.com/djczmay2i/image/upload/v1788254388/ZAN_GATES_ADVENTURES_k59crf.jpg",
+        position: "center",
+        motion: "zoom",
+        duration: 6000,
     },
-
-
     {
         id: 2,
-
-        image:
-            "https://res.cloudinary.com/djczmay2i/image/upload/v1779537151/Prison_Island_wa08hw.jpg",
-
-        eyebrow:
-            "PRISON ISLAND",
-
-        title:
-            "History, turquoise waters and unforgettable encounters.",
-
-        experience:
-            "Prison Island Adventure",
-
+        experience: "Jozani Forest",
+        eyebrow: "WILDLIFE & NATURE",
+        title: "Discover the wild heart of Zanzibar.",
         description:
-            "Discover a legendary island surrounded by the crystal waters of the Indian Ocean.",
-
-        duration:
-            8000,
-
-        position:
-            "center 45%",
-
-        motion:
-            "pan-left",
+            "Explore lush tropical forest and encounter the unique wildlife of Zanzibar.",
+        image:
+            "https://res.cloudinary.com/djczmay2i/image/upload/v1779459607/Jozani_Forest_Tour9_dz9pcv.jpg",
+        position: "center",
+        motion: "zoom",
+        duration: 6000,
     },
-
-
     {
         id: 3,
-
-        image:
-            "https://res.cloudinary.com/djczmay2i/image/upload/v1779537152/Prison_Island2_nbupim.avif",
-
-        eyebrow:
-            "OCEAN ADVENTURES",
-
-        title:
-            "Dive into the beauty of Zanzibar.",
-
-        experience:
-            "Island & Ocean Escape",
-
+        experience: "Zanzibar Adventures",
+        eyebrow: "ISLAND DISCOVERY",
+        title: "Your gateway to unforgettable Zanzibar adventures.",
         description:
-            "Explore the breathtaking waters, hidden beauty and unforgettable marine experiences of Zanzibar.",
-
-        duration:
-            7000,
-
-        position:
-            "center center",
-
-        motion:
-            "zoom-out",
-    },
-
-
-    {
-        id: 4,
-
+            "Experience the ocean, nature, culture and unforgettable destinations of Zanzibar.",
         image:
-            "https://res.cloudinary.com/djczmay2i/image/upload/v1779459606/Jozani_Forest_Tour8_c21zcx.jpg",
-
-        eyebrow:
-            "JOZANI FOREST",
-
-        title:
-            "Discover Zanzibar's wild side.",
-
-        experience:
-            "Jozani Forest Experience",
-
-        description:
-            "Walk beneath ancient trees and discover the natural world that makes Zanzibar unique.",
-
-        duration:
-            9000,
-
-        position:
-            "center 35%",
-
-        motion:
-            "pan-right",
+            "https://res.cloudinary.com/djczmay2i/image/upload/v1788254388/ZAN_GATES_ADVENTURES_k59crf.jpg",
+        position: "center",
+        motion: "zoom",
+        duration: 6000,
     },
-
-
-    {
-        id: 5,
-
-        image:
-            "https://res.cloudinary.com/djczmay2i/image/upload/v1779286801/nungwi_car4_zqc7ba.avif",
-
-        eyebrow:
-            "NUNGWI",
-
-        title:
-            "Where the island meets the Indian Ocean.",
-
-        experience:
-            "Nungwi Escape",
-
-        description:
-            "Experience the beauty of Zanzibar's northern coast, turquoise waters and unforgettable sunsets.",
-
-        duration:
-            8000,
-
-        position:
-            "center center",
-
-        motion:
-            "zoom-in",
-    },
-
 ];
 
+/*
+|--------------------------------------------------------------------------
+| HOME PAGE
+|--------------------------------------------------------------------------
+*/
 
-const Home = () => {
+function Home() {
+    const [tours, setTours] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState("");
 
-    const {
-        t,
-    } = useTranslation();
-
-    /*
-    |--------------------------------------------------------------------------
-    | TOURS STATE
-    |--------------------------------------------------------------------------
-    */
-
-    const [
-        tours,
-        setTours,
-    ] = useState([]);
-
-
-    const [
-        loading,
-        setLoading,
-    ] = useState(true);
-
-
-    const [
-        error,
-        setError,
-    ] = useState("");
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | HERO STATE
-    |--------------------------------------------------------------------------
-    */
-
-    const [
-        activeHeroImage,
-        setActiveHeroImage,
-    ] = useState(0);
-
-
-    const [
-        heroVisible,
-        setHeroVisible,
-    ] = useState(false);
-
+    const [activeHeroImage, setActiveHeroImage] = useState(0);
+    const [heroVisible, setHeroVisible] = useState(false);
 
     /*
     |--------------------------------------------------------------------------
@@ -233,58 +76,48 @@ const Home = () => {
     */
 
     useEffect(() => {
+        let mounted = true;
 
         const loadTours = async () => {
-
             try {
-
                 setLoading(true);
-
                 setError("");
 
+                const data = await getTours();
 
-                const tourData =
-                    await getTours();
+                if (!mounted) {
+                    return;
+                }
 
+                const loadedTours = Array.isArray(data)
+                    ? data
+                    : Array.isArray(data?.data)
+                        ? data.data
+                        : [];
 
-                setTours(
-                    Array.isArray(
-                        tourData
-                    )
-                        ? tourData
-                        : []
-                );
+                setTours(loadedTours);
+            } catch (err) {
+                console.error("Failed to load tours:", err);
 
-
-            } catch (error) {
-
-                console.error(
-                    "Failed to load tours:",
-                    error
-                );
-
-
-                setTours([]);
-
-
-                setError(
-                    "Unable to load our experiences right now."
-                );
-
-
+                if (mounted) {
+                    setError(
+                        err?.message ||
+                            "Unable to load Zanzibar experiences."
+                    );
+                }
             } finally {
-
-                setLoading(false);
-
+                if (mounted) {
+                    setLoading(false);
+                }
             }
-
         };
-
 
         loadTours();
 
+        return () => {
+            mounted = false;
+        };
     }, []);
-
 
     /*
     |--------------------------------------------------------------------------
@@ -293,30 +126,14 @@ const Home = () => {
     */
 
     useEffect(() => {
-
-        const revealTimer =
-            window.setTimeout(
-                () => {
-
-                    setHeroVisible(
-                        true
-                    );
-
-                },
-                120
-            );
-
+        const revealTimer = window.setTimeout(() => {
+            setHeroVisible(true);
+        }, 120);
 
         return () => {
-
-            window.clearTimeout(
-                revealTimer
-            );
-
+            window.clearTimeout(revealTimer);
         };
-
     }, []);
-
 
     /*
     |--------------------------------------------------------------------------
@@ -325,21 +142,11 @@ const Home = () => {
     */
 
     useEffect(() => {
-
-        HOME_HERO_SLIDES.forEach(
-            (slide) => {
-
-                const image =
-                    new Image();
-
-                image.src =
-                    slide.image;
-
-            }
-        );
-
+        HOME_HERO_SLIDES.forEach((slide) => {
+            const image = new Image();
+            image.src = slide.image;
+        });
     }, []);
-
 
     /*
     |--------------------------------------------------------------------------
@@ -348,49 +155,26 @@ const Home = () => {
     */
 
     useEffect(() => {
-
         const currentSlide =
-            HOME_HERO_SLIDES[
-                activeHeroImage
-            ];
-
+            HOME_HERO_SLIDES[activeHeroImage];
 
         if (!currentSlide) {
-
             return undefined;
-
         }
 
-
-        const timer =
-            window.setTimeout(
-                () => {
-
-                    setActiveHeroImage(
-                        (previous) =>
-                            (
-                                previous + 1
-                            ) %
-                            HOME_HERO_SLIDES.length
-                    );
-
-                },
-                currentSlide.duration
-            );
-
+        const timer = window.setTimeout(() => {
+            setActiveHeroImage((previous) => {
+                return (
+                    (previous + 1) %
+                    HOME_HERO_SLIDES.length
+                );
+            });
+        }, currentSlide.duration);
 
         return () => {
-
-            window.clearTimeout(
-                timer
-            );
-
+            window.clearTimeout(timer);
         };
-
-    }, [
-        activeHeroImage,
-    ]);
-
+    }, [activeHeroImage]);
 
     /*
     |--------------------------------------------------------------------------
@@ -399,10 +183,8 @@ const Home = () => {
     */
 
     const currentHeroSlide =
-        HOME_HERO_SLIDES[
-            activeHeroImage
-        ];
-
+        HOME_HERO_SLIDES[activeHeroImage] ||
+        HOME_HERO_SLIDES[0];
 
     /*
     |--------------------------------------------------------------------------
@@ -410,25 +192,13 @@ const Home = () => {
     |--------------------------------------------------------------------------
     */
 
-    const handleHeroChange =
-        (index) => {
+    const handleHeroChange = (index) => {
+        if (index === activeHeroImage) {
+            return;
+        }
 
-            if (
-                index ===
-                activeHeroImage
-            ) {
-
-                return;
-
-            }
-
-
-            setActiveHeroImage(
-                index
-            );
-
-        };
-
+        setActiveHeroImage(index);
+    };
 
     /*
     |--------------------------------------------------------------------------
@@ -437,12 +207,7 @@ const Home = () => {
     */
 
     return (
-
-        <main
-            id="home"
-            className="home-page"
-        >
-
+        <main className="home-page">
 
             {/* =========================================================
                 HERO
@@ -450,93 +215,61 @@ const Home = () => {
 
             <section
                 className="home-hero"
-                aria-label="Zan Gates Adventures"
+                aria-label="ZAN GATES Adventures"
             >
 
-
-                {/* -----------------------------------------------------
-                    BACKGROUND IMAGES
-                ----------------------------------------------------- */}
+                {/* Background images */}
 
                 <div
                     className="home-hero-background"
                     aria-hidden="true"
                 >
-
                     {HOME_HERO_SLIDES.map(
-                        (
-                            slide,
-                            index
-                        ) => (
-
+                        (slide, index) => (
                             <img
-                                key={
-                                    slide.id
-                                }
-
-                                src={
-                                    slide.image
-                                }
-
+                                key={slide.id}
+                                src={slide.image}
                                 alt=""
-
                                 className={`
                                     home-hero-image
                                     ${
-                                        index === activeHeroImage
+                                        index ===
+                                        activeHeroImage
                                             ? "active"
                                             : ""
                                     }
                                     home-hero-motion-${slide.motion}
                                 `}
-
                                 style={{
                                     objectPosition:
                                         slide.position,
                                 }}
-
-                                loading={
-                                    index === 0
-                                        ? "eager"
-                                        : "lazy"
-                                }
-
+                                loading="eager"
                                 fetchPriority={
                                     index === 0
                                         ? "high"
                                         : "auto"
                                 }
-
                                 decoding="async"
-
                                 draggable="false"
                             />
-
                         )
                     )}
-
                 </div>
 
-
-                {/* -----------------------------------------------------
-                    CINEMATIC OVERLAY
-                ----------------------------------------------------- */}
+                {/* Cinematic overlay */}
 
                 <div
                     className="home-hero-overlay"
                     aria-hidden="true"
                 />
 
-
                 <div
                     className="home-hero-vignette"
                     aria-hidden="true"
                 />
 
-
-                {/* -----------------------------------------------------
-                    HERO CONTENT
-                ----------------------------------------------------- */}
+                {/* Hero content */}
 
                 <div
                     className={
@@ -545,193 +278,138 @@ const Home = () => {
                             : "home-hero-content"
                     }
                 >
-
-
                     <div
-                        key={
-                            currentHeroSlide.id
-                        }
-
+                        key={currentHeroSlide.id}
                         className="home-hero-copy"
                     >
 
-
                         <span className="home-hero-eyebrow">
-
                             <span />
 
-                            {t("home.hero.eyebrow")}
-
+                            {currentHeroSlide.eyebrow}
                         </span>
 
-
                         <h1>
-
                             <span>
-                                {t("home.hero.prefix")}
+                                Discover
                             </span>
 
                             <strong>
-                                {t("home.hero.highlight")}
+                                Zanzibar.
                             </strong>
-
                         </h1>
 
-
                         <p className="home-hero-title">
-
-                            {t("home.hero.title")}
-
+                            {currentHeroSlide.title}
                         </p>
-
 
                         <p className="home-hero-description">
-
-                            {t("home.hero.description")}
-
+                            {currentHeroSlide.description}
                         </p>
-
 
                         <div className="home-hero-actions">
 
-
-                            <Link
-                                to="/tours"
+                            <a
+                                href="#tours"
                                 className="home-primary-button"
                             >
-
                                 <span>
-                                    {t("home.hero.primaryCta")}
+                                    Explore Experiences
                                 </span>
 
                                 <strong>
                                     →
                                 </strong>
+                            </a>
 
-                            </Link>
-
-
-                            <Link
-                                to="/about"
+                            <a
+                                href="#about"
                                 className="home-secondary-button"
                             >
-
-                                {t("home.hero.secondaryCta")}
-
-                            </Link>
-
+                                Discover ZAN GATES
+                            </a>
 
                         </div>
 
-
                     </div>
-
                 </div>
 
-
-                {/* -----------------------------------------------------
-                    SLIDE NAVIGATION
-                ----------------------------------------------------- */}
+                {/* Slide navigation */}
 
                 <div
                     className="home-hero-navigation"
                     aria-label="Hero image navigation"
                 >
-
                     {HOME_HERO_SLIDES.map(
-                        (
-                            slide,
-                            index
-                        ) => (
-
+                        (slide, index) => (
                             <button
-                                key={
-                                    slide.id
-                                }
-
+                                key={slide.id}
                                 type="button"
-
                                 className={
                                     index ===
                                     activeHeroImage
                                         ? "active"
                                         : ""
                                 }
-
-                                aria-label={
-                                    `View ${
-                                        slide.experience
-                                    }`
-                                }
-
+                                aria-label={`View ${slide.experience}`}
                                 aria-current={
                                     index ===
                                     activeHeroImage
                                         ? "true"
                                         : undefined
                                 }
-
                                 onClick={() =>
-                                    handleHeroChange(
-                                        index
-                                    )
+                                    handleHeroChange(index)
                                 }
                             >
-
                                 <span />
-
                             </button>
-
                         )
                     )}
-
                 </div>
 
-
             </section>
-
 
             {/* =========================================================
                 INTRO
             ========================================================= */}
 
             <section className="home-intro">
-
                 <div className="home-intro-inner">
 
-
                     <div className="home-intro-label">
-
                         <span />
 
                         <p>
-                            {t("home.experience.eyebrow")}
+                            THE ZAN GATES EXPERIENCE
                         </p>
-
                     </div>
-
 
                     <div className="home-intro-content">
 
                         <h2>
+                            Zanzibar is more than
+                            a destination.
 
-                            {t("home.experience.title")}
-
+                            <span>
+                                {" "}
+                                It is an experience.
+                            </span>
                         </h2>
 
-
                         <p>
-
-                            {t("home.experience.description")}
-
+                            We create unforgettable
+                            journeys across the island,
+                            connecting travelers with
+                            the ocean, nature, culture
+                            and the authentic beauty
+                            of Zanzibar.
                         </p>
 
                     </div>
 
                 </div>
-
             </section>
-
 
             {/* =========================================================
                 TOURS
@@ -747,43 +425,43 @@ const Home = () => {
                     <div>
 
                         <span className="home-section-eyebrow">
-                            {t("home.experiences.eyebrow")}
+                            OUR EXPERIENCES
                         </span>
 
                         <h2>
-                            {t("home.experiences.title")}
+                            Adventures worth
+                            remembering.
                         </h2>
 
                     </div>
 
-
                     <p>
-
-                        {t("home.experiences.description")}
-
+                        Explore our hand-selected
+                        Zanzibar experiences and
+                        find the adventure that
+                        speaks to you.
                     </p>
 
                 </div>
 
+                {/* Loading */}
 
                 {loading && (
-
                     <div className="home-tour-loading">
 
                         <div className="home-loading-spinner" />
 
                         <p>
-                            {t("home.experiences.loading")}
+                            Discovering Zanzibar
+                            experiences...
                         </p>
 
                     </div>
-
                 )}
 
+                {/* Error */}
 
-                {!loading &&
-                    error && (
-
+                {!loading && error && (
                     <div className="home-tour-message">
 
                         <div className="home-message-icon">
@@ -791,7 +469,7 @@ const Home = () => {
                         </div>
 
                         <h3>
-                            {t("home.experiences.errorTitle")}
+                            Something went wrong
                         </h3>
 
                         <p>
@@ -804,65 +482,53 @@ const Home = () => {
                                 window.location.reload()
                             }
                         >
-                            {t("home.experiences.retry")}
+                            Try Again
                         </button>
 
                     </div>
-
                 )}
 
+                {/* Tours */}
 
                 {!loading &&
                     !error &&
                     tours.length > 0 && (
+                        <div className="home-tours-grid">
 
-                    <div className="home-tours-grid">
-
-                        {tours.map(
-                            (tour) => (
-
+                            {tours.map((tour) => (
                                 <TourCard
-                                    key={
-                                        tour.id
-                                    }
-
-                                    tour={
-                                        tour
-                                    }
+                                    key={tour.id}
+                                    tour={tour}
                                 />
+                            ))}
 
-                            )
-                        )}
+                        </div>
+                    )}
 
-                    </div>
-
-                )}
-
+                {/* Empty state */}
 
                 {!loading &&
                     !error &&
                     tours.length === 0 && (
+                        <div className="home-tour-message">
 
-                    <div className="home-tour-message">
+                            <div className="home-message-icon">
+                                +
+                            </div>
 
-                        <div className="home-message-icon">
-                            +
+                            <h3>
+                                New adventures are coming
+                            </h3>
+
+                            <p>
+                                We are preparing exciting
+                                Zanzibar experiences for you.
+                            </p>
+
                         </div>
-
-                        <h3>
-                            {t("home.experiences.emptyTitle")}
-                        </h3>
-
-                        <p>
-                            {t("home.experiences.emptyDescription")}
-                        </p>
-
-                    </div>
-
-                )}
+                    )}
 
             </section>
-
 
             {/* =========================================================
                 WHY ZAN GATES
@@ -884,41 +550,39 @@ const Home = () => {
                         </strong>
 
                         <span>
-
                             Zanzibar
                             <br />
                             Adventures
-
                         </span>
 
                     </div>
 
                 </div>
 
-
                 <div className="home-about-content">
 
                     <span className="home-section-eyebrow">
-                        {t("home.whyUs.eyebrow")}
+                        WHY ZAN GATES
                     </span>
 
-
                     <h2>
+                        See Zanzibar
+                        <br />
 
-                        {t("home.whyUs.title")}
-
+                        <span>
+                            through a different lens.
+                        </span>
                     </h2>
 
-
                     <p>
-
-                        {t("home.whyUs.description")}
-
+                        We believe the best journeys
+                        are not simply about visiting
+                        beautiful places. They are about
+                        the stories, people, landscapes
+                        and moments that stay with you.
                     </p>
 
-
                     <div className="home-about-features">
-
 
                         <div className="home-about-feature">
 
@@ -929,17 +593,17 @@ const Home = () => {
                             <div>
 
                                 <strong>
-                                    {t("home.whyUs.localKnowledge")}
+                                    Authentic Experiences
                                 </strong>
 
                                 <p>
-                                    {t("home.whyUs.localKnowledgeDescription")}
+                                    Discover the real
+                                    character of Zanzibar.
                                 </p>
 
                             </div>
 
                         </div>
-
 
                         <div className="home-about-feature">
 
@@ -950,17 +614,18 @@ const Home = () => {
                             <div>
 
                                 <strong>
-                                    {t("home.whyUs.personalService")}
+                                    Island Adventures
                                 </strong>
 
                                 <p>
-                                    {t("home.whyUs.personalServiceDescription")}
+                                    From turquoise waters
+                                    to unforgettable
+                                    excursions.
                                 </p>
 
                             </div>
 
                         </div>
-
 
                         <div className="home-about-feature">
 
@@ -971,38 +636,34 @@ const Home = () => {
                             <div>
 
                                 <strong>
-                                    {t("home.whyUs.flexiblePlanning")}
+                                    Memorable Journeys
                                 </strong>
 
                                 <p>
-                                    {t("home.whyUs.flexiblePlanningDescription")}
+                                    Experiences designed
+                                    around you.
                                 </p>
 
                             </div>
 
                         </div>
 
-
                     </div>
 
-
                     <Link
-                        to="/tours"
+                        to="/about"
                         className="home-about-button"
                     >
-
-                        {t("actions.discoverOurExperiences")}
+                        Discover ZAN GATES
 
                         <span>
                             →
                         </span>
-
                     </Link>
 
                 </div>
 
             </section>
-
 
             {/* =========================================================
                 FINAL CTA
@@ -1012,51 +673,40 @@ const Home = () => {
 
                 <div className="home-cta-overlay" />
 
-
                 <div className="home-cta-content">
 
                     <span className="home-section-eyebrow">
-                        {t("home.finalCta.eyebrow")}
+                        YOUR ZANZIBAR STORY STARTS HERE
                     </span>
 
-
                     <h2>
-
-                        {t("home.finalCta.title")}
-
+                        Ready to discover
+                        <br />
+                        Zanzibar?
                     </h2>
 
-
                     <p>
-
-                        {t("home.finalCta.description")}
-
+                        Choose your experience and
+                        let the island do the rest.
                     </p>
 
-
-                    <Link
-                        to="/tours"
+                    <a
+                        href="#tours"
                         className="home-cta-button"
                     >
-
-                        {t("home.finalCta.button")}
+                        Explore Our Tours
 
                         <span>
                             →
                         </span>
-
-                    </Link>
+                    </a>
 
                 </div>
 
             </section>
 
-
         </main>
-
     );
-
-};
-
+}
 
 export default Home;

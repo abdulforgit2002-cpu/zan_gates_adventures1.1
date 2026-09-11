@@ -1,6 +1,5 @@
 import {
     useEffect,
-    useRef,
     useState,
 } from "react";
 
@@ -14,205 +13,6 @@ import {
 } from "react-i18next";
 
 import Logo from "./Logo";
-
-
-const LANGUAGE_OPTIONS = [
-    {
-        code: "en",
-        label: "English",
-        flag: "🇬🇧",
-    },
-    {
-        code: "de",
-        label: "Deutsch",
-        flag: "🇩🇪",
-    },
-    {
-        code: "it",
-        label: "Italiano",
-        flag: "🇮🇹",
-    },
-    {
-        code: "fr",
-        label: "Français",
-        flag: "🇫🇷",
-    },
-    {
-        code: "pl",
-        label: "Polski",
-        flag: "🇵🇱",
-    },
-];
-
-
-function LanguageSelector({
-    compact = false,
-}) {
-
-    const {
-        t,
-        i18n,
-    } = useTranslation();
-
-    const containerRef =
-        useRef(null);
-
-    const [open, setOpen] =
-        useState(false);
-
-    const currentLanguage =
-        i18n.language || "en";
-
-    const currentOption =
-        LANGUAGE_OPTIONS.find(
-            (option) =>
-                option.code ===
-                currentLanguage
-        ) || LANGUAGE_OPTIONS[0];
-
-    const handleLanguageChange = (
-        nextLanguage
-    ) => {
-
-        if (
-            nextLanguage &&
-            nextLanguage !==
-                currentLanguage
-        ) {
-            i18n.changeLanguage(
-                nextLanguage
-            );
-        }
-
-        setOpen(false);
-
-    };
-
-    useEffect(() => {
-
-        const handleClickOutside = (
-            event
-        ) => {
-
-            if (
-                containerRef.current &&
-                !containerRef.current.contains(
-                    event.target
-                )
-            ) {
-                setOpen(false);
-            }
-
-        };
-
-        document.addEventListener(
-            "mousedown",
-            handleClickOutside
-        );
-
-        return () => {
-            document.removeEventListener(
-                "mousedown",
-                handleClickOutside
-            );
-        };
-
-    }, []);
-
-    return (
-
-        <div
-            ref={containerRef}
-            className={
-                compact
-                    ? "navbar-language navbar-language-compact"
-                    : "navbar-language"
-            }
-        >
-
-            <button
-                type="button"
-                className="navbar-language-trigger"
-                onClick={() =>
-                    setOpen(
-                        (current) =>
-                            !current
-                    )
-                }
-                aria-expanded={open}
-                aria-label={t(
-                    "accessibility.selectLanguage"
-                )}
-            >
-
-                <span
-                    className="navbar-language-icon"
-                    aria-hidden="true"
-                >
-                    {currentOption.flag}
-                </span>
-
-                <span className="navbar-language-value">
-                    {currentOption.label}
-                </span>
-
-                <span
-                    className="navbar-language-caret"
-                    aria-hidden="true"
-                >
-                    ▾
-                </span>
-
-            </button>
-
-            {open && (
-                <div className="navbar-language-menu" role="listbox" aria-label={t("accessibility.selectLanguage")}>
-                    {LANGUAGE_OPTIONS.map(
-                        (option) => (
-                            <button
-                                key={option.code}
-                                type="button"
-                                className={
-                                    option.code ===
-                                    currentLanguage
-                                        ? "navbar-language-option is-selected"
-                                        : "navbar-language-option"
-                                }
-                                onClick={() =>
-                                    handleLanguageChange(
-                                        option.code
-                                    )
-                                }
-                                role="option"
-                                aria-selected={
-                                    option.code ===
-                                    currentLanguage
-                                }
-                            >
-                                <span className="navbar-language-option-flag" aria-hidden="true">
-                                    {option.flag}
-                                </span>
-
-                                <span className="navbar-language-option-label">
-                                    {option.label}
-                                </span>
-
-                                {option.code === currentLanguage && (
-                                    <span className="navbar-language-check" aria-hidden="true">
-                                        ✓
-                                    </span>
-                                )}
-                            </button>
-                        )
-                    )}
-                </div>
-            )}
-
-        </div>
-
-    );
-
-}
 
 
 function Navbar() {
@@ -261,6 +61,41 @@ function Navbar() {
             );
 
         };
+
+    }, []);
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | INITIALIZE GLOBAL LANGUAGE WIDGET AFTER THE NAVBAR MOUNT
+    |--------------------------------------------------------------------------
+    */
+
+    useEffect(() => {
+
+        window.gtranslateSettings = {
+            default_language: "en",
+            languages: ["en", "de", "it", "fr", "pl"],
+            wrapper_selector: "#gtranslate-wrapper",
+        };
+
+
+        const existingScript = document.querySelector(
+            'script[src*="gtranslate.net"]'
+        );
+
+
+        if (!existingScript) {
+
+            const script = document.createElement("script");
+
+            script.src = "https://cdn.gtranslate.net/widgets/latest/dropdown.js";
+            script.async = true;
+            script.defer = true;
+
+            document.body.appendChild(script);
+
+        }
 
     }, []);
 
@@ -450,7 +285,11 @@ function Navbar() {
 
                 <div className="navbar-actions">
 
-                    <LanguageSelector />
+                    <div
+                        id="gtranslate-wrapper"
+                        className="gtranslate_wrapper"
+                        aria-label="Language selector"
+                    />
 
 
                     <Link
@@ -639,11 +478,6 @@ function Navbar() {
                     {/* =================================================
                         MOBILE LANGUAGE SELECTOR
                     ================================================= */}
-
-                    <LanguageSelector
-                        compact
-                    />
-
 
                     {/* =================================================
                         MOBILE BOOKING CTA

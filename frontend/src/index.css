@@ -8326,6 +8326,68 @@ select:focus-visible {
     display: flex;
     align-items: center;
     flex-shrink: 0;
+    gap: 12px;
+}
+
+.navbar-actions .gtranslate_wrapper,
+.navbar-mobile-language.gtranslate_wrapper {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    position: relative !important;
+    z-index: 2;
+}
+
+.navbar-actions .gtranslate_wrapper {
+    min-height: 46px;
+}
+
+.navbar-actions .gtranslate_wrapper .gt_float_switcher,
+.navbar-actions .gtranslate_wrapper .gt_switcher,
+.navbar-actions .gtranslate_wrapper select,
+.navbar-mobile-language.gtranslate_wrapper .gt_float_switcher,
+.navbar-mobile-language.gtranslate_wrapper .gt_switcher,
+.navbar-mobile-language.gtranslate_wrapper select,
+.navbar-actions .gtranslate_wrapper .goog-te-gadget,
+.navbar-mobile-language.gtranslate_wrapper .goog-te-gadget {
+    position: static !important;
+    top: auto !important;
+    left: auto !important;
+    right: auto !important;
+    bottom: auto !important;
+    float: none !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    margin: 0 !important;
+    min-height: 46px !important;
+    border: 1px solid rgba(18, 63, 70, 0.12) !important;
+    border-radius: 999px !important;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(240, 247, 246, 0.9)) !important;
+    color: #123f46 !important;
+    box-shadow: 0 8px 20px rgba(18, 63, 70, 0.06) !important;
+    font-size: 11px !important;
+    font-weight: 800 !important;
+    letter-spacing: 0.2px !important;
+    padding: 7px 14px !important;
+    line-height: 1.2 !important;
+}
+
+.navbar-actions .gtranslate_wrapper .gt_float_switcher,
+.navbar-actions .gtranslate_wrapper .gt_switcher {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+}
+
+.navbar-mobile-language.gtranslate_wrapper {
+    width: 100%;
+    margin-bottom: 14px;
+}
+
+.navbar-mobile-language.gtranslate_wrapper .gt_float_switcher,
+.navbar-mobile-language.gtranslate_wrapper .gt_switcher,
+.navbar-mobile-language.gtranslate_wrapper select {
+    width: 100% !important;
 }
 
 .navbar-booking-button {

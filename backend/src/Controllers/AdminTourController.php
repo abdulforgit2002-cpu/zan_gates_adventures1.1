@@ -4,9 +4,67 @@ class AdminTourController
 {
     private PDO $db;
 
+    private const SUPPORTED_LANGUAGES = [
+        'en',
+        'de',
+        'it',
+        'fr',
+        'pl',
+    ];
+
     public function __construct(PDO $db)
     {
         $this->db = $db;
+    }
+
+    private function upsertTourTranslations(
+        int $tourId,
+        string $title,
+        string $slug,
+        ?string $shortDescription,
+        ?string $description,
+        ?string $duration
+    ): void {
+        $statement = $this->db->prepare(
+            "INSERT INTO tour_translations (
+                tour_id,
+                language,
+                title,
+                slug,
+                short_description,
+                description,
+                duration
+            )
+            VALUES (
+                :tour_id,
+                :language,
+                :title,
+                :slug,
+                :short_description,
+                :description,
+                :duration
+            )
+            ON CONFLICT (tour_id, language) DO UPDATE
+            SET
+                title = EXCLUDED.title,
+                slug = EXCLUDED.slug,
+                short_description = EXCLUDED.short_description,
+                description = EXCLUDED.description,
+                duration = EXCLUDED.duration,
+                updated_at = CURRENT_TIMESTAMP"
+        );
+
+        foreach (self::SUPPORTED_LANGUAGES as $language) {
+            $statement->execute([
+                ':tour_id' => $tourId,
+                ':language' => $language,
+                ':title' => $title,
+                ':slug' => $slug,
+                ':short_description' => $shortDescription !== '' ? $shortDescription : null,
+                ':description' => $description !== '' ? $description : null,
+                ':duration' => $duration !== '' ? $duration : null,
+            ]);
+        }
     }
 
 
@@ -784,6 +842,14 @@ class AdminTourController
             $id =
                 (int) $statement->fetchColumn();
 
+            $this->upsertTourTranslations(
+                $id,
+                $title,
+                $slug,
+                $shortDescription,
+                $description,
+                $duration
+            );
 
             Response::success(
                 [
@@ -1342,6 +1408,14 @@ class AdminTourController
 
             $statement->execute();
 
+            $this->upsertTourTranslations(
+                $id,
+                $title,
+                $slug,
+                $shortDescription,
+                $description,
+                $duration
+            );
 
             Response::success(
                 [
