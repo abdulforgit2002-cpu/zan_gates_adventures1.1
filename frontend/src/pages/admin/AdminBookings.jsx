@@ -1475,10 +1475,18 @@ function AdminBookings() {
                     </Link>
 
 
-                </nav>
+                    <Link
+                        to="/admin/tours"
+                        className="admin-nav-item"
+                    >
 
+                        <span className="admin-nav-icon">
+                            ◫
+                        </span>
 
-                <div className="admin-sidebar-bottom">
+                        Tours
+
+                    </Link>
 
 
                     <Link
@@ -1494,6 +1502,11 @@ function AdminBookings() {
 
                     </Link>
 
+
+                </nav>
+
+
+                <div className="admin-sidebar-footer">
 
                     <div className="admin-user">
 

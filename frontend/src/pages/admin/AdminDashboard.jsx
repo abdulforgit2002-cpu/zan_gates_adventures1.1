@@ -5,6 +5,7 @@ import {
 } from "react";
 
 import {
+    Link,
     useNavigate,
 } from "react-router-dom";
 
@@ -440,22 +441,33 @@ const AdminDashboard = () => {
 
                 <div className="admin-sidebar-brand">
 
-                    <div className="admin-brand-mark">
-                        ZG
-                    </div>
+                    <Link
+                        to="/admin/dashboard"
+                        className="admin-brand-link"
+                    >
 
-                    <div>
+                        <div className="admin-brand-mark">
+                            ZG
+                        </div>
 
-                        <strong>
-                            ZAN GATES
-                        </strong>
+                        <div className="admin-brand-text">
 
-                        <span>
-                            ADVENTURES
-                        </span>
+                            <strong>
+                                ZAN GATES
+                            </strong>
 
-                    </div>
+                            <span>
+                                ADVENTURES
+                            </span>
 
+                        </div>
+
+                    </Link>
+
+                </div>
+
+                <div className="admin-sidebar-label">
+                    ADMINISTRATION
                 </div>
 
 
@@ -485,6 +497,19 @@ const AdminDashboard = () => {
                     >
                         <span>▤</span>
                         Bookings
+                    </button>
+
+
+                    <button
+                        type="button"
+                        onClick={() =>
+                            navigate(
+                                "/admin/tours"
+                            )
+                        }
+                    >
+                        <span>◫</span>
+                        Tours
                     </button>
 
 

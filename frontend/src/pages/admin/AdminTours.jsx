@@ -87,6 +87,19 @@ function AdminTours() {
         useNavigate();
 
 
+    const handleLogout = () => {
+
+        logout();
+
+        navigate(
+            "/admin/login",
+            {
+                replace: true,
+            }
+        );
+    };
+
+
     /*
     |--------------------------------------------------------------------------
     | STATE
@@ -1023,81 +1036,212 @@ function AdminTours() {
 
     return (
 
-        <div className="admin-tours-page">
+        <div className="admin-layout">
 
+            <aside className="admin-sidebar">
 
-            {/* ============================================================
-                PAGE HEADER
-            ============================================================ */}
-
-            <div className="admin-tours-header">
-
-                <div>
-
-                    <span className="admin-page-eyebrow">
-                        TOUR MANAGEMENT
-                    </span>
-
-                    <h1>
-                        Tours
-                    </h1>
-
-                    <p>
-                        Create, manage and organize
-                        your Zanzibar experiences.
-                    </p>
-
-                </div>
-
-
-                <div className="admin-tours-header-actions">
-
-                    <button
-                        type="button"
-                        className="admin-btn admin-btn-secondary"
-                        onClick={
-                            handleRefresh
-                        }
-                        disabled={
-                            refreshing ||
-                            actionLoading
-                        }
-                    >
-
-                        <span>
-                            {refreshing
-                                ? "↻"
-                                : "⟳"}
-                        </span>
-
-                        {refreshing
-                            ? "Refreshing..."
-                            : "Refresh"}
-
-                    </button>
-
+                <div className="admin-sidebar-brand">
 
                     <Link
-                        to="/admin/tours/new"
-                        className="admin-btn admin-btn-primary"
+                        to="/admin/dashboard"
+                        className="admin-brand-link"
                     >
 
-                        <span>
-                            +
-                        </span>
+                        <div className="admin-brand-mark">
+                            ZG
+                        </div>
 
-                        Add Tour
+                        <div className="admin-brand-text">
+
+                            <strong>
+                                ZAN GATES
+                            </strong>
+
+                            <span>
+                                ADVENTURES
+                            </span>
+
+                        </div>
 
                     </Link>
 
                 </div>
 
-            </div>
+                <div className="admin-sidebar-label">
+                    ADMINISTRATION
+                </div>
 
 
-            {/* ============================================================
-                NOTIFICATION
-            ============================================================ */}
+                <nav className="admin-sidebar-nav">
+
+                    <Link
+                        to="/admin/dashboard"
+                        className="admin-nav-item"
+                    >
+                        <span className="admin-nav-icon">
+                            ▦
+                        </span>
+                        Dashboard
+                    </Link>
+
+                    <Link
+                        to="/admin/bookings"
+                        className="admin-nav-item"
+                    >
+                        <span className="admin-nav-icon">
+                            ▤
+                        </span>
+                        Bookings
+                    </Link>
+
+                    <Link
+                        to="/admin/tours"
+                        className="admin-nav-item active"
+                    >
+                        <span className="admin-nav-icon">
+                            ◫
+                        </span>
+                        Tours
+                    </Link>
+
+                    <Link
+                        to="/"
+                        className="admin-nav-item"
+                    >
+                        <span className="admin-nav-icon">
+                            ↗
+                        </span>
+                        View Website
+                    </Link>
+
+                </nav>
+
+
+                <div className="admin-sidebar-footer">
+
+                    <div className="admin-user">
+
+                        <div className="admin-user-avatar">
+                            {admin?.full_name?.charAt(0)?.toUpperCase() || "A"}
+                        </div>
+
+                        <div className="admin-user-info">
+                            <strong>
+                                {admin?.full_name || "System Administrator"}
+                            </strong>
+                            <span>
+                                Administrator
+                            </span>
+                        </div>
+
+                    </div>
+
+                    <button
+                        type="button"
+                        className="admin-logout-button"
+                        onClick={handleLogout}
+                    >
+                        Sign Out
+                    </button>
+
+                </div>
+
+            </aside>
+
+            <main className="admin-main">
+
+                <header className="admin-header">
+                    <div>
+                        <span>ADMINISTRATION</span>
+                        <h1>Tours</h1>
+                    </div>
+
+                    <div className="admin-header-actions">
+                        <button
+                            type="button"
+                            onClick={handleRefresh}
+                            disabled={refreshing || actionLoading}
+                        >
+                            {refreshing ? "Refreshing..." : "Refresh"}
+                        </button>
+                    </div>
+                </header>
+
+                <div className="admin-tours-page">
+
+
+                    {/* ============================================================
+                        PAGE HEADER
+                    ============================================================ */}
+
+                    <div className="admin-tours-header">
+
+                        <div>
+
+                            <span className="admin-page-eyebrow">
+                                TOUR MANAGEMENT
+                            </span>
+
+                            <h1>
+                                Tours
+                            </h1>
+
+                            <p>
+                                Create, manage and organize
+                                your Zanzibar experiences.
+                            </p>
+
+                        </div>
+
+
+                        <div className="admin-tours-header-actions">
+
+                            <button
+                                type="button"
+                                className="admin-btn admin-btn-secondary"
+                                onClick={
+                                    handleRefresh
+                                }
+                                disabled={
+                                    refreshing ||
+                                    actionLoading
+                                }
+                            >
+
+                                <span>
+                                    {refreshing
+                                        ? "↻"
+                                        : "⟳"}
+                                </span>
+
+                                {refreshing
+                                    ? "Refreshing..."
+                                    : "Refresh"}
+
+                            </button>
+
+
+                            <Link
+                                to="/admin/tours/new"
+                                className="admin-btn admin-btn-primary"
+                            >
+
+                                <span>
+                                    +
+                                </span>
+
+                                Add Tour
+
+                            </Link>
+
+                        </div>
+
+                    </div>
+
+
+                    {/* ============================================================
+                        NOTIFICATION
+                    ============================================================ */}
 
             {notification.message && (
 
@@ -2265,9 +2409,10 @@ function AdminTours() {
 
             )}
 
+                </div>
+            </main>
         </div>
     );
 }
-
 
 export default AdminTours;
