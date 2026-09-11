@@ -23,7 +23,7 @@ const SUPPORTED_LANGUAGES = [
 ];
 
 
-const getInitialLanguage = () => {
+const detectPreferredLanguage = () => {
     try {
         const savedLanguage =
             window.localStorage.getItem(
@@ -31,33 +31,35 @@ const getInitialLanguage = () => {
             );
 
         if (
+            savedLanguage &&
             SUPPORTED_LANGUAGES.includes(
                 savedLanguage
             )
         ) {
             return savedLanguage;
         }
-
-        const browserLanguage =
-            navigator.language
-                ?.split("-")[0]
-                ?.toLowerCase();
-
-        if (
-            SUPPORTED_LANGUAGES.includes(
-                browserLanguage
-            )
-        ) {
-            return browserLanguage;
-        }
     } catch (error) {
         console.warn(
-            "Unable to detect language:",
+            "Unable to read saved language:",
             error
         );
     }
 
-    return "en";
+    const browserLanguage =
+        navigator.languages?.[0] ||
+        navigator.language ||
+        "en";
+
+    const normalizedLanguage =
+        browserLanguage
+            .toLowerCase()
+            .split("-")[0];
+
+    return SUPPORTED_LANGUAGES.includes(
+        normalizedLanguage
+    )
+        ? normalizedLanguage
+        : "en";
 };
 
 
@@ -88,18 +90,13 @@ i18n
     .use(initReactI18next)
     .init({
         resources,
-
-        lng: getInitialLanguage(),
-
+        lng: detectPreferredLanguage(),
         fallbackLng: "en",
-
         supportedLngs:
             SUPPORTED_LANGUAGES,
-
         interpolation: {
             escapeValue: false,
         },
-
         react: {
             useSuspense: false,
         },

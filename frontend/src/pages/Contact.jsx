@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 
 const SOCIAL_LINKS = [
@@ -72,6 +73,8 @@ function SocialIcon({ type }) {
 
 
 function Contact() {
+    const { t } = useTranslation();
+
     return (
         <main className="contact-page">
 
@@ -93,11 +96,9 @@ function Contact() {
 
             <section className="contact-header">
                 <div className="container">
-                    <span className="tour-section-eyebrow">CONTACT US</span>
-                    <h1>Let’s plan your Zanzibar adventure</h1>
-                    <p>
-                        🌍 Explore • Relax • Discover • Experience Tanzania & Zanzibar! 🇹🇿
-                    </p>
+                    <span className="tour-section-eyebrow">{t("contact.eyebrow")}</span>
+                    <h1>{t("contact.title")}</h1>
+                    <p>{t("contact.description")}</p>
                 </div>
             </section>
 
@@ -133,7 +134,7 @@ function Contact() {
 
                         <article className="contact-card">
                             <span className="contact-card-label">MSG</span>
-                            <h2>Messenger & Emails</h2>
+                            <h2>{t("contact.email.title")}</h2>
                             <div className="contact-card-list">
                                 <a href="https://m.me/zangatesadventures" className="contact-card-link" target="_blank" rel="noreferrer">
                                     💬 Messenger
@@ -155,13 +156,13 @@ function Contact() {
                 <div className="container">
                     <div className="contact-enquiry-inner">
                         <div>
-                            <span className="tour-section-eyebrow">NEED INSPIRATION?</span>
-                            <h2>Browse our tour packages</h2>
-                            <p>Explore our curated selection of tours across Zanzibar.</p>
+                            <span className="tour-section-eyebrow">{t("contact.enquiry.eyebrow")}</span>
+                            <h2>{t("contact.enquiry.title")}</h2>
+                            <p>{t("contact.enquiry.description")}</p>
                         </div>
 
                         <Link to="/tours" className="primary-button">
-                            Explore Our Tours
+                            {t("actions.exploreOurTours")}
                         </Link>
                     </div>
                 </div>
@@ -170,11 +171,11 @@ function Contact() {
             <section className="contact-final-cta">
                 <div className="container">
                     <div className="contact-final-cta-inner">
-                        <span className="tour-section-eyebrow">YOUR ZANZIBAR STORY STARTS HERE</span>
-                        <h2>Ready to discover Zanzibar?</h2>
-                        <p>Choose your experience and let the island do the rest.</p>
+                        <span className="tour-section-eyebrow">{t("home.finalCta.eyebrow")}</span>
+                        <h2>{t("home.finalCta.title")}</h2>
+                        <p>{t("home.finalCta.description")}</p>
                         <Link to="/tours" className="primary-button">
-                            Book Your Adventure
+                            {t("actions.bookAdventure")}
                         </Link>
                     </div>
                 </div>
