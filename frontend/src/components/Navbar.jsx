@@ -8,10 +8,131 @@ import {
     NavLink,
 } from "react-router-dom";
 
+import {
+    useTranslation,
+} from "react-i18next";
+
 import Logo from "./Logo";
 
 
+const LANGUAGE_OPTIONS = [
+    {
+        code: "en",
+        label: "English",
+    },
+    {
+        code: "de",
+        label: "Deutsch",
+    },
+    {
+        code: "it",
+        label: "Italiano",
+    },
+    {
+        code: "fr",
+        label: "Français",
+    },
+    {
+        code: "pl",
+        label: "Polski",
+    },
+];
+
+
+function LanguageSelector({
+    compact = false,
+}) {
+
+    const {
+        t,
+        i18n,
+    } = useTranslation();
+
+    const currentLanguage =
+        i18n.language || "en";
+
+    const handleLanguageChange = (
+        event
+    ) => {
+
+        const nextLanguage =
+            event.target.value;
+
+        if (
+            nextLanguage &&
+            nextLanguage !==
+                currentLanguage
+        ) {
+            i18n.changeLanguage(
+                nextLanguage
+            );
+        }
+
+    };
+
+    return (
+
+        <div
+            className={
+                compact
+                    ? "navbar-language navbar-language-compact"
+                    : "navbar-language"
+            }
+        >
+
+            <label
+                htmlFor={
+                    compact
+                        ? "mobile-language-select"
+                        : "desktop-language-select"
+                }
+                className="navbar-language-label"
+            >
+                {t("language.select")}
+            </label>
+
+            <select
+                id={
+                    compact
+                        ? "mobile-language-select"
+                        : "desktop-language-select"
+                }
+                className="navbar-language-select"
+                value={currentLanguage}
+                onChange={handleLanguageChange}
+                aria-label={t(
+                    "accessibility.selectLanguage"
+                )}
+            >
+
+                {LANGUAGE_OPTIONS.map(
+                    (option) => (
+
+                        <option
+                            key={option.code}
+                            value={option.code}
+                        >
+                            {option.label}
+                        </option>
+
+                    )
+                )}
+
+            </select>
+
+        </div>
+
+    );
+
+}
+
+
 function Navbar() {
+
+    const {
+        t,
+    } = useTranslation();
+
 
     const [
         mobileMenu,
@@ -92,7 +213,7 @@ function Navbar() {
 
     /*
     |--------------------------------------------------------------------------
-    | CLOSE MENU
+    | CLOSE MOBILE MENU
     |--------------------------------------------------------------------------
     */
 
@@ -147,7 +268,9 @@ function Navbar() {
                 <Link
                     to="/"
                     className="navbar-brand"
-                    aria-label="ZAN GATES Adventures home"
+                    aria-label={t(
+                        "accessibility.logoLink"
+                    )}
                     onClick={closeMobileMenu}
                 >
 
@@ -177,7 +300,9 @@ function Navbar() {
 
                 <nav
                     className="navbar-navigation"
-                    aria-label="Main navigation"
+                    aria-label={t(
+                        "accessibility.mainNavigation"
+                    )}
                 >
 
                     <NavLink
@@ -187,7 +312,7 @@ function Navbar() {
                     >
 
                         <span>
-                            Home
+                            {t("navigation.home")}
                         </span>
 
                     </NavLink>
@@ -199,7 +324,7 @@ function Navbar() {
                     >
 
                         <span>
-                            Tours
+                            {t("navigation.tours")}
                         </span>
 
                     </NavLink>
@@ -211,7 +336,7 @@ function Navbar() {
                     >
 
                         <span>
-                            About Us
+                            {t("navigation.about")}
                         </span>
 
                     </NavLink>
@@ -223,7 +348,7 @@ function Navbar() {
                     >
 
                         <span>
-                            Contact
+                            {t("navigation.contact")}
                         </span>
 
                     </NavLink>
@@ -237,15 +362,19 @@ function Navbar() {
 
                 <div className="navbar-actions">
 
+                    <LanguageSelector />
+
 
                     <Link
-                        to="/booking"
+                        to="/tours"
                         className="navbar-booking-button"
                         onClick={closeMobileMenu}
                     >
 
                         <span>
-                            Book Your Adventure
+                            {t(
+                                "actions.bookAdventure"
+                            )}
                         </span>
 
 
@@ -254,6 +383,7 @@ function Navbar() {
                             fill="none"
                             xmlns="http://www.w3.org/2000/svg"
                             aria-hidden="true"
+                            focusable="false"
                         >
 
                             <path
@@ -298,8 +428,12 @@ function Navbar() {
                     }
                     aria-label={
                         mobileMenu
-                            ? "Close navigation menu"
-                            : "Open navigation menu"
+                            ? t(
+                                "accessibility.closeMenu"
+                            )
+                            : t(
+                                "accessibility.openMenu"
+                            )
                     }
                     aria-expanded={
                         mobileMenu
@@ -332,9 +466,15 @@ function Navbar() {
                 <div className="navbar-mobile-inner">
 
 
+                    {/* =================================================
+                        MOBILE NAVIGATION LINKS
+                    ================================================= */}
+
                     <nav
                         className="navbar-mobile-navigation"
-                        aria-label="Mobile navigation"
+                        aria-label={t(
+                            "accessibility.mobileNavigation"
+                        )}
                     >
 
                         <NavLink
@@ -349,7 +489,7 @@ function Navbar() {
                             </span>
 
                             <span>
-                                Home
+                                {t("navigation.home")}
                             </span>
 
                         </NavLink>
@@ -366,7 +506,7 @@ function Navbar() {
                             </span>
 
                             <span>
-                                Tours
+                                {t("navigation.tours")}
                             </span>
 
                         </NavLink>
@@ -383,7 +523,7 @@ function Navbar() {
                             </span>
 
                             <span>
-                                About Us
+                                {t("navigation.about")}
                             </span>
 
                         </NavLink>
@@ -400,7 +540,7 @@ function Navbar() {
                             </span>
 
                             <span>
-                                Contact
+                                {t("navigation.contact")}
                             </span>
 
                         </NavLink>
@@ -409,11 +549,20 @@ function Navbar() {
 
 
                     {/* =================================================
+                        MOBILE LANGUAGE SELECTOR
+                    ================================================= */}
+
+                    <LanguageSelector
+                        compact
+                    />
+
+
+                    {/* =================================================
                         MOBILE BOOKING CTA
                     ================================================= */}
 
                     <Link
-                        to="/booking"
+                        to="/tours"
                         className="navbar-mobile-booking"
                         onClick={closeMobileMenu}
                     >
@@ -421,20 +570,25 @@ function Navbar() {
                         <div>
 
                             <small>
-                                START YOUR JOURNEY
+                                {t(
+                                    "actions.startJourney"
+                                )}
                             </small>
 
                             <strong>
-                                Book Your Adventure
+                                {t(
+                                    "actions.bookAdventure"
+                                )}
                             </strong>
 
                         </div>
 
 
-                        <span className="navbar-mobile-booking-arrow">
-
+                        <span
+                            className="navbar-mobile-booking-arrow"
+                            aria-hidden="true"
+                        >
                             →
-
                         </span>
 
                     </Link>
@@ -447,11 +601,11 @@ function Navbar() {
                     <div className="navbar-mobile-footer">
 
                         <span>
-                            ZAN GATES ADVENTURES
+                            {t("brand.name")}
                         </span>
 
                         <span>
-                            ZANZIBAR · TANZANIA
+                            {t("brand.location")}
                         </span>
 
                     </div>

@@ -1,0 +1,292 @@
+const en = {
+  language: {
+    english: "English",
+    german: "German",
+    italian: "Italian",
+    french: "French",
+    polish: "Polish",
+    select: "Select language",
+  },
+
+  brand: {
+    name: "ZAN GATES ADVENTURES",
+    location: "ZANZIBAR · TANZANIA",
+  },
+
+  navigation: {
+    home: "Home",
+    tours: "Tours",
+    about: "About Us",
+    contact: "Contact",
+  },
+
+  actions: {
+    bookAdventure: "Book Your Adventure",
+    startJourney: "START YOUR JOURNEY",
+    exploreExperiences: "Explore Experiences",
+    discoverZanGates: "Discover ZAN GATES",
+    viewTour: "View Tour",
+    viewTourAria: "View {{title}}",
+    discoverOurExperiences: "Discover Our Experiences",
+    exploreOurTours: "Explore Our Tours",
+    back: "Back",
+    close: "Close",
+    submit: "Submit",
+  },
+
+  accessibility: {
+    home: "ZAN GATES Adventures Home",
+    logoAlt: "ZAN GATES ADVENTURES logo",
+    logoLink: "ZAN GATES ADVENTURES Home",
+    mainNavigation: "Main navigation",
+    mobileNavigation: "Mobile navigation",
+    closeMenu: "Close navigation menu",
+    openMenu: "Open navigation menu",
+    selectLanguage: "Select website language",
+  },
+
+  common: {
+    zanzibar: "Zanzibar",
+    flexible: "Flexible",
+    fullDay: "Full Day",
+    halfDay: "Half Day",
+    featured: "Featured",
+    from: "From",
+    perPerson: "per person",
+    onRequest: "On Request",
+    zanzibarAdventure: "Zanzibar Adventure",
+    defaultTourDescription:
+      "Discover the beauty, culture and unforgettable experiences of Zanzibar.",
+    guest: "guest",
+    guests: "guests",
+  },
+
+  home: {
+    hero: {
+      eyebrow: "ZAN GATES ADVENTURES",
+      title: "Your Gateway to Zanzibar Adventures",
+      description:
+        "Discover unforgettable experiences across Zanzibar with a local team dedicated to making every journey exceptional.",
+      primaryCta: "Explore Experiences",
+      secondaryCta: "Book Your Adventure",
+    },
+
+    experience: {
+      eyebrow: "THE ZAN GATES EXPERIENCE",
+      title: "Discover Zanzibar Beyond the Ordinary",
+      description:
+        "From crystal-clear waters and tropical islands to historic streets and hidden natural wonders, Zanzibar offers experiences for every kind of traveller.",
+    },
+
+    experiences: {
+      eyebrow: "EXPLORE ZANZIBAR",
+      title: "Our Experiences",
+      description:
+        "Choose from carefully selected experiences designed to help you discover the best of Zanzibar.",
+      empty: "No experiences are currently available.",
+      loading: "Loading experiences...",
+      error: "Unable to load experiences.",
+    },
+
+    whyUs: {
+      eyebrow: "WHY TRAVEL WITH US",
+      title: "Experience Zanzibar With People Who Know It Best",
+      description:
+        "We combine local knowledge, personal service and carefully planned experiences to help you enjoy Zanzibar with confidence.",
+      localKnowledge: "Local Knowledge",
+      localKnowledgeDescription:
+        "Discover Zanzibar through people who know the island, its culture and its hidden places.",
+      personalService: "Personal Service",
+      personalServiceDescription:
+        "We listen to your plans and tailor your experience around your preferences.",
+      flexiblePlanning: "Flexible Planning",
+      flexiblePlanningDescription:
+        "Tell us what you need and our team will help create an experience that works for you.",
+    },
+
+    finalCta: {
+      eyebrow: "YOUR NEXT ADVENTURE",
+      title: "Ready to Discover Zanzibar?",
+      description:
+        "Let ZAN GATES ADVENTURES help you turn your Zanzibar trip into an unforgettable experience.",
+      button: "Start Your Journey",
+    },
+  },
+
+  /*
+  |--------------------------------------------------------------------------
+  | TOURS PAGE
+  |--------------------------------------------------------------------------
+  */
+
+  tours: {
+    eyebrow: "EXPLORE ZANZIBAR",
+    title: "Discover Our Tours",
+    description:
+      "Explore unforgettable Zanzibar experiences carefully selected to help you discover the island's beauty, culture and adventure.",
+    loading: "Loading tours...",
+    empty: "No tours are currently available.",
+    error: "Unable to load tours.",
+  },
+
+  /*
+  |--------------------------------------------------------------------------
+  | ABOUT PAGE
+  |--------------------------------------------------------------------------
+  */
+
+  about: {
+    eyebrow: "ABOUT ZAN GATES ADVENTURES",
+    title: "Discover Zanzibar With Us",
+    description:
+      "ZAN GATES ADVENTURES is a local Zanzibar tourism company dedicated to creating memorable experiences through carefully planned tours, personalised service and local knowledge.",
+  },
+
+  /*
+  |--------------------------------------------------------------------------
+  | CONTACT PAGE
+  |--------------------------------------------------------------------------
+  */
+
+  contact: {
+    eyebrow: "GET IN TOUCH",
+    title: "Let's Plan Your Zanzibar Adventure",
+    description:
+      "Have a question, need help choosing a tour, or ready to plan your Zanzibar experience? Get in touch with our team and we will be happy to assist you.",
+  },
+
+  /*
+  |--------------------------------------------------------------------------
+  | TOUR DETAILS
+  |--------------------------------------------------------------------------
+  */
+
+  tourDetails: {
+    backToExperiences: "Back to all experiences",
+
+    gallery: {
+      tourImageGallery: "Tour image gallery",
+      closeGallery: "Close gallery",
+      previousImage: "Previous image",
+      nextImage: "Next image",
+    },
+
+    destination: "Destination",
+    duration: "Duration",
+    price: "Price",
+    perPerson: "per person",
+    from: "From",
+    featured: "Featured",
+    bookThisTour: "Book This Tour",
+    enquireNow: "Enquire Now",
+    overview: "Overview",
+    highlights: "Highlights",
+    included: "What's Included",
+    excluded: "What's Not Included",
+    itinerary: "Itinerary",
+    availableOnRequest: "Available on request",
+    noImages: "No images are currently available for this tour.",
+    tourNotFound: "Tour not found.",
+    loading: "Loading tour...",
+    error: "Unable to load this experience.",
+  },
+
+  /*
+  |--------------------------------------------------------------------------
+  | BOOKING
+  |--------------------------------------------------------------------------
+  */
+
+  booking: {
+    title: "Book Your Adventure",
+    subtitle:
+      "Send us your travel details and our team will help arrange your Zanzibar experience.",
+
+    chooseDate: "Choose Your Date",
+    chooseDateDescription:
+      "Choose your preferred date and group size.",
+
+    removeAdult: "Remove adult",
+    addAdult: "Add adult",
+
+    removeChild: "Remove child",
+    addChild: "Add child",
+
+    childrenPricingNote:
+      "Children are recorded for planning; child pricing will be confirmed by our team.",
+
+    yourDetails: "Your Details",
+    yourDetailsDescription:
+      "Tell us how we can contact you.",
+
+    fullName: "Full Name",
+    fullNamePlaceholder: "Your full name",
+
+    emailAddress: "Email Address",
+    emailPlaceholder: "you@example.com",
+
+    phoneWhatsApp: "Phone / WhatsApp",
+    phonePlaceholder: "+255 ...",
+
+    specialRequirements: "Special Requirements",
+    specialRequirementsPlaceholder:
+      "Dietary requirements, accessibility needs, special occasions or anything else we should know...",
+
+    sendEnquiry: "Send Enquiry",
+    sendingEnquiry: "Sending Enquiry...",
+
+    disclaimer:
+      "No payment is required at this stage. Your enquiry will be reviewed by our team before arrangements are confirmed.",
+
+    tripSummary: "TRIP SUMMARY",
+
+    destination: "DESTINATION",
+    duration: "DURATION",
+
+    travelDate: "Travel date",
+    adults: "Adults",
+    children: "Children",
+
+    estimatedTotal: "Estimated Total",
+
+    adultsChargedPerPerson: "Adults charged per person",
+
+    noPaymentRequired: "No payment required",
+    noPaymentDescription:
+      "This is an enquiry, not an online payment. Our team will confirm availability and final arrangements with you.",
+
+    travelWithConfidence: "Travel with confidence",
+    localSupport: "Local support",
+    experiencedGuides: "Experienced guides",
+    flexibleEnquiries: "Flexible enquiries",
+    personalService: "Personal service",
+
+    sending: "Sending...",
+    successTitle: "Enquiry Sent Successfully",
+    successDescription:
+      "Thank you for contacting ZAN GATES ADVENTURES. Our team will review your enquiry and contact you shortly.",
+    backToTour: "Back to Tour",
+  },
+
+  /*
+  |--------------------------------------------------------------------------
+  | VALIDATION / ERRORS
+  |--------------------------------------------------------------------------
+  */
+
+  validation: {
+    noTourSpecified: "No tour was specified.",
+    tourNotFound: "The requested tour could not be found.",
+    travelDateRequired: "Please select your preferred travel date.",
+    adultRequired: "At least one adult is required.",
+    fullNameRequired: "Please enter your full name.",
+    emailRequired: "Please enter your email address.",
+    phoneRequired:
+      "Please enter your phone or WhatsApp number.",
+    submitFailed:
+      "We could not submit your enquiry. Please try again.",
+    loadFailed: "Unable to load this experience.",
+  },
+};
+
+export default en;

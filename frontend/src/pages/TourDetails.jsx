@@ -10,11 +10,18 @@ import {
 } from "react-router-dom";
 
 import {
-    createBookingEnquiry,
     getTourBySlug,
     getTourImages,
     getTourPrices,
 } from "../services/tourService";
+
+import {
+    createBookingEnquiry,
+} from "../services/bookingService";
+
+import {
+    useTranslation,
+} from "react-i18next";
 
 import "./TourDetails.css";
 
@@ -25,7 +32,17 @@ import "./TourDetails.css";
 |--------------------------------------------------------------------------
 */
 
+const localeMap = {
+    en: "en-US",
+    de: "de-DE",
+    it: "it-IT",
+    fr: "fr-FR",
+    pl: "pl-PL",
+};
+
+
 const normalizeTour = (response) => {
+
     const data =
         response?.data ??
         response ??
@@ -36,12 +53,15 @@ const normalizeTour = (response) => {
     }
 
     if (data.tour) {
+
         return {
             ...data.tour,
+
             prices:
                 data.tour.prices ??
                 data.prices ??
                 [],
+
             images:
                 data.tour.images ??
                 data.images ??
@@ -54,6 +74,7 @@ const normalizeTour = (response) => {
 
 
 const normalizeArray = (value) => {
+
     if (Array.isArray(value)) {
         return value;
     }
@@ -75,6 +96,7 @@ const normalizeArray = (value) => {
 
 
 const getImageUrl = (image) => {
+
     if (!image) {
         return "";
     }
@@ -97,6 +119,7 @@ const getImageAlt = (
     image,
     fallback
 ) => {
+
     return (
         image?.alt_text ||
         image?.alt ||
@@ -106,41 +129,11 @@ const getImageAlt = (
 };
 
 
-const formatMoney = (
-    amount,
-    currency = "USD"
-) => {
-    const numeric =
-        Number(amount);
-
-    if (
-        !Number.isFinite(numeric)
-    ) {
-        return "—";
-    }
-
-    try {
-        return new Intl.NumberFormat(
-            "en-US",
-            {
-                style: "currency",
-                currency:
-                    currency || "USD",
-                minimumFractionDigits:
-                    0,
-                maximumFractionDigits:
-                    2,
-            }
-        ).format(numeric);
-    } catch {
-        return `${currency || "USD"} ${numeric.toLocaleString("en-US")}`;
-    }
-};
-
-
 const formatPricingRange = (
-    price
+    price,
+    peopleLabel = "people"
 ) => {
+
     const min =
         Number(
             price?.min_people || 1
@@ -159,22 +152,25 @@ const formatPricingRange = (
         max === null ||
         !Number.isFinite(max)
     ) {
-        return `${min}+ people`;
+        return `${min}+ ${peopleLabel}`;
     }
 
     if (min === max) {
-        return `${min} people`;
+        return `${min} ${peopleLabel}`;
     }
 
-    return `${min} – ${max} people`;
+    return `${min} – ${max} ${peopleLabel}`;
 };
 
 
 const getPrimaryImage = (
     images
 ) => {
-    if (!Array.isArray(images) ||
-        images.length === 0) {
+
+    if (
+        !Array.isArray(images) ||
+        images.length === 0
+    ) {
         return "";
     }
 
@@ -194,6 +190,7 @@ const getPrimaryImage = (
 
 
 const todayString = () => {
+
     const date =
         new Date();
 
@@ -217,6 +214,7 @@ const todayString = () => {
 const isPerPerson = (
     price
 ) => {
+
     return (
         String(
             price?.pricing_type || ""
@@ -226,7 +224,10 @@ const isPerPerson = (
 };
 
 
-const isFeatured = (tour) => {
+const isFeatured = (
+    tour
+) => {
+
     return (
         tour?.featured === true ||
         tour?.featured === 1 ||
@@ -246,6 +247,24 @@ function TourDetails() {
     const {
         slug,
     } = useParams();
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | IMPORTANT:
+    | React hooks must be called INSIDE the component.
+    |--------------------------------------------------------------------------
+    */
+
+    const {
+        t,
+        i18n,
+    } = useTranslation();
+
+
+    const currentLocale =
+        localeMap[i18n.language] ||
+        "en-US";
 
 
     /*
@@ -316,6 +335,7 @@ function TourDetails() {
         setBookingError,
     ] = useState("");
 
+
     const [
         form,
         setForm,
@@ -347,25 +367,38 @@ function TourDetails() {
                 setLoading(true);
                 setError("");
 
+                if (!slug) {
+
+                    throw new Error(
+                        t("validation.noTourSpecified")
+                    );
+                }
+
+
                 const response =
                     await getTourBySlug(
                         slug
                     );
+
 
                 const normalizedTour =
                     normalizeTour(
                         response
                     );
 
+
                 if (!normalizedTour) {
+
                     throw new Error(
-                        "Tour could not be found."
+                        t("validation.tourNotFound")
                     );
                 }
+
 
                 if (!mounted) {
                     return;
                 }
+
 
                 setTour(
                     normalizedTour
@@ -383,10 +416,12 @@ function TourDetails() {
                         normalizedTour.prices
                     );
 
+
                 if (
                     loadedPrices.length === 0 &&
                     normalizedTour.id
                 ) {
+
                     const priceResponse =
                         await getTourPrices(
                             normalizedTour.id
@@ -410,10 +445,12 @@ function TourDetails() {
                         normalizedTour.images
                     );
 
+
                 if (
                     loadedImages.length === 0 &&
                     normalizedTour.id
                 ) {
+
                     const imageResponse =
                         await getTourImages(
                             normalizedTour.id
@@ -445,9 +482,11 @@ function TourDetails() {
                         loadedImages
                     );
 
+
                 setSelectedImage(
                     primary
                 );
+
 
                 const primaryIndex =
                     loadedImages.findIndex(
@@ -456,11 +495,13 @@ function TourDetails() {
                             primary
                     );
 
+
                 setImageIndex(
                     primaryIndex >= 0
                         ? primaryIndex
                         : 0
                 );
+
 
             } catch (err) {
 
@@ -469,12 +510,15 @@ function TourDetails() {
                     err
                 );
 
+
                 if (mounted) {
+
                     setError(
                         err?.message ||
-                        "Unable to load this tour."
+                        t("validation.loadFailed")
                     );
                 }
+
 
             } finally {
 
@@ -486,20 +530,29 @@ function TourDetails() {
 
 
         if (slug) {
+
             loadTour();
+
         } else {
+
             setLoading(false);
+
             setError(
-                "No tour was specified."
+                t("validation.noTourSpecified")
             );
         }
 
 
         return () => {
+
             mounted = false;
+
         };
 
-    }, [slug]);
+    }, [
+        slug,
+        t,
+    ]);
 
 
     /*
@@ -516,9 +569,11 @@ function TourDetails() {
         const url =
             getImageUrl(image);
 
+
         if (!url) {
             return;
         }
+
 
         setSelectedImage(
             url
@@ -536,10 +591,12 @@ function TourDetails() {
             return;
         }
 
+
         const nextIndex =
             imageIndex <= 0
                 ? images.length - 1
                 : imageIndex - 1;
+
 
         selectImage(
             images[nextIndex],
@@ -554,10 +611,12 @@ function TourDetails() {
             return;
         }
 
+
         const nextIndex =
             imageIndex >= images.length - 1
                 ? 0
                 : imageIndex + 1;
+
 
         selectImage(
             images[nextIndex],
@@ -578,30 +637,41 @@ function TourDetails() {
             return undefined;
         }
 
+
         const handleKeyDown = (
             event
         ) => {
 
             if (event.key === "Escape") {
-                setLightboxOpen(false);
+
+                setLightboxOpen(
+                    false
+                );
             }
 
+
             if (event.key === "ArrowLeft") {
+
                 showPreviousImage();
             }
 
+
             if (event.key === "ArrowRight") {
+
                 showNextImage();
             }
         };
+
 
         document.addEventListener(
             "keydown",
             handleKeyDown
         );
 
+
         document.body.style.overflow =
             "hidden";
+
 
         return () => {
 
@@ -609,6 +679,7 @@ function TourDetails() {
                 "keydown",
                 handleKeyDown
             );
+
 
             document.body.style.overflow =
                 "";
@@ -644,6 +715,7 @@ function TourDetails() {
                 return null;
             }
 
+
             const validPrices =
                 prices.filter(
                     (price) =>
@@ -654,11 +726,13 @@ function TourDetails() {
                         )
                 );
 
+
             if (
                 validPrices.length === 0
             ) {
                 return null;
             }
+
 
             return validPrices.reduce(
                 (
@@ -669,6 +743,7 @@ function TourDetails() {
                     if (!lowest) {
                         return current;
                     }
+
 
                     return Number(
                         current.price
@@ -752,6 +827,7 @@ function TourDetails() {
                                 price.min_people || 1
                             );
 
+
                         const max =
                             price.max_people === null ||
                             price.max_people === undefined ||
@@ -760,6 +836,7 @@ function TourDetails() {
                                 : Number(
                                     price.max_people
                                 );
+
 
                         return (
                             guestCount >= min &&
@@ -792,6 +869,7 @@ function TourDetails() {
                 const fallback =
                     perPersonPrices[0];
 
+
                 return {
                     amount:
                         Number(
@@ -817,6 +895,48 @@ function TourDetails() {
 
     /*
     |--------------------------------------------------------------------------
+    | FORMAT MONEY
+    |--------------------------------------------------------------------------
+    */
+
+    const formatMoney = (
+        amount,
+        moneyCurrency
+    ) => {
+
+        if (
+            amount === null ||
+            amount === undefined ||
+            Number.isNaN(Number(amount))
+        ) {
+            return t("common.onRequest");
+        }
+
+
+        const symbol =
+            moneyCurrency === "USD"
+                ? "$"
+                : moneyCurrency === "EUR"
+                    ? "€"
+                    : moneyCurrency === "GBP"
+                        ? "£"
+                        : moneyCurrency || "";
+
+
+        return `${symbol}${Number(
+            amount
+        ).toLocaleString(
+            currentLocale,
+            {
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 2,
+            }
+        )}`;
+    };
+
+
+    /*
+    |--------------------------------------------------------------------------
     | FORM HANDLING
     |--------------------------------------------------------------------------
     */
@@ -830,12 +950,14 @@ function TourDetails() {
             value,
         } = event.target;
 
+
         setForm(
             (previous) => ({
                 ...previous,
                 [name]: value,
             })
         );
+
 
         setBookingError("");
     };
@@ -877,25 +999,31 @@ function TourDetails() {
 
 
         if (!fullName) {
+
             setBookingError(
-                "Please enter your full name."
+                t("validation.fullNameRequired")
             );
+
             return;
         }
 
 
         if (!email) {
+
             setBookingError(
-                "Please enter your email address."
+                t("validation.emailRequired")
             );
+
             return;
         }
 
 
         if (!form.travel_date) {
+
             setBookingError(
-                "Please select your preferred travel date."
+                t("validation.travelDateRequired")
             );
+
             return;
         }
 
@@ -904,9 +1032,11 @@ function TourDetails() {
             form.travel_date <
             todayString()
         ) {
+
             setBookingError(
-                "Travel date cannot be in the past."
+                t("validation.travelDatePast")
             );
+
             return;
         }
 
@@ -915,9 +1045,11 @@ function TourDetails() {
             !Number.isInteger(adults) ||
             adults < 1
         ) {
+
             setBookingError(
-                "At least one adult is required."
+                t("validation.adultRequired")
             );
+
             return;
         }
 
@@ -926,22 +1058,27 @@ function TourDetails() {
             !Number.isInteger(children) ||
             children < 0
         ) {
+
             setBookingError(
-                "Number of children is invalid."
+                t("validation.childrenInvalid")
             );
+
             return;
         }
 
 
         if (!tour?.id) {
+
             setBookingError(
-                "Tour information is unavailable."
+                t("validation.tourUnavailable")
             );
+
             return;
         }
 
 
         setSubmitting(true);
+
 
         try {
 
@@ -998,6 +1135,7 @@ function TourDetails() {
                 true
             );
 
+
             setForm({
                 full_name: "",
                 email: "",
@@ -1008,6 +1146,7 @@ function TourDetails() {
                 message: "",
             });
 
+
         } catch (err) {
 
             console.error(
@@ -1015,10 +1154,12 @@ function TourDetails() {
                 err
             );
 
+
             setBookingError(
                 err?.message ||
-                "We could not submit your enquiry. Please try again."
+                t("validation.submitFailed")
             );
+
 
         } finally {
 
@@ -1036,6 +1177,7 @@ function TourDetails() {
     if (loading) {
 
         return (
+
             <div className="tour-details-loading">
 
                 <div className="tour-details-loading-inner">
@@ -1043,11 +1185,11 @@ function TourDetails() {
                     <div className="loading-spinner" />
 
                     <span>
-                        ZAN GATES ADVENTURES
+                        {t("brand.name")}
                     </span>
 
                     <p>
-                        Preparing your Zanzibar experience...
+                        {t("tourDetails.loading")}
                     </p>
 
                 </div>
@@ -1066,30 +1208,30 @@ function TourDetails() {
     if (error || !tour) {
 
         return (
+
             <div className="tour-details-error">
 
                 <div className="tour-details-error-inner">
 
                     <span>
-                        TOUR NOT FOUND
+                        {t("tourDetails.errorLabel")}
                     </span>
 
                     <h1>
-                        This experience is unavailable.
+                        {t("tourDetails.errorTitle")}
                     </h1>
 
                     <p>
-                        We could not find the tour
-                        you requested. Please return
-                        to our experiences and choose
-                        another Zanzibar adventure.
+                        {error ||
+                            t("tourDetails.errorDescription")}
                     </p>
 
                     <Link
                         to="/#tours"
                         className="tour-error-button"
                     >
-                        Explore Tours
+                        {t("actions.exploreOurTours")}
+
                         <span>
                             →
                         </span>
@@ -1109,6 +1251,7 @@ function TourDetails() {
     */
 
     return (
+
         <div className="tour-details-page">
 
 
@@ -1130,21 +1273,26 @@ function TourDetails() {
 
                 <div className="tour-details-hero-overlay" />
 
+
                 <div className="tour-details-container">
 
                     <div className="tour-details-breadcrumb">
 
                         <Link to="/">
-                            Home
+                            {t("navigation.home")}
                         </Link>
 
-                        <span>•</span>
+                        <span>
+                            •
+                        </span>
 
                         <Link to="/#tours">
-                            Experiences
+                            {t("navigation.tours")}
                         </Link>
 
-                        <span>•</span>
+                        <span>
+                            •
+                        </span>
 
                         <span>
                             {tour.title}
@@ -1158,15 +1306,19 @@ function TourDetails() {
                         <div className="tour-details-category-row">
 
                             {isFeatured(tour) && (
+
                                 <span className="tour-details-featured">
-                                    Featured experience
+                                    {t("common.featured")}
                                 </span>
                             )}
 
+
                             <span className="tour-details-category">
+
                                 {tour.category_name ||
                                     tour.category?.name ||
-                                    "Zanzibar Experience"}
+                                    t("common.zanzibarAdventure")}
+
                             </span>
 
                         </div>
@@ -1178,6 +1330,7 @@ function TourDetails() {
 
 
                         {tour.short_description && (
+
                             <p>
                                 {tour.short_description}
                             </p>
@@ -1186,8 +1339,13 @@ function TourDetails() {
 
                         <div className="tour-details-quick-info">
 
+
+                            {/* DESTINATION */}
+
                             <div>
+
                                 <span className="quick-info-icon">
+
                                     <svg
                                         viewBox="0 0 24 24"
                                         aria-hidden="true"
@@ -1198,6 +1356,7 @@ function TourDetails() {
                                             stroke="currentColor"
                                             strokeWidth="1.7"
                                         />
+
                                         <circle
                                             cx="12"
                                             cy="9"
@@ -1207,24 +1366,33 @@ function TourDetails() {
                                             strokeWidth="1.7"
                                         />
                                     </svg>
+
                                 </span>
 
+
                                 <div>
+
                                     <small>
-                                        Destination
+                                        {t("tourDetails.destination")}
                                     </small>
 
                                     <strong>
                                         {tour.destination_name ||
                                             tour.destination?.name ||
-                                            "Zanzibar"}
+                                            t("common.zanzibar")}
                                     </strong>
+
                                 </div>
+
                             </div>
 
 
+                            {/* DURATION */}
+
                             <div>
+
                                 <span className="quick-info-icon">
+
                                     <svg
                                         viewBox="0 0 24 24"
                                         aria-hidden="true"
@@ -1237,6 +1405,7 @@ function TourDetails() {
                                             stroke="currentColor"
                                             strokeWidth="1.7"
                                         />
+
                                         <path
                                             d="M12 7v5l3.2 2"
                                             fill="none"
@@ -1245,24 +1414,34 @@ function TourDetails() {
                                             strokeLinecap="round"
                                         />
                                     </svg>
+
                                 </span>
 
+
                                 <div>
+
                                     <small>
-                                        Duration
+                                        {t("tourDetails.duration")}
                                     </small>
 
                                     <strong>
                                         {tour.duration ||
-                                            "Flexible"}
+                                            t("common.flexible")}
                                     </strong>
+
                                 </div>
+
                             </div>
 
 
+                            {/* STARTING PRICE */}
+
                             {startingPrice && (
+
                                 <div>
+
                                     <span className="quick-info-icon">
+
                                         <svg
                                             viewBox="0 0 24 24"
                                             aria-hidden="true"
@@ -1275,11 +1454,14 @@ function TourDetails() {
                                                 strokeLinecap="round"
                                             />
                                         </svg>
+
                                     </span>
 
+
                                     <div>
+
                                         <small>
-                                            Starting from
+                                            {t("tourDetails.startingFrom")}
                                         </small>
 
                                         <strong>
@@ -1289,14 +1471,18 @@ function TourDetails() {
                                             )}
                                         </strong>
 
+
                                         {isPerPerson(
                                             startingPrice
                                         ) && (
+
                                             <span>
-                                                per person
+                                                {t("common.perPerson")}
                                             </span>
                                         )}
+
                                     </div>
+
                                 </div>
                             )}
 
@@ -1308,13 +1494,15 @@ function TourDetails() {
 
 
                 <div className="tour-hero-bottom">
+
                     <span>
-                        ZAN GATES ADVENTURES
+                        {t("brand.name")}
                     </span>
 
                     <span>
-                        ZANZIBAR • TANZANIA
+                        {t("brand.location")}
                     </span>
+
                 </div>
 
             </section>
@@ -1347,21 +1535,28 @@ function TourDetails() {
                                 <div className="tour-gallery-heading">
 
                                     <div>
+
                                         <span className="tour-section-eyebrow">
-                                            VISUAL JOURNEY
+                                            {t("tourDetails.gallery.eyebrow")}
                                         </span>
 
                                         <h2>
-                                            Explore the experience
+                                            {t("tourDetails.gallery.title")}
                                         </h2>
+
                                     </div>
 
+
                                     {images.length > 0 && (
+
                                         <span className="tour-gallery-count">
+
                                             {imageIndex + 1}
-                                            {" "}
-                                            /{" "}
+
+                                            {" / "}
+
                                             {images.length}
+
                                         </span>
                                     )}
 
@@ -1380,7 +1575,9 @@ function TourDetails() {
                                                     true
                                                 )
                                             }
-                                            aria-label="Open tour image"
+                                            aria-label={
+                                                t("tourDetails.gallery.openImage")
+                                            }
                                         >
 
                                             <img
@@ -1394,12 +1591,16 @@ function TourDetails() {
                                                     )
                                                 }
                                                 onError={(event) => {
+
                                                     event.currentTarget.style.display =
                                                         "none";
+
                                                 }}
                                             />
 
+
                                             <span className="tour-gallery-open">
+
                                                 <svg
                                                     viewBox="0 0 24 24"
                                                     aria-hidden="true"
@@ -1413,42 +1614,59 @@ function TourDetails() {
                                                     />
                                                 </svg>
 
-                                                View gallery
+                                                {t("tourDetails.gallery.viewGallery")}
+
                                             </span>
 
 
                                             {images.length > 1 && (
+
                                                 <>
+
                                                     <button
                                                         type="button"
                                                         className="tour-gallery-arrow tour-gallery-arrow-left"
                                                         onClick={(event) => {
+
                                                             event.stopPropagation();
+
                                                             showPreviousImage();
+
                                                         }}
-                                                        aria-label="Previous image"
+                                                        aria-label={
+                                                            t("tourDetails.gallery.previousImage")
+                                                        }
                                                     >
                                                         ←
                                                     </button>
+
 
                                                     <button
                                                         type="button"
                                                         className="tour-gallery-arrow tour-gallery-arrow-right"
                                                         onClick={(event) => {
+
                                                             event.stopPropagation();
+
                                                             showNextImage();
+
                                                         }}
-                                                        aria-label="Next image"
+                                                        aria-label={
+                                                            t("tourDetails.gallery.nextImage")
+                                                        }
                                                     >
                                                         →
                                                     </button>
+
                                                 </>
+
                                             )}
 
                                         </button>
 
 
                                         {images.length > 1 && (
+
                                             <div className="tour-gallery-thumbnails">
 
                                                 {images.map(
@@ -1462,11 +1680,14 @@ function TourDetails() {
                                                                 image
                                                             );
 
+
                                                         if (!url) {
                                                             return null;
                                                         }
 
+
                                                         return (
+
                                                             <button
                                                                 key={
                                                                     image.id ||
@@ -1501,7 +1722,9 @@ function TourDetails() {
                                                                 />
 
                                                             </button>
+
                                                         );
+
                                                     }
                                                 )}
 
@@ -1513,12 +1736,15 @@ function TourDetails() {
                                 ) : (
 
                                     <div className="tour-gallery-placeholder">
+
                                         <span>
                                             ZAN GATES
                                         </span>
+
                                         <strong>
                                             ZANZIBAR
                                         </strong>
+
                                     </div>
                                 )}
 
@@ -1532,16 +1758,18 @@ function TourDetails() {
                             <section className="tour-details-section">
 
                                 <span className="tour-section-eyebrow">
-                                    THE EXPERIENCE
+                                    {t("tourDetails.experienceEyebrow")}
                                 </span>
 
                                 <h2>
-                                    About this experience
+                                    {t("tourDetails.aboutTitle")}
                                 </h2>
+
 
                                 <div className="tour-description">
 
                                     {tour.description ? (
+
                                         String(
                                             tour.description
                                         )
@@ -1553,6 +1781,7 @@ function TourDetails() {
                                                     paragraph,
                                                     index
                                                 ) => (
+
                                                     <p
                                                         key={
                                                             index
@@ -1562,13 +1791,14 @@ function TourDetails() {
                                                             paragraph
                                                         }
                                                     </p>
+
                                                 )
                                             )
+
                                     ) : (
+
                                         <p>
-                                            Discover an unforgettable
-                                            Zanzibar experience with
-                                            our local team.
+                                            {t("tourDetails.defaultDescription")}
                                         </p>
                                     )}
 
@@ -1584,86 +1814,103 @@ function TourDetails() {
                             <section className="tour-details-section">
 
                                 <span className="tour-section-eyebrow">
-                                    TOUR INFORMATION
+                                    {t("tourDetails.informationEyebrow")}
                                 </span>
 
                                 <h2>
-                                    Everything you need to know
+                                    {t("tourDetails.informationTitle")}
                                 </h2>
 
 
                                 <div className="tour-info-grid">
 
+
                                     <div className="tour-info-card">
+
                                         <span className="tour-info-number">
                                             01
                                         </span>
 
                                         <div>
+
                                             <span>
-                                                Destination
+                                                {t("tourDetails.destination")}
                                             </span>
 
                                             <strong>
                                                 {tour.destination_name ||
                                                     tour.destination?.name ||
-                                                    "Zanzibar"}
+                                                    t("common.zanzibar")}
                                             </strong>
+
                                         </div>
+
                                     </div>
 
 
                                     <div className="tour-info-card">
+
                                         <span className="tour-info-number">
                                             02
                                         </span>
 
                                         <div>
+
                                             <span>
-                                                Duration
+                                                {t("tourDetails.duration")}
                                             </span>
 
                                             <strong>
                                                 {tour.duration ||
-                                                    "Flexible"}
+                                                    t("common.flexible")}
                                             </strong>
+
                                         </div>
+
                                     </div>
 
 
                                     <div className="tour-info-card">
+
                                         <span className="tour-info-number">
                                             03
                                         </span>
 
                                         <div>
+
                                             <span>
-                                                Category
+                                                {t("tourDetails.category")}
                                             </span>
 
                                             <strong>
                                                 {tour.category_name ||
                                                     tour.category?.name ||
-                                                    "Experience"}
+                                                    t("common.zanzibarAdventure")}
                                             </strong>
+
                                         </div>
+
                                     </div>
 
 
                                     <div className="tour-info-card">
+
                                         <span className="tour-info-number">
                                             04
                                         </span>
 
                                         <div>
+
                                             <span>
-                                                Availability
+                                                {t("tourDetails.availability")}
                                             </span>
 
                                             <strong>
-                                                Daily enquiry
+                                                {t("tourDetails.dailyEnquiry")}
                                             </strong>
+
                                         </div>
+
                                     </div>
 
                                 </div>
@@ -1678,11 +1925,11 @@ function TourDetails() {
                             <section className="tour-details-section">
 
                                 <span className="tour-section-eyebrow">
-                                    PRICING
+                                    {t("tourDetails.pricingEyebrow")}
                                 </span>
 
                                 <h2>
-                                    Simple, transparent pricing
+                                    {t("tourDetails.pricingTitle")}
                                 </h2>
 
 
@@ -1707,6 +1954,7 @@ function TourDetails() {
                                                     <div className="tour-price-description">
 
                                                         <span className="tour-price-type">
+
                                                             {String(
                                                                 price.pricing_type ||
                                                                 "PRICING"
@@ -1714,11 +1962,14 @@ function TourDetails() {
                                                                 /_/g,
                                                                 " "
                                                             )}
+
                                                         </span>
+
 
                                                         <strong>
                                                             {formatPricingRange(
-                                                                price
+                                                                price,
+                                                                t("tourDetails.people")
                                                             )}
                                                         </strong>
 
@@ -1734,17 +1985,20 @@ function TourDetails() {
                                                             )}
                                                         </strong>
 
+
                                                         {isPerPerson(
                                                             price
                                                         ) && (
+
                                                             <span>
-                                                                per person
+                                                                {t("common.perPerson")}
                                                             </span>
                                                         )}
 
                                                     </div>
 
                                                 </div>
+
                                             )
                                         )}
 
@@ -1755,13 +2009,11 @@ function TourDetails() {
                                     <div className="tour-no-pricing">
 
                                         <strong>
-                                            Pricing available on request
+                                            {t("tourDetails.pricingOnRequest")}
                                         </strong>
 
                                         <span>
-                                            Send us your travel details
-                                            and our team will prepare
-                                            the right arrangement for you.
+                                            {t("tourDetails.pricingOnRequestDescription")}
                                         </span>
 
                                     </div>
@@ -1777,73 +2029,77 @@ function TourDetails() {
                             <section className="tour-details-section tour-benefits-section">
 
                                 <span className="tour-section-eyebrow">
-                                    WHY ZAN GATES
+                                    {t("tourDetails.whyZanGates")}
                                 </span>
 
                                 <h2>
-                                    Travel with a local team
+                                    {t("tourDetails.localTeamTitle")}
                                 </h2>
 
 
                                 <div className="tour-benefits">
 
+
                                     <div>
+
                                         <span>
                                             01
                                         </span>
 
                                         <div>
+
                                             <strong>
-                                                Local knowledge
+                                                {t("tourDetails.benefits.localKnowledge.title")}
                                             </strong>
 
                                             <p>
-                                                Experience Zanzibar
-                                                with people who know
-                                                the island, its waters
-                                                and its hidden places.
+                                                {t("tourDetails.benefits.localKnowledge.description")}
                                             </p>
+
                                         </div>
+
                                     </div>
 
 
                                     <div>
+
                                         <span>
                                             02
                                         </span>
 
                                         <div>
+
                                             <strong>
-                                                Personal service
+                                                {t("tourDetails.benefits.personalService.title")}
                                             </strong>
 
                                             <p>
-                                                We tailor your
-                                                experience around
-                                                your travel plans
-                                                and preferences.
+                                                {t("tourDetails.benefits.personalService.description")}
                                             </p>
+
                                         </div>
+
                                     </div>
 
 
                                     <div>
+
                                         <span>
                                             03
                                         </span>
 
                                         <div>
+
                                             <strong>
-                                                Easy enquiry
+                                                {t("tourDetails.benefits.easyEnquiry.title")}
                                             </strong>
 
                                             <p>
-                                                Send your request
-                                                online and our team
-                                                will contact you to
-                                                confirm the details.
+                                                {t("tourDetails.benefits.easyEnquiry.description")}
                                             </p>
+
                                         </div>
+
                                     </div>
 
                                 </div>
@@ -1861,17 +2117,20 @@ function TourDetails() {
 
                             <div className="tour-booking-card">
 
+
                                 <div className="tour-booking-top">
 
                                     <span className="tour-booking-label">
-                                        PLAN YOUR EXPERIENCE
+                                        {t("tourDetails.booking.planYourExperience")}
                                     </span>
 
+
                                     {startingPrice && (
+
                                         <div className="tour-booking-starting-price">
 
                                             <small>
-                                                From
+                                                {t("tourDetails.booking.from")}
                                             </small>
 
                                             <strong>
@@ -1881,11 +2140,13 @@ function TourDetails() {
                                                 )}
                                             </strong>
 
+
                                             {isPerPerson(
                                                 startingPrice
                                             ) && (
+
                                                 <span>
-                                                    / person
+                                                    / {t("tourDetails.booking.perPerson")}
                                                 </span>
                                             )}
 
@@ -1896,13 +2157,12 @@ function TourDetails() {
 
 
                                 <h3>
-                                    Enquire about this tour
+                                    {t("tourDetails.booking.enquireTitle")}
                                 </h3>
 
+
                                 <p>
-                                    Tell us when you would like
-                                    to travel and how many guests
-                                    will be joining you.
+                                    {t("tourDetails.booking.enquireDescription")}
                                 </p>
 
 
@@ -1914,21 +2174,21 @@ function TourDetails() {
                                             ✓
                                         </div>
 
+
                                         <span className="booking-success-label">
-                                            REQUEST RECEIVED
+                                            {t("tourDetails.booking.requestReceived")}
                                         </span>
 
+
                                         <h4>
-                                            Thank you.
+                                            {t("tourDetails.booking.thankYou")}
                                         </h4>
 
+
                                         <p>
-                                            Your enquiry has been
-                                            successfully received.
-                                            Our team will review
-                                            your request and contact
-                                            you shortly.
+                                            {t("tourDetails.booking.requestReceivedDescription")}
                                         </p>
+
 
                                         <button
                                             type="button"
@@ -1938,7 +2198,7 @@ function TourDetails() {
                                                 )
                                             }
                                         >
-                                            Send another enquiry
+                                            {t("tourDetails.booking.sendAnother")}
                                         </button>
 
                                     </div>
@@ -1952,24 +2212,36 @@ function TourDetails() {
                                         }
                                     >
 
+
                                         {bookingError && (
+
                                             <div
                                                 className="booking-error"
                                                 role="alert"
                                             >
-                                                <span>!</span>
+
+                                                <span>
+                                                    !
+                                                </span>
+
                                                 <p>
                                                     {bookingError}
                                                 </p>
+
                                             </div>
                                         )}
 
 
+                                        {/* FULL NAME */}
+
                                         <div className="booking-field">
 
                                             <label htmlFor="full_name">
-                                                Full name
+
+                                                {t("tourDetails.booking.fullName")}
+
                                             </label>
+
 
                                             <input
                                                 id="full_name"
@@ -1981,7 +2253,9 @@ function TourDetails() {
                                                 onChange={
                                                     handleChange
                                                 }
-                                                placeholder="Your full name"
+                                                placeholder={
+                                                    t("tourDetails.booking.fullNamePlaceholder")
+                                                }
                                                 autoComplete="name"
                                                 required
                                             />
@@ -1989,11 +2263,16 @@ function TourDetails() {
                                         </div>
 
 
+                                        {/* EMAIL */}
+
                                         <div className="booking-field">
 
                                             <label htmlFor="email">
-                                                Email address
+
+                                                {t("tourDetails.booking.emailAddress")}
+
                                             </label>
+
 
                                             <input
                                                 id="email"
@@ -2005,7 +2284,9 @@ function TourDetails() {
                                                 onChange={
                                                     handleChange
                                                 }
-                                                placeholder="you@example.com"
+                                                placeholder={
+                                                    t("tourDetails.booking.emailPlaceholder")
+                                                }
                                                 autoComplete="email"
                                                 required
                                             />
@@ -2013,14 +2294,20 @@ function TourDetails() {
                                         </div>
 
 
+                                        {/* PHONE */}
+
                                         <div className="booking-field">
 
                                             <label htmlFor="phone">
-                                                Phone number
+
+                                                {t("tourDetails.booking.phoneNumber")}
+
                                                 <span>
-                                                    Optional
+                                                    {t("tourDetails.booking.optional")}
                                                 </span>
+
                                             </label>
+
 
                                             <input
                                                 id="phone"
@@ -2032,18 +2319,25 @@ function TourDetails() {
                                                 onChange={
                                                     handleChange
                                                 }
-                                                placeholder="+255 ..."
+                                                placeholder={
+                                                    t("tourDetails.booking.phonePlaceholder")
+                                                }
                                                 autoComplete="tel"
                                             />
 
                                         </div>
 
 
+                                        {/* DATE */}
+
                                         <div className="booking-field">
 
                                             <label htmlFor="travel_date">
-                                                Preferred travel date
+
+                                                {t("tourDetails.booking.preferredTravelDate")}
+
                                             </label>
+
 
                                             <input
                                                 id="travel_date"
@@ -2064,13 +2358,19 @@ function TourDetails() {
                                         </div>
 
 
+                                        {/* TRAVELLERS */}
+
                                         <div className="booking-form-row">
+
 
                                             <div className="booking-field">
 
                                                 <label htmlFor="adults">
-                                                    Adults
+
+                                                    {t("tourDetails.booking.adults")}
+
                                                 </label>
+
 
                                                 <input
                                                     id="adults"
@@ -2093,8 +2393,11 @@ function TourDetails() {
                                             <div className="booking-field">
 
                                                 <label htmlFor="children">
-                                                    Children
+
+                                                    {t("tourDetails.booking.children")}
+
                                                 </label>
+
 
                                                 <input
                                                     id="children"
@@ -2115,14 +2418,20 @@ function TourDetails() {
                                         </div>
 
 
+                                        {/* MESSAGE */}
+
                                         <div className="booking-field">
 
                                             <label htmlFor="message">
-                                                Message
+
+                                                {t("tourDetails.booking.message")}
+
                                                 <span>
-                                                    Optional
+                                                    {t("tourDetails.booking.optional")}
                                                 </span>
+
                                             </label>
+
 
                                             <textarea
                                                 id="message"
@@ -2134,20 +2443,26 @@ function TourDetails() {
                                                     handleChange
                                                 }
                                                 rows="4"
-                                                placeholder="Tell us anything we should know about your trip..."
+                                                placeholder={
+                                                    t("tourDetails.booking.messagePlaceholder")
+                                                }
                                             />
 
                                         </div>
 
+
+                                        {/* ESTIMATED PRICE */}
 
                                         {estimatedPrice && (
 
                                             <div className="tour-booking-price">
 
                                                 <div>
+
                                                     <span>
-                                                        Estimated total
+                                                        {t("tourDetails.booking.estimatedTotal")}
                                                     </span>
+
 
                                                     <strong>
                                                         {formatMoney(
@@ -2155,20 +2470,28 @@ function TourDetails() {
                                                             estimatedPrice.currency
                                                         )}
                                                     </strong>
+
                                                 </div>
 
+
                                                 <small>
-                                                    Based on{" "}
-                                                    {guestCount}{" "}
-                                                    guest
-                                                    {guestCount === 1
-                                                        ? ""
-                                                        : "s"}
+
+                                                    {t(
+                                                        guestCount === 1
+                                                            ? "tourDetails.booking.basedOnGuest"
+                                                            : "tourDetails.booking.basedOnGuests",
+                                                        {
+                                                            count: guestCount,
+                                                        }
+                                                    )}
+
                                                 </small>
 
                                             </div>
                                         )}
 
+
+                                        {/* SUBMIT */}
 
                                         <button
                                             type="submit"
@@ -2179,21 +2502,32 @@ function TourDetails() {
                                         >
 
                                             {submitting ? (
+
                                                 <>
+
                                                     <span className="button-spinner" />
-                                                    Sending enquiry...
+
+                                                    {t("tourDetails.booking.sendingEnquiry")}
+
                                                 </>
+
                                             ) : (
+
                                                 <>
-                                                    Send Enquiry
+
+                                                    {t("tourDetails.booking.sendEnquiry")}
+
                                                     <span>
                                                         →
                                                     </span>
+
                                                 </>
                                             )}
 
                                         </button>
 
+
+                                        {/* SECURITY */}
 
                                         <div className="booking-security">
 
@@ -2202,30 +2536,31 @@ function TourDetails() {
                                             </span>
 
                                             <p>
-                                                No payment required.
-                                                Availability and final
-                                                arrangements are confirmed
-                                                by our team.
+                                                {t("tourDetails.booking.noPaymentRequired")}{" "}
+                                                {t("tourDetails.booking.availabilityConfirmation")}
                                             </p>
 
                                         </div>
 
                                     </form>
-
                                 )}
 
                             </div>
 
 
+                            {/* BACK */}
+
                             <Link
                                 to="/#tours"
                                 className="tour-back-link"
                             >
+
                                 <span>
                                     ←
                                 </span>
 
-                                Back to all experiences
+                                {t("tourDetails.backToExperiences")}
+
                             </Link>
 
                         </aside>
@@ -2243,11 +2578,14 @@ function TourDetails() {
 
             {lightboxOpen &&
                 primaryImage && (
+
                 <div
                     className="tour-lightbox"
                     role="dialog"
                     aria-modal="true"
-                    aria-label="Tour image gallery"
+                    aria-label={
+                        t("tourDetails.gallery.tourImageGallery")
+                    }
                     onClick={() =>
                         setLightboxOpen(false)
                     }
@@ -2259,7 +2597,9 @@ function TourDetails() {
                         onClick={() =>
                             setLightboxOpen(false)
                         }
-                        aria-label="Close gallery"
+                        aria-label={
+                            t("tourDetails.gallery.closeGallery")
+                        }
                     >
                         ×
                     </button>
@@ -2269,10 +2609,15 @@ function TourDetails() {
                         type="button"
                         className="tour-lightbox-arrow tour-lightbox-left"
                         onClick={(event) => {
+
                             event.stopPropagation();
+
                             showPreviousImage();
+
                         }}
-                        aria-label="Previous image"
+                        aria-label={
+                            t("tourDetails.gallery.previousImage")
+                        }
                     >
                         ←
                     </button>
@@ -2297,16 +2642,24 @@ function TourDetails() {
                             }
                         />
 
+
                         <div className="tour-lightbox-caption">
+
                             <span>
                                 {tour.title}
                             </span>
 
+
                             <small>
+
                                 {imageIndex + 1}
+
                                 {" / "}
+
                                 {images.length}
+
                             </small>
+
                         </div>
 
                     </div>
@@ -2316,10 +2669,15 @@ function TourDetails() {
                         type="button"
                         className="tour-lightbox-arrow tour-lightbox-right"
                         onClick={(event) => {
+
                             event.stopPropagation();
+
                             showNextImage();
+
                         }}
-                        aria-label="Next image"
+                        aria-label={
+                            t("tourDetails.gallery.nextImage")
+                        }
                     >
                         →
                     </button>

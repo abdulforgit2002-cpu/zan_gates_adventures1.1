@@ -1,0 +1,1155 @@
+/* =========================================================
+   ADMIN PAGE
+   ========================================================= */
+
+.admin-page {
+    display: flex;
+    min-height: 100vh;
+
+    background: #f6f8f7;
+}
+
+
+/* =========================================================
+   SIDEBAR
+   ========================================================= */
+
+.admin-sidebar {
+    position: sticky;
+    top: 0;
+
+    width: 260px;
+    height: 100vh;
+
+    flex-shrink: 0;
+
+    display: flex;
+    flex-direction: column;
+
+    padding: 24px 16px;
+
+    box-sizing: border-box;
+
+    color: #ffffff;
+
+    background:
+        linear-gradient(
+            165deg,
+            #0d383e 0%,
+            #102f2c 48%,
+            #10281e 100%
+        );
+}
+
+
+/* =========================================================
+   BRAND
+   ========================================================= */
+
+.admin-brand {
+    padding: 0 8px;
+}
+
+
+.admin-brand-link {
+    display: flex;
+    align-items: center;
+
+    gap: 11px;
+
+    color: #ffffff;
+
+    text-decoration: none;
+}
+
+
+.admin-brand-mark {
+    width: 43px;
+    height: 43px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    color: #173125;
+
+    font-size: 0.85rem;
+    font-weight: 900;
+
+    background: #e5bd65;
+
+    border-radius: 13px;
+}
+
+
+.admin-brand-name {
+    display: flex;
+    flex-direction: column;
+
+    line-height: 1;
+}
+
+
+.admin-brand-name strong {
+    font-size: 0.84rem;
+    font-weight: 850;
+
+    letter-spacing: 0.04em;
+}
+
+
+.admin-brand-name small {
+    margin-top: 5px;
+
+    color: rgba(255, 255, 255, 0.58);
+
+    font-size: 0.55rem;
+    font-weight: 700;
+
+    letter-spacing: 0.2em;
+}
+
+
+/* =========================================================
+   SIDEBAR LABEL
+   ========================================================= */
+
+.admin-sidebar-label {
+    margin: 36px 10px 12px;
+
+    color: rgba(255, 255, 255, 0.42);
+
+    font-size: 0.62rem;
+    font-weight: 800;
+
+    letter-spacing: 0.15em;
+}
+
+
+/* =========================================================
+   SIDEBAR NAVIGATION
+   ========================================================= */
+
+.admin-nav {
+    display: flex;
+    flex-direction: column;
+
+    gap: 6px;
+
+    width: 100%;
+}
+
+
+.admin-nav-link {
+    display: flex;
+    align-items: center;
+
+    gap: 12px;
+
+    width: 100%;
+
+    min-height: 44px;
+
+    padding: 0 13px;
+
+    box-sizing: border-box;
+
+    color: rgba(255, 255, 255, 0.64);
+
+    font-size: 0.8rem;
+    font-weight: 650;
+
+    text-decoration: none;
+
+    border-radius: 11px;
+
+    transition:
+        color 160ms ease,
+        background 160ms ease,
+        transform 160ms ease;
+}
+
+
+.admin-nav-link:hover {
+    color: #ffffff;
+
+    background:
+        rgba(255, 255, 255, 0.07);
+
+    transform: translateX(2px);
+}
+
+
+.admin-nav-link.active {
+    color: #ffffff;
+
+    background:
+        rgba(229, 189, 101, 0.14);
+
+    box-shadow:
+        inset 3px 0 0 #e5bd65;
+}
+
+
+.admin-nav-icon {
+    width: 21px;
+    height: 21px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+}
+
+
+.admin-nav-icon svg {
+    width: 18px;
+    height: 18px;
+
+    display: block;
+}
+
+
+/* =========================================================
+   SIDEBAR BOTTOM
+   ========================================================= */
+
+.admin-sidebar-bottom {
+    display: flex;
+    flex-direction: column;
+
+    gap: 8px;
+
+    width: 100%;
+
+    margin-top: auto;
+}
+
+
+.admin-user {
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+
+    margin-top: 12px;
+    padding: 13px 10px;
+
+    border-top:
+        1px solid rgba(255, 255, 255, 0.08);
+}
+
+
+.admin-user-avatar {
+    width: 34px;
+    height: 34px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    color: #18382a;
+
+    font-size: 0.75rem;
+    font-weight: 850;
+
+    background: #e5bd65;
+
+    border-radius: 50%;
+}
+
+
+.admin-user-info {
+    min-width: 0;
+
+    display: flex;
+    flex-direction: column;
+}
+
+
+.admin-user-info strong {
+    overflow: hidden;
+
+    color: #ffffff;
+
+    font-size: 0.7rem;
+    font-weight: 700;
+
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+
+.admin-user-info small {
+    margin-top: 4px;
+
+    color: rgba(255, 255, 255, 0.45);
+
+    font-size: 0.62rem;
+}
+
+
+.admin-signout {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 8px;
+
+    width: 100%;
+
+    min-height: 40px;
+
+    padding: 0 12px;
+
+    color: rgba(255, 255, 255, 0.55);
+
+    font-family: inherit;
+
+    font-size: 0.74rem;
+    font-weight: 700;
+
+    background: transparent;
+
+    border: 1px solid rgba(255, 255, 255, 0.08);
+
+    border-radius: 10px;
+
+    cursor: pointer;
+
+    transition:
+        color 160ms ease,
+        background 160ms ease,
+        border-color 160ms ease;
+}
+
+
+.admin-signout svg {
+    width: 17px;
+    height: 17px;
+}
+
+
+.admin-signout:hover {
+    color: #ffffff;
+
+    background:
+        rgba(255, 255, 255, 0.07);
+
+    border-color:
+        rgba(255, 255, 255, 0.15);
+}
+
+
+/* =========================================================
+   MAIN AREA
+   ========================================================= */
+
+.admin-main {
+    min-width: 0;
+
+    flex: 1;
+
+    padding: 0;
+}
+
+
+.admin-content {
+    width: 100%;
+
+    max-width: 1280px;
+
+    margin: 0 auto;
+
+    padding: 34px;
+
+    box-sizing: border-box;
+}
+
+
+/* =========================================================
+   PAGE HEADER
+   ========================================================= */
+
+.admin-page-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+
+    gap: 24px;
+
+    margin-bottom: 28px;
+}
+
+
+.admin-eyebrow {
+    display: block;
+
+    margin-bottom: 7px;
+
+    color: #987b3f;
+
+    font-size: 0.64rem;
+    font-weight: 850;
+
+    letter-spacing: 0.16em;
+}
+
+
+.admin-page-header h1 {
+    margin: 0;
+
+    color: #10281e;
+
+    font-size: clamp(1.8rem, 3vw, 2.45rem);
+
+    font-weight: 800;
+
+    line-height: 1.1;
+
+    letter-spacing: -0.04em;
+}
+
+
+.admin-page-header p {
+    margin: 9px 0 0;
+
+    color: #718078;
+
+    font-size: 0.86rem;
+
+    line-height: 1.6;
+}
+
+
+.admin-header-actions {
+    display: flex;
+    align-items: center;
+
+    flex-shrink: 0;
+}
+
+
+/* =========================================================
+   BUTTONS
+   ========================================================= */
+
+.admin-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 8px;
+
+    min-height: 42px;
+
+    padding: 0 15px;
+
+    box-sizing: border-box;
+
+    font-family: inherit;
+
+    font-size: 0.76rem;
+    font-weight: 750;
+
+    text-decoration: none;
+
+    border-radius: 10px;
+
+    transition:
+        transform 160ms ease,
+        background 160ms ease,
+        border-color 160ms ease;
+}
+
+
+.admin-btn-secondary {
+    color: #18382a;
+
+    background: #ffffff;
+
+    border: 1px solid #dce4df;
+}
+
+
+.admin-btn-secondary:hover {
+    background: #f1f5f2;
+
+    border-color: #bdcbc3;
+
+    transform: translateX(-2px);
+}
+
+
+/* =========================================================
+   ALERTS
+   ========================================================= */
+
+.admin-alert {
+    margin-bottom: 20px;
+
+    padding: 13px 16px;
+
+    border-radius: 10px;
+
+    font-size: 0.8rem;
+    font-weight: 650;
+}
+
+
+.admin-alert-success {
+    color: #246044;
+
+    background: #eaf6ee;
+
+    border: 1px solid #c8e5d1;
+}
+
+
+.admin-alert-error {
+    color: #963f3f;
+
+    background: #fff1f1;
+
+    border: 1px solid #efd0d0;
+}
+
+
+/* =========================================================
+   BOOKING METRICS
+   ========================================================= */
+
+.booking-metrics-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, minmax(0, 1fr));
+
+    gap: 16px;
+
+    margin-bottom: 24px;
+}
+
+
+.metric-card {
+    min-width: 0;
+
+    padding: 19px;
+
+    background: #ffffff;
+
+    border: 1px solid #e1e8e4;
+
+    border-radius: 15px;
+
+    box-shadow:
+        0 4px 16px rgba(16, 40, 30, 0.045);
+}
+
+
+.metric-label {
+    display: block;
+
+    margin-bottom: 8px;
+
+    color: #7a867f;
+
+    font-size: 0.64rem;
+    font-weight: 800;
+
+    letter-spacing: 0.1em;
+
+    text-transform: uppercase;
+}
+
+
+.metric-value {
+    display: block;
+
+    min-width: 0;
+
+    color: #142a20;
+
+    font-size: 0.98rem;
+    font-weight: 800;
+
+    line-height: 1.45;
+
+    overflow-wrap: anywhere;
+}
+
+
+.metric-status {
+    display: inline-flex;
+    align-items: center;
+
+    width: fit-content;
+
+    padding: 6px 10px;
+
+    font-size: 0.65rem;
+    font-weight: 850;
+
+    letter-spacing: 0.05em;
+
+    text-transform: uppercase;
+
+    border-radius: 999px;
+}
+
+
+/* =========================================================
+   STATUS COLORS
+   ========================================================= */
+
+.status-pending {
+    color: #866521;
+
+    background: #fff7df;
+}
+
+
+.status-confirmed {
+    color: #245d79;
+
+    background: #e8f3f8;
+}
+
+
+.status-completed {
+    color: #216044;
+
+    background: #e8f5ed;
+}
+
+
+.status-cancelled {
+    color: #963f3f;
+
+    background: #fcecec;
+}
+
+
+/* =========================================================
+   DETAILS GRID
+   ========================================================= */
+
+.details-section-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+    gap: 20px;
+}
+
+
+.admin-card {
+    min-width: 0;
+
+    padding: 24px;
+
+    background: #ffffff;
+
+    border: 1px solid #e1e8e4;
+
+    border-radius: 17px;
+
+    box-shadow:
+        0 4px 16px rgba(16, 40, 30, 0.04);
+}
+
+
+.details-card-full {
+    grid-column: 1 / -1;
+}
+
+
+/* =========================================================
+   CARD HEADER
+   ========================================================= */
+
+.admin-card-header {
+    margin-bottom: 20px;
+}
+
+
+.details-heading {
+    display: flex;
+    align-items: center;
+
+    gap: 12px;
+}
+
+
+.details-heading-icon {
+    width: 40px;
+    height: 40px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    color: #18382a;
+
+    background: #edf4ef;
+
+    border-radius: 11px;
+}
+
+
+.details-heading-icon svg {
+    width: 19px;
+    height: 19px;
+
+    display: block;
+}
+
+
+.details-heading .admin-eyebrow {
+    margin-bottom: 4px;
+}
+
+
+.details-heading h2 {
+    margin: 0;
+
+    color: #18382a;
+
+    font-size: 1.02rem;
+    font-weight: 780;
+}
+
+
+.details-heading p {
+    margin: 5px 0 0;
+
+    color: #77837c;
+
+    font-size: 0.76rem;
+
+    line-height: 1.5;
+}
+
+
+/* =========================================================
+   DETAIL LIST
+   ========================================================= */
+
+.details-list {
+    display: flex;
+    flex-direction: column;
+
+    width: 100%;
+}
+
+
+.details-row {
+    display: grid;
+
+    grid-template-columns:
+        minmax(130px, 0.75fr)
+        minmax(0, 1.25fr);
+
+    align-items: start;
+
+    gap: 20px;
+
+    padding: 13px 0;
+
+    border-bottom:
+        1px solid #edf1ee;
+}
+
+
+.details-row:first-child {
+    padding-top: 0;
+}
+
+
+.details-row:last-child {
+    padding-bottom: 0;
+
+    border-bottom: none;
+}
+
+
+.details-label {
+    color: #77837c;
+
+    font-size: 0.78rem;
+    font-weight: 550;
+}
+
+
+.details-value {
+    min-width: 0;
+
+    color: #172b21;
+
+    font-size: 0.8rem;
+    font-weight: 700;
+
+    line-height: 1.55;
+
+    text-align: right;
+
+    overflow-wrap: anywhere;
+}
+
+
+/* =========================================================
+   CUSTOMER MESSAGE
+   ========================================================= */
+
+.booking-message {
+    padding: 16px 18px;
+
+    color: #425149;
+
+    font-size: 0.82rem;
+
+    line-height: 1.75;
+
+    background: #f7f9f8;
+
+    border:
+        1px solid #e6ece8;
+
+    border-radius: 12px;
+}
+
+
+/* =========================================================
+   STATUS MANAGEMENT
+   ========================================================= */
+
+.management-card {
+    margin-bottom: 10px;
+}
+
+
+.status-actions {
+    display: flex;
+    flex-wrap: wrap;
+
+    gap: 10px;
+}
+
+
+.status-action {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 8px;
+
+    min-width: 120px;
+
+    min-height: 42px;
+
+    padding: 0 15px;
+
+    color: #64716a;
+
+    font-family: inherit;
+
+    font-size: 0.72rem;
+    font-weight: 800;
+
+    background: #f7f9f8;
+
+    border: 1px solid #dce4df;
+
+    border-radius: 10px;
+
+    cursor: pointer;
+
+    transition:
+        transform 160ms ease,
+        background 160ms ease,
+        border-color 160ms ease,
+        color 160ms ease;
+}
+
+
+.status-action:hover:not(:disabled) {
+    transform: translateY(-2px);
+}
+
+
+.status-action:disabled {
+    opacity: 0.55;
+
+    cursor: not-allowed;
+}
+
+
+.status-action.selected {
+    font-weight: 850;
+}
+
+
+.status-action-pending.selected {
+    color: #866521;
+
+    background: #fff7df;
+
+    border-color: #e8cd8c;
+}
+
+
+.status-action-confirmed.selected {
+    color: #245d79;
+
+    background: #e8f3f8;
+
+    border-color: #b9d6e3;
+}
+
+
+.status-action-completed.selected {
+    color: #216044;
+
+    background: #e8f5ed;
+
+    border-color: #b8dcc6;
+}
+
+
+.status-action-cancelled.selected {
+    color: #963f3f;
+
+    background: #fcecec;
+
+    border-color: #e8bebe;
+}
+
+
+.status-dot {
+    width: 7px;
+    height: 7px;
+
+    flex-shrink: 0;
+
+    background: currentColor;
+
+    border-radius: 50%;
+}
+
+
+/* =========================================================
+   LOADING
+   ========================================================= */
+
+.admin-loading {
+    min-height: 500px;
+
+    display: flex;
+    flex-direction: column;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 14px;
+
+    color: #718078;
+
+    font-size: 0.82rem;
+}
+
+
+.admin-spinner {
+    width: 32px;
+    height: 32px;
+
+    border: 3px solid #dce6df;
+
+    border-top-color: #18382a;
+
+    border-radius: 50%;
+
+    animation:
+        admin-spin 0.8s linear infinite;
+}
+
+
+@keyframes admin-spin {
+
+    to {
+        transform: rotate(360deg);
+    }
+
+}
+
+
+/* =========================================================
+   TABLET
+   ========================================================= */
+
+@media (max-width: 1100px) {
+
+    .admin-content {
+        padding: 28px;
+    }
+
+
+    .booking-metrics-grid {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 800px) {
+
+    .admin-sidebar {
+        width: 220px;
+    }
+
+
+    .admin-content {
+        padding: 24px 20px;
+    }
+
+
+    .admin-page-header {
+        flex-direction: column;
+    }
+
+
+    .admin-header-actions {
+        width: 100%;
+    }
+
+
+    .admin-header-actions .admin-btn {
+        width: 100%;
+    }
+
+
+    .details-section-grid {
+        grid-template-columns: 1fr;
+    }
+
+
+    .details-card-full {
+        grid-column: auto;
+    }
+
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+   ========================================================= */
+
+@media (max-width: 620px) {
+
+    .admin-page {
+        display: block;
+    }
+
+
+    .admin-sidebar {
+        position: relative;
+
+        width: 100%;
+        height: auto;
+
+        min-height: auto;
+
+        padding: 16px;
+
+        border-bottom:
+            1px solid rgba(255, 255, 255, 0.08);
+    }
+
+
+    .admin-sidebar-label {
+        margin-top: 24px;
+    }
+
+
+    .admin-sidebar-bottom {
+        margin-top: 20px;
+    }
+
+
+    .admin-content {
+        padding: 20px 14px;
+    }
+
+
+    .booking-metrics-grid {
+        grid-template-columns: 1fr;
+    }
+
+
+    .admin-card {
+        padding: 20px 17px;
+    }
+
+
+    .details-row {
+        grid-template-columns: 1fr;
+
+        gap: 5px;
+    }
+
+
+    .details-value {
+        text-align: left;
+    }
+
+
+    .status-actions {
+        display: grid;
+
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+
+
+    .status-action {
+        min-width: 0;
+
+        width: 100%;
+    }
+
+}
+
+
+/* =========================================================
+   VERY SMALL MOBILE
+   ========================================================= */
+
+@media (max-width: 390px) {
+
+    .status-actions {
+        grid-template-columns: 1fr;
+    }
+
+
+    .status-action {
+        width: 100%;
+    }
+
+
+    .details-heading h2 {
+        font-size: 0.95rem;
+    }
+
+}

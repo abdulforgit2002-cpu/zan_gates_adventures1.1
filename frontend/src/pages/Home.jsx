@@ -8,6 +8,10 @@ import {
 } from "react-router-dom";
 
 import {
+    useTranslation,
+} from "react-i18next";
+
+import {
     getTours,
 } from "../services/tourService";
 
@@ -175,6 +179,10 @@ const HOME_HERO_SLIDES = [
 
 
 const Home = () => {
+
+    const {
+        t,
+    } = useTranslation();
 
     /*
     |--------------------------------------------------------------------------
@@ -552,9 +560,7 @@ const Home = () => {
 
                             <span />
 
-                            {
-                                currentHeroSlide.eyebrow
-                            }
+                            {t("home.hero.eyebrow")}
 
                         </span>
 
@@ -562,11 +568,11 @@ const Home = () => {
                         <h1>
 
                             <span>
-                                Discover
+                                {t("home.hero.prefix")}
                             </span>
 
                             <strong>
-                                Zanzibar.
+                                {t("home.hero.highlight")}
                             </strong>
 
                         </h1>
@@ -574,18 +580,14 @@ const Home = () => {
 
                         <p className="home-hero-title">
 
-                            {
-                                currentHeroSlide.title
-                            }
+                            {t("home.hero.title")}
 
                         </p>
 
 
                         <p className="home-hero-description">
 
-                            {
-                                currentHeroSlide.description
-                            }
+                            {t("home.hero.description")}
 
                         </p>
 
@@ -599,7 +601,7 @@ const Home = () => {
                             >
 
                                 <span>
-                                    Explore Experiences
+                                    {t("home.hero.primaryCta")}
                                 </span>
 
                                 <strong>
@@ -614,7 +616,7 @@ const Home = () => {
                                 className="home-secondary-button"
                             >
 
-                                Discover ZAN GATES
+                                {t("home.hero.secondaryCta")}
 
                             </Link>
 
@@ -703,7 +705,7 @@ const Home = () => {
                         <span />
 
                         <p>
-                            THE ZAN GATES EXPERIENCE
+                            {t("home.experience.eyebrow")}
                         </p>
 
                     </div>
@@ -713,24 +715,14 @@ const Home = () => {
 
                         <h2>
 
-                            Zanzibar is more than
-                            a destination.
-
-                            <span>
-                                {" "}It is an experience.
-                            </span>
+                            {t("home.experience.title")}
 
                         </h2>
 
 
                         <p>
 
-                            We create unforgettable
-                            journeys across the island,
-                            connecting travelers with
-                            the ocean, nature, culture
-                            and the authentic beauty
-                            of Zanzibar.
+                            {t("home.experience.description")}
 
                         </p>
 
@@ -755,12 +747,11 @@ const Home = () => {
                     <div>
 
                         <span className="home-section-eyebrow">
-                            OUR EXPERIENCES
+                            {t("home.experiences.eyebrow")}
                         </span>
 
                         <h2>
-                            Adventures worth
-                            remembering.
+                            {t("home.experiences.title")}
                         </h2>
 
                     </div>
@@ -768,10 +759,7 @@ const Home = () => {
 
                     <p>
 
-                        Explore our hand-selected
-                        Zanzibar experiences and
-                        find the adventure that
-                        speaks to you.
+                        {t("home.experiences.description")}
 
                     </p>
 
@@ -785,8 +773,7 @@ const Home = () => {
                         <div className="home-loading-spinner" />
 
                         <p>
-                            Discovering Zanzibar
-                            experiences...
+                            {t("home.experiences.loading")}
                         </p>
 
                     </div>
@@ -804,7 +791,7 @@ const Home = () => {
                         </div>
 
                         <h3>
-                            Something went wrong
+                            {t("home.experiences.errorTitle")}
                         </h3>
 
                         <p>
@@ -817,7 +804,7 @@ const Home = () => {
                                 window.location.reload()
                             }
                         >
-                            Try Again
+                            {t("home.experiences.retry")}
                         </button>
 
                     </div>
@@ -863,12 +850,11 @@ const Home = () => {
                         </div>
 
                         <h3>
-                            New adventures are coming
+                            {t("home.experiences.emptyTitle")}
                         </h3>
 
                         <p>
-                            We are preparing exciting
-                            Zanzibar experiences for you.
+                            {t("home.experiences.emptyDescription")}
                         </p>
 
                     </div>
@@ -913,29 +899,20 @@ const Home = () => {
                 <div className="home-about-content">
 
                     <span className="home-section-eyebrow">
-                        WHY ZAN GATES
+                        {t("home.whyUs.eyebrow")}
                     </span>
 
 
                     <h2>
 
-                        See Zanzibar
-                        <br />
-
-                        <span>
-                            through a different lens.
-                        </span>
+                        {t("home.whyUs.title")}
 
                     </h2>
 
 
                     <p>
 
-                        We believe the best journeys
-                        are not simply about visiting
-                        beautiful places. They are about
-                        the stories, people, landscapes
-                        and moments that stay with you.
+                        {t("home.whyUs.description")}
 
                     </p>
 
@@ -952,12 +929,11 @@ const Home = () => {
                             <div>
 
                                 <strong>
-                                    Authentic Experiences
+                                    {t("home.whyUs.localKnowledge")}
                                 </strong>
 
                                 <p>
-                                    Discover the real
-                                    character of Zanzibar.
+                                    {t("home.whyUs.localKnowledgeDescription")}
                                 </p>
 
                             </div>
@@ -974,13 +950,11 @@ const Home = () => {
                             <div>
 
                                 <strong>
-                                    Island Adventures
+                                    {t("home.whyUs.personalService")}
                                 </strong>
 
                                 <p>
-                                    From turquoise waters
-                                    to unforgettable
-                                    excursions.
+                                    {t("home.whyUs.personalServiceDescription")}
                                 </p>
 
                             </div>
@@ -997,12 +971,11 @@ const Home = () => {
                             <div>
 
                                 <strong>
-                                    Memorable Journeys
+                                    {t("home.whyUs.flexiblePlanning")}
                                 </strong>
 
                                 <p>
-                                    Experiences designed
-                                    around you.
+                                    {t("home.whyUs.flexiblePlanningDescription")}
                                 </p>
 
                             </div>
@@ -1018,7 +991,7 @@ const Home = () => {
                         className="home-about-button"
                     >
 
-                        Discover Our Experiences
+                        {t("actions.discoverOurExperiences")}
 
                         <span>
                             →
@@ -1043,23 +1016,20 @@ const Home = () => {
                 <div className="home-cta-content">
 
                     <span className="home-section-eyebrow">
-                        YOUR ZANZIBAR STORY STARTS HERE
+                        {t("home.finalCta.eyebrow")}
                     </span>
 
 
                     <h2>
 
-                        Ready to discover
-                        <br />
-                        Zanzibar?
+                        {t("home.finalCta.title")}
 
                     </h2>
 
 
                     <p>
 
-                        Choose your experience and
-                        let the island do the rest.
+                        {t("home.finalCta.description")}
 
                     </p>
 
@@ -1069,7 +1039,7 @@ const Home = () => {
                         className="home-cta-button"
                     >
 
-                        Explore Our Tours
+                        {t("home.finalCta.button")}
 
                         <span>
                             →

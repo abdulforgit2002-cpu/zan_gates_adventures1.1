@@ -6513,6 +6513,464 @@ select:focus-visible {
 
 
 /* ============================================================
+   STANDARD PUBLIC PAGE STYLES
+   ============================================================ */
+
+.container {
+    width: min(1180px, 90%);
+    margin: 0 auto;
+}
+
+.primary-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 52px;
+    padding: 0 24px;
+    border-radius: 999px;
+    background: #123f46;
+    color: #ffffff;
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: 0.03em;
+    text-decoration: none;
+    transition: transform 0.25s ease, background 0.25s ease, box-shadow 0.25s ease;
+    box-shadow: 0 14px 30px rgba(18, 63, 70, 0.18);
+}
+
+.primary-button:hover {
+    transform: translateY(-2px);
+    background: #168083;
+}
+
+.tour-section-eyebrow {
+    display: block;
+    margin-bottom: 12px;
+    color: #168083;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+}
+
+.about-page,
+.tours-page,
+.contact-page {
+    background: #f6f7f4;
+    color: var(--zg-text);
+}
+
+.about-header,
+.tours-header,
+.contact-header {
+    position: relative;
+    background:
+        linear-gradient(135deg, rgba(8, 42, 47, 0.82), rgba(9, 67, 72, 0.74)),
+        url("https://res.cloudinary.com/djczmay2i/image/upload/v1779459602/Safari_Blue_Experience_bxzxj6.webp") center/cover no-repeat;
+    padding: 120px 0 110px;
+    color: #ffffff;
+}
+
+.about-header .container,
+.tours-header .container,
+.contact-header .container {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+}
+
+.about-header h1,
+.tours-header h1,
+.contact-header h1 {
+    margin: 0;
+    font-size: clamp(2.8rem, 5vw, 5rem);
+    letter-spacing: -0.06em;
+    line-height: 0.98;
+}
+
+.about-header p,
+.tours-header p,
+.contact-header p {
+    max-width: 760px;
+    margin: 20px auto 0;
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 1.05rem;
+    line-height: 1.8;
+}
+
+.about-story,
+.tours-list,
+.contact-information,
+.contact-enquiry,
+.about-values,
+.about-experience,
+.about-final-cta,
+.tours-final-cta,
+.contact-final-cta {
+    padding: 100px 0;
+}
+
+.about-content-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.4fr) minmax(260px, 0.8fr);
+    gap: 50px;
+    align-items: center;
+}
+
+.about-content h2,
+.about-section-heading h2,
+.contact-enquiry h2,
+.about-experience-inner h2 {
+    margin: 0;
+    color: #123f46;
+    font-size: clamp(2.2rem, 4vw, 3.5rem);
+    line-height: 1.08;
+    letter-spacing: -0.05em;
+}
+
+.about-content p,
+.about-section-heading p,
+.contact-enquiry p,
+.about-experience-inner p {
+    color: #5e6f71;
+    font-size: 1rem;
+    line-height: 1.9;
+}
+
+.about-content p + p {
+    margin-top: 18px;
+}
+
+.about-highlight-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 330px;
+    padding: 36px 32px;
+    border: 1px solid #e2e9e8;
+    border-radius: 24px;
+    background: linear-gradient(160deg, #123f46 0%, #168083 100%);
+    color: #ffffff;
+    box-shadow: 0 24px 60px rgba(18, 63, 70, 0.15);
+}
+
+.about-highlight-card span {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 96px;
+    height: 96px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    font-size: 2rem;
+    font-weight: 800;
+    letter-spacing: -0.06em;
+}
+
+.about-highlight-card strong {
+    display: block;
+    margin-top: 24px;
+    font-size: clamp(1.5rem, 2vw, 2.1rem);
+    letter-spacing: -0.04em;
+}
+
+.about-highlight-card small {
+    display: block;
+    margin-top: 8px;
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 0.8rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+}
+
+.about-section-heading {
+    max-width: 760px;
+    margin: 0 auto 44px;
+    text-align: center;
+}
+
+.about-values-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 28px;
+}
+
+.about-value-card {
+    padding: 26px 24px 30px;
+    border: 1px solid #e4ebea;
+    border-radius: 22px;
+    background: #ffffff;
+    box-shadow: 0 12px 36px rgba(18, 63, 70, 0.04);
+}
+
+.about-value-number {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 52px;
+    min-height: 52px;
+    border-radius: 999px;
+    background: #e5f4f3;
+    color: #168083;
+    font-size: 0.8rem;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+}
+
+.about-value-card h3 {
+    margin: 20px 0 10px;
+    color: #123f46;
+    font-size: 1.45rem;
+    letter-spacing: -0.04em;
+}
+
+.about-value-card p {
+    margin: 0;
+    color: #6b7c7d;
+    font-size: 0.98rem;
+    line-height: 1.8;
+}
+
+.about-experience-inner {
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 48px 42px;
+    border-radius: 30px;
+    background: linear-gradient(160deg, rgba(18, 63, 70, 0.96), rgba(22, 128, 131, 0.9));
+    color: #ffffff;
+    text-align: center;
+    box-shadow: 0 24px 60px rgba(18, 63, 70, 0.12);
+}
+
+.about-experience-inner .tour-section-eyebrow {
+    color: #aee5e2;
+}
+
+.about-experience-inner h2 {
+    color: #ffffff;
+}
+
+.about-experience-inner p {
+    max-width: 700px;
+    margin: 18px auto 0;
+    color: rgba(255, 255, 255, 0.82);
+}
+
+.about-final-cta-inner,
+.tours-final-cta-inner,
+.contact-final-cta-inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 68px 32px;
+    border-radius: 28px;
+    background: linear-gradient(160deg, #ffffff 0%, #edf7f6 100%);
+    border: 1px solid #e2eae9;
+    text-align: center;
+    box-shadow: 0 20px 50px rgba(18, 63, 70, 0.05);
+}
+
+.about-final-cta-inner h2,
+.tours-final-cta-inner h2,
+.contact-final-cta-inner h2 {
+    margin: 0;
+    color: #123f46;
+    font-size: clamp(2.2rem, 4vw, 3.5rem);
+    letter-spacing: -0.06em;
+    line-height: 1.08;
+}
+
+.about-final-cta-inner p,
+.tours-final-cta-inner p,
+.contact-final-cta-inner p {
+    max-width: 700px;
+    margin: 18px auto 28px;
+    color: #5f7072;
+    line-height: 1.8;
+}
+
+.tours-section-heading {
+    max-width: 760px;
+    margin: 0 auto 40px;
+    text-align: center;
+}
+
+.tours-section-heading h2 {
+    margin: 0;
+    color: #123f46;
+    font-size: clamp(2.1rem, 3.5vw, 3.2rem);
+    line-height: 1.08;
+    letter-spacing: -0.05em;
+}
+
+.tours-section-heading p {
+    margin: 16px 0 0;
+    color: #627779;
+    line-height: 1.8;
+}
+
+.tours-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+    gap: 30px;
+}
+
+.tours-state {
+    max-width: 560px;
+    margin: 0 auto;
+    padding: 40px 24px;
+    border: 1px solid #e3eae9;
+    border-radius: 18px;
+    background: #ffffff;
+    color: #52666a;
+    text-align: center;
+}
+
+.tours-loading-spinner {
+    width: 34px;
+    height: 34px;
+    margin: 0 auto 16px;
+    border: 3px solid #e5f4f3;
+    border-top-color: #168083;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+.tours-state-error {
+    border-color: rgba(165, 45, 45, 0.18);
+    background: rgba(165, 45, 45, 0.03);
+    color: #8a2d2d;
+}
+
+.contact-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 28px;
+}
+
+.contact-card {
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+    padding: 32px 26px 28px;
+    border: 1px solid #e3eae9;
+    border-radius: 22px;
+    background: #ffffff;
+    box-shadow: 0 12px 32px rgba(18, 63, 70, 0.04);
+}
+
+.contact-card-label {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: #e5f4f3;
+    color: #168083;
+    font-size: 0.8rem;
+    font-weight: 800;
+}
+
+.contact-card h2 {
+    margin: 22px 0 12px;
+    color: #123f46;
+    font-size: 1.6rem;
+    letter-spacing: -0.04em;
+}
+
+.contact-card p {
+    margin: 0 0 18px;
+    color: #677a7d;
+    line-height: 1.8;
+}
+
+.contact-card-link {
+    display: inline-block;
+    margin-top: auto;
+    color: #168083;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.contact-enquiry-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    padding: 42px 36px;
+    border-radius: 26px;
+    background: linear-gradient(135deg, #ffffff, #f1f9f8);
+    border: 1px solid #e1ebe9;
+}
+
+.contact-enquiry-inner > div {
+    flex: 1;
+}
+
+.contact-enquiry-inner .primary-button {
+    flex-shrink: 0;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@media (max-width: 900px) {
+    .about-content-grid,
+    .about-values-grid,
+    .contact-grid,
+    .contact-enquiry-inner {
+        grid-template-columns: 1fr;
+        display: grid;
+    }
+
+    .contact-enquiry-inner {
+        display: grid;
+    }
+
+    .about-values-grid {
+        gap: 22px;
+    }
+}
+
+@media (max-width: 700px) {
+    .about-header,
+    .tours-header,
+    .contact-header {
+        padding: 96px 0 84px;
+    }
+
+    .about-story,
+    .tours-list,
+    .contact-information,
+    .contact-enquiry,
+    .about-values,
+    .about-experience,
+    .about-final-cta,
+    .tours-final-cta,
+    .contact-final-cta {
+        padding: 72px 0;
+    }
+
+    .about-highlight-card {
+        min-height: 260px;
+    }
+
+    .about-experience-inner,
+    .about-final-cta-inner,
+    .tours-final-cta-inner,
+    .contact-final-cta-inner,
+    .contact-enquiry-inner {
+        padding-left: 22px;
+        padding-right: 22px;
+    }
+}
+
+/* ============================================================
    FINAL CTA
    ============================================================ */
 
@@ -7722,6 +8180,42 @@ select:focus-visible {
         );
 }
 
+.navbar-language {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 7px 12px;
+    border-radius: 999px;
+    border: 1px solid rgba(18, 63, 70, 0.12);
+    background: rgba(255, 255, 255, 0.66);
+}
+
+.navbar-language-label {
+    display: none;
+}
+
+.navbar-language-select {
+    appearance: none;
+    border: 0;
+    background: transparent;
+    color: #123f46;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.2px;
+    padding: 4px 22px 4px 8px;
+    border-radius: 999px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none'%3E%3Cpath d='M5 7.5L10 12.5L15 7.5' stroke='%23123f46' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 8px center;
+    background-size: 12px;
+    cursor: pointer;
+}
+
+.navbar-language-select:focus {
+    outline: 2px solid rgba(22, 128, 131, 0.35);
+    outline-offset: 2px;
+}
+
 /* ==========================================================================
    MOBILE MENU TOGGLE
    ========================================================================== */
@@ -7854,6 +8348,24 @@ select:focus-visible {
 
 .navbar-mobile-booking:hover {
     background: #168083;
+}
+
+.navbar-language-compact {
+    padding: 10px 12px;
+    border: 1px solid rgba(18, 63, 70, 0.08);
+    background: #f7faf9;
+    margin-bottom: 14px;
+}
+
+.navbar-language-compact .navbar-language-label {
+    display: none;
+}
+
+.navbar-language-compact .navbar-language-select {
+    width: 100%;
+    padding-left: 10px;
+    background-color: transparent;
+    color: #123f46;
 }
 
 /* ==========================================================================
