@@ -1,4 +1,6 @@
-const API_BASE_URL = "http://localhost:8000/api";
+const API_BASE_URL =
+    "https://zan-gates-backend-production.up.railway.app/api";
+
 
 const parseResponse = async (response) => {
     let data;
