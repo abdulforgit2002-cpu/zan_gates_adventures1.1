@@ -79,7 +79,7 @@ function Navbar() {
         {/* DESKTOP ACTIONS */}
         <div className="navbar-actions">
           <div className="desktop-language-switcher">
-            <LanguageSwitcher />
+            <LanguageSwitcher variant="navbar" />
           </div>
 
           <Link
@@ -159,9 +159,9 @@ function Navbar() {
             </NavLink>
           </nav>
 
-          {/* MOBILE LANGUAGE SELECTOR */}
+          {/* MOBILE LANGUAGE SELECTOR — uses the mobile variant */}
           <div className="navbar-mobile-language">
-            <LanguageSwitcher />
+            <LanguageSwitcher variant="mobile" />
           </div>
 
           {/* MOBILE BOOKING CTA */}
