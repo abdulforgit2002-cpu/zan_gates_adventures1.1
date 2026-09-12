@@ -6,21 +6,20 @@ import api from "./api";
 | CONFIGURATION
 |--------------------------------------------------------------------------
 |
-| Vite exposes variables beginning with VITE_ to the frontend.
+| The public API client in api.js already points to the Railway backend.
 |
-| If VITE_API_BASE_URL is not configured, this falls back to the
-| local PHP development API.
+| VITE_API_BASE_URL can optionally be configured in Railway.
 |
-| Example:
+| Production fallback:
 |
-| VITE_API_BASE_URL=http://localhost:8000/api
+| https://zan-gates-backend-production.up.railway.app/api
 |
 |--------------------------------------------------------------------------
 */
 
 const API_BASE_URL =
     import.meta.env.VITE_API_BASE_URL ||
-    "http://localhost:8000/api";
+    "https://zan-gates-backend-production.up.railway.app/api";
 
 
 /*
@@ -58,13 +57,14 @@ const adminApi = {
         password
     ) => {
 
-        const response = await api.post(
-            "/admin/login",
-            {
-                username,
-                password,
-            }
-        );
+        const response =
+            await api.post(
+                "/admin/login",
+                {
+                    username,
+                    password,
+                }
+            );
 
 
         const token =
@@ -150,10 +150,11 @@ const adminApi = {
     | Automatically:
     |
     | - reads JWT
-    | | adds Authorization header
+    | - adds Authorization header
     | - handles JSON
     | - handles 401
     | - clears expired token
+    | - handles 403
     | - returns API response
     |
     */
@@ -248,6 +249,7 @@ const adminApi = {
 
         let response;
 
+
         try {
 
             response =
@@ -322,7 +324,9 @@ const adminApi = {
                 await response.text();
 
 
-            if (text.trim() !== "") {
+            if (
+                text.trim() !== ""
+            ) {
 
                 try {
 
@@ -335,9 +339,7 @@ const adminApi = {
                         "The server returned an invalid response."
                     );
                 }
-
             }
-
         }
 
 
@@ -473,14 +475,6 @@ const adminApi = {
     |--------------------------------------------------------------------------
     |
     | GET /api/admin/bookings
-    |
-    | Examples:
-    |
-    | adminApi.bookings()
-    |
-    | adminApi.bookings(
-    |     "?page=1&per_page=10"
-    | )
     |
     */
 
