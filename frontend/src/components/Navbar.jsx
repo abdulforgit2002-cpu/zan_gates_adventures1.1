@@ -49,8 +49,8 @@ function Navbar() {
         >
           <Logo variant="navbar" />
           <span className="navbar-brand-text">
-            <strong>ZAN GATES</strong>
-            <small>ADVENTURES</small>
+            <strong>ZAN GATES ADVENTURES</strong>
+            <small>Tours & Safaris</small>
           </span>
         </Link>
 
