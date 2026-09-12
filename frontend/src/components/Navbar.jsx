@@ -49,7 +49,7 @@ function Navbar() {
         >
           <Logo variant="navbar" />
           <span className="navbar-brand-text">
-            <strong>ZAN GATES ADVENTURES</strong>
+            <strong>ZANZIBAR GATES</strong>
             <small>Tours & Safaris</small>
           </span>
         </Link>
