@@ -4,14 +4,16 @@ import {
     useState,
 } from "react";
 
-import {
-    useTranslation,
-} from "react-i18next";
+import { useTranslation } from "react-i18next";
 
 import {
     SUPPORTED_LANGUAGES,
 } from "../i18n/config";
 
+
+/* =========================================================
+   SUPPORTED LANGUAGE DISPLAY DATA
+   ========================================================= */
 
 const LANGUAGES = [
     {
@@ -47,53 +49,164 @@ const LANGUAGES = [
 ];
 
 
-function FlagIcon({
-    code,
-}) {
+/* =========================================================
+   FLAG ICON
+   ========================================================= */
+
+function FlagIcon({ code }) {
+
     switch (code) {
+
         case "en":
             return (
-                <svg viewBox="0 0 60 42" aria-hidden="true">
-                    <rect width="60" height="42" fill="#012169" />
-                    <path d="M0 0 L60 42 M60 0 L0 42" stroke="#fff" strokeWidth="9" />
-                    <path d="M0 0 L60 42 M60 0 L0 42" stroke="#C8102E" strokeWidth="5" />
-                    <path d="M30 0 V42 M0 21 H60" stroke="#fff" strokeWidth="15" />
-                    <path d="M30 0 V42 M0 21 H60" stroke="#C8102E" strokeWidth="9" />
+                <svg
+                    viewBox="0 0 60 42"
+                    aria-hidden="true"
+                    width="20"
+                    height="14"
+                >
+                    <rect
+                        width="60"
+                        height="42"
+                        fill="#012169"
+                    />
+
+                    <path
+                        d="M0 0 L60 42 M60 0 L0 42"
+                        stroke="#fff"
+                        strokeWidth="9"
+                    />
+
+                    <path
+                        d="M0 0 L60 42 M60 0 L0 42"
+                        stroke="#C8102E"
+                        strokeWidth="5"
+                    />
+
+                    <path
+                        d="M30 0 V42 M0 21 H60"
+                        stroke="#fff"
+                        strokeWidth="15"
+                    />
+
+                    <path
+                        d="M30 0 V42 M0 21 H60"
+                        stroke="#C8102E"
+                        strokeWidth="9"
+                    />
                 </svg>
             );
 
         case "de":
             return (
-                <svg viewBox="0 0 60 42" aria-hidden="true">
-                    <rect width="60" height="14" fill="#000" />
-                    <rect y="14" width="60" height="14" fill="#DD0000" />
-                    <rect y="28" width="60" height="14" fill="#FFCE00" />
+                <svg
+                    viewBox="0 0 60 42"
+                    aria-hidden="true"
+                    width="20"
+                    height="14"
+                >
+                    <rect
+                        width="60"
+                        height="14"
+                        fill="#000"
+                    />
+
+                    <rect
+                        y="14"
+                        width="60"
+                        height="14"
+                        fill="#DD0000"
+                    />
+
+                    <rect
+                        y="28"
+                        width="60"
+                        height="14"
+                        fill="#FFCE00"
+                    />
                 </svg>
             );
 
         case "it":
             return (
-                <svg viewBox="0 0 60 42" aria-hidden="true">
-                    <rect width="20" height="42" fill="#009246" />
-                    <rect x="20" width="20" height="42" fill="#fff" />
-                    <rect x="40" width="20" height="42" fill="#CE2B37" />
+                <svg
+                    viewBox="0 0 60 42"
+                    aria-hidden="true"
+                    width="20"
+                    height="14"
+                >
+                    <rect
+                        width="20"
+                        height="42"
+                        fill="#009246"
+                    />
+
+                    <rect
+                        x="20"
+                        width="20"
+                        height="42"
+                        fill="#ffffff"
+                    />
+
+                    <rect
+                        x="40"
+                        width="20"
+                        height="42"
+                        fill="#CE2B37"
+                    />
                 </svg>
             );
 
         case "fr":
             return (
-                <svg viewBox="0 0 60 42" aria-hidden="true">
-                    <rect width="20" height="42" fill="#002395" />
-                    <rect x="20" width="20" height="42" fill="#fff" />
-                    <rect x="40" width="20" height="42" fill="#ED2939" />
+                <svg
+                    viewBox="0 0 60 42"
+                    aria-hidden="true"
+                    width="20"
+                    height="14"
+                >
+                    <rect
+                        width="20"
+                        height="42"
+                        fill="#002395"
+                    />
+
+                    <rect
+                        x="20"
+                        width="20"
+                        height="42"
+                        fill="#ffffff"
+                    />
+
+                    <rect
+                        x="40"
+                        width="20"
+                        height="42"
+                        fill="#ED2939"
+                    />
                 </svg>
             );
 
         case "pl":
             return (
-                <svg viewBox="0 0 60 42" aria-hidden="true">
-                    <rect width="60" height="21" fill="#fff" />
-                    <rect y="21" width="60" height="21" fill="#DC143C" />
+                <svg
+                    viewBox="0 0 60 42"
+                    aria-hidden="true"
+                    width="20"
+                    height="14"
+                >
+                    <rect
+                        width="60"
+                        height="21"
+                        fill="#ffffff"
+                    />
+
+                    <rect
+                        y="21"
+                        width="60"
+                        height="21"
+                        fill="#DC143C"
+                    />
                 </svg>
             );
 
@@ -103,8 +216,14 @@ function FlagIcon({
 }
 
 
+/* =========================================================
+   READ GTRANSLATE COOKIE
+   ========================================================= */
+
 function readStoredLanguage() {
+
     try {
+
         const match = document.cookie.match(
             /(?:^|;\s*)googtrans=\/en\/([a-z]{2})/i
         );
@@ -115,6 +234,7 @@ function readStoredLanguage() {
         ) {
             return match[1];
         }
+
     } catch {
         // Cookie access can fail in restricted browsers.
     }
@@ -123,13 +243,22 @@ function readStoredLanguage() {
 }
 
 
+/* =========================================================
+   APPLY GTRANSLATE
+   ========================================================= */
+
 function applyGTranslate(code) {
+
     const pair = `en|${code}`;
+
     const cookieValue = `/en/${code}`;
 
-    document.cookie = `googtrans=${cookieValue}; path=/`;
+    document.cookie =
+        `googtrans=${cookieValue}; path=/`;
 
-    if (typeof window.doGTranslate === "function") {
+    if (
+        typeof window.doGTranslate === "function"
+    ) {
         window.doGTranslate(pair);
         return;
     }
@@ -138,9 +267,14 @@ function applyGTranslate(code) {
 }
 
 
+/* =========================================================
+   LANGUAGE SWITCHER
+   ========================================================= */
+
 function LanguageSwitcher({
     variant = "navbar",
 }) {
+
     const {
         i18n,
         t,
@@ -149,6 +283,11 @@ function LanguageSwitcher({
     const rootRef = useRef(null);
 
     const [open, setOpen] = useState(false);
+
+
+    /* =====================================================
+       DETERMINE CURRENT LANGUAGE
+       ===================================================== */
 
     const currentCode =
         SUPPORTED_LANGUAGES.includes(
@@ -161,6 +300,7 @@ function LanguageSwitcher({
                 ? i18n.language.split("-")[0]
                 : "en";
 
+
     const currentLanguage =
         LANGUAGES.find(
             (language) =>
@@ -168,22 +308,32 @@ function LanguageSwitcher({
         ) || LANGUAGES[0];
 
 
+    /* =====================================================
+       LOAD GTRANSLATE
+       ===================================================== */
+
     useEffect(() => {
+
         window.gtranslateSettings = {
             default_language: "en",
             languages: SUPPORTED_LANGUAGES,
             wrapper_selector: "#gtranslate-engine",
         };
 
-        const existingScript = document.querySelector(
-            'script[src*="gtranslate.net"]'
-        );
+
+        const existingScript =
+            document.querySelector(
+                'script[src*="gtranslate.net"]'
+            );
+
 
         const bindPendingTranslate = () => {
+
             if (
                 typeof window.doGTranslate === "function" &&
                 window.__zanGatesPendingTranslate
             ) {
+
                 window.doGTranslate(
                     window.__zanGatesPendingTranslate
                 );
@@ -192,21 +342,31 @@ function LanguageSwitcher({
             }
         };
 
+
         if (!existingScript) {
-            const script = document.createElement("script");
+
+            const script =
+                document.createElement("script");
 
             script.src =
                 "https://cdn.gtranslate.net/widgets/latest/dropdown.js";
 
             script.async = true;
-            script.onload = bindPendingTranslate;
+
+            script.onload =
+                bindPendingTranslate;
 
             document.body.appendChild(script);
+
         } else {
+
             bindPendingTranslate();
         }
 
-        const storedLanguage = readStoredLanguage();
+
+        const storedLanguage =
+            readStoredLanguage();
+
 
         if (
             storedLanguage &&
@@ -214,28 +374,41 @@ function LanguageSwitcher({
         ) {
             i18n.changeLanguage(storedLanguage);
         }
+
     }, []);
 
 
+    /* =====================================================
+       CLOSE WHEN CLICKING OUTSIDE
+       ===================================================== */
+
     useEffect(() => {
+
         if (!open) {
             return undefined;
         }
 
+
         const handlePointerDown = (event) => {
+
             if (
                 rootRef.current &&
-                !rootRef.current.contains(event.target)
+                !rootRef.current.contains(
+                    event.target
+                )
             ) {
                 setOpen(false);
             }
         };
 
+
         const handleKeyDown = (event) => {
+
             if (event.key === "Escape") {
                 setOpen(false);
             }
         };
+
 
         document.addEventListener(
             "pointerdown",
@@ -247,7 +420,9 @@ function LanguageSwitcher({
             handleKeyDown
         );
 
+
         return () => {
+
             document.removeEventListener(
                 "pointerdown",
                 handlePointerDown
@@ -258,12 +433,20 @@ function LanguageSwitcher({
                 handleKeyDown
             );
         };
+
     }, [open]);
 
 
+    /* =====================================================
+       SELECT LANGUAGE
+       ===================================================== */
+
     const selectLanguage = (code) => {
+
         if (code !== currentCode) {
+
             i18n.changeLanguage(code);
+
             applyGTranslate(code);
         }
 
@@ -271,12 +454,19 @@ function LanguageSwitcher({
     };
 
 
+    /* =====================================================
+       RENDER
+       ===================================================== */
+
     return (
         <div
             ref={rootRef}
             className={`language-switcher language-switcher--${variant}`}
             translate="no"
         >
+
+            {/* TRIGGER */}
+
             <button
                 type="button"
                 className={`language-switcher-trigger${
@@ -284,23 +474,26 @@ function LanguageSwitcher({
                 }`}
                 aria-haspopup="listbox"
                 aria-expanded={open}
-                aria-label={t("accessibility.selectLanguage")}
+                aria-label={t(
+                    "accessibility.selectLanguage"
+                )}
                 onClick={() =>
-                    setOpen((current) => !current)
+                    setOpen(
+                        (current) => !current
+                    )
                 }
             >
+
                 <span className="language-switcher-flag">
-                    <FlagIcon code={currentLanguage.code} />
+                    <FlagIcon
+                        code={currentLanguage.code}
+                    />
                 </span>
 
                 <span className="language-switcher-copy">
                     <strong>
                         {currentLanguage.short}
                     </strong>
-
-                    <small>
-                        {currentLanguage.native}
-                    </small>
                 </span>
 
                 <svg
@@ -308,6 +501,8 @@ function LanguageSwitcher({
                     viewBox="0 0 16 16"
                     aria-hidden="true"
                     focusable="false"
+                    width="12"
+                    height="12"
                 >
                     <path
                         d="M4 6L8 10L12 6"
@@ -318,55 +513,83 @@ function LanguageSwitcher({
                         strokeLinejoin="round"
                     />
                 </svg>
+
             </button>
 
+
+            {/* DROPDOWN */}
+
             {open && (
+
                 <div
                     className="language-switcher-menu"
                     role="listbox"
-                    aria-label={t("language.select")}
+                    aria-label={t(
+                        "language.select"
+                    )}
                 >
-                    {LANGUAGES.map((language) => {
-                        const selected =
-                            language.code === currentLanguage.code;
 
-                        return (
-                            <button
-                                key={language.code}
-                                type="button"
-                                role="option"
-                                aria-selected={selected}
-                                className={`language-switcher-option${
-                                    selected ? " is-selected" : ""
-                                }`}
-                                onClick={() =>
-                                    selectLanguage(
-                                        language.code
-                                    )
-                                }
-                            >
-                                <span className="language-switcher-flag">
-                                    <FlagIcon code={language.code} />
-                                </span>
+                    {LANGUAGES.map(
+                        (language) => {
 
-                                <span className="language-switcher-option-copy">
-                                    <strong>
-                                        {language.native}
-                                    </strong>
+                            const selected =
+                                language.code ===
+                                currentLanguage.code;
 
-                                    <small>
-                                        {language.country}
-                                    </small>
-                                </span>
 
-                                <span className="language-switcher-option-code">
-                                    {language.short}
-                                </span>
-                            </button>
-                        );
-                    })}
+                            return (
+
+                                <button
+                                    key={language.code}
+                                    type="button"
+                                    role="option"
+                                    aria-selected={
+                                        selected
+                                    }
+                                    className={`language-switcher-option${
+                                        selected
+                                            ? " is-selected"
+                                            : ""
+                                    }`}
+                                    onClick={() =>
+                                        selectLanguage(
+                                            language.code
+                                        )
+                                    }
+                                >
+
+                                    <span className="language-switcher-flag">
+                                        <FlagIcon
+                                            code={
+                                                language.code
+                                            }
+                                        />
+                                    </span>
+
+
+                                    <span className="language-switcher-option-copy">
+                                        <strong>
+                                            {
+                                                language.native
+                                            }
+                                        </strong>
+                                    </span>
+
+
+                                    <span className="language-switcher-option-code">
+                                        {
+                                            language.short
+                                        }
+                                    </span>
+
+                                </button>
+                            );
+                        }
+                    )}
+
                 </div>
             )}
+
         </div>
     );
 }
