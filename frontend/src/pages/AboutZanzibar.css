@@ -1,0 +1,276 @@
+/* ============================================================
+   ABOUT ZANZIBAR PAGE
+   ============================================================ */
+
+.about-zanzibar-page {
+    background: #f6f7f4;
+    color: var(--zg-text);
+}
+
+/* ---------- HERO ---------- */
+
+.about-zanzibar-hero {
+    position: relative;
+    background:
+        linear-gradient(135deg, rgba(8, 42, 47, 0.85), rgba(9, 67, 72, 0.78)),
+        url("https://res.cloudinary.com/djczmay2i/image/upload/v1779459602/Safari_Blue_Experience_bxzxj6.webp")
+            center / cover no-repeat;
+    padding: 120px 0 110px;
+    color: #ffffff;
+}
+
+.about-zanzibar-hero .container {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+}
+
+.about-zanzibar-hero h1 {
+    margin: 14px 0 0;
+    font-size: clamp(2.8rem, 5vw, 5rem);
+    letter-spacing: -0.06em;
+    line-height: 0.98;
+}
+
+.about-zanzibar-hero p {
+    max-width: 780px;
+    margin: 22px auto 0;
+    color: rgba(255, 255, 255, 0.82);
+    font-size: 1.05rem;
+    line-height: 1.8;
+}
+
+/* ---------- INTRO ---------- */
+
+.about-zanzibar-intro {
+    padding: 100px 0;
+    background: #ffffff;
+}
+
+.about-zanzibar-intro-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.5fr) minmax(240px, 0.7fr);
+    gap: 60px;
+    align-items: center;
+}
+
+.about-zanzibar-intro-content h2 {
+    margin: 0 0 24px;
+    color: #123f46;
+    font-size: clamp(2rem, 3.4vw, 3rem);
+    line-height: 1.1;
+    letter-spacing: -0.04em;
+}
+
+.about-zanzibar-intro-content p {
+    margin: 0 0 18px;
+    color: #5e6f71;
+    font-size: 1rem;
+    line-height: 1.9;
+}
+
+.about-zanzibar-intro-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 260px;
+    padding: 32px 28px;
+    border-radius: 24px;
+    background: linear-gradient(160deg, #123f46 0%, #168083 100%);
+    color: #ffffff;
+    box-shadow: 0 24px 60px rgba(18, 63, 70, 0.15);
+}
+
+.about-zanzibar-intro-card strong {
+    display: block;
+    font-size: clamp(1.4rem, 2vw, 1.9rem);
+    letter-spacing: -0.03em;
+}
+
+.about-zanzibar-intro-card span {
+    display: block;
+    margin-top: 10px;
+    color: rgba(255, 255, 255, 0.82);
+    font-size: 0.78rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+}
+
+/* ---------- ADVENTURE ---------- */
+
+.about-zanzibar-adventure {
+    padding: 100px 0;
+    background: #f6f7f4;
+}
+
+.about-zanzibar-adventure-inner {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 48px 42px;
+    border-radius: 30px;
+    background: linear-gradient(160deg, rgba(18, 63, 70, 0.96), rgba(22, 128, 131, 0.9));
+    color: #ffffff;
+    box-shadow: 0 24px 60px rgba(18, 63, 70, 0.12);
+}
+
+.about-zanzibar-adventure-inner .tour-section-eyebrow {
+    color: #aee5e2;
+}
+
+.about-zanzibar-adventure-inner h2 {
+    margin: 14px 0 22px;
+    color: #ffffff;
+    font-size: clamp(1.8rem, 3vw, 2.6rem);
+    letter-spacing: -0.04em;
+    line-height: 1.15;
+}
+
+.about-zanzibar-adventure-inner p {
+    max-width: 760px;
+    margin: 0 0 16px;
+    color: rgba(255, 255, 255, 0.86);
+    font-size: 1rem;
+    line-height: 1.85;
+}
+
+/* ---------- LISTS ---------- */
+
+.about-zanzibar-list-section {
+    padding: 100px 0;
+    background: #ffffff;
+}
+
+.about-zanzibar-list-section--alt {
+    background: #f6f7f4;
+}
+
+.about-zanzibar-heading {
+    max-width: 720px;
+    margin: 0 auto 48px;
+    text-align: center;
+}
+
+.about-zanzibar-heading h2 {
+    margin: 14px 0 0;
+    color: #123f46;
+    font-size: clamp(1.9rem, 3.2vw, 2.8rem);
+    letter-spacing: -0.04em;
+    line-height: 1.12;
+}
+
+.about-zanzibar-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 14px;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+.about-zanzibar-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 18px 20px;
+    border-radius: 14px;
+    background: #f4f8f7;
+    border: 1px solid #e3eae9;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.about-zanzibar-item:hover {
+    transform: translateY(-2px);
+    border-color: rgba(22, 128, 131, 0.25);
+    box-shadow: 0 12px 28px rgba(18, 63, 70, 0.08);
+}
+
+.about-zanzibar-item-number {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 34px;
+    height: 34px;
+    border-radius: 999px;
+    background: #e5f4f3;
+    color: #168083;
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+}
+
+.about-zanzibar-item strong {
+    color: #123f46;
+    font-size: 0.94rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+}
+
+/* ---------- CTA ---------- */
+
+.about-zanzibar-cta {
+    padding: 100px 0;
+    background: #f6f7f4;
+}
+
+.about-zanzibar-cta-inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 68px 32px;
+    border-radius: 28px;
+    background: linear-gradient(160deg, #ffffff 0%, #edf7f6 100%);
+    border: 1px solid #e2eae9;
+    text-align: center;
+    box-shadow: 0 20px 50px rgba(18, 63, 70, 0.05);
+}
+
+.about-zanzibar-cta-inner h2 {
+    margin: 0;
+    color: #123f46;
+    font-size: clamp(2rem, 4vw, 3rem);
+    letter-spacing: -0.05em;
+    line-height: 1.1;
+}
+
+.about-zanzibar-cta-inner p {
+    max-width: 620px;
+    margin: 16px auto 28px;
+    color: #5f7072;
+    line-height: 1.8;
+}
+
+/* ---------- RESPONSIVE ---------- */
+
+@media (max-width: 900px) {
+    .about-zanzibar-intro-grid {
+        grid-template-columns: 1fr;
+        gap: 40px;
+    }
+
+    .about-zanzibar-intro-card {
+        min-height: 200px;
+    }
+}
+
+@media (max-width: 700px) {
+    .about-zanzibar-hero {
+        padding: 96px 0 84px;
+    }
+
+    .about-zanzibar-intro,
+    .about-zanzibar-adventure,
+    .about-zanzibar-list-section,
+    .about-zanzibar-cta {
+        padding: 72px 0;
+    }
+
+    .about-zanzibar-adventure-inner,
+    .about-zanzibar-cta-inner {
+        padding: 40px 24px;
+        border-radius: 22px;
+    }
+
+    .about-zanzibar-grid {
+        grid-template-columns: 1fr;
+    }
+}

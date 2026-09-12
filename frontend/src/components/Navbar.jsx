@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import Logo from "./Logo";
@@ -7,6 +7,10 @@ import LanguageSwitcher from "./LanguageSwitcher";
 function Navbar() {
   const { t } = useTranslation();
   const [mobileMenu, setMobileMenu] = useState(false);
+
+  /* Desktop About dropdown state */
+  const [aboutOpen, setAboutOpen] = useState(false);
+  const aboutRef = useRef(null);
 
   /* CLOSE MOBILE MENU WHEN WINDOW BECOMES DESKTOP */
   useEffect(() => {
@@ -28,6 +32,29 @@ function Navbar() {
     }
     return () => document.body.classList.remove("navbar-menu-open");
   }, [mobileMenu]);
+
+  /* CLOSE DESKTOP DROPDOWN ON OUTSIDE CLICK / ESCAPE */
+  useEffect(() => {
+    if (!aboutOpen) return undefined;
+
+    const handlePointerDown = (event) => {
+      if (aboutRef.current && !aboutRef.current.contains(event.target)) {
+        setAboutOpen(false);
+      }
+    };
+
+    const handleKeyDown = (event) => {
+      if (event.key === "Escape") setAboutOpen(false);
+    };
+
+    document.addEventListener("pointerdown", handlePointerDown);
+    document.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.removeEventListener("pointerdown", handlePointerDown);
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [aboutOpen]);
 
   const closeMobileMenu = () => {
     setMobileMenu(false);
@@ -67,9 +94,66 @@ function Navbar() {
             <span>{t("navigation.tours")}</span>
           </NavLink>
 
-          <NavLink to="/about" className={navLinkClass}>
-            <span>{t("navigation.about")}</span>
-          </NavLink>
+          {/* ABOUT DROPDOWN (DESKTOP) */}
+          <div
+            ref={aboutRef}
+            className={`navbar-dropdown${aboutOpen ? " is-open" : ""}`}
+          >
+            <button
+              type="button"
+              className="navbar-dropdown-trigger navbar-link"
+              aria-haspopup="menu"
+              aria-expanded={aboutOpen}
+              onClick={() => setAboutOpen((current) => !current)}
+            >
+              <span>{t("navigation.about")}</span>
+
+              <svg
+                className="navbar-dropdown-caret"
+                viewBox="0 0 16 16"
+                aria-hidden="true"
+                focusable="false"
+                width="10"
+                height="10"
+              >
+                <path
+                  d="M4 6l4 4 4-4"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.8"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </button>
+
+            {aboutOpen && (
+              <div className="navbar-dropdown-menu" role="menu">
+                <NavLink
+                  to="/about"
+                  end
+                  className={({ isActive }) =>
+                    `navbar-dropdown-item${isActive ? " is-selected" : ""}`
+                  }
+                  onClick={() => setAboutOpen(false)}
+                  role="menuitem"
+                >
+                  {t("navigation.aboutUs", "About Us")}
+                </NavLink>
+
+                <NavLink
+                  to="/about-zanzibar"
+                  className={({ isActive }) =>
+                    `navbar-dropdown-item${isActive ? " is-selected" : ""}`
+                  }
+                  onClick={() => setAboutOpen(false)}
+                  role="menuitem"
+                >
+                  {t("navigation.aboutZanzibar", "About Zanzibar")}
+                </NavLink>
+              </div>
+            )}
+          </div>
 
           <NavLink to="/contact" className={navLinkClass}>
             <span>{t("navigation.contact")}</span>
@@ -142,19 +226,54 @@ function Navbar() {
             className="navbar-mobile-navigation"
             aria-label={t("accessibility.mobileNavigation")}
           >
-            <NavLink to="/" end className={navLinkClass} onClick={closeMobileMenu}>
+            <NavLink
+              to="/"
+              end
+              className={navLinkClass}
+              onClick={closeMobileMenu}
+            >
               <span>{t("navigation.home")}</span>
             </NavLink>
 
-            <NavLink to="/tours" className={navLinkClass} onClick={closeMobileMenu}>
+            <NavLink
+              to="/tours"
+              className={navLinkClass}
+              onClick={closeMobileMenu}
+            >
               <span>{t("navigation.tours")}</span>
             </NavLink>
 
-            <NavLink to="/about" className={navLinkClass} onClick={closeMobileMenu}>
-              <span>{t("navigation.about")}</span>
-            </NavLink>
+            {/* ABOUT ACCORDION (MOBILE) */}
+            <details className="navbar-mobile-details">
+              <summary className="navbar-link">
+                {t("navigation.about")}
+              </summary>
 
-            <NavLink to="/contact" className={navLinkClass} onClick={closeMobileMenu}>
+              <div className="navbar-mobile-submenu">
+                <NavLink
+                  to="/about"
+                  end
+                  className={navLinkClass}
+                  onClick={closeMobileMenu}
+                >
+                  {t("navigation.aboutUs", "About Us")}
+                </NavLink>
+
+                <NavLink
+                  to="/about-zanzibar"
+                  className={navLinkClass}
+                  onClick={closeMobileMenu}
+                >
+                  {t("navigation.aboutZanzibar", "About Zanzibar")}
+                </NavLink>
+              </div>
+            </details>
+
+            <NavLink
+              to="/contact"
+              className={navLinkClass}
+              onClick={closeMobileMenu}
+            >
               <span>{t("navigation.contact")}</span>
             </NavLink>
           </nav>

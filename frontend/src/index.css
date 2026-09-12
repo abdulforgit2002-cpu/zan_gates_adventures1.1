@@ -1324,3 +1324,155 @@ body.navbar-menu-open { overflow: hidden; }
         animation: none !important;
     }
 }
+
+/* =========================================================
+   NAVBAR — ABOUT DROPDOWN (desktop)
+   ========================================================= */
+
+.navbar-dropdown {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+}
+
+.navbar-dropdown-trigger {
+    background: transparent;
+    border: 0;
+    cursor: pointer;
+    font: inherit;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+}
+
+.navbar-dropdown-caret {
+    transition: transform 0.25s ease;
+    opacity: 0.75;
+}
+
+.navbar-dropdown.is-open .navbar-dropdown-caret {
+    transform: rotate(180deg);
+    opacity: 1;
+}
+
+.navbar-dropdown.is-open .navbar-link {
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.11);
+}
+
+.navbar-dropdown-menu {
+    position: absolute;
+    top: calc(100% + 10px);
+    left: 50%;
+    transform: translateX(-50%);
+    min-width: 220px;
+    padding: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    background: rgba(8, 39, 45, 0.96);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 16px;
+    box-shadow:
+        0 20px 45px rgba(0, 0, 0, 0.35),
+        inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    z-index: 1300;
+    animation: navbarDropdownFadeIn 0.2s ease-out forwards;
+}
+
+@keyframes navbarDropdownFadeIn {
+    from { opacity: 0; transform: translate(-50%, -6px); }
+    to   { opacity: 1; transform: translate(-50%, 0); }
+}
+
+.navbar-dropdown-item {
+    display: block;
+    padding: 11px 14px;
+    border-radius: 10px;
+    color: rgba(255, 255, 255, 0.82);
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: background 0.2s ease, color 0.2s ease;
+    white-space: nowrap;
+}
+
+.navbar-dropdown-item:hover {
+    background: rgba(255, 255, 255, 0.08);
+    color: #ffffff;
+}
+
+.navbar-dropdown-item.is-selected {
+    background: rgba(56, 189, 248, 0.14);
+    color: #38bdf8;
+}
+
+/* =========================================================
+   NAVBAR — MOBILE ABOUT ACCORDION
+   ========================================================= */
+
+.navbar-mobile-details {
+    width: 100%;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.navbar-mobile-details:last-of-type {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.navbar-mobile-details summary {
+    list-style: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    min-height: 54px;
+    padding: 0 5px;
+    box-sizing: border-box;
+    color: rgba(255, 255, 255, 0.78);
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.navbar-mobile-details summary::-webkit-details-marker {
+    display: none;
+}
+
+.navbar-mobile-details summary::after {
+    content: "▾";
+    color: rgba(255, 255, 255, 0.55);
+    font-size: 12px;
+    transition: transform 0.25s ease;
+}
+
+.navbar-mobile-details[open] summary {
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.navbar-mobile-details[open] summary::after {
+    transform: rotate(180deg);
+}
+
+.navbar-mobile-submenu {
+    display: flex;
+    flex-direction: column;
+    padding: 4px 0 10px 12px;
+}
+
+.navbar-mobile-submenu .navbar-link {
+    min-height: 44px;
+    padding: 0 5px;
+    color: rgba(255, 255, 255, 0.72);
+    border-top: 0;
+    border-bottom: 0;
+    font-size: 13px;
+}
+
+.navbar-mobile-submenu .navbar-link:hover {
+    color: #ffffff;
+    padding-left: 10px;
+}

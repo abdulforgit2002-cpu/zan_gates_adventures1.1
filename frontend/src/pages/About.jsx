@@ -1,6 +1,37 @@
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
+/* =========================================================
+   WHAT WE DO — Content Data
+   ========================================================= */
+
+const SERVICES = [
+    {
+        number: "01",
+        titleKey: "about.values.excursions.title",
+        descriptionKey: "about.values.excursions.description",
+        defaultTitle: "Zanzibar Excursions",
+        defaultDescription:
+            "We organize all activities in Zanzibar and we make sure that your stay in Zanzibar is unforgettable.",
+    },
+    {
+        number: "02",
+        titleKey: "about.values.wildlife.title",
+        descriptionKey: "about.values.wildlife.description",
+        defaultTitle: "Wildlife Tours & Safaris",
+        defaultDescription:
+            "We organize all wildlife safari trips in Tanzania mainland from Zanzibar, with flights departing from Zanzibar airport (Abeid Amani Karume International Airport) to the very best parks and game reserves which are every African adventurer's desire to witness.",
+    },
+    {
+        number: "03",
+        titleKey: "about.values.transfers.title",
+        descriptionKey: "about.values.transfers.description",
+        defaultTitle: "Transfer Services",
+        defaultDescription:
+            "We offer trusted transfer services in Zanzibar.",
+    },
+];
+
 
 function About() {
 
@@ -55,22 +86,44 @@ function About() {
                         <div className="about-content">
 
                             <span className="tour-section-eyebrow">
-                                {t("about.story.eyebrow")}
+                                {t("about.story.eyebrow", "WHO WE ARE")}
                             </span>
 
 
                             <h2>
-                                {t("about.story.title")}
+                                {t("about.story.title", "A travel & tour company based in Zanzibar.")}
                             </h2>
 
 
                             <p>
-                                {t("about.story.description")}
+                                {t(
+                                    "about.story.description",
+                                    "Zanzibar Gates Tours & Safaris operates all activities in Zanzibar, transfer services, and wildlife safaris in Tanzania mainland."
+                                )}
                             </p>
 
 
                             <p>
-                                {t("about.story.descriptionTwo")}
+                                {t(
+                                    "about.story.descriptionTwo",
+                                    "The company is managed by an experienced local guide whose aim is to ensure mutual benefit between the locals and the visitors."
+                                )}
+                            </p>
+
+
+                            <p>
+                                {t(
+                                    "about.story.descriptionThree",
+                                    "We are dedicated to providing a better and unforgettable experience for our clients as well as ensuring the environment is protected and safe. As a company, we believe environment conservation is a duty to all — both the tourism stakeholders and the visitors."
+                                )}
+                            </p>
+
+
+                            <p>
+                                {t(
+                                    "about.story.descriptionFour",
+                                    "As a company we are always ready to share new knowledge and experience concerning tourism issues and the environment at large. We are always ready to explore the beauty of our country together with our clients."
+                                )}
                             </p>
 
                         </div>
@@ -84,12 +137,12 @@ function About() {
 
 
                             <strong>
-                                {t("brand.name")}
+                                {t("about.motto", "Environment conservation is for all.")}
                             </strong>
 
 
                             <small>
-                                {t("brand.location")}
+                                {t("about.mottoLabel", "Our Motto")}
                             </small>
 
                         </div>
@@ -102,7 +155,7 @@ function About() {
 
 
             {/* =========================================================
-                WHY US
+                WHAT WE DO
             ========================================================= */}
 
             <section className="about-values">
@@ -112,17 +165,20 @@ function About() {
                     <div className="about-section-heading">
 
                         <span className="tour-section-eyebrow">
-                            {t("about.values.eyebrow")}
+                            {t("about.values.eyebrow", "WHAT WE DO")}
                         </span>
 
 
                         <h2>
-                            {t("about.values.title")}
+                            {t("about.values.title", "Experiences crafted for you.")}
                         </h2>
 
 
                         <p>
-                            {t("about.values.description")}
+                            {t(
+                                "about.values.description",
+                                "From island excursions to mainland safaris and reliable airport transfers — we handle every detail of your Tanzanian journey."
+                            )}
                         </p>
 
                     </div>
@@ -130,63 +186,33 @@ function About() {
 
                     <div className="about-values-grid">
 
+                        {SERVICES.map((service) => (
 
-                        <article className="about-value-card">
+                            <article
+                                key={service.number}
+                                className="about-value-card"
+                            >
 
-                            <span className="about-value-number">
-                                01
-                            </span>
-
-
-                            <h3>
-                                {t("about.values.local.title")}
-                            </h3>
-
-
-                            <p>
-                                {t("about.values.local.description")}
-                            </p>
-
-                        </article>
+                                <span className="about-value-number">
+                                    {service.number}
+                                </span>
 
 
-                        <article className="about-value-card">
-
-                            <span className="about-value-number">
-                                02
-                            </span>
+                                <h3>
+                                    {t(service.titleKey, service.defaultTitle)}
+                                </h3>
 
 
-                            <h3>
-                                {t("about.values.personal.title")}
-                            </h3>
+                                <p>
+                                    {t(
+                                        service.descriptionKey,
+                                        service.defaultDescription
+                                    )}
+                                </p>
 
+                            </article>
 
-                            <p>
-                                {t("about.values.personal.description")}
-                            </p>
-
-                        </article>
-
-
-                        <article className="about-value-card">
-
-                            <span className="about-value-number">
-                                03
-                            </span>
-
-
-                            <h3>
-                                {t("about.values.flexible.title")}
-                            </h3>
-
-
-                            <p>
-                                {t("about.values.flexible.description")}
-                            </p>
-
-                        </article>
-
+                        ))}
 
                     </div>
 

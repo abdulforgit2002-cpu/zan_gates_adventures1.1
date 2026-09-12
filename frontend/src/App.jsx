@@ -16,6 +16,7 @@ import Home from "./pages/Home";
 import Tours from "./pages/Tours";
 import TourDetails from "./pages/TourDetails";
 import About from "./pages/About";
+import AboutZanzibar from "./pages/AboutZanzibar";
 import Contact from "./pages/Contact";
 import Booking from "./pages/Booking";
 
@@ -127,6 +128,19 @@ function App() {
                             path="/about"
                             element={
                                 <About />
+                            }
+                        />
+
+
+                        {/* -------------------------------------------------
+                            ABOUT ZANZIBAR
+                            /about-zanzibar
+                        ------------------------------------------------- */}
+
+                        <Route
+                            path="/about-zanzibar"
+                            element={
+                                <AboutZanzibar />
                             }
                         />
 
