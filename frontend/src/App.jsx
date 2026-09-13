@@ -19,6 +19,8 @@ import About from "./pages/About";
 import AboutZanzibar from "./pages/AboutZanzibar";
 import Contact from "./pages/Contact";
 import Booking from "./pages/Booking";
+import Safaris from "./pages/Safaris";
+import Transfers from "./pages/Transfers";
 
 
 /*
@@ -141,6 +143,30 @@ function App() {
                             path="/about-zanzibar"
                             element={
                                 <AboutZanzibar />
+                            }
+                        />
+
+                        {/* -------------------------------------------------
+                            SAFARIS
+                            /safaris
+                        ------------------------------------------------- */}
+
+                        <Route
+                            path="/safaris"
+                            element={
+                                <Safaris />
+                            }
+                        />
+
+                        {/* -------------------------------------------------
+                            TRANSFERS
+                            /transfers
+                        ------------------------------------------------- */}
+
+                        <Route
+                            path="/transfers"
+                            element={
+                                <Transfers />
                             }
                         />
 

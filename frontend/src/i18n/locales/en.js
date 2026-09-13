@@ -16,7 +16,12 @@ const en = {
     navigation: {
         home: "Home",
         tours: "Tours",
+        excursions: "Excursions",
+        safaris: "Safaris",
+        transfers: "Transfers",
         about: "About Us",
+        aboutUs: "About Us",
+        aboutZanzibar: "About Zanzibar",
         contact: "Contact",
     },
 
@@ -28,6 +33,9 @@ const en = {
         back: "Back",
         close: "Close",
         submit: "Submit",
+        startJourney: "Start your journey",
+        viewAllExcursions: "View all excursions",
+        viewAllSafaris: "View all safaris",
     },
 
     common: {
@@ -42,6 +50,9 @@ const en = {
         zanzibarAdventure: "Zanzibar Adventure",
         guest: "guest",
         guests: "guests",
+        loading: "Loading…",
+        noResults: "No results available",
+        tryAgain: "Try Again",
     },
 
     tours: {
@@ -52,6 +63,67 @@ const en = {
         loading: "Loading tours...",
         empty: "No tours are currently available.",
         error: "Unable to load tours.",
+    },
+
+    /* ============================================================
+       SAFARIS PAGE
+       ============================================================ */
+
+    safaris: {
+        eyebrow: "WILDLIFE SAFARIS",
+        title: "Tanzania Safari Adventures",
+        description:
+            "From the Serengeti plains to the Ngorongoro Crater — discover the very best parks and game reserves of Tanzania, with flights departing from Zanzibar.",
+        listEyebrow: "OUR SAFARIS",
+        listTitle: "Wildlife journeys worth remembering",
+        listDescription:
+            "Handpicked safari experiences across Tanzania mainland — from day trips to multi-day adventures.",
+        loading: "Loading safaris…",
+        emptyTitle: "New safaris coming soon",
+        emptyDescription:
+            "We are preparing new wildlife adventures for you.",
+    },
+
+    /* ============================================================
+       TRANSFERS PAGE
+       ============================================================ */
+
+    transfers: {
+        eyebrow: "TRANSFERS",
+        title: "Transfers Services",
+        description:
+            "Trusted, comfortable and reliable transfer services across Zanzibar — from the airport to every beach and resort on the island.",
+        airportEyebrow: "AIRPORT PICKUP",
+        airportTitle: "Transfer Service From Airport to:",
+        routesEyebrow: "INTER-CITY TRANSFERS",
+        routesTitle: "Point-to-point transfers across Zanzibar",
+        from: "From",
+        ctaTitle: "Need a transfer?",
+        ctaDescription:
+            "Let us know your pickup point, destination and travel date — we'll arrange a comfortable, punctual transfer for you.",
+        ctaButton: "Contact Us",
+    },
+
+    /* ============================================================
+       ABOUT ZANZIBAR PAGE
+       ============================================================ */
+
+    aboutZanzibar: {
+        eyebrow: "ABOUT ZANZIBAR",
+        heroTitle: "The Spice Island",
+        heroSubtitle:
+            "A Tanzanian archipelago off the coast of East Africa — where Swahili, Arab, Indian and European cultures meet.",
+        introTitle: "Where history meets the ocean.",
+        adventureEyebrow: "CHOOSE YOUR OWN ADVENTURE",
+        adventureTitle: "A contrast of worlds.",
+        placesEyebrow: "EXPLORE THE ISLAND",
+        placesTitle: "Best places to visit in Zanzibar",
+        beachesEyebrow: "SUN, SAND & SEA",
+        beachesTitle: "Best beaches in Zanzibar",
+        ctaTitle: "Ready to experience Zanzibar?",
+        ctaSubtitle:
+            "Browse our curated experiences and let us plan your perfect island escape.",
+        ctaButton: "Explore Our Tours",
     },
 
     home: {
@@ -117,6 +189,9 @@ const en = {
         description:
             "ZAN GATES ADVENTURES is a local Zanzibar tour company dedicated to creating memorable experiences through carefully organized tours, personalized service, and local expertise.",
 
+        motto: "Environment conservation is for all.",
+        mottoLabel: "Our Motto",
+
         story: {
             eyebrow: "OUR STORY",
             title: "Rooted in Passion & Local Knowledge",
@@ -124,14 +199,37 @@ const en = {
                 "Founded with a passion for showing travelers the true authentic Zanzibar, we connect guests with the rich culture, historic landmarks, and pristine waters of our island home.",
             descriptionTwo:
                 "Every itinerary is guided by experienced local guides who ensure safety, comfort, and deep cultural immersion every step of the way.",
+            descriptionThree:
+                "We are dedicated to providing a better and unforgettable experience for our clients as well as ensuring the environment is protected and safe. As a company, we believe environment conservation is a duty to all — both the tourism stakeholders and the visitors.",
+            descriptionFour:
+                "As a company we are always ready to share new knowledge and experience concerning tourism issues and the environment at large. We are always ready to explore the beauty of our country together with our clients.",
         },
 
         values: {
-            eyebrow: "WHY CHOOSE US",
-            title: "What Sets Us Apart",
+            eyebrow: "WHAT WE DO",
+            title: "Experiences crafted for you.",
             description:
-                "We pride ourselves on offering seamless, authentic, and unforgettable island adventures.",
+                "From island excursions to mainland safaris and reliable airport transfers — we handle every detail of your Tanzanian journey.",
 
+            excursions: {
+                title: "Zanzibar Excursions",
+                description:
+                    "We organize all activities in Zanzibar and we make sure that your stay in Zanzibar is unforgettable.",
+            },
+
+            wildlife: {
+                title: "Wildlife Tours & Safaris",
+                description:
+                    "We organize all wildlife safari trips in Tanzania mainland from Zanzibar, with flights departing from Zanzibar airport (Abeid Amani Karume International Airport) to the very best parks and game reserves which are every African adventurer's desire to witness.",
+            },
+
+            transfers: {
+                title: "Transfer Services",
+                description:
+                    "We offer trusted transfer services in Zanzibar.",
+            },
+
+            /* Kept for backward compatibility with the existing About page */
             local: {
                 title: "100% Local Guides",
                 description:

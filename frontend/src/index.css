@@ -1261,7 +1261,24 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
    NAVBAR — MODERN TRANSPARENT CENTERED
    ========================================================================== */
 
-.navbar { position: fixed; top: 18px; left: 50%; z-index: 1000; width: min(1240px, calc(100% - 40px)); height: 72px; transform: translateX(-50%); background: rgba(8,39,45,0.52); border: 1px solid rgba(255,255,255,0.14); border-radius: 28px; backdrop-filter: blur(20px) saturate(140%); -webkit-backdrop-filter: blur(20px) saturate(140%); box-shadow: 0 10px 35px rgba(0,0,0,0.18), inset 0 1px 0 rgba(255,255,255,0.08); transition: background 0.3s ease, box-shadow 0.3s ease; }
+.navbar {
+    position: fixed;
+    top: 16px;
+    left: 50%;
+    z-index: 1000;
+    width: min(1440px, calc(100% - 24px));
+    height: 76px;
+    transform: translateX(-50%);
+    background: rgba(8, 39, 45, 0.55);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 24px;
+    backdrop-filter: blur(20px) saturate(140%);
+    -webkit-backdrop-filter: blur(20px) saturate(140%);
+    box-shadow:
+        0 10px 35px rgba(0, 0, 0, 0.18),
+        inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    transition: background 0.3s ease, box-shadow 0.3s ease;
+}
 .navbar:hover { background: rgba(8,39,45,0.62); box-shadow: 0 14px 40px rgba(0,0,0,0.22), inset 0 1px 0 rgba(255,255,255,0.10); }
 .navbar-container { position: relative; width: 100%; height: 100%; display: flex; align-items: center; justify-content: space-between; padding: 0 18px 0 22px; box-sizing: border-box; }
 .navbar-brand { position: relative; z-index: 2; display: flex; align-items: center; gap: 11px; color: #ffffff; text-decoration: none; white-space: nowrap; flex-shrink: 0; }
@@ -1475,4 +1492,426 @@ body.navbar-menu-open { overflow: hidden; }
 .navbar-mobile-submenu .navbar-link:hover {
     color: #ffffff;
     padding-left: 10px;
+}
+
+/* ============================================================
+   SAFARIS PAGE
+   ============================================================ */
+
+.safaris-page {
+    background: #f6f7f4;
+    color: var(--zg-text);
+}
+
+.safaris-header {
+    position: relative;
+    background:
+        linear-gradient(135deg, rgba(8, 42, 47, 0.85), rgba(9, 67, 72, 0.78)),
+        url("https://res.cloudinary.com/djczmay2i/image/upload/v1779459602/Safari_Blue_Experience_bxzxj6.webp")
+            center / cover no-repeat;
+    padding: 120px 0 110px;
+    color: #ffffff;
+}
+
+.safaris-header .container {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+}
+
+.safaris-header h1 {
+    margin: 14px 0 0;
+    font-size: clamp(2.8rem, 5vw, 5rem);
+    letter-spacing: -0.06em;
+    line-height: 0.98;
+}
+
+.safaris-header p {
+    max-width: 760px;
+    margin: 22px auto 0;
+    color: rgba(255, 255, 255, 0.82);
+    font-size: 1.05rem;
+    line-height: 1.8;
+}
+
+.safaris-list {
+    padding: 100px 0;
+}
+
+@media (max-width: 700px) {
+    .safaris-header {
+        padding: 96px 0 84px;
+    }
+
+    .safaris-list {
+        padding: 72px 0;
+    }
+}
+
+/* ============================================================
+   TOUR INCLUSIONS
+   ============================================================ */
+
+.tour-inclusions {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 22px;
+    margin-top: 24px;
+}
+
+.tour-inclusions-column {
+    padding: 24px 26px;
+    border-radius: 18px;
+    background: #f4f8f7;
+    border: 1px solid #e3eae9;
+}
+
+.tour-inclusions-column--excludes {
+    background: #fbf6f4;
+    border-color: #f0e3dd;
+}
+
+.tour-inclusions-column h3 {
+    margin: 0 0 16px;
+    color: #123f46;
+    font-size: 1.05rem;
+    font-weight: 700;
+}
+
+.tour-inclusions-column ul {
+    display: grid;
+    gap: 10px;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+.tour-inclusions-column li {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    color: #5e6f71;
+    font-size: 0.94rem;
+    line-height: 1.55;
+}
+
+.tour-inclusions-column li span {
+    flex-shrink: 0;
+    width: 18px;
+    height: 18px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: #d9efe4;
+    color: #21723d;
+    font-size: 11px;
+    font-weight: 800;
+    line-height: 1;
+    margin-top: 2px;
+}
+
+.tour-inclusions-column--excludes li span {
+    background: #f5dfd5;
+    color: #a33a3a;
+}
+
+/* ============================================================
+   GROUP PRICING
+   ============================================================ */
+
+.tour-group-pricing {
+    margin-top: 26px;
+    border: 1px solid #e5ebeb;
+    border-radius: 18px;
+    overflow: hidden;
+}
+
+.tour-group-pricing-header {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 25px;
+    padding: 16px 25px;
+    background: #f7faf9;
+    border-bottom: 1px solid #e5ebeb;
+    color: #718083;
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+.tour-group-pricing-row {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 25px;
+    align-items: center;
+    padding: 18px 25px;
+    border-bottom: 1px solid #edf1f0;
+}
+
+.tour-group-pricing-row:last-child {
+    border-bottom: 0;
+}
+
+.tour-group-pricing-row > span {
+    color: #123f46;
+    font-size: 0.96rem;
+}
+
+.tour-group-pricing-row > strong {
+    color: #168083;
+    font-size: 1.15rem;
+    font-weight: 800;
+    white-space: nowrap;
+}
+
+/* ============================================================
+   EXTRA SECTIONS
+   ============================================================ */
+
+.tour-extra-sections {
+    display: grid;
+    gap: 18px;
+    margin-top: 24px;
+}
+
+.tour-extra-item {
+    padding: 20px 22px;
+    border-radius: 16px;
+    background: #f4f8f7;
+    border: 1px solid #e3eae9;
+}
+
+.tour-extra-item-title {
+    display: block;
+    margin-bottom: 6px;
+    color: #123f46;
+    font-size: 0.98rem;
+    font-weight: 700;
+}
+
+.tour-extra-item-body {
+    margin: 0;
+    color: #5e6f71;
+    font-size: 0.94rem;
+    line-height: 1.65;
+    white-space: pre-wrap;
+}
+
+/* ============================================================
+   ADMIN — LIST INPUTS & REPEATERS
+   ============================================================ */
+
+.admin-form-section {
+    margin-bottom: 28px;
+    padding: 22px 24px;
+    border: 1px solid #e1e9e8;
+    border-radius: 14px;
+    background: #ffffff;
+}
+
+.admin-form-section h3 {
+    margin: 0 0 6px;
+    font-size: 16px;
+    color: #123f46;
+}
+
+.admin-form-hint {
+    margin: 0 0 16px;
+    color: #718083;
+    font-size: 13px;
+}
+
+.admin-form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+}
+
+.admin-form-grid > div {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.admin-form-grid label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #303030;
+}
+
+.admin-form-grid input,
+.admin-form-grid select,
+.admin-form-grid textarea {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #dce5e5;
+    border-radius: 8px;
+    font: inherit;
+    background: #ffffff;
+}
+
+.admin-form-grid textarea {
+    resize: vertical;
+}
+
+.admin-form-full {
+    grid-column: 1 / -1;
+}
+
+.admin-list-input {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.admin-list-row,
+.admin-group-price-row,
+.admin-extra-item {
+    display: flex;
+    gap: 8px;
+    align-items: flex-start;
+}
+
+.admin-list-row input,
+.admin-group-price-row input,
+.admin-extra-item input,
+.admin-extra-item textarea {
+    flex: 1;
+    padding: 10px 12px;
+    border: 1px solid #dce5e5;
+    border-radius: 8px;
+    font: inherit;
+}
+
+.admin-extra-item textarea {
+    resize: vertical;
+    min-height: 44px;
+}
+
+.admin-list-remove {
+    width: 38px;
+    height: 38px;
+    border: 1px solid #e1c8c8;
+    border-radius: 8px;
+    background: #fff5f5;
+    color: #a52d2d;
+    font-size: 18px;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.admin-list-add {
+    align-self: flex-start;
+    padding: 8px 14px;
+    border: 1px dashed #c7d5d3;
+    border-radius: 8px;
+    background: #f7faf9;
+    color: #123f46;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.admin-list-add:hover {
+    background: #e5f4f3;
+    border-color: #168083;
+}
+
+.admin-group-price-input {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.admin-group-price-header {
+    display: grid;
+    grid-template-columns: 2fr 100px 100px 38px;
+    gap: 8px;
+    font-size: 11px;
+    font-weight: 800;
+    color: #718083;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 0 4px;
+}
+
+.admin-group-price-row {
+    display: grid;
+    grid-template-columns: 2fr 100px 100px 38px;
+    gap: 8px;
+    align-items: center;
+}
+
+.admin-extra-sections {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.admin-extra-section {
+    padding: 16px;
+    border: 1px solid #e1e9e8;
+    border-radius: 12px;
+    background: #fbfdfd;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.admin-extra-section-head {
+    display: grid;
+    grid-template-columns: 140px 1fr 38px;
+    gap: 8px;
+    align-items: center;
+}
+
+.admin-extra-section-head select,
+.admin-extra-section-head input {
+    padding: 10px 12px;
+    border: 1px solid #dce5e5;
+    border-radius: 8px;
+    font: inherit;
+}
+
+.admin-extra-item {
+    align-items: center;
+}
+
+.admin-form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 8px;
+}
+
+.admin-primary-button {
+    padding: 12px 22px;
+    border: 0;
+    border-radius: 10px;
+    background: #168083;
+    color: #ffffff;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.admin-primary-button:disabled {
+    opacity: 0.65;
+    cursor: not-allowed;
+}
+
+@media (max-width: 700px) {
+    .admin-form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .tour-inclusions {
+        grid-template-columns: 1fr;
+    }
+
+    .tour-group-pricing-header,
+    .tour-group-pricing-row {
+        padding: 14px 18px;
+    }
 }

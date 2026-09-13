@@ -1739,3 +1739,160 @@
     }
 
 }
+
+/* ============================================================
+   TOUR INCLUSIONS
+============================================================ */
+
+.tour-inclusions {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 22px;
+    margin-top: 24px;
+}
+
+.tour-inclusions-column {
+    padding: 24px 26px;
+    border-radius: 18px;
+    background: #f4f8f7;
+    border: 1px solid #e3eae9;
+}
+
+.tour-inclusions-column--excludes {
+    background: #fbf6f4;
+    border-color: #f0e3dd;
+}
+
+.tour-inclusions-column h3 {
+    margin: 0 0 16px;
+    color: #123f46;
+    font-size: 1.05rem;
+    font-weight: 700;
+}
+
+.tour-inclusions-column ul {
+    display: grid;
+    gap: 10px;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+.tour-inclusions-column li {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    color: #5e6f71;
+    font-size: 0.94rem;
+    line-height: 1.55;
+}
+
+.tour-inclusions-column li span {
+    flex-shrink: 0;
+    width: 18px;
+    height: 18px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: #d9efe4;
+    color: #21723d;
+    font-size: 11px;
+    font-weight: 800;
+    line-height: 1;
+    margin-top: 2px;
+}
+
+.tour-inclusions-column--excludes li span {
+    background: #f5dfd5;
+    color: #a33a3a;
+}
+
+/* ============================================================
+   GROUP PRICING TABLE
+============================================================ */
+
+.tour-group-pricing {
+    margin-top: 26px;
+    border: 1px solid #e5ebeb;
+    border-radius: 18px;
+    overflow: hidden;
+}
+
+.tour-group-pricing-header {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 25px;
+    padding: 16px 25px;
+    background: #f7faf9;
+    border-bottom: 1px solid #e5ebeb;
+    color: #718083;
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+.tour-group-pricing-row {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 25px;
+    align-items: center;
+    padding: 18px 25px;
+    border-bottom: 1px solid #edf1f0;
+}
+
+.tour-group-pricing-row:last-child {
+    border-bottom: 0;
+}
+
+.tour-group-pricing-row > span {
+    color: #123f46;
+    font-size: 0.96rem;
+}
+
+.tour-group-pricing-row > strong {
+    color: #168083;
+    font-size: 1.15rem;
+    font-weight: 800;
+    white-space: nowrap;
+}
+
+/* ============================================================
+   EXTRA SECTIONS
+============================================================ */
+
+.tour-extra-sections {
+    display: grid;
+    gap: 18px;
+    margin-top: 24px;
+}
+
+.tour-extra-item {
+    padding: 20px 22px;
+    border-radius: 16px;
+    background: #f4f8f7;
+    border: 1px solid #e3eae9;
+}
+
+.tour-extra-item-title {
+    display: block;
+    margin-bottom: 6px;
+    color: #123f46;
+    font-size: 0.98rem;
+    font-weight: 700;
+}
+
+.tour-extra-item-body {
+    margin: 0;
+    color: #5e6f71;
+    font-size: 0.94rem;
+    line-height: 1.65;
+    white-space: pre-wrap;
+}
+
+@media (max-width: 700px) {
+    .tour-inclusions {
+        grid-template-columns: 1fr;
+    }
+}
