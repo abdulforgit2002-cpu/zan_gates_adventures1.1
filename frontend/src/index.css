@@ -1915,3 +1915,120 @@ body.navbar-menu-open { overflow: hidden; }
         padding: 14px 18px;
     }
 }
+
+/* =========================================================
+   NAVBAR — NESTED DROPDOWN GROUP
+   (e.g. Mnemba Island with submenu)
+   ========================================================= */
+
+.navbar-dropdown-group {
+    position: relative;
+    width: 100%;
+}
+
+.navbar-dropdown-group-label {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+
+    width: 100%;
+    padding: 11px 14px;
+
+    border-radius: 10px;
+
+    color: rgba(255, 255, 255, 0.82);
+    font-size: 13px;
+    font-weight: 600;
+
+    cursor: default;
+    white-space: nowrap;
+
+    outline: none;
+
+    transition:
+        background 0.2s ease,
+        color 0.2s ease;
+}
+
+.navbar-dropdown-group:hover .navbar-dropdown-group-label,
+.navbar-dropdown-group-label:focus-visible {
+    background: rgba(255, 255, 255, 0.08);
+    color: #ffffff;
+}
+
+.navbar-dropdown-group-arrow {
+    color: rgba(255, 255, 255, 0.55);
+    font-size: 16px;
+    line-height: 1;
+    transition: transform 0.2s ease;
+}
+
+.navbar-dropdown-group:hover .navbar-dropdown-group-arrow {
+    transform: translateX(2px);
+    color: #ffffff;
+}
+
+/* Submenu */
+.navbar-dropdown-submenu {
+    position: absolute;
+    top: -8px;
+    left: calc(100% + 8px);
+
+    min-width: 260px;
+    padding: 8px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+
+    background: rgba(8, 39, 45, 0.96);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 16px;
+
+    box-shadow:
+        0 20px 45px rgba(0, 0, 0, 0.35),
+        inset 0 1px 0 rgba(255, 255, 255, 0.06);
+
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+
+    opacity: 0;
+    visibility: hidden;
+    transform: translateX(-8px);
+
+    transition:
+        opacity 0.2s ease,
+        visibility 0.2s ease,
+        transform 0.2s ease;
+
+    z-index: 1400;
+}
+
+.navbar-dropdown-group:hover .navbar-dropdown-submenu,
+.navbar-dropdown-group:focus-within .navbar-dropdown-submenu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(0);
+}
+
+/* Submenu item — reuse .navbar-dropdown-item styles but add a smaller left indent */
+.navbar-dropdown-submenu .navbar-dropdown-item {
+    white-space: normal;
+    line-height: 1.35;
+}
+
+/* Small-screen safety: if viewport is narrow, submenu opens
+   to the left to avoid clipping */
+@media (max-width: 1200px) {
+    .navbar-dropdown-submenu {
+        left: auto;
+        right: calc(100% + 8px);
+        transform: translateX(8px);
+    }
+
+    .navbar-dropdown-group:hover .navbar-dropdown-submenu,
+    .navbar-dropdown-group:focus-within .navbar-dropdown-submenu {
+        transform: translateX(0);
+    }
+}

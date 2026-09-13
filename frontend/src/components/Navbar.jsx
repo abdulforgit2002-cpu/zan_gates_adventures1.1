@@ -51,6 +51,84 @@ const looksLikeSafari = (tour) => {
 };
 
 /* =========================================================
+   EXCURSION GROUPING
+   =========================================================
+   Tours whose title begins with one of these prefixes are
+   rendered inside a nested submenu rather than the top-level
+   excursions list.
+   ========================================================= */
+
+const NESTED_GROUP_PREFIXES = [
+  {
+    key: "mnemba",
+    label: "Mnemba Island",
+    match: (title) =>
+      normalizeString(title).startsWith("mnemba island"),
+    // Strip the group label prefix from the child text
+    stripPrefix: /^Mnemba Island\s+/i,
+  },
+];
+
+const getTourTitle = (tour) =>
+  tour?.title ||
+  tour?.name ||
+  tour?.tour_title ||
+  "Zanzibar Adventure";
+
+const getTourSlug = (tour) =>
+  tour?.slug ||
+  tour?.tour_slug ||
+  tour?.url_slug ||
+  (tour?.id ? String(tour.id) : "");
+
+/**
+ * Split excursions into top-level items and nested groups.
+ *
+ * Returns:
+ *   {
+ *     topLevel: [tour, tour, ...],
+ *     groups: [
+ *       {
+ *         key: "mnemba",
+ *         label: "Mnemba Island",
+ *         tours: [tour, tour, ...],
+ *         stripPrefix: /^Mnemba Island\s+/i,
+ *       },
+ *       ...
+ *     ],
+ *   }
+ */
+const splitExcursions = (tours) => {
+  const topLevel = [];
+  const buckets = new Map();
+
+  NESTED_GROUP_PREFIXES.forEach((g) => buckets.set(g.key, []));
+
+  tours.forEach((tour) => {
+    const title = getTourTitle(tour);
+
+    const group = NESTED_GROUP_PREFIXES.find((g) =>
+      g.match(title)
+    );
+
+    if (group) {
+      buckets.get(group.key).push(tour);
+    } else {
+      topLevel.push(tour);
+    }
+  });
+
+  const groups = NESTED_GROUP_PREFIXES.map((g) => ({
+    key: g.key,
+    label: g.label,
+    stripPrefix: g.stripPrefix,
+    tours: buckets.get(g.key) || [],
+  })).filter((g) => g.tours.length > 0);
+
+  return { topLevel, groups };
+};
+
+/* =========================================================
    NAVBAR
    ========================================================= */
 
@@ -236,18 +314,9 @@ function Navbar() {
     return `navbar-link${isActive ? " active" : ""}`;
   };
 
-  /* Tour title / slug helpers */
-  const getTourTitle = (tour) =>
-    tour?.title ||
-    tour?.name ||
-    tour?.tour_title ||
-    "Zanzibar Adventure";
-
-  const getTourSlug = (tour) =>
-    tour?.slug ||
-    tour?.tour_slug ||
-    tour?.url_slug ||
-    (tour?.id ? String(tour.id) : "");
+  /* SPLIT EXCURSIONS INTO TOP-LEVEL + NESTED GROUPS */
+  const { topLevel: topLevelExcursions, groups: excursionGroups } =
+    splitExcursions(excursions);
 
   return (
     <header className="navbar">
@@ -323,7 +392,8 @@ function Navbar() {
                   </span>
                 )}
 
-                {excursions.map((tour) => {
+                {/* TOP-LEVEL EXCURSIONS */}
+                {topLevelExcursions.map((tour) => {
                   const slug = getTourSlug(tour);
                   const title = getTourTitle(tour);
                   if (!slug) return null;
@@ -344,6 +414,60 @@ function Navbar() {
                     </NavLink>
                   );
                 })}
+
+                {/* NESTED EXCURSION GROUPS */}
+                {excursionGroups.map((group) => (
+                  <div
+                    key={group.key}
+                    className="navbar-dropdown-group"
+                    role="group"
+                    aria-label={group.label}
+                  >
+                    <span
+                      className="navbar-dropdown-group-label"
+                      tabIndex={0}
+                    >
+                      <span>{group.label}</span>
+                      <span
+                        className="navbar-dropdown-group-arrow"
+                        aria-hidden="true"
+                      >
+                        ›
+                      </span>
+                    </span>
+
+                    <div className="navbar-dropdown-submenu" role="menu">
+                      {group.tours.map((tour) => {
+                        const slug = getTourSlug(tour);
+                        if (!slug) return null;
+
+                        const fullTitle = getTourTitle(tour);
+                        const childTitle = group.stripPrefix
+                          ? fullTitle.replace(
+                              group.stripPrefix,
+                              ""
+                            )
+                          : fullTitle;
+
+                        return (
+                          <NavLink
+                            key={tour.id || slug}
+                            to={`/tours/${encodeURIComponent(slug)}`}
+                            className={({ isActive }) =>
+                              `navbar-dropdown-item${
+                                isActive ? " is-selected" : ""
+                              }`
+                            }
+                            onClick={() => setExcursionsOpen(false)}
+                            role="menuitem"
+                          >
+                            {childTitle}
+                          </NavLink>
+                        );
+                      })}
+                    </div>
+                  </div>
+                ))}
 
                 <NavLink
                   to="/tours"
@@ -604,6 +728,10 @@ function Navbar() {
                   </span>
                 )}
 
+                {/*
+                  On mobile, all excursions render flat under the
+                  accordion. Nested groups are a desktop-only pattern.
+                */}
                 {excursions.map((tour) => {
                   const slug = getTourSlug(tour);
                   const title = getTourTitle(tour);
