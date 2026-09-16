@@ -8,7 +8,6 @@ import { useTranslation } from "react-i18next";
 const CLASSIC_IMAGES = [
   "https://res.cloudinary.com/djczmay2i/image/upload/v1789558099/WhatsApp_Image_2026-09-12_at_12.28.45_PM_t79tua.jpg",
   "https://res.cloudinary.com/djczmay2i/image/upload/v1789558098/WhatsApp_Image_2026-09-12_at_12.28.46_PM_1_df8ex9.jpg",
-  "https://res.cloudinary.com/djczmay2i/image/upload/v1789558097/WhatsApp_Image_2026-09-12_at_12.28.46_PM_2_o0kqk30.jpg",
   "https://res.cloudinary.com/djczmay2i/image/upload/v1789558097/WhatsApp_Image_2026-09-12_at_12.28.47_PM_q3isdr.jpg",
   "https://res.cloudinary.com/djczmay2i/image/upload/v1789558096/WhatsApp_Image_2026-09-12_at_12.28.47_PM_2_xsnbah.jpg",
   "https://res.cloudinary.com/djczmay2i/image/upload/v1789558094/WhatsApp_Image_2026-09-12_at_12.28.48_PM_l5pibp.jpg",
