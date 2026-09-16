@@ -5536,3 +5536,63 @@ body.navbar-menu-open { overflow: hidden; }
         transform: none !important;
     }
 }
+
+/* ============================================================
+   LANGUAGE SWITCHER
+   ============================================================ */
+
+.language-switcher {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 42px;
+}
+
+.language-switcher--navbar .gtranslate_wrapper {
+    display: inline-flex;
+    align-items: center;
+}
+
+.language-switcher--mobile {
+    display: block;
+    width: 100%;
+}
+
+.language-switcher--mobile .gtranslate_wrapper {
+    display: block;
+    width: 100%;
+}
+
+/* GTranslate default widget styling overrides */
+.gtranslate_wrapper select,
+.gtranslate_wrapper .gt_selector {
+    appearance: none;
+    -webkit-appearance: none;
+    background: rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: 999px;
+    padding: 8px 34px 8px 14px;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    cursor: pointer;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 12px;
+    transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.gtranslate_wrapper select:hover,
+.gtranslate_wrapper .gt_selector:hover {
+    background-color: rgba(255, 255, 255, 0.16);
+    border-color: rgba(255, 255, 255, 0.4);
+}
+
+/* Hide the "powered by GTranslate" footer in the dropdown */
+.gtranslate_wrapper .gt_container--dropdown .gt_powered_by,
+.gtranslate_wrapper .gt_powered_by,
+.gtranslate_wrapper a[href*="gtranslate.net"] {
+    display: none !important;
+}

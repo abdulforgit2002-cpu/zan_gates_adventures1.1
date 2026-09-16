@@ -6,6 +6,7 @@ import "./LanguageSwitcher.css";
 
 /* =========================================================
    SUPPORTED LANGUAGE DISPLAY DATA
+   Must match SUPPORTED_LANGUAGES in ../i18n/config
    ========================================================= */
 
 const LANGUAGES = [
@@ -124,24 +125,39 @@ function LanguageSwitcher({ variant = "navbar" }) {
 
   /* =====================================================
      DETERMINE CURRENT LANGUAGE
+     Preference order:
+     1. GTranslate cookie (what the page is actually rendered in)
+     2. i18next resolvedLanguage
+     3. i18next language
+     4. Fallback: English
      ===================================================== */
 
-  const currentCode = SUPPORTED_LANGUAGES.includes(i18n.resolvedLanguage)
-    ? i18n.resolvedLanguage
-    : SUPPORTED_LANGUAGES.includes(i18n.language?.split("-")[0])
-      ? i18n.language.split("-")[0]
-      : "en";
+  const cookieLang = readStoredLanguage();
+
+  const currentCode = (() => {
+    if (cookieLang) return cookieLang;
+
+    const resolved = i18n.resolvedLanguage;
+    if (SUPPORTED_LANGUAGES.includes(resolved)) return resolved;
+
+    const base = i18n.language?.split("-")[0];
+    if (SUPPORTED_LANGUAGES.includes(base)) return base;
+
+    return "en";
+  })();
 
   const currentLanguage =
     LANGUAGES.find((language) => language.code === currentCode) || LANGUAGES[0];
 
   /* =====================================================
      SYNC WITH GTRANSLATE COOKIE ON MOUNT
+     If the cookie says a different language, update i18next
+     so UI strings match the visible translation.
      ===================================================== */
 
   useEffect(() => {
     const storedLanguage = readStoredLanguage();
-    if (storedLanguage && storedLanguage !== currentCode) {
+    if (storedLanguage && storedLanguage !== i18n.resolvedLanguage) {
       i18n.changeLanguage(storedLanguage);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -189,8 +205,8 @@ function LanguageSwitcher({ variant = "navbar" }) {
     writeGTranslateCookie(code);
 
     // 3. Reload so Google Translate picks up the new cookie
-    //    on the next page load. A short delay lets i18next finish
-    //    persisting to localStorage first.
+    //    on the next page load. A short delay lets i18next
+    //    finish persisting to localStorage first.
     window.setTimeout(() => {
       window.location.reload();
     }, 120);
@@ -256,7 +272,9 @@ function LanguageSwitcher({ variant = "navbar" }) {
                 type="button"
                 role="option"
                 aria-selected={selected}
-                className={`language-switcher-option${selected ? " is-selected" : ""}`}
+                className={`language-switcher-option${
+                  selected ? " is-selected" : ""
+                }`}
                 onClick={() => selectLanguage(language.code)}
               >
                 <span className="language-switcher-flag">
