@@ -25,6 +25,7 @@ import HotelsPage from "./pages/HotelsPage";
 import HotelDetailPage from "./pages/HotelDetailPage";
 import Transfers from "./pages/Transfers";
 import Safaris from "./pages/Safaris";
+import WeddingProposals from "./pages/WeddingProposals";
 
 
 /*
@@ -169,6 +170,11 @@ function App() {
                         <Route
                             path="/book/:slug"
                             element={<Booking />}
+                        />
+
+                        <Route
+                            path="/wedding-and-proposals"
+                            element={<WeddingProposals />}
                         />
 
                     </Route>
