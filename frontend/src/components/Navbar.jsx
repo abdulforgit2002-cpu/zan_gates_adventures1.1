@@ -7,8 +7,8 @@ import { getTours } from "../services/tourService";
 
 /* =========================================================
    SAFARI CLASSIFIER
-   A tour is treated as a safari if its category, type,
-   or destination matches one of these keywords.
+   A tour is treated as a safari if any of these fields match
+   one of the keywords below.
    ========================================================= */
 
 const SAFARI_KEYWORDS = [
@@ -34,20 +34,63 @@ const looksLikeSafari = (tour) => {
   const haystack = [
     tour?.category_name,
     tour?.category?.name,
+    tour?.category?.slug,
     tour?.category,
     tour?.type,
     tour?.tour_type,
     tour?.destination_name,
     tour?.destination?.name,
+    tour?.destination?.slug,
     tour?.destination,
+    tour?.title,
+    tour?.name,
+    tour?.tour_title,
+    tour?.slug,
   ]
     .filter(Boolean)
     .map((value) => normalizeString(value))
     .join(" ");
 
-  return SAFARI_KEYWORDS.some((keyword) =>
-    haystack.includes(keyword)
-  );
+  return SAFARI_KEYWORDS.some((keyword) => haystack.includes(keyword));
+};
+
+/* =========================================================
+   RESPONSE PARSER
+   Walks an arbitrary API response and finds the first array
+   of tour-like objects, up to 4 levels deep.
+   ========================================================= */
+
+const findTourArray = (value, depth = 0) => {
+  if (depth > 4) return null;
+  if (Array.isArray(value)) return value;
+  if (!value || typeof value !== "object") return null;
+
+  // Preferred keys first — these are the common API shapes
+  const preferredKeys = [
+    "tours",
+    "data",
+    "results",
+    "items",
+    "records",
+    "rows",
+    "payload",
+    "list",
+  ];
+
+  for (const key of preferredKeys) {
+    if (key in value) {
+      const found = findTourArray(value[key], depth + 1);
+      if (found && found.length) return found;
+    }
+  }
+
+  // Fallback: scan every value
+  for (const v of Object.values(value)) {
+    const found = findTourArray(v, depth + 1);
+    if (found && found.length) return found;
+  }
+
+  return null;
 };
 
 /* =========================================================
@@ -137,7 +180,7 @@ function Navbar() {
   /* CLOSE MOBILE MENU WHEN WINDOW BECOMES DESKTOP */
   useEffect(() => {
     const handleResize = () => {
-      if (window.innerWidth > 900) {
+      if (window.innerWidth > 1100) {
         setMobileMenu(false);
       }
     };
@@ -165,26 +208,13 @@ function Navbar() {
 
         if (!mounted) return;
 
-        let list = [];
+        /* ---- DEBUG (remove once confirmed) ---- */
+        console.log("[Navbar] getTours() raw response:", data);
 
-        if (Array.isArray(data)) {
-          list = data;
-        } else if (Array.isArray(data?.data)) {
-          list = data.data;
-        } else if (Array.isArray(data?.tours)) {
-          list = data.tours;
-        } else if (Array.isArray(data?.data?.tours)) {
-          list = data.data.tours;
-        } else if (Array.isArray(data?.results)) {
-          list = data.results;
-        } else if (Array.isArray(data?.tours?.data)) {
-          list = data.tours.data;
-        } else if (data && typeof data === "object") {
-          const firstArray = Object.values(data).find((value) =>
-            Array.isArray(value)
-          );
-          if (firstArray) list = firstArray;
-        }
+        const list = findTourArray(data) || [];
+
+        /* ---- DEBUG (remove once confirmed) ---- */
+        console.log("[Navbar] parsed tour list:", list);
 
         const safariList = list.filter(looksLikeSafari);
         const excursionList = list.filter(
