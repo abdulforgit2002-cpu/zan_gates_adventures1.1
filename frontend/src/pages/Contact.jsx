@@ -1,188 +1,392 @@
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
+/* =========================================================
+   CONTACT
+   Premium, modern contact page.
+   ========================================================= */
 
-const SOCIAL_LINKS = [
-    {
-        type: "whatsapp",
-        label: "WhatsApp",
-        href: "https://wa.me/255658450092",
-    },
-    {
-        type: "facebook",
-        label: "Facebook",
-        href: "https://www.facebook.com/share/19SBfqRvNk/?mibextid=wwXIfr",
-    },
-    {
-        type: "instagram",
-        label: "Instagram",
-        href: "https://www.instagram.com/zanzibar_gates_safaris._?stkn=MWppNW9rYzU4ZGx3dg%3D%3D&utm_source=qr",
-    },
-    {
-        type: "threads",
-        label: "Threads",
-        href: "https://www.threads.com/@zanzibar_gates_safaris._?igshid=NTc4MTIwNjQ2YQ==",
-    },
+const QUICK_ACTIONS = [
+  {
+    key: "whatsapp-tz",
+    label: "WhatsApp Tanzania",
+    sub: "+255 658 450 092",
+    href: "https://wa.me/255658450092",
+    icon: "whatsapp",
+    tone: "whatsapp",
+  },
+  {
+    key: "whatsapp-uk",
+    label: "WhatsApp UK",
+    sub: "+44 7576 096292",
+    href: "https://wa.me/447576096292",
+    icon: "whatsapp",
+    tone: "whatsapp-uk",
+  },
+  {
+    key: "call-tz",
+    label: "Call Tanzania",
+    sub: "+255 658 450 092",
+    href: "tel:+255658450092",
+    icon: "phone",
+    tone: "phone",
+  },
+  {
+    key: "email",
+    label: "Email Us",
+    sub: "adventures@zanzibargates.co.tz",
+    href: "mailto:adventures@zanzibargates.co.tz",
+    icon: "mail",
+    tone: "email",
+  },
 ];
 
+const CONTACT_CARDS = [
+  {
+    key: "tz",
+    badge: "TZ",
+    title: "Tanzania",
+    flag: "🇹🇿",
+    accent: "tz",
+    rows: [
+      {
+        icon: "whatsapp",
+        label: "WhatsApp",
+        value: "+255 658 450 092",
+        href: "https://wa.me/255658450092",
+      },
+      {
+        icon: "phone",
+        label: "Call",
+        value: "+255 658 450 092",
+        href: "tel:+255658450092",
+      },
+    ],
+  },
+  {
+    key: "uk",
+    badge: "UK",
+    title: "United Kingdom",
+    flag: "🇬🇧",
+    accent: "uk",
+    rows: [
+      {
+        icon: "whatsapp",
+        label: "WhatsApp",
+        value: "+44 7576 096292",
+        href: "https://wa.me/447576096292",
+      },
+      {
+        icon: "phone",
+        label: "Call",
+        value: "+44 7576 096292",
+        href: "tel:+447576096292",
+      },
+    ],
+  },
+  {
+    key: "msg",
+    badge: "MSG",
+    title: "Email & Messenger",
+    flag: "",
+    accent: "msg",
+    rows: [
+      {
+        icon: "messenger",
+        label: "Messenger",
+        value: "ZAN Gates Adventures",
+        href: "https://m.me/zangatesadventures",
+      },
+      {
+        icon: "mail",
+        label: "Adventures",
+        value: "adventures@zanzibargates.co.tz",
+        href: "mailto:adventures@zanzibargates.co.tz",
+      },
+      {
+        icon: "mail",
+        label: "Reservations",
+        value: "reservations@zanzibargates.co.tz",
+        href: "mailto:reservations@zanzibargates.co.tz",
+      },
+    ],
+  },
+];
 
-function SocialIcon({ type }) {
-    const commonProps = {
-        viewBox: "0 0 24 24",
-        fill: "none",
-        stroke: "currentColor",
-        strokeWidth: "1.8",
-        strokeLinecap: "round",
-        strokeLinejoin: "round",
-        "aria-hidden": "true",
-    };
+function ContactIcon({ type }) {
+  const common = {
+    viewBox: "0 0 24 24",
+    fill: "currentColor",
+    "aria-hidden": "true",
+    focusable: "false",
+  };
 
-    switch (type) {
-        case "whatsapp":
-            return (
-                <svg {...commonProps}>
-                    <path d="M20.25 12.77A8.24 8.24 0 0 1 11.93 21c-1.38 0-2.72-.35-3.93-.99L3.75 20.25l1.26-4.21a8.2 8.2 0 0 1-1.3-4.28A8.25 8.25 0 0 1 20.25 12.77Z" />
-                    <path d="M15.83 14.8c-.2-.1-1.2-.59-1.38-.66-.18-.07-.32-.1-.45.1-.14.2-.54.66-.66.8-.12.14-.24.16-.44.05-.2-.1-.85-.31-1.62-.99-.6-.53-1-1.19-1.12-1.38-.12-.2-.01-.31.09-.41.09-.09.2-.24.3-.36.1-.12.13-.2.2-.34.07-.14.04-.26-.02-.36-.06-.1-.45-1.09-.62-1.49-.17-.4-.34-.34-.45-.34h-.39c-.13 0-.34.05-.52.25-.18.2-.7.68-.7 1.67s.72 1.93.82 2.06c.1.14 1.41 2.16 3.42 3.03 2.01.87 2.01.58 2.38.54.37-.04 1.2-.49 1.36-96.17-.16-.46-.3-.4-.51-.5Z" />
-                </svg>
-            );
-        case "facebook":
-            return (
-                <svg {...commonProps}>
-                    <path d="M14.5 8.5h2.25V4.75H14.5A4.75 4.75 0 0 0 9.75 9.5v2.25H7.5V14.5h2.25V20h3.5v-5.5h2.52l.48-2.75H13.25V9.5c0-.55.25-.99.1-1.5Z" />
-                </svg>
-            );
-        case "instagram":
-            return (
-                <svg {...commonProps}>
-                    <rect x="3.5" y="3.5" width="17" height="17" rx="4" />
-                    <circle cx="12" cy="12" r="4" />
-                    <circle cx="17.25" cy="6.75" r="1" fill="currentColor" stroke="none" />
-                </svg>
-            );
-        case "threads":
-            return (
-                <svg {...commonProps}>
-                    <path d="M9.5 7.5c1.9-.9 4.2-.9 6.1 0 .7.4 1.3 1 1.7 1.7.7 1.1.8 2.5.3 3.7-.7 1.7-2.3 3.2-4.3 3.8-1.8.6-3.9.4-5.5-.7-1.4-1-2.2-2.7-2.1-4.5.1-1.6.9-3.2 2.4-4.1 1.4-.9 3.2-1.2 4.8-.9" />
-                    <path d="M12.4 9.6c.9-.4 1.8-.2 2.5.5.4.4.6 1 .6 1.6 0 1.2-.9 2.1-2.1 2.5-1.2.3-2.4.1-3.4-.7" />
-                </svg>
-            );
-        default:
-            return null;
-    }
+  switch (type) {
+    case "whatsapp":
+      return (
+        <svg {...common}>
+          <path d="M19.05 4.91A9.82 9.82 0 0 0 12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.9 9.9 0 0 0 4.79 1.22h.004c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.02zM12.04 20.15h-.004a8.23 8.23 0 0 1-4.19-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.22 8.22 0 0 1-1.26-4.38c0-4.54 3.7-8.24 8.25-8.24 2.2 0 4.27.86 5.83 2.42a8.18 8.18 0 0 1 2.41 5.83c0 4.54-3.7 8.24-8.24 8.24zm4.52-6.17c-.25-.12-1.47-.72-1.69-.81-.23-.08-.39-.12-.56.12-.17.25-.64.81-.78.97-.14.17-.29.19-.54.06-.25-.12-1.05-.39-2-1.23-.74-.66-1.24-1.47-1.38-1.72-.14-.25-.02-.38.11-.51.11-.11.25-.29.37-.43.12-.14.17-.25.25-.41.08-.17.04-.31-.02-.43-.06-.12-.56-1.34-.76-1.84-.2-.48-.4-.42-.56-.43-.14-.01-.31-.01-.48-.01s-.43.06-.66.31c-.23.25-.86.84-.86 2.05 0 1.21.88 2.38 1 2.55.12.17 1.72 2.63 4.18 3.69.58.25 1.04.4 1.4.51.59.19 1.12.16 1.55.1.47-.07 1.47-.6 1.68-1.18.21-.58.21-1.08.14-1.18-.06-.11-.22-.17-.47-.29z" />
+        </svg>
+      );
+
+    case "phone":
+      return (
+        <svg {...common}>
+          <path d="M6.6 10.8a15.6 15.6 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1.1-.25 1.2.4 2.5.6 3.8.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1A17.9 17.9 0 0 1 3 4c0-.6.4-1 1-1h3.4c.6 0 1 .4 1 1 0 1.3.2 2.6.6 3.8.1.4 0 .8-.25 1.1L6.6 10.8z" />
+        </svg>
+      );
+
+    case "mail":
+      return (
+        <svg {...common}>
+          <path d="M3 5.5A2.5 2.5 0 0 1 5.5 3h13A2.5 2.5 0 0 1 21 5.5v13a2.5 2.5 0 0 1-2.5 2.5h-13A2.5 2.5 0 0 1 3 18.5v-13zm2.4.6a.5.5 0 0 0-.4.4v.3L12 12l7-5.2v-.3a.5.5 0 0 0-.4-.4H5.4zm-.4 2.1v10.3c0 .3.2.5.5.5h13c.3 0 .5-.2.5-.5V8.2l-6.8 5a1 1 0 0 1-1.2 0L5 8.2z" />
+        </svg>
+      );
+
+    case "messenger":
+      return (
+        <svg {...common}>
+          <path d="M12 2C6.5 2 2 6.2 2 11.4c0 3 1.4 5.7 3.7 7.5V22l3.4-1.9c.9.2 1.9.3 2.9.3 5.5 0 10-4.2 10-9.4S17.5 2 12 2zm1 12.6-2.5-2.7-5 2.7L11 9.4l2.6 2.7 4.9-2.7-5.5 5.2z" />
+        </svg>
+      );
+
+    case "map-pin":
+      return (
+        <svg {...common}>
+          <path d="M12 2a7 7 0 0 0-7 7c0 5.2 7 13 7 13s7-7.8 7-13a7 7 0 0 0-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z" />
+        </svg>
+      );
+
+    case "clock":
+      return (
+        <svg {...common}>
+          <path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm.75 5v5.44l3.75 2.25-.75 1.31L11.25 13.4V7z" />
+        </svg>
+      );
+
+    default:
+      return null;
+  }
 }
-
 
 function Contact() {
-    const { t } = useTranslation();
+  const { t } = useTranslation();
 
-    return (
-        <main className="contact-page">
+  return (
+    <main className="contact-page contact-page--premium">
+      {/* ---------------------------------------------------
+          HERO
+         --------------------------------------------------- */}
+      <section className="contact-hero">
+        <div className="contact-hero-bg" aria-hidden="true" />
+        <div className="contact-hero-overlay" aria-hidden="true" />
 
-            <aside className="contact-social-rail" aria-label="Social media links">
-                {SOCIAL_LINKS.map((link) => (
-                    <a
-                        key={link.type}
-                        href={link.href}
-                        target="_blank"
-                        rel="noreferrer"
-                        className={`contact-social-link contact-social-link--${link.type}`}
-                        aria-label={link.label}
-                        title={link.label}
-                    >
-                        <SocialIcon type={link.type} />
-                    </a>
-                ))}
-            </aside>
+        <div className="container contact-hero-inner">
+          <span className="contact-hero-eyebrow">
+            {t("contact.eyebrow", "Contact Us")}
+          </span>
+          <h1 className="contact-hero-title">
+            {t(
+              "contact.title",
+              "Let's Plan Your Zanzibar Adventure"
+            )}
+          </h1>
+          <p className="contact-hero-subtitle">
+            {t(
+              "contact.description",
+              "Have a question, need help choosing a tour, or ready to plan your Zanzibar experience? Contact our team and we will be happy to assist you."
+            )}
+          </p>
+        </div>
 
-            <section className="contact-header">
-                <div className="container">
-                    <span className="tour-section-eyebrow">{t("contact.eyebrow")}</span>
-                    <h1>{t("contact.title")}</h1>
-                    <p>{t("contact.description")}</p>
-                </div>
-            </section>
+        {/* Quick actions directly under hero */}
+        <div className="container contact-hero-actions">
+          {QUICK_ACTIONS.map((action) => (
+            <a
+              key={action.key}
+              href={action.href}
+              target={action.href.startsWith("http") ? "_blank" : undefined}
+              rel={action.href.startsWith("http") ? "noreferrer" : undefined}
+              className={`contact-quick contact-quick--${action.tone}`}
+            >
+              <span className="contact-quick-icon">
+                <ContactIcon type={action.icon} />
+              </span>
+              <span className="contact-quick-text">
+                <span className="contact-quick-label">{action.label}</span>
+                <span className="contact-quick-sub">{action.sub}</span>
+              </span>
+            </a>
+          ))}
+        </div>
+      </section>
 
-            <section className="contact-information">
-                <div className="container">
-                    <div className="contact-grid">
+      {/* ---------------------------------------------------
+          CONTACT CARDS
+         --------------------------------------------------- */}
+      <section className="contact-channels">
+        <div className="container">
+          <div className="contact-channels-heading">
+            <span className="contact-section-eyebrow">Reach Out</span>
+            <h2 className="contact-section-title">
+              Three ways to get in touch
+            </h2>
+            <p className="contact-section-sub">
+              Choose whichever suits you best — we reply on WhatsApp
+              within minutes during office hours.
+            </p>
+          </div>
 
-                        <article className="contact-card">
-                            <span className="contact-card-label">TZ</span>
-                            <h2>TANZANIA 🇹🇿</h2>
-                            <div className="contact-card-list">
-                                <a href="https://wa.me/255658450092" className="contact-card-link" target="_blank" rel="noreferrer">
-                                    📲 WhatsApp: https://wa.me/255658450092
-                                </a>
-                                <a href="tel:+255658450092" className="contact-card-link">
-                                    📞 Call: +255 658 450 092
-                                </a>
-                            </div>
-                        </article>
+          <div className="contact-channels-grid">
+            {CONTACT_CARDS.map((card) => (
+              <article
+                key={card.key}
+                className={`contact-card contact-card--${card.accent}`}
+              >
+                <header className="contact-card-head">
+                  <span className="contact-card-badge">{card.badge}</span>
+                  <h3 className="contact-card-title">
+                    {card.title}
+                    {card.flag ? (
+                      <span className="contact-card-flag">{card.flag}</span>
+                    ) : null}
+                  </h3>
+                </header>
 
-                        <article className="contact-card">
-                            <span className="contact-card-label">UK</span>
-                            <h2>UNITED KINGDOM 🇬🇧</h2>
-                            <div className="contact-card-list">
-                                <a href="https://wa.me/447576096292" className="contact-card-link" target="_blank" rel="noreferrer">
-                                    📲 WhatsApp: https://wa.me/447576096292
-                                </a>
-                                <a href="tel:+447576096292" className="contact-card-link">
-                                    📞 Call: +44 7576 096292
-                                </a>
-                            </div>
-                        </article>
+                <ul className="contact-card-rows">
+                  {card.rows.map((row) => (
+                    <li key={row.value}>
+                      <a
+                        href={row.href}
+                        target={
+                          row.href.startsWith("http") ? "_blank" : undefined
+                        }
+                        rel={
+                          row.href.startsWith("http")
+                            ? "noreferrer"
+                            : undefined
+                        }
+                        className="contact-row"
+                      >
+                        <span className="contact-row-icon">
+                          <ContactIcon type={row.icon} />
+                        </span>
+                        <span className="contact-row-text">
+                          <span className="contact-row-label">
+                            {row.label}
+                          </span>
+                          <span className="contact-row-value">
+                            {row.value}
+                          </span>
+                        </span>
+                        <span className="contact-row-arrow" aria-hidden="true">
+                          →
+                        </span>
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
 
-                        <article className="contact-card">
-                            <span className="contact-card-label">MSG</span>
-                            <h2>{t("contact.email.title")}</h2>
-                            <div className="contact-card-list">
-                                <a href="https://m.me/zangatesadventures" className="contact-card-link" target="_blank" rel="noreferrer">
-                                    💬 Messenger
-                                </a>
-                                <a href="mailto:adventures@zanzibargates.co.tz" className="contact-card-link">
-                                    adventures@zanzibargates.co.tz
-                                </a>
-                                <a href="mailto:reservations@zanzibargates.co.tz" className="contact-card-link">
-                                    reservations@zanzibargates.co.tz
-                                </a>
-                            </div>
-                        </article>
+      {/* ---------------------------------------------------
+          TRUST STRIP — hours + response time
+         --------------------------------------------------- */}
+      <section className="contact-trust">
+        <div className="container contact-trust-inner">
+          <div className="contact-trust-item">
+            <span className="contact-trust-icon">
+              <ContactIcon type="clock" />
+            </span>
+            <div>
+              <strong>Office Hours</strong>
+              <span>Mon – Sat · 08:00 – 20:00 (EAT)</span>
+            </div>
+          </div>
 
-                    </div>
-                </div>
-            </section>
+          <div className="contact-trust-item">
+            <span className="contact-trust-icon">
+              <ContactIcon type="map-pin" />
+            </span>
+            <div>
+              <strong>Based in</strong>
+              <span>Zanzibar · Tanzania</span>
+            </div>
+          </div>
 
-            <section className="contact-enquiry">
-                <div className="container">
-                    <div className="contact-enquiry-inner">
-                        <div>
-                            <span className="tour-section-eyebrow">{t("contact.enquiry.eyebrow")}</span>
-                            <h2>{t("contact.enquiry.title")}</h2>
-                            <p>{t("contact.enquiry.description")}</p>
-                        </div>
+          <div className="contact-trust-item">
+            <span className="contact-trust-icon">
+              <ContactIcon type="whatsapp" />
+            </span>
+            <div>
+              <strong>Response Time</strong>
+              <span>Usually within 15 minutes</span>
+            </div>
+          </div>
+        </div>
+      </section>
 
-                        <Link to="/tours" className="primary-button">
-                            {t("actions.exploreOurTours")}
-                        </Link>
-                    </div>
-                </div>
-            </section>
+      {/* ---------------------------------------------------
+          CTA 1 — Explore Tours
+         --------------------------------------------------- */}
+      <section className="contact-cta contact-cta--light">
+        <div className="container">
+          <div className="contact-cta-inner">
+            <div className="contact-cta-text">
+              <span className="contact-section-eyebrow">
+                {t("contact.enquiry.eyebrow", "Need inspiration?")}
+              </span>
+              <h2>{t("contact.enquiry.title", "Browse Our Tour Packages")}</h2>
+              <p>
+                {t(
+                  "contact.enquiry.description",
+                  "Explore our curated selection of tours across Zanzibar."
+                )}
+              </p>
+            </div>
+            <Link to="/tours" className="contact-cta-button contact-cta-button--primary">
+              {t("actions.exploreOurTours", "Explore Our Tours")}
+              <span aria-hidden="true">→</span>
+            </Link>
+          </div>
+        </div>
+      </section>
 
-            <section className="contact-final-cta">
-                <div className="container">
-                    <div className="contact-final-cta-inner">
-                        <span className="tour-section-eyebrow">{t("home.finalCta.eyebrow")}</span>
-                        <h2>{t("home.finalCta.title")}</h2>
-                        <p>{t("home.finalCta.description")}</p>
-                        <Link to="/tours" className="primary-button">
-                            {t("actions.bookAdventure")}
-                        </Link>
-                    </div>
-                </div>
-            </section>
-        </main>
-    );
+      {/* ---------------------------------------------------
+          CTA 2 — Book Now (dark, brand)
+         --------------------------------------------------- */}
+      <section className="contact-cta contact-cta--dark">
+        <div className="container">
+          <div className="contact-cta-inner">
+            <div className="contact-cta-text">
+              <span className="contact-section-eyebrow">
+                {t(
+                  "home.finalCta.eyebrow",
+                  "Your Zanzibar story starts here"
+                )}
+              </span>
+              <h2>
+                {t("home.finalCta.title", "Ready to discover Zanzibar?")}
+              </h2>
+              <p>
+                {t(
+                  "home.finalCta.description",
+                  "Choose your experience and let the island do the rest."
+                )}
+              </p>
+            </div>
+            <Link to="/tours" className="contact-cta-button contact-cta-button--light">
+              {t("actions.bookAdventure", "Book Your Adventure")}
+              <span aria-hidden="true">→</span>
+            </Link>
+          </div>
+        </div>
+      </section>
+    </main>
+  );
 }
-
 
 export default Contact;

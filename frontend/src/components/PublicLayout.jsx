@@ -1,25 +1,27 @@
-import {
-    Outlet,
-} from "react-router-dom";
-
+import { Outlet } from "react-router-dom";
 import Navbar from "./Navbar";
+import SocialRail from "./SocialRail";
 
+/* =========================================================
+   PUBLIC LAYOUT
+   Wraps every public route with Navbar and the global
+   SocialRail (WhatsApp / Facebook / Instagram / Threads)
+   that stays fixed on the right-hand side.
+   ========================================================= */
 
 function PublicLayout() {
+  return (
+    <>
+      <Navbar />
 
-    return (
+      {/* Global right-hand social rail — visible on every page */}
+      <SocialRail />
 
-        <div className="public-site">
-
-            <Navbar />
-
-            <Outlet />
-
-        </div>
-
-    );
-
+      <main className="public-main">
+        <Outlet />
+      </main>
+    </>
+  );
 }
-
 
 export default PublicLayout;

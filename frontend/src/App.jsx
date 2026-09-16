@@ -23,6 +23,8 @@ import DestinationsPage from "./pages/DestinationsPage";
 import DestinationDetailPage from "./pages/DestinationDetailPage";
 import HotelsPage from "./pages/HotelsPage";
 import HotelDetailPage from "./pages/HotelDetailPage";
+import Transfers from "./pages/Transfers";
+import Safaris from "./pages/Safaris";
 
 
 /*
@@ -98,6 +100,15 @@ function App() {
                         />
 
                         {/* =============================================
+                            SAFARIS LISTING
+                        ============================================= */}
+
+                        <Route
+                            path="/safaris"
+                            element={<Safaris />}
+                        />
+
+                        {/* =============================================
                             DESTINATIONS
                             /destinations       → listing page
                             /destinations/:slug → filtered tours
@@ -111,6 +122,33 @@ function App() {
                         <Route
                             path="/destinations/:slug"
                             element={<DestinationDetailPage />}
+                        />
+
+                        {/* =============================================
+                            HOTELS
+                            /hotels       → listing page
+                            /hotels/:slug → hotel detail
+                        ============================================= */}
+
+                        <Route
+                            path="/hotels"
+                            element={<HotelsPage />}
+                        />
+
+                        <Route
+                            path="/hotels/:slug"
+                            element={<HotelDetailPage />}
+                        />
+
+                        {/* =============================================
+                            TRANSFERS
+                            ✅ This was missing — that's why the
+                            Transfers nav link was redirecting to /
+                        ============================================= */}
+
+                        <Route
+                            path="/transfers"
+                            element={<Transfers />}
                         />
 
                         <Route
@@ -132,16 +170,6 @@ function App() {
                             path="/book/:slug"
                             element={<Booking />}
                         />
-
-                        {/* HOTELS */}
-                        <Route 
-                            path="/hotels" 
-                            element={<HotelsPage />} 
-                            />
-                        <Route 
-                            path="/hotels/:slug" 
-                            element={<HotelDetailPage />} 
-                            />
 
                     </Route>
 
