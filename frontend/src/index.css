@@ -3231,3 +3231,69 @@ body.navbar-menu-open { overflow: hidden; }
         transition: none;
     }
 }
+
+/* ============================================================
+   HOTEL SIDEBAR — SOCIAL SHORTCUTS
+   ============================================================ */
+
+.hotel-sidebar-socials {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-top: 14px;
+}
+
+.hotel-sidebar-social {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 44px;
+    padding: 0 14px;
+    border-radius: 10px;
+    font-size: 0.82rem;
+    font-weight: 700;
+    text-decoration: none;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.hotel-sidebar-social--instagram {
+    background: linear-gradient(135deg, rgba(250, 126, 30, 0.14), rgba(131, 58, 180, 0.14), rgba(255, 0, 128, 0.14));
+    color: #b13389;
+    border: 1px solid rgba(193, 53, 132, 0.22);
+}
+
+.hotel-sidebar-social--instagram:hover {
+    background: linear-gradient(135deg, rgba(250, 126, 30, 0.24), rgba(131, 58, 180, 0.24), rgba(255, 0, 128, 0.24));
+    transform: translateY(-1px);
+    box-shadow: 0 10px 20px rgba(193, 53, 132, 0.18);
+}
+
+.hotel-sidebar-social--facebook {
+    background: rgba(24, 119, 242, 0.10);
+    color: #1877f2;
+    border: 1px solid rgba(24, 119, 242, 0.22);
+}
+
+.hotel-sidebar-social--facebook:hover {
+    background: rgba(24, 119, 242, 0.18);
+    transform: translateY(-1px);
+    box-shadow: 0 10px 20px rgba(24, 119, 242, 0.18);
+}
+
+.hotel-sidebar-social svg {
+    flex-shrink: 0;
+}
+
+/* Make the WhatsApp primary button a bit more prominent */
+
+.hotel-sidebar-button {
+    gap: 10px;
+    font-weight: 800;
+}
+
+@media (max-width: 480px) {
+    .hotel-sidebar-socials {
+        grid-template-columns: 1fr;
+    }
+}
