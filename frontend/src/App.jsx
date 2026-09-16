@@ -19,8 +19,10 @@ import About from "./pages/About";
 import AboutZanzibar from "./pages/AboutZanzibar";
 import Contact from "./pages/Contact";
 import Booking from "./pages/Booking";
-import Safaris from "./pages/Safaris";
-import Transfers from "./pages/Transfers";
+import DestinationsPage from "./pages/DestinationsPage";
+import DestinationDetailPage from "./pages/DestinationDetailPage";
+import HotelsPage from "./pages/HotelsPage";
+import HotelDetailPage from "./pages/HotelDetailPage";
 
 
 /*
@@ -48,10 +50,11 @@ import AdminTourForm from "./pages/admin/AdminTourForm";
 
 /*
 |--------------------------------------------------------------------------
-| ADMIN AUTHENTICATION
+| ADMIN LAYOUT + AUTHENTICATION
 |--------------------------------------------------------------------------
 */
 
+import AdminLayout from "./components/admin/AdminLayout";
 import ProtectedRoute from "./components/admin/ProtectedRoute";
 
 import {
@@ -69,10 +72,8 @@ function App() {
 
                 <Routes>
 
-
                     {/* =====================================================
                         PUBLIC WEBSITE
-                        SHARED NAVBAR
                     ===================================================== */}
 
                     <Route
@@ -81,126 +82,66 @@ function App() {
                         }
                     >
 
-
-                        {/* -------------------------------------------------
-                            HOME
-                            /
-                        ------------------------------------------------- */}
-
                         <Route
                             path="/"
-                            element={
-                                <Home />
-                            }
+                            element={<Home />}
                         />
-
-
-                        {/* -------------------------------------------------
-                            TOURS
-                            /tours
-                        ------------------------------------------------- */}
 
                         <Route
                             path="/tours"
-                            element={
-                                <Tours />
-                            }
+                            element={<Tours />}
                         />
-
-
-                        {/* -------------------------------------------------
-                            TOUR DETAILS
-                            /tours/:slug
-                        ------------------------------------------------- */}
 
                         <Route
                             path="/tours/:slug"
-                            element={
-                                <TourDetails />
-                            }
+                            element={<TourDetails />}
                         />
 
+                        {/* =============================================
+                            DESTINATIONS
+                            /destinations       → listing page
+                            /destinations/:slug → filtered tours
+                        ============================================= */}
 
-                        {/* -------------------------------------------------
-                            ABOUT
-                            /about
-                        ------------------------------------------------- */}
+                        <Route
+                            path="/destinations"
+                            element={<DestinationsPage />}
+                        />
+
+                        <Route
+                            path="/destinations/:slug"
+                            element={<DestinationDetailPage />}
+                        />
 
                         <Route
                             path="/about"
-                            element={
-                                <About />
-                            }
+                            element={<About />}
                         />
-
-
-                        {/* -------------------------------------------------
-                            ABOUT ZANZIBAR
-                            /about-zanzibar
-                        ------------------------------------------------- */}
 
                         <Route
                             path="/about-zanzibar"
-                            element={
-                                <AboutZanzibar />
-                            }
+                            element={<AboutZanzibar />}
                         />
-
-                        {/* -------------------------------------------------
-                            SAFARIS
-                            /safaris
-                        ------------------------------------------------- */}
-
-                        <Route
-                            path="/safaris"
-                            element={
-                                <Safaris />
-                            }
-                        />
-
-                        {/* -------------------------------------------------
-                            TRANSFERS
-                            /transfers
-                        ------------------------------------------------- */}
-
-                        <Route
-                            path="/transfers"
-                            element={
-                                <Transfers />
-                            }
-                        />
-
-
-                        {/* -------------------------------------------------
-                            CONTACT
-                            /contact
-                        ------------------------------------------------- */}
 
                         <Route
                             path="/contact"
-                            element={
-                                <Contact />
-                            }
+                            element={<Contact />}
                         />
-
-
-                        {/* -------------------------------------------------
-                            SPECIFIC TOUR BOOKING
-                            /book/:slug
-
-                            IMPORTANT:
-                            Booking.jsx requires a tour slug.
-                            Example:
-                            /book/safari-blue-zanzibar
-                        ------------------------------------------------- */}
 
                         <Route
                             path="/book/:slug"
-                            element={
-                                <Booking />
-                            }
+                            element={<Booking />}
                         />
 
+                        {/* HOTELS */}
+                        <Route 
+                            path="/hotels" 
+                            element={<HotelsPage />} 
+                            />
+                        <Route 
+                            path="/hotels/:slug" 
+                            element={<HotelDetailPage />} 
+                            />
 
                     </Route>
 
@@ -211,100 +152,50 @@ function App() {
 
                     <Route
                         path="/admin/login"
-                        element={
-                            <AdminLogin />
-                        }
+                        element={<AdminLogin />}
                     />
 
 
                     {/* =====================================================
                         PROTECTED ADMIN AREA
+                        Every admin page renders inside <AdminLayout />
                     ===================================================== */}
 
-                    <Route
-                        element={
-                            <ProtectedRoute />
-                        }
-                    >
+                    <Route element={<ProtectedRoute />}>
 
+                        <Route element={<AdminLayout />}>
 
-                        {/* -------------------------------------------------
-                            DASHBOARD
-                            /admin/dashboard
-                        ------------------------------------------------- */}
+                            <Route
+                                path="/admin/dashboard"
+                                element={<AdminDashboard />}
+                            />
 
-                        <Route
-                            path="/admin/dashboard"
-                            element={
-                                <AdminDashboard />
-                            }
-                        />
+                            <Route
+                                path="/admin/bookings"
+                                element={<AdminBookings />}
+                            />
 
+                            <Route
+                                path="/admin/bookings/:id"
+                                element={<AdminBookingDetails />}
+                            />
 
-                        {/* -------------------------------------------------
-                            BOOKINGS
-                            /admin/bookings
-                        ------------------------------------------------- */}
+                            <Route
+                                path="/admin/tours"
+                                element={<AdminTours />}
+                            />
 
-                        <Route
-                            path="/admin/bookings"
-                            element={
-                                <AdminBookings />
-                            }
-                        />
+                            <Route
+                                path="/admin/tours/new"
+                                element={<AdminTourForm />}
+                            />
 
+                            <Route
+                                path="/admin/tours/:id/edit"
+                                element={<AdminTourForm />}
+                            />
 
-                        {/* -------------------------------------------------
-                            BOOKING DETAILS
-                            /admin/bookings/:id
-                        ------------------------------------------------- */}
-
-                        <Route
-                            path="/admin/bookings/:id"
-                            element={
-                                <AdminBookingDetails />
-                            }
-                        />
-
-
-                        {/* -------------------------------------------------
-                            TOURS
-                            /admin/tours
-                        ------------------------------------------------- */}
-
-                        <Route
-                            path="/admin/tours"
-                            element={
-                                <AdminTours />
-                            }
-                        />
-
-
-                        {/* -------------------------------------------------
-                            CREATE TOUR
-                            /admin/tours/new
-                        ------------------------------------------------- */}
-
-                        <Route
-                            path="/admin/tours/new"
-                            element={
-                                <AdminTourForm />
-                            }
-                        />
-
-
-                        {/* -------------------------------------------------
-                            EDIT TOUR
-                            /admin/tours/:id/edit
-                        ------------------------------------------------- */}
-
-                        <Route
-                            path="/admin/tours/:id/edit"
-                            element={
-                                <AdminTourForm />
-                            }
-                        />
-
+                        </Route>
 
                     </Route>
 
@@ -322,7 +213,6 @@ function App() {
                             />
                         }
                     />
-
 
                 </Routes>
 

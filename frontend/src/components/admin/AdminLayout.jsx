@@ -1,376 +1,191 @@
-// import {
-//     Link,
-//     NavLink,
-//     Outlet,
-//     useNavigate,
-// } from "react-router-dom";
+// frontend/src/components/admin/AdminLayout.jsx
+import {
+    Link,
+    NavLink,
+    Outlet,
+    useNavigate,
+} from "react-router-dom";
 
-// import adminApi from "../../services/adminApi";
+import adminApi from "../../services/adminApi";
+import { useAuth } from "../../context/AuthContext";
 
-// import "./AdminLayout.css";
+import "./AdminLayout.css";
 
 
-// function AdminLayout() {
+function AdminLayout() {
 
-//     const navigate = useNavigate();
+    const navigate = useNavigate();
 
+    const { admin } = useAuth();
 
-//     /*
-//     |--------------------------------------------------------------------------
-//     | LOGOUT
-//     |--------------------------------------------------------------------------
-//     */
 
-//     const handleLogout = () => {
+    /*
+    |--------------------------------------------------------------------------
+    | LOGOUT
+    |--------------------------------------------------------------------------
+    */
 
-//         adminApi.logout();
+    const handleLogout = () => {
 
-//         navigate(
-//             "/admin/login",
-//             {
-//                 replace: true,
-//             }
-//         );
+        adminApi.logout();
 
-//     };
+        navigate("/admin/login", {
+            replace: true,
+        });
 
+    };
 
-//     /*
-//     |--------------------------------------------------------------------------
-//     | NAVIGATION CLASS
-//     |--------------------------------------------------------------------------
-//     */
 
-//     const navClass = ({
-//         isActive,
-//     }) => {
+    /*
+    |--------------------------------------------------------------------------
+    | NAV CLASS
+    |--------------------------------------------------------------------------
+    */
 
-//         return isActive
-//             ? "admin-nav-link active"
-//             : "admin-nav-link";
+    const navClass = ({ isActive }) =>
+        isActive
+            ? "admin-nav-item active"
+            : "admin-nav-item";
 
-//     };
 
+    return (
 
-//     return (
+        <div className="admin-layout">
 
-//         <div className="admin-app">
+            {/* ============================================================
+                SIDEBAR
+            ============================================================ */}
 
+            <aside className="admin-sidebar">
 
-//             {/* ================================================================
-//                 SIDEBAR
-//             ================================================================= */}
+                {/* BRAND */}
+                <div className="admin-sidebar-brand">
 
-//             <aside className="admin-sidebar">
+                    <Link
+                        to="/admin/dashboard"
+                        className="admin-brand-link"
+                    >
 
+                        <img
+                            src="https://res.cloudinary.com/djczmay2i/image/upload/v1788254388/ZAN_GATES_ADVENTURES_k59crf.jpg"
+                            alt="ZAN GATES Adventures"
+                            className="admin-brand-mark admin-brand-image"
+                        />
 
-//                 {/* ============================================================
-//                     BRAND
-//                 ============================================================= */}
+                        <div className="admin-brand-text">
 
-//                 <div className="admin-brand">
+                            <strong>
+                                ZAN GATES
+                            </strong>
 
-//                     <Link
-//                         to="/admin/dashboard"
-//                         className="admin-brand-link"
-//                     >
+                            <span>
+                                ADVENTURES
+                            </span>
 
-//                         <div className="admin-logo">
-//                             ZG
-//                         </div>
+                        </div>
 
+                    </Link>
 
-//                         <div className="admin-brand-text">
+                </div>
 
-//                             <strong>
-//                                 ZAN GATES
-//                             </strong>
 
-//                             <span>
-//                                 ADVENTURES
-//                             </span>
+                {/* SECTION LABEL */}
+                <div className="admin-sidebar-label">
+                    ADMINISTRATION
+                </div>
 
-//                         </div>
 
-//                     </Link>
+                {/* NAVIGATION */}
+                <nav className="admin-sidebar-nav">
 
-//                 </div>
+                    <NavLink
+                        to="/admin/dashboard"
+                        className={navClass}
+                    >
+                        <span>▦</span>
+                        Dashboard
+                    </NavLink>
 
+                    <NavLink
+                        to="/admin/bookings"
+                        className={navClass}
+                    >
+                        <span>▤</span>
+                        Bookings
+                    </NavLink>
 
-//                 {/* ============================================================
-//                     NAVIGATION
-//                 ============================================================= */}
-
-//                 <nav className="admin-sidebar-nav">
-
-
-//                     <NavLink
-//                         to="/admin/dashboard"
-//                         className={navClass}
-//                     >
-
-//                         <svg
-//                             viewBox="0 0 24 24"
-//                             aria-hidden="true"
-//                         >
-
-//                             <rect
-//                                 x="3"
-//                                 y="3"
-//                                 width="7"
-//                                 height="7"
-//                                 rx="1"
-//                             />
-
-//                             <rect
-//                                 x="14"
-//                                 y="3"
-//                                 width="7"
-//                                 height="7"
-//                                 rx="1"
-//                             />
-
-//                             <rect
-//                                 x="3"
-//                                 y="14"
-//                                 width="7"
-//                                 height="7"
-//                                 rx="1"
-//                             />
-
-//                             <rect
-//                                 x="14"
-//                                 y="14"
-//                                 width="7"
-//                                 height="7"
-//                                 rx="1"
-//                             />
-
-//                         </svg>
-
-//                         <span>
-//                             Dashboard
-//                         </span>
-
-//                     </NavLink>
-
-
-//                     <NavLink
-//                         to="/admin/bookings"
-//                         className={navClass}
-//                     >
-
-//                         <svg
-//                             viewBox="0 0 24 24"
-//                             aria-hidden="true"
-//                         >
-
-//                             <rect
-//                                 x="3"
-//                                 y="4"
-//                                 width="18"
-//                                 height="17"
-//                                 rx="2"
-//                             />
-
-//                             <line
-//                                 x1="7"
-//                                 y1="2"
-//                                 x2="7"
-//                                 y2="6"
-//                             />
-
-//                             <line
-//                                 x1="17"
-//                                 y1="2"
-//                                 x2="17"
-//                                 y2="6"
-//                             />
-
-//                             <line
-//                                 x1="3"
-//                                 y1="9"
-//                                 x2="21"
-//                                 y2="9"
-//                             />
+                    <NavLink
+                        to="/admin/tours"
+                        className={navClass}
+                    >
+                        <span>◫</span>
+                        Tours
+                    </NavLink>
 
-//                             <line
-//                                 x1="8"
-//                                 y1="13"
-//                                 x2="16"
-//                                 y2="13"
-//                             />
+                </nav>
 
-//                             <line
-//                                 x1="8"
-//                                 y1="17"
-//                                 x2="14"
-//                                 y2="17"
-//                             />
 
-//                         </svg>
+                {/* FOOTER */}
+                <div className="admin-sidebar-footer">
 
-//                         <span>
-//                             Bookings
-//                         </span>
+                    <Link
+                        to="/"
+                        className="admin-nav-item"
+                    >
+                        <span>↗</span>
+                        View Website
+                    </Link>
 
-//                     </NavLink>
 
+                    <div className="admin-user">
 
-//                     <NavLink
-//                         to="/admin/tours"
-//                         className={navClass}
-//                     >
+                        <div className="admin-user-avatar">
+                            {admin?.full_name
+                                ?.charAt(0)
+                                ?.toUpperCase() || "A"}
+                        </div>
 
-//                         <svg
-//                             viewBox="0 0 24 24"
-//                             aria-hidden="true"
-//                         >
+                        <div className="admin-user-info">
 
-//                             <path
-//                                 d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5V5.5Z"
-//                             />
+                            <strong>
+                                {admin?.full_name || "Administrator"}
+                            </strong>
 
-//                             <path
-//                                 d="M4 5.5v15"
-//                             />
+                            <span>
+                                Administrator
+                            </span>
 
-//                             <path
-//                                 d="M8 7h8"
-//                             />
+                        </div>
 
-//                             <path
-//                                 d="M8 11h7"
-//                             />
+                    </div>
 
-//                         </svg>
 
-//                         <span>
-//                             Tour Management
-//                         </span>
+                    <button
+                        type="button"
+                        className="admin-signout"
+                        onClick={handleLogout}
+                    >
+                        Sign Out
+                    </button>
 
-//                     </NavLink>
+                </div>
 
+            </aside>
 
-//                 </nav>
 
+            {/* ============================================================
+                MAIN CONTENT
+            ============================================================ */}
 
-//                 {/* ============================================================
-//                     SIDEBAR FOOTER
-//                 ============================================================= */}
+            <main className="admin-main">
+                <Outlet />
+            </main>
 
-//                 <div className="admin-sidebar-footer">
+        </div>
 
+    );
 
-//                     <Link
-//                         to="/"
-//                         className="admin-view-website"
-//                     >
+}
 
-//                         <svg
-//                             viewBox="0 0 24 24"
-//                             aria-hidden="true"
-//                         >
 
-//                             <path
-//                                 d="M14 3h7v7"
-//                             />
-
-//                             <path
-//                                 d="M10 14 21 3"
-//                             />
-
-//                             <path
-//                                 d="M21 14v5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5"
-//                             />
-
-//                         </svg>
-
-//                         <span>
-//                             View Website
-//                         </span>
-
-//                     </Link>
-
-
-//                     <div className="admin-user">
-
-
-//                         <div className="admin-user-avatar">
-//                             S
-//                         </div>
-
-
-//                         <div className="admin-user-info">
-
-//                             <strong>
-//                                 System Administrator
-//                             </strong>
-
-//                             <span>
-//                                 Administrator
-//                             </span>
-
-//                         </div>
-
-
-//                     </div>
-
-
-//                     <button
-//                         type="button"
-//                         className="admin-signout"
-//                         onClick={handleLogout}
-//                     >
-
-//                         <svg
-//                             viewBox="0 0 24 24"
-//                             aria-hidden="true"
-//                         >
-
-//                             <path
-//                                 d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"
-//                             />
-
-//                             <path
-//                                 d="M16 17l5-5-5-5"
-//                             />
-
-//                             <path
-//                                 d="M21 12H9"
-//                             />
-
-//                         </svg>
-
-//                         <span>
-//                             Sign Out
-//                         </span>
-
-//                     </button>
-
-
-//                 </div>
-
-
-//             </aside>
-
-
-//             {/* ================================================================
-//                 MAIN CONTENT
-//             ================================================================= */}
-
-//             <main className="admin-main-content">
-
-//                 <Outlet />
-
-//             </main>
-
-
-//         </div>
-
-//     );
-
-// }
-
-
-// export default AdminLayout;
+export default AdminLayout;

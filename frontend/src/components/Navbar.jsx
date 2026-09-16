@@ -52,10 +52,6 @@ const looksLikeSafari = (tour) => {
 
 /* =========================================================
    EXCURSION GROUPING
-   =========================================================
-   Tours whose title begins with one of these prefixes are
-   rendered inside a nested submenu rather than the top-level
-   excursions list.
    ========================================================= */
 
 const NESTED_GROUP_PREFIXES = [
@@ -64,7 +60,6 @@ const NESTED_GROUP_PREFIXES = [
     label: "Mnemba Island",
     match: (title) =>
       normalizeString(title).startsWith("mnemba island"),
-    // Strip the group label prefix from the child text
     stripPrefix: /^Mnemba Island\s+/i,
   },
 ];
@@ -83,20 +78,6 @@ const getTourSlug = (tour) =>
 
 /**
  * Split excursions into top-level items and nested groups.
- *
- * Returns:
- *   {
- *     topLevel: [tour, tour, ...],
- *     groups: [
- *       {
- *         key: "mnemba",
- *         label: "Mnemba Island",
- *         tours: [tour, tour, ...],
- *         stripPrefix: /^Mnemba Island\s+/i,
- *       },
- *       ...
- *     ],
- *   }
  */
 const splitExcursions = (tours) => {
   const topLevel = [];
@@ -182,8 +163,6 @@ function Navbar() {
       try {
         const data = await getTours();
 
-        console.log("[Navbar] getTours() response:", data);
-
         if (!mounted) return;
 
         let list = [];
@@ -206,8 +185,6 @@ function Navbar() {
           );
           if (firstArray) list = firstArray;
         }
-
-        console.log("[Navbar] parsed tour list:", list);
 
         const safariList = list.filter(looksLikeSafari);
         const excursionList = list.filter(
@@ -565,6 +542,23 @@ function Navbar() {
             )}
           </div>
 
+          {/* DESTINATIONS */}
+          <NavLink to="/destinations" className={navLinkClass}>
+            <span>{t("navigation.destinations", "Destinations")}</span>
+          </NavLink>
+
+          {/* HOTELS */}
+          <NavLink to="/hotels" className={navLinkClass}>
+            <span>{t("navigation.hotels", "Hotels")}</span>
+          </NavLink>
+
+          {/* WEDDING & PROPOSALS */}
+          <NavLink to="/wedding-and-proposals" className={navLinkClass}>
+            <span>
+              {t("navigation.weddingAndProposals", "Wedding & Proposals")}
+            </span>
+          </NavLink>
+
           {/* TRANSFERS LINK */}
           <NavLink to="/transfers" className={navLinkClass}>
             <span>{t("navigation.transfers", "Transfers")}</span>
@@ -728,10 +722,6 @@ function Navbar() {
                   </span>
                 )}
 
-                {/*
-                  On mobile, all excursions render flat under the
-                  accordion. Nested groups are a desktop-only pattern.
-                */}
                 {excursions.map((tour) => {
                   const slug = getTourSlug(tour);
                   const title = getTourTitle(tour);
@@ -803,6 +793,35 @@ function Navbar() {
                 </NavLink>
               </div>
             </details>
+
+            {/* MOBILE DESTINATIONS */}
+            <NavLink
+              to="/destinations"
+              className={navLinkClass}
+              onClick={closeMobileMenu}
+            >
+              <span>{t("navigation.destinations", "Destinations")}</span>
+            </NavLink>
+
+            {/* MOBILE HOTELS */}
+            <NavLink
+              to="/hotels"
+              className={navLinkClass}
+              onClick={closeMobileMenu}
+            >
+              <span>{t("navigation.hotels", "Hotels")}</span>
+            </NavLink>
+
+            {/* MOBILE WEDDING & PROPOSALS */}
+            <NavLink
+              to="/wedding-and-proposals"
+              className={navLinkClass}
+              onClick={closeMobileMenu}
+            >
+              <span>
+                {t("navigation.weddingAndProposals", "Wedding & Proposals")}
+              </span>
+            </NavLink>
 
             {/* MOBILE TRANSFERS LINK */}
             <NavLink
