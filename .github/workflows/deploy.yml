@@ -71,6 +71,16 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Clear stale migrations before copying fresh ones
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.SERVER_IP }}
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            mkdir -p ~/zan-gates-deploy
+            rm -rf ~/zan-gates-deploy/backend/migrations
+
       - name: Copy compose file and migrations to server
         uses: appleboy/scp-action@v0.1.7
         with:

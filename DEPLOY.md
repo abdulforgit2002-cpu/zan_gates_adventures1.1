@@ -80,44 +80,23 @@ Copy [`.env.prod.example`](.env.prod.example) (in this repo) to
 This `.env` file is never touched by CI — it's server-only and stays put
 across deploys.
 
-**3. Migrate the database off Railway.**
+**3. Database: fresh start, no Railway carry-over.**
 
-The real schema (tours, categories, destinations, booking_enquiries, admin
-accounts, etc.) currently only exists in your Railway Postgres instance —
-`backend/migrations/` only has incremental `ALTER TABLE` scripts layered on
-top of it, not a base schema. Dump it from Railway and restore it into the
-new container:
+The project previously ran on Railway, but its database was never captured
+in git (`backend/migrations/` only had incremental `ALTER TABLE` scripts
+layered on top of an undocumented base schema). Rather than depend on
+dumping/restoring that Railway database, `backend/migrations/0000_base_schema.sql`
+now reconstructs the full schema from scratch — `categories`, `destinations`,
+`users` (admin accounts), `tours`, `tour_prices`, `tour_images`,
+`booking_enquiries` — by reading every query the controllers actually run.
+It was validated locally (a real Postgres instance, every migration file
+applied in order, then re-applied a second time to confirm idempotency, then
+every read/write query path in `TourController`, `AdminAuthController`, and
+`BookingEnquiryController` run against the result) before being committed.
 
-```bash
-# From your machine, using the connection string from the Railway dashboard
-# (Postgres service → Connect → "Postgres Connection URL"):
-pg_dump --no-owner --no-privileges "postgres://USER:PASSWORD@HOST:PORT/DBNAME" \
-  > zan_gates_dump.sql
-```
-
-Copy the dump to the server, then, after the deploy directory and `.env`
-exist (step 2) but **before the first deploy runs**, bring up just the
-database container and restore into it:
-
-```bash
-scp zan_gates_dump.sql your-server:~/zan-gates-deploy/
-ssh your-server
-cd ~/zan-gates-deploy
-
-# Bring up an empty db container using the values in .env
-docker compose -f docker-compose.prod.yml up -d db
-
-# Wait for it to report healthy, then restore
-docker compose -f docker-compose.prod.yml exec -T db \
-  psql -U "$DB_USER" -d "$DB_NAME" < zan_gates_dump.sql
-```
-
-Existing admin login credentials come across with the dump — no need to
-create a new admin user. Once this is done, `backend/migrations/*.sql` are
-safe to (re-)apply on top, since they're all written with
-`IF NOT EXISTS` / `ON CONFLICT ... DO UPDATE` — CI re-applies all of them on
-every deploy, which is a no-op once already applied. Keep any future
-migration files idempotent the same way.
+This means **the first deploy creates an entirely empty database** — no
+sample tours, no admin login. Nothing to do here before the first deploy;
+just create the admin account and content afterward (next section).
 
 **4. Confirm DNS.** `zanzibargates.co.tz`, `www.zanzibargates.co.tz`, and
 `api.zanzibargates.co.tz` all need A records pointing at this server's IP
@@ -134,6 +113,28 @@ Push to `main` (or run the workflow manually from the Actions tab —
 exists **and** that `DB_NAME` / `DB_USER` / `DB_PASSWORD` / `JWT_SECRET` are
 non-blank before touching anything, so a misconfigured server fails fast
 instead of starting a broken stack.
+
+**Create the first admin account** once the deploy succeeds — the database
+starts with zero rows in `users`, so nobody can log in until one exists.
+Generate a password hash with the exact same PHP/algorithm the app verifies
+against (`password_verify`), using the backend image itself:
+
+```bash
+docker run --rm ghcr.io/abdulforgit2002-cpu/zan-gates-backend:latest \
+  php -r "echo password_hash('YourStrongPasswordHere', PASSWORD_DEFAULT), PHP_EOL;"
+```
+
+Then insert the row (`DB_USER`/`DB_NAME` from `.env`, as above):
+
+```bash
+docker compose -f docker-compose.prod.yml exec -T db \
+  psql -U "$DB_USER" -d "$DB_NAME" -c \
+  "INSERT INTO users (username, full_name, password_hash, role) VALUES ('admin', 'Site Admin', 'PASTE_THE_HASH_HERE', 'ADMIN');"
+```
+
+Log in at `https://zanzibargates.co.tz` admin panel with that username/password,
+then use it to add categories, destinations, and tours — the site starts
+completely empty otherwise.
 
 ## What CI actually does (`.github/workflows/deploy.yml`)
 
@@ -157,7 +158,15 @@ instead of starting a broken stack.
   and re-tagging), but there's no one-command rollback yet.
 - **Migrations must stay idempotent.** There's no migrations-tracking table
   (no framework), so every deploy re-runs every `.sql` file in
-  `backend/migrations/`. All three existing files already use
+  `backend/migrations/`. All existing files already use
   `IF NOT EXISTS` / `ON CONFLICT ... DO UPDATE`; any new migration file must
   follow the same style or a redeploy will fail (or silently re-apply
-  something destructive).
+  something destructive). Migration files are numbered (`0000_`, `0001_`, …)
+  because they're applied in plain alphabetical glob order and some depend
+  on tables created by an earlier file — keep new ones numbered after the
+  last one.
+- **No content carried over from Railway.** Tours, categories, destinations,
+  and past booking enquiries that existed on Railway are gone from this
+  deploy — only the schema was reconstructed, not the data. If any of that
+  content is still needed, it has to be re-entered by hand through the admin
+  panel.
