@@ -5644,3 +5644,178 @@ body.navbar-menu-open { overflow: hidden; }
         height: 46px;
     }
 }
+
+/* ============================================================
+   HOME — SAFARIS + EXCURSIONS COLLECTIONS
+   ============================================================ */
+
+.home-collection {
+    max-width: 1250px;
+    margin: 0 auto 70px;
+}
+
+.home-collection:last-of-type {
+    margin-bottom: 30px;
+}
+
+.home-collection-heading {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 40px;
+    margin-bottom: 32px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid #e7eeec;
+}
+
+.home-collection-heading h3 {
+    margin: 10px 0 0;
+    color: #123f46;
+    font-size: clamp(24px, 3vw, 34px);
+    font-weight: 700;
+    line-height: 1.15;
+    letter-spacing: -0.03em;
+}
+
+.home-collection-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+    color: #168083;
+    font-size: 0.86rem;
+    font-weight: 800;
+    letter-spacing: 0.02em;
+    text-decoration: none;
+    transition: color 0.2s ease, gap 0.2s ease;
+}
+
+.home-collection-link span {
+    font-size: 16px;
+    transition: transform 0.25s ease;
+}
+
+.home-collection-link:hover {
+    color: #116b6e;
+    gap: 14px;
+}
+
+.home-collection-link:hover span {
+    transform: translateX(4px);
+}
+
+/* ---------- Split CTA footer ---------- */
+
+.home-collections-footer {
+    max-width: 1250px;
+    margin: 70px auto 0;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 22px;
+}
+
+.home-collection-cta {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 32px 34px 28px;
+    border-radius: 22px;
+    background: linear-gradient(135deg, #123f46 0%, #0d6265 55%, #092f35 100%);
+    color: #ffffff;
+    text-decoration: none;
+    overflow: hidden;
+    box-shadow: 0 20px 45px rgba(5, 27, 30, 0.22);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.home-collection-cta--alt {
+    background: linear-gradient(135deg, #0a4d47 0%, #168083 55%, #0e5b54 100%);
+}
+
+.home-collection-cta::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(
+        circle at 80% 20%,
+        rgba(255, 255, 255, 0.14),
+        transparent 45%
+    );
+    pointer-events: none;
+}
+
+.home-collection-cta-eyebrow {
+    display: block;
+    color: #aee5e2;
+    font-size: 0.68rem;
+    font-weight: 800;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+}
+
+.home-collection-cta strong {
+    display: block;
+    color: #ffffff;
+    font-size: clamp(1.1rem, 1.8vw, 1.4rem);
+    font-weight: 700;
+    line-height: 1.25;
+    letter-spacing: -0.02em;
+    max-width: 260px;
+}
+
+.home-collection-cta-arrow {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    margin-top: 14px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.14);
+    color: #ffffff;
+    font-size: 20px;
+    transition: transform 0.25s ease, background 0.25s ease;
+}
+
+.home-collection-cta:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 28px 60px rgba(5, 27, 30, 0.3);
+}
+
+.home-collection-cta:hover .home-collection-cta-arrow {
+    transform: translateX(6px);
+    background: rgba(255, 255, 255, 0.24);
+}
+
+/* ---------- Responsive ---------- */
+
+@media (max-width: 900px) {
+    .home-collection-heading {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 16px;
+        margin-bottom: 24px;
+    }
+
+    .home-collections-footer {
+        grid-template-columns: 1fr;
+        gap: 16px;
+        margin-top: 55px;
+    }
+
+    .home-collection {
+        margin-bottom: 55px;
+    }
+}
+
+@media (max-width: 600px) {
+    .home-collection-cta {
+        padding: 26px 24px 22px;
+        border-radius: 18px;
+    }
+
+    .home-collection-cta strong {
+        font-size: 1.1rem;
+    }
+}
