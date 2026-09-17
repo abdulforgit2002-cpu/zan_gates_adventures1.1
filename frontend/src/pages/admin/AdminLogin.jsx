@@ -146,11 +146,14 @@ const AdminLogin = () => {
 
                     <div className="admin-login-brand">
 
-                        <div className="admin-brand-mark">
-                            ZG
-                        </div>
+                        <img
+                            src="https://res.cloudinary.com/djczmay2i/image/upload/v1788254388/ZAN_GATES_ADVENTURES_k59crf.jpg"
+                            alt="ZAN GATES Adventures"
+                            className="admin-login-logo"
+                        />
 
                         <div>
+
                             <strong>
                                 ZAN GATES
                             </strong>
@@ -158,6 +161,7 @@ const AdminLogin = () => {
                             <span>
                                 ADVENTURES
                             </span>
+
                         </div>
 
                     </div>

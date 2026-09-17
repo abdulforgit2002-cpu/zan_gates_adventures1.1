@@ -5596,3 +5596,51 @@ body.navbar-menu-open { overflow: hidden; }
 .gtranslate_wrapper a[href*="gtranslate.net"] {
     display: none !important;
 }
+
+/* ============================================================
+   ADMIN LOGIN — Brand logo
+   ============================================================ */
+
+.admin-login-logo {
+    display: block;
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    object-fit: cover;
+    object-position: center;
+    flex-shrink: 0;
+    border: 2px solid rgba(22, 128, 131, 0.18);
+    box-shadow:
+        0 6px 16px rgba(18, 63, 70, 0.10),
+        0 0 0 4px rgba(22, 128, 131, 0.06);
+}
+
+.admin-login-brand {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+}
+
+.admin-login-brand strong {
+    display: block;
+    font-size: 15px;
+    letter-spacing: 1.5px;
+    color: #123f46;
+    font-weight: 800;
+}
+
+.admin-login-brand span {
+    display: block;
+    margin-top: 3px;
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: #8a8a8a;
+    font-weight: 600;
+}
+
+@media (max-width: 520px) {
+    .admin-login-logo {
+        width: 46px;
+        height: 46px;
+    }
+}
