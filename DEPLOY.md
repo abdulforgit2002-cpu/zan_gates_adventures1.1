@@ -76,6 +76,9 @@ Copy [`.env.prod.example`](.env.prod.example) (in this repo) to
 - `JWT_SECRET` — at least 32 random characters
   (`python3 -c "import secrets; print(secrets.token_urlsafe(50))"`)
 - `CORS_ALLOWED_ORIGIN` — already set correctly in the template
+- `ADMIN_USERNAME` / `ADMIN_PASSWORD` / `ADMIN_FULL_NAME` — the first admin
+  login, auto-created on first deploy (see below) — pick a real password
+  here, not the placeholder
 
 This `.env` file is never touched by CI — it's server-only and stays put
 across deploys.
@@ -110,31 +113,21 @@ box are set up.
 
 Push to `main` (or run the workflow manually from the Actions tab —
 `workflow_dispatch` is enabled). The deploy job checks `~/zan-gates-deploy/.env`
-exists **and** that `DB_NAME` / `DB_USER` / `DB_PASSWORD` / `JWT_SECRET` are
-non-blank before touching anything, so a misconfigured server fails fast
-instead of starting a broken stack.
+exists **and** that `DB_NAME` / `DB_USER` / `DB_PASSWORD` / `JWT_SECRET` /
+`ADMIN_USERNAME` / `ADMIN_PASSWORD` are non-blank before touching anything,
+so a misconfigured server fails fast instead of starting a broken stack.
 
-**Create the first admin account** once the deploy succeeds — the database
-starts with zero rows in `users`, so nobody can log in until one exists.
-Generate a password hash with the exact same PHP/algorithm the app verifies
-against (`password_verify`), using the backend image itself:
+**The first admin account is created automatically.** After migrations
+apply, the deploy runs `backend/scripts/seed_admin.php` (via
+`docker compose run --rm backend php scripts/seed_admin.php`), which inserts
+one row into `users` using `ADMIN_USERNAME`/`ADMIN_PASSWORD`/`ADMIN_FULL_NAME`
+from `.env` — but only if `users` is currently empty, so it's a no-op on
+every deploy after the first. Nothing to run by hand.
 
-```bash
-docker run --rm ghcr.io/abdulforgit2002-cpu/zan-gates-backend:latest \
-  php -r "echo password_hash('YourStrongPasswordHere', PASSWORD_DEFAULT), PHP_EOL;"
-```
-
-Then insert the row (`DB_USER`/`DB_NAME` from `.env`, as above):
-
-```bash
-docker compose -f docker-compose.prod.yml exec -T db \
-  psql -U "$DB_USER" -d "$DB_NAME" -c \
-  "INSERT INTO users (username, full_name, password_hash, role) VALUES ('admin', 'Site Admin', 'PASTE_THE_HASH_HERE', 'ADMIN');"
-```
-
-Log in at `https://zanzibargates.co.tz` admin panel with that username/password,
-then use it to add categories, destinations, and tours — the site starts
-completely empty otherwise.
+Log in at the admin panel with those credentials, then use it to add
+categories, destinations, and tours — the site starts completely empty
+otherwise. Categories and destinations are managed at `/admin/categories`
+and `/admin/destinations`.
 
 ## What CI actually does (`.github/workflows/deploy.yml`)
 
@@ -143,12 +136,14 @@ completely empty otherwise.
    `VITE_API_BASE_URL=https://api.zanzibargates.co.tz/api` in at build time
    (Vite inlines env vars into the JS bundle, so this can't be a runtime
    var).
-2. **deploy** — copies `docker-compose.prod.yml` and
-   `backend/migrations/*.sql` to `~/zan-gates-deploy/` on the server, then
-   over SSH: validates `.env`, logs into GHCR using the run's own
-   `GITHUB_TOKEN`, pulls the new images, brings up `db` and waits for it to
-   be healthy, applies every `.sql` file in `backend/migrations/` via
-   `psql`, then starts everything.
+2. **deploy** — clears any previously-copied `backend/migrations/` on the
+   server (so a file removed from the repo can't keep running from a stale
+   copy), copies `docker-compose.prod.yml` and `backend/migrations/*.sql`
+   fresh, then over SSH: validates `.env`, logs into GHCR using the run's
+   own `GITHUB_TOKEN`, pulls the new images, brings up `db` and waits for
+   it to be healthy, applies every `.sql` file in `backend/migrations/` via
+   `psql`, seeds the first admin account if `users` is empty, then starts
+   everything.
 
 ## Known limitations (flagging, not fixed here)
 

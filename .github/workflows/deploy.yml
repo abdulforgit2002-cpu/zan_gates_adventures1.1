@@ -107,7 +107,7 @@ jobs:
               exit 1
             fi
 
-            for var in DB_NAME DB_USER DB_PASSWORD JWT_SECRET; do
+            for var in DB_NAME DB_USER DB_PASSWORD JWT_SECRET ADMIN_USERNAME ADMIN_PASSWORD; do
               if ! grep -qE "^${var}=.+" .env; then
                 echo "ERROR: ${var} is missing or blank in ~/zan-gates-deploy/.env — refusing to deploy."
                 echo "See DEPLOY.md / .env.prod.example."
@@ -143,6 +143,10 @@ jobs:
                   psql -U "$DB_USER" -d "$DB_NAME" -v ON_ERROR_STOP=1 < "$f"
               done
             fi
+
+            echo "Seeding first admin account (no-op if one already exists)..."
+            docker compose -f docker-compose.prod.yml run --rm backend \
+              php scripts/seed_admin.php
 
             docker compose -f docker-compose.prod.yml up -d
             docker image prune -f

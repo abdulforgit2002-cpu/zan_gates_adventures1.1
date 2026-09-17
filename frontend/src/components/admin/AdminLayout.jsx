@@ -122,6 +122,22 @@ function AdminLayout() {
                         Tours
                     </NavLink>
 
+                    <NavLink
+                        to="/admin/categories"
+                        className={navClass}
+                    >
+                        <span>◨</span>
+                        Categories
+                    </NavLink>
+
+                    <NavLink
+                        to="/admin/destinations"
+                        className={navClass}
+                    >
+                        <span>◎</span>
+                        Destinations
+                    </NavLink>
+
                 </nav>
 
 

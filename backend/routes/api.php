@@ -38,6 +38,8 @@ require_once __DIR__ . '/../src/Controllers/AdminAuthController.php';
 require_once __DIR__ . '/../src/Controllers/AdminBookingController.php';
 require_once __DIR__ . '/../src/Controllers/AdminDashboardController.php';
 require_once __DIR__ . '/../src/Controllers/AdminTourController.php';
+require_once __DIR__ . '/../src/Controllers/AdminCategoryController.php';
+require_once __DIR__ . '/../src/Controllers/AdminDestinationController.php';
 
 
 /*
@@ -92,6 +94,12 @@ $adminDashboardController =
 
 $adminTourController =
     new AdminTourController($db);
+
+$adminCategoryController =
+    new AdminCategoryController($db);
+
+$adminDestinationController =
+    new AdminDestinationController($db);
 
 
 /*
@@ -647,6 +655,70 @@ $router->delete(
 $router->delete(
     '/api/admin/tours/{id}',
     [$adminTourController, 'destroy']
+);
+
+
+/*
+|--------------------------------------------------------------------------
+| ADMIN CATEGORY MANAGEMENT
+|--------------------------------------------------------------------------
+|
+| All endpoints below are protected by
+| AuthMiddleware::requireAdmin().
+|
+|--------------------------------------------------------------------------
+*/
+
+$router->get(
+    '/api/admin/categories',
+    [$adminCategoryController, 'index']
+);
+
+$router->post(
+    '/api/admin/categories',
+    [$adminCategoryController, 'store']
+);
+
+$router->put(
+    '/api/admin/categories/{id}',
+    [$adminCategoryController, 'update']
+);
+
+$router->delete(
+    '/api/admin/categories/{id}',
+    [$adminCategoryController, 'destroy']
+);
+
+
+/*
+|--------------------------------------------------------------------------
+| ADMIN DESTINATION MANAGEMENT
+|--------------------------------------------------------------------------
+|
+| All endpoints below are protected by
+| AuthMiddleware::requireAdmin().
+|
+|--------------------------------------------------------------------------
+*/
+
+$router->get(
+    '/api/admin/destinations',
+    [$adminDestinationController, 'index']
+);
+
+$router->post(
+    '/api/admin/destinations',
+    [$adminDestinationController, 'store']
+);
+
+$router->put(
+    '/api/admin/destinations/{id}',
+    [$adminDestinationController, 'update']
+);
+
+$router->delete(
+    '/api/admin/destinations/{id}',
+    [$adminDestinationController, 'destroy']
 );
 
 

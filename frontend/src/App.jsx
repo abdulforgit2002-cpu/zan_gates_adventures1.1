@@ -49,6 +49,8 @@ import AdminBookings from "./pages/admin/AdminBookings";
 import AdminBookingDetails from "./pages/admin/AdminBookingDetails";
 import AdminTours from "./pages/admin/AdminTours";
 import AdminTourForm from "./pages/admin/AdminTourForm";
+import AdminCategories from "./pages/admin/AdminCategories";
+import AdminDestinations from "./pages/admin/AdminDestinations";
 
 
 /*
@@ -227,6 +229,16 @@ function App() {
                             <Route
                                 path="/admin/tours/:id/edit"
                                 element={<AdminTourForm />}
+                            />
+
+                            <Route
+                                path="/admin/categories"
+                                element={<AdminCategories />}
+                            />
+
+                            <Route
+                                path="/admin/destinations"
+                                element={<AdminDestinations />}
                             />
 
                         </Route>
