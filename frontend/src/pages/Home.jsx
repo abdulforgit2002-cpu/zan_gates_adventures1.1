@@ -218,11 +218,6 @@ function Home() {
     const currentHeroSlide =
         HOME_HERO_SLIDES[activeHeroImage] || HOME_HERO_SLIDES[0];
 
-    const handleHeroChange = (index) => {
-        if (index === activeHeroImage) return;
-        setActiveHeroImage(index);
-    };
-
     /* ------------------------------------------------------------------
        SPLIT TOURS — 2 SAFARIS + 2 EXCURSIONS
        ------------------------------------------------------------------ */
@@ -299,28 +294,6 @@ function Home() {
                             </a>
                         </div>
                     </div>
-                </div>
-
-                <div
-                    className="home-hero-navigation"
-                    aria-label="Hero image navigation"
-                >
-                    {HOME_HERO_SLIDES.map((slide, index) => (
-                        <button
-                            key={slide.id}
-                            type="button"
-                            className={
-                                index === activeHeroImage ? "active" : ""
-                            }
-                            aria-label={`View ${slide.experience}`}
-                            aria-current={
-                                index === activeHeroImage ? "true" : undefined
-                            }
-                            onClick={() => handleHeroChange(index)}
-                        >
-                            <span />
-                        </button>
-                    ))}
                 </div>
             </section>
 

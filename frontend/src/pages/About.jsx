@@ -131,9 +131,13 @@ function About() {
 
                         <div className="about-highlight-card">
 
-                            <span>
-                                ZG
-                            </span>
+                            <img
+                                src="https://res.cloudinary.com/djczmay2i/image/upload/v1788254388/ZAN_GATES_ADVENTURES_k59crf.jpg"
+                                alt="ZAN GATES Adventures logo"
+                                className="about-highlight-logo"
+                                loading="lazy"
+                                decoding="async"
+                            />
 
 
                             <strong>
