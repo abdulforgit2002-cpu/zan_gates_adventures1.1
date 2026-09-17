@@ -212,7 +212,7 @@ const TourCard = ({ tour }) => {
                         </span>
 
                         <strong>
-                            ZANZIBAR
+                            {destination}
                         </strong>
 
                     </div>
@@ -240,11 +240,6 @@ const TourCard = ({ tour }) => {
                     </span>
 
                 )}
-
-
-                <span className="tour-card-image-label">
-                    ZANZIBAR
-                </span>
 
             </div>
 
