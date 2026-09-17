@@ -74,51 +74,78 @@ a {
 
 
 /* ============================================================
-   GOOGLE TRANSLATE — FORCE HIDE ALL NATIVE UI
+   GOOGLE TRANSLATE ENGINE
+   ============================================================
+   The custom React LanguageSwitcher controls the visitor-facing
+   language selector.
+
+   IMPORTANT:
+   Do NOT use display:none or pointer-events:none on the
+   GTranslate engine. GTranslate must remain initialized so the
+   custom selector can activate its native controls.
    ============================================================ */
 
-#gtranslate-engine,
-.gtranslate_wrapper,
-.gt_container,
-.gt_float_switcher,
-.gt_switcher,
-.gt_switcher_wrapper,
-.gt_switcher_wrapper *,
-.goog-te-gadget,
-.goog-te-gadget-simple,
-.goog-te-gadget-icon,
+#gtranslate-engine {
+    position: fixed !important;
+    left: -10000px !important;
+    top: -10000px !important;
+
+    width: 1px !important;
+    height: 1px !important;
+    min-width: 1px !important;
+    min-height: 1px !important;
+    max-width: 1px !important;
+    max-height: 1px !important;
+
+    overflow: hidden !important;
+    opacity: 0 !important;
+    visibility: visible !important;
+
+    pointer-events: auto !important;
+    z-index: -1 !important;
+}
+
+.gtranslate_wrapper {
+    position: fixed !important;
+    left: -10000px !important;
+    top: -10000px !important;
+
+    width: 1px !important;
+    height: 1px !important;
+    min-width: 1px !important;
+    min-height: 1px !important;
+    max-width: 1px !important;
+    max-height: 1px !important;
+
+    overflow: hidden !important;
+    opacity: 0 !important;
+    visibility: visible !important;
+
+    pointer-events: auto !important;
+    z-index: -1 !important;
+}
+
+.gtranslate_wrapper select,
+.gtranslate_wrapper button,
+.gtranslate_wrapper a,
+.gtranslate_wrapper input {
+    pointer-events: auto !important;
+}
+
 .goog-te-banner-frame,
+iframe.goog-te-banner-frame,
 .goog-te-menu-frame,
 .goog-te-menu2,
 #goog-gt-tt,
 .goog-tooltip,
 .goog-tooltip:hover,
-.skiptranslate,
-.skiptranslate > iframe,
-iframe.goog-te-banner-frame,
-.goog-te-combo,
-.goog-logo-link,
 .goog-te-spinner-pos {
     display: none !important;
     visibility: hidden !important;
-    width: 0 !important;
-    height: 0 !important;
-    overflow: hidden !important;
-    opacity: 0 !important;
-    pointer-events: none !important;
-    position: absolute !important;
-    left: -9999px !important;
-}
-
-font {
-    background: transparent !important;
-    box-shadow: none !important;
-    vertical-align: baseline !important;
 }
 
 body {
     top: 0 !important;
-    position: static !important;
 }
 
 body.translated-ltr,
@@ -1620,11 +1647,15 @@ body.navbar-menu-open { overflow: hidden; }
     background: rgba(255, 255, 255, 0.11);
 }
 
+/* ------------------------------------------------------------------
+   Dropdown menu: always in the DOM (so GTranslate can see it),
+   hidden visually until the parent gains .is-open.
+   ------------------------------------------------------------------ */
+
 .navbar-dropdown-menu {
     position: absolute;
     top: calc(100% + 10px);
     left: 50%;
-    transform: translateX(-50%);
     min-width: 220px;
     padding: 8px;
     display: flex;
@@ -1639,12 +1670,23 @@ body.navbar-menu-open { overflow: hidden; }
     backdrop-filter: blur(18px);
     -webkit-backdrop-filter: blur(18px);
     z-index: 1500;
-    animation: navbarDropdownFadeIn 0.2s ease-out forwards;
+
+    /* Hidden by default — revealed via .is-open */
+    visibility: hidden;
+    opacity: 0;
+    pointer-events: none;
+    transform: translate(-50%, -6px);
+    transition:
+        opacity 0.2s ease,
+        transform 0.2s ease,
+        visibility 0.2s ease;
 }
 
-@keyframes navbarDropdownFadeIn {
-    from { opacity: 0; transform: translate(-50%, -6px); }
-    to   { opacity: 1; transform: translate(-50%, 0); }
+.navbar-dropdown-menu.is-open {
+    visibility: visible;
+    opacity: 1;
+    pointer-events: auto;
+    transform: translate(-50%, 0);
 }
 
 .navbar-dropdown-item {
@@ -2236,8 +2278,9 @@ body.navbar-menu-open { overflow: hidden; }
     backdrop-filter: blur(18px);
     -webkit-backdrop-filter: blur(18px);
 
-    opacity: 0;
     visibility: hidden;
+    opacity: 0;
+    pointer-events: none;
     transform: translateX(-8px);
 
     transition:
@@ -2250,8 +2293,9 @@ body.navbar-menu-open { overflow: hidden; }
 
 .navbar-dropdown-group:hover .navbar-dropdown-submenu,
 .navbar-dropdown-group:focus-within .navbar-dropdown-submenu {
-    opacity: 1;
     visibility: visible;
+    opacity: 1;
+    pointer-events: auto;
     transform: translateX(0);
 }
 
@@ -3237,7 +3281,6 @@ body.navbar-menu-open { overflow: hidden; }
    HOTEL SIDEBAR — CONTACT SHORTCUTS
    ============================================================ */
 
-/* Primary WhatsApp button — brand colour */
 .hotel-sidebar-button--whatsapp {
     background: #25d366;
     color: #ffffff;
@@ -3254,7 +3297,6 @@ body.navbar-menu-open { overflow: hidden; }
     box-shadow: 0 12px 25px rgba(37, 211, 102, 0.28);
 }
 
-/* Secondary WhatsApp button — UK */
 .hotel-sidebar-button--whatsapp-uk {
     background: #128c7e;
     color: #ffffff;
@@ -3271,7 +3313,6 @@ body.navbar-menu-open { overflow: hidden; }
     box-shadow: 0 12px 25px rgba(18, 140, 126, 0.28);
 }
 
-/* Email shortcuts */
 .hotel-sidebar-emails {
     display: flex;
     flex-direction: column;
@@ -3302,7 +3343,6 @@ body.navbar-menu-open { overflow: hidden; }
     color: #116b6e;
 }
 
-/* Social shortcuts */
 .hotel-sidebar-socials {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -3367,7 +3407,6 @@ body.navbar-menu-open { overflow: hidden; }
     flex-shrink: 0;
 }
 
-/* Make the WhatsApp primary button a bit more prominent */
 .hotel-sidebar-button {
     gap: 10px;
     font-weight: 800;
@@ -3381,7 +3420,6 @@ body.navbar-menu-open { overflow: hidden; }
 
 /* ============================================================
    GLOBAL SOCIAL RAIL
-   Fixed on the right, visible on every public page.
    ============================================================ */
 
 .social-rail {
@@ -3407,14 +3445,12 @@ body.navbar-menu-open { overflow: hidden; }
         opacity 0.35s ease;
 }
 
-/* Slides out on scroll-down, back on scroll-up */
 .social-rail.is-hidden {
     transform: translate(120%, -50%);
     opacity: 0;
     pointer-events: none;
 }
 
-/* Base link tile */
 .social-rail-link {
     position: relative;
     display: inline-flex;
@@ -3431,7 +3467,6 @@ body.navbar-menu-open { overflow: hidden; }
         background 0.28s ease;
 }
 
-/* Subtle inner gradient sheen on every tile */
 .social-rail-link::before {
     content: "";
     position: absolute;
@@ -3446,7 +3481,6 @@ body.navbar-menu-open { overflow: hidden; }
     opacity: 0.9;
 }
 
-/* Icon wrapper — scales & shadows on hover */
 .social-rail-icon {
     position: relative;
     z-index: 1;
@@ -3466,7 +3500,6 @@ body.navbar-menu-open { overflow: hidden; }
     filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.25));
 }
 
-/* Hover — lift & glow */
 .social-rail-link:hover {
     transform: translateY(-3px) scale(1.04);
 }
@@ -3475,7 +3508,6 @@ body.navbar-menu-open { overflow: hidden; }
     transform: scale(1.08);
 }
 
-/* -------- WhatsApp -------- */
 .social-rail-link--whatsapp {
     background: linear-gradient(135deg, #2be07a 0%, #1fa85c 55%, #0e8a49 100%);
     color: #ffffff;
@@ -3490,7 +3522,6 @@ body.navbar-menu-open { overflow: hidden; }
         inset 0 1px 0 rgba(255, 255, 255, 0.3);
 }
 
-/* -------- Facebook -------- */
 .social-rail-link--facebook {
     background: linear-gradient(135deg, #4f9dff 0%, #1877f2 55%, #0a4fb3 100%);
     color: #ffffff;
@@ -3505,7 +3536,6 @@ body.navbar-menu-open { overflow: hidden; }
         inset 0 1px 0 rgba(255, 255, 255, 0.3);
 }
 
-/* -------- Instagram -------- */
 .social-rail-link--instagram {
     background: linear-gradient(
         135deg,
@@ -3527,7 +3557,6 @@ body.navbar-menu-open { overflow: hidden; }
         inset 0 1px 0 rgba(255, 255, 255, 0.3);
 }
 
-/* -------- Threads -------- */
 .social-rail-link--threads {
     background: linear-gradient(135deg, #333 0%, #0f172a 55%, #000000 100%);
     color: #ffffff;
@@ -3542,13 +3571,11 @@ body.navbar-menu-open { overflow: hidden; }
         inset 0 1px 0 rgba(255, 255, 255, 0.24);
 }
 
-/* -------- Accessibility -------- */
 .social-rail-link:focus-visible {
     outline: 3px solid rgba(122, 201, 197, 0.7);
     outline-offset: 3px;
 }
 
-/* -------- Responsive -------- */
 @media (max-width: 900px) {
     .social-rail {
         right: 10px;
@@ -3615,8 +3642,6 @@ body.navbar-menu-open { overflow: hidden; }
     color: var(--zg-text);
     overflow-x: hidden;
 }
-
-/* ------------------------- HERO ------------------------- */
 
 .contact-hero {
     position: relative;
@@ -3686,8 +3711,6 @@ body.navbar-menu-open { overflow: hidden; }
     font-size: 1.05rem;
     line-height: 1.8;
 }
-
-/* -------------------- QUICK ACTIONS -------------------- */
 
 .contact-hero-actions {
     position: relative;
@@ -3780,8 +3803,6 @@ body.navbar-menu-open { overflow: hidden; }
     overflow: hidden;
     text-overflow: ellipsis;
 }
-
-/* ------------------ CONTACT CHANNELS ------------------ */
 
 .contact-channels {
     padding: 140px 0 90px;
@@ -3987,8 +4008,6 @@ body.navbar-menu-open { overflow: hidden; }
     transform: translateX(0);
 }
 
-/* ------------------------ TRUST ------------------------ */
-
 .contact-trust {
     padding: 0 0 90px;
     background: #f6f7f4;
@@ -4046,8 +4065,6 @@ body.navbar-menu-open { overflow: hidden; }
     font-size: 0.82rem;
     font-weight: 600;
 }
-
-/* ------------------------- CTA ------------------------- */
 
 .contact-cta {
     padding: 70px 0;
@@ -4167,8 +4184,6 @@ body.navbar-menu-open { overflow: hidden; }
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.22);
 }
 
-/* ------------------------ RESPONSIVE ------------------------ */
-
 @media (max-width: 1000px) {
     .contact-hero-actions {
         grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -4277,8 +4292,6 @@ body.navbar-menu-open { overflow: hidden; }
     color: var(--zg-text);
     overflow-x: hidden;
 }
-
-/* -------------------- HERO -------------------- */
 
 .wp-hero {
     position: relative;
@@ -4402,8 +4415,6 @@ body.navbar-menu-open { overflow: hidden; }
     background: rgba(255, 255, 255, 0.16);
 }
 
-/* -------------------- EYEBROW -------------------- */
-
 .wp-eyebrow {
     display: inline-block;
     margin-bottom: 16px;
@@ -4418,8 +4429,6 @@ body.navbar-menu-open { overflow: hidden; }
     color: #ffd6e7;
 }
 
-/* -------------------- PACKAGE -------------------- */
-
 .wp-package {
     padding: 110px 0;
     background: #ffffff;
@@ -4429,7 +4438,6 @@ body.navbar-menu-open { overflow: hidden; }
     background: #fbf7fb;
 }
 
-/* Gallery */
 .wp-gallery {
     display: grid;
     grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
@@ -4486,7 +4494,6 @@ body.navbar-menu-open { overflow: hidden; }
     transform: scale(1.05);
 }
 
-/* Layout */
 .wp-package-grid {
     display: grid;
     grid-template-columns: minmax(0, 1fr) 340px;
@@ -4533,7 +4540,6 @@ body.navbar-menu-open { overflow: hidden; }
     letter-spacing: -0.02em;
 }
 
-/* Setup cards */
 .wp-setups {
     display: flex;
     flex-direction: column;
@@ -4632,7 +4638,6 @@ body.navbar-menu-open { overflow: hidden; }
     color: #9a5b1c;
 }
 
-/* Addon block */
 .wp-addon {
     padding: 30px;
     margin-bottom: 40px;
@@ -4679,7 +4684,6 @@ body.navbar-menu-open { overflow: hidden; }
     font-weight: 800;
 }
 
-/* Extras */
 .wp-extras {
     margin-bottom: 40px;
 }
@@ -4745,7 +4749,6 @@ body.navbar-menu-open { overflow: hidden; }
     letter-spacing: -0.01em;
 }
 
-/* CTA */
 .wp-cta-button {
     display: inline-flex;
     align-items: center;
@@ -4801,7 +4804,6 @@ body.navbar-menu-open { overflow: hidden; }
     box-shadow: none;
 }
 
-/* Sidebar */
 .wp-package-sidebar {
     position: sticky;
     top: 30px;
@@ -4886,8 +4888,6 @@ body.navbar-menu-open { overflow: hidden; }
     color: #ffffff;
 }
 
-/* -------------------- FINAL CTA -------------------- */
-
 .wp-final-cta {
     padding: 110px 0;
     background: #f6f7f4;
@@ -4942,8 +4942,6 @@ body.navbar-menu-open { overflow: hidden; }
     justify-content: center;
     gap: 14px;
 }
-
-/* -------------------- RESPONSIVE -------------------- */
 
 @media (max-width: 1000px) {
     .wp-gallery {
@@ -5063,7 +5061,6 @@ body.navbar-menu-open { overflow: hidden; }
    WEDDING — package variant + hero button + custom note
    ============================================================ */
 
-/* Wedding hero button (peach / rose accent) */
 .wp-hero-button--wedding {
     background: linear-gradient(135deg, #fbbf24 0%, #d62976 100%);
     color: #ffffff;
@@ -5075,7 +5072,6 @@ body.navbar-menu-open { overflow: hidden; }
     box-shadow: 0 20px 45px rgba(214, 41, 118, 0.45);
 }
 
-/* Wedding package background — soft ivory instead of pink */
 .wp-package--wedding {
     background: #fdf9f3;
 }
@@ -5151,7 +5147,6 @@ body.navbar-menu-open { overflow: hidden; }
     box-shadow: 0 20px 45px rgba(184, 134, 11, 0.45);
 }
 
-/* Custom Wedding Design callout box */
 .wp-custom-box {
     display: flex;
     align-items: flex-start;
@@ -5192,7 +5187,6 @@ body.navbar-menu-open { overflow: hidden; }
     line-height: 1.75;
 }
 
-/* Wedding tagline at the bottom of the section */
 .wp-tagline {
     margin: 8px 0 32px;
     padding: 18px 24px;
@@ -5219,157 +5213,9 @@ body.navbar-menu-open { overflow: hidden; }
 }
 
 /* ============================================================
-   WEDDING — package variant + hero button + custom note
-   ============================================================ */
-
-/* Wedding hero button (gold / rose accent) */
-.wp-hero-button--wedding {
-    background: linear-gradient(135deg, #fbbf24 0%, #d62976 100%);
-    color: #ffffff;
-    box-shadow: 0 14px 30px rgba(214, 41, 118, 0.32);
-}
-
-.wp-hero-button--wedding:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 20px 45px rgba(214, 41, 118, 0.45);
-}
-
-/* Wedding package background — soft ivory instead of pink */
-.wp-package--wedding {
-    background: #fdf9f3;
-}
-
-.wp-package--wedding .wp-setup-card {
-    background: #ffffff;
-    border-color: rgba(214, 175, 100, 0.24);
-    box-shadow: 0 10px 30px rgba(120, 70, 30, 0.06);
-}
-
-.wp-package--wedding .wp-setup-or {
-    background: #fef6e7;
-    color: #b8860b;
-}
-
-.wp-package--wedding .wp-list-check {
-    background: #fef6e7;
-    color: #b8860b;
-}
-
-.wp-package--wedding .wp-extra-item {
-    border-color: rgba(214, 175, 100, 0.2);
-}
-
-.wp-package--wedding .wp-extra-item:hover {
-    border-color: rgba(214, 175, 100, 0.45);
-    box-shadow: 0 10px 22px rgba(214, 175, 100, 0.12);
-}
-
-.wp-package--wedding .wp-extra-price {
-    color: #b8860b;
-}
-
-.wp-package--wedding .wp-eyebrow {
-    color: #b8860b;
-}
-
-.wp-package--wedding .wp-package-price {
-    background: linear-gradient(135deg, #fff8ec, #fdeed6);
-    border-color: rgba(214, 175, 100, 0.25);
-}
-
-.wp-package--wedding .wp-package-price span {
-    color: #8a6b23;
-}
-
-.wp-package--wedding .wp-package-price strong {
-    color: #b8860b;
-}
-
-.wp-package--wedding .wp-sidebar-card {
-    background: linear-gradient(160deg, #2d1f14 0%, #4a2f1a 55%, #1a0e07 100%);
-}
-
-.wp-package--wedding .wp-sidebar-label {
-    color: #fcd9a6;
-}
-
-.wp-package--wedding .wp-sidebar-card p strong {
-    color: #fcd9a6;
-}
-
-.wp-package--wedding .wp-sidebar-button {
-    background: linear-gradient(135deg, #d62976 0%, #962fbf 100%);
-}
-
-.wp-package--wedding .wp-cta-button {
-    background: linear-gradient(135deg, #b8860b 0%, #d62976 100%);
-    box-shadow: 0 14px 30px rgba(184, 134, 11, 0.32);
-}
-
-.wp-package--wedding .wp-cta-button:hover {
-    box-shadow: 0 20px 45px rgba(184, 134, 11, 0.45);
-}
-
-/* Custom Wedding Design callout box */
-.wp-custom-box {
-    display: flex;
-    align-items: flex-start;
-    gap: 18px;
-    padding: 22px 24px;
-    border-radius: 18px;
-    background: linear-gradient(135deg, #fff8ec 0%, #fbe9cf 100%);
-    border: 1px solid rgba(184, 134, 11, 0.22);
-}
-
-.wp-custom-icon {
-    flex-shrink: 0;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 46px;
-    height: 46px;
-    border-radius: 14px;
-    background: #ffffff;
-    color: #b8860b;
-    font-size: 1.4rem;
-    box-shadow: 0 6px 16px rgba(184, 134, 11, 0.15);
-}
-
-.wp-custom-box strong {
-    display: block;
-    margin-bottom: 8px;
-    color: #4a2f1a;
-    font-size: 1rem;
-    font-weight: 800;
-    letter-spacing: -0.01em;
-}
-
-.wp-custom-box p {
-    margin: 0;
-    color: #6b543c;
-    font-size: 0.9rem;
-    line-height: 1.75;
-}
-
-/* Wedding tagline */
-.wp-tagline {
-    margin: 8px 0 32px;
-    padding: 18px 24px;
-    border-radius: 14px;
-    background: linear-gradient(135deg, rgba(214, 41, 118, 0.08), rgba(184, 134, 11, 0.08));
-    color: #8a5670;
-    font-size: 1rem;
-    font-weight: 700;
-    letter-spacing: 0.02em;
-    text-align: center;
-    font-style: italic;
-}
-
-/* ============================================================
    LUXURY PICNIC — package variant, hero button, perfect-for
    ============================================================ */
 
-/* Picnic hero button (soft rose / pink) */
 .wp-hero-button--picnic {
     background: linear-gradient(135deg, #fb7185 0%, #f472b6 100%);
     color: #ffffff;
@@ -5381,7 +5227,6 @@ body.navbar-menu-open { overflow: hidden; }
     box-shadow: 0 20px 45px rgba(244, 114, 182, 0.45);
 }
 
-/* Picnic package background — soft cream/rose */
 .wp-package--picnic {
     background: #fef8f8;
 }
@@ -5457,7 +5302,6 @@ body.navbar-menu-open { overflow: hidden; }
     box-shadow: 0 20px 45px rgba(214, 51, 108, 0.48);
 }
 
-/* Perfect For block */
 .wp-perfectfor {
     padding: 28px 30px;
     border-radius: 20px;
@@ -5503,10 +5347,6 @@ body.navbar-menu-open { overflow: hidden; }
     box-shadow: 0 0 0 3px rgba(244, 114, 182, 0.18);
 }
 
-/* ============================================================
-   RESPONSIVE — Wedding + Picnic
-   ============================================================ */
-
 @media (max-width: 600px) {
     .wp-tagline {
         font-size: 0.9rem;
@@ -5548,53 +5388,9 @@ body.navbar-menu-open { overflow: hidden; }
     min-height: 42px;
 }
 
-.language-switcher--navbar .gtranslate_wrapper {
-    display: inline-flex;
-    align-items: center;
-}
-
 .language-switcher--mobile {
     display: block;
     width: 100%;
-}
-
-.language-switcher--mobile .gtranslate_wrapper {
-    display: block;
-    width: 100%;
-}
-
-/* GTranslate default widget styling overrides */
-.gtranslate_wrapper select,
-.gtranslate_wrapper .gt_selector {
-    appearance: none;
-    -webkit-appearance: none;
-    background: rgba(255, 255, 255, 0.1);
-    color: #ffffff;
-    border: 1px solid rgba(255, 255, 255, 0.18);
-    border-radius: 999px;
-    padding: 8px 34px 8px 14px;
-    font-size: 12px;
-    font-weight: 800;
-    letter-spacing: 0.04em;
-    cursor: pointer;
-    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
-    background-repeat: no-repeat;
-    background-position: right 12px center;
-    background-size: 12px;
-    transition: background 0.2s ease, border-color 0.2s ease;
-}
-
-.gtranslate_wrapper select:hover,
-.gtranslate_wrapper .gt_selector:hover {
-    background-color: rgba(255, 255, 255, 0.16);
-    border-color: rgba(255, 255, 255, 0.4);
-}
-
-/* Hide the "powered by GTranslate" footer in the dropdown */
-.gtranslate_wrapper .gt_container--dropdown .gt_powered_by,
-.gtranslate_wrapper .gt_powered_by,
-.gtranslate_wrapper a[href*="gtranslate.net"] {
-    display: none !important;
 }
 
 /* ============================================================
@@ -5704,8 +5500,6 @@ body.navbar-menu-open { overflow: hidden; }
     transform: translateX(4px);
 }
 
-/* ---------- Split CTA footer ---------- */
-
 .home-collections-footer {
     max-width: 1250px;
     margin: 70px auto 0;
@@ -5787,8 +5581,6 @@ body.navbar-menu-open { overflow: hidden; }
     transform: translateX(6px);
     background: rgba(255, 255, 255, 0.24);
 }
-
-/* ---------- Responsive ---------- */
 
 @media (max-width: 900px) {
     .home-collection-heading {

@@ -1,7 +1,5 @@
 import i18n from "i18next";
-import {
-    initReactI18next,
-} from "react-i18next";
+import { initReactI18next } from "react-i18next";
 
 import en from "./locales/en";
 import de from "./locales/de";
@@ -9,10 +7,14 @@ import it from "./locales/it";
 import fr from "./locales/fr";
 import pl from "./locales/pl";
 
-
-const STORAGE_KEY =
-    "zan_gates_language";
-
+/*
+|--------------------------------------------------------------------------
+| SUPPORTED LANGUAGES
+|--------------------------------------------------------------------------
+|
+| These languages must match the languages configured in GTranslate.
+|
+*/
 
 const SUPPORTED_LANGUAGES = [
     "en",
@@ -22,46 +24,21 @@ const SUPPORTED_LANGUAGES = [
     "pl",
 ];
 
-
-const detectPreferredLanguage = () => {
-    try {
-        const savedLanguage =
-            window.localStorage.getItem(
-                STORAGE_KEY
-            );
-
-        if (
-            savedLanguage &&
-            SUPPORTED_LANGUAGES.includes(
-                savedLanguage
-            )
-        ) {
-            return savedLanguage;
-        }
-    } catch (error) {
-        console.warn(
-            "Unable to read saved language:",
-            error
-        );
-    }
-
-    const browserLanguage =
-        navigator.languages?.[0] ||
-        navigator.language ||
-        "en";
-
-    const normalizedLanguage =
-        browserLanguage
-            .toLowerCase()
-            .split("-")[0];
-
-    return SUPPORTED_LANGUAGES.includes(
-        normalizedLanguage
-    )
-        ? normalizedLanguage
-        : "en";
-};
-
+/*
+|--------------------------------------------------------------------------
+| I18NEXT RESOURCES
+|--------------------------------------------------------------------------
+|
+| Keep the existing translation resources because other React components
+| may already use the i18next translation files.
+|
+| IMPORTANT:
+|
+| GTranslate is responsible for the visitor-facing language switching.
+| This configuration must NOT automatically switch languages when
+| GTranslate changes the page.
+|
+*/
 
 const resources = {
     en: {
@@ -85,44 +62,49 @@ const resources = {
     },
 };
 
+/*
+|--------------------------------------------------------------------------
+| INITIALIZE I18NEXT
+|--------------------------------------------------------------------------
+|
+| English remains the application's canonical/source language.
+|
+| We intentionally DO NOT:
+|
+| - read the GTranslate language into i18next
+| - write the GTranslate language to localStorage
+| - listen to i18next languageChanged
+| - modify document.documentElement.lang from i18next
+|
+| This prevents i18next from fighting GTranslate.
+|
+*/
 
-i18n
-    .use(initReactI18next)
-    .init({
-        resources,
-        lng: detectPreferredLanguage(),
-        fallbackLng: "en",
-        supportedLngs:
-            SUPPORTED_LANGUAGES,
-        interpolation: {
-            escapeValue: false,
-        },
-        react: {
-            useSuspense: false,
-        },
-    });
+i18n.use(initReactI18next).init({
+    resources,
 
+    lng: "en",
 
-i18n.on(
-    "languageChanged",
-    (language) => {
-        try {
-            window.localStorage.setItem(
-                STORAGE_KEY,
-                language
-            );
-        } catch (error) {
-            console.warn(
-                "Unable to save language:",
-                error
-            );
-        }
+    fallbackLng: "en",
 
-        document.documentElement.lang =
-            language;
-    }
-);
+    supportedLngs: SUPPORTED_LANGUAGES,
 
+    interpolation: {
+        escapeValue: false,
+    },
+
+    react: {
+        useSuspense: false,
+    },
+
+    initImmediate: true,
+});
+
+/*
+|--------------------------------------------------------------------------
+| EXPORTS
+|--------------------------------------------------------------------------
+*/
 
 export {
     SUPPORTED_LANGUAGES,

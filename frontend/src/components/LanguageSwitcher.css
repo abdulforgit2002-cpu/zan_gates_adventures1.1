@@ -1,324 +1,622 @@
-/* =========================================================
-   ZAN GATES ADVENTURES
-   LANGUAGE SWITCHER — FULL STYLES (DESKTOP + MOBILE)
-   ========================================================= */
+/*
+|--------------------------------------------------------------------------
+| ZAN GATES ADVENTURES
+| LANGUAGE SWITCHER
+| Premium desktop + mobile language selector
+|--------------------------------------------------------------------------
+*/
 
-/* =========================================================
-   BASE / SHARED
-   ========================================================= */
+/*
+|--------------------------------------------------------------------------
+| BASE
+|--------------------------------------------------------------------------
+*/
 
 .language-switcher {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  font-family: inherit;
-  line-height: 1;
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    font-family: inherit;
+    line-height: 1;
+    z-index: 1400;
 }
 
 .language-switcher-trigger {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  min-height: 46px;
-  padding: 7px 12px 7px 10px;
-  border: 1px solid rgba(18, 63, 70, 0.12);
-  border-radius: 999px;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(240, 247, 246, 0.9));
-  box-shadow: 0 8px 20px rgba(18, 63, 70, 0.06);
-  color: #123f46;
-  cursor: pointer;
-  transition:
-    box-shadow 0.25s ease,
-    border-color 0.25s ease,
-    transform 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+
+    min-height: 46px;
+    min-width: 76px;
+
+    padding: 7px 12px 7px 10px;
+
+    border: 1px solid rgba(18, 63, 70, 0.12);
+    border-radius: 999px;
+
+    background:
+        linear-gradient(
+            180deg,
+            rgba(255, 255, 255, 0.98),
+            rgba(240, 247, 246, 0.94)
+        );
+
+    box-shadow:
+        0 8px 20px rgba(18, 63, 70, 0.06);
+
+    color: #123f46;
+
+    cursor: pointer;
+
+    transition:
+        box-shadow 0.25s ease,
+        border-color 0.25s ease,
+        transform 0.2s ease,
+        background 0.25s ease;
 }
 
 .language-switcher-trigger:hover,
 .language-switcher-trigger.is-open {
-  border-color: rgba(22, 128, 131, 0.25);
-  box-shadow: 0 12px 26px rgba(18, 63, 70, 0.10);
-  transform: translateY(-1px);
+    border-color:
+        rgba(22, 128, 131, 0.28);
+
+    background:
+        linear-gradient(
+            180deg,
+            #ffffff,
+            #f4faf9
+        );
+
+    box-shadow:
+        0 12px 26px rgba(18, 63, 70, 0.11);
+
+    transform:
+        translateY(-1px);
 }
 
+.language-switcher-trigger:focus-visible {
+    outline:
+        3px solid rgba(22, 128, 131, 0.20);
+
+    outline-offset: 3px;
+}
+
+/*
+|--------------------------------------------------------------------------
+| FLAG
+|--------------------------------------------------------------------------
+*/
+
 .language-switcher-flag {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 26px;
-  height: 18px;
-  border-radius: 4px;
-  overflow: hidden;
-  flex-shrink: 0;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.22);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 26px;
+    height: 18px;
+
+    border-radius: 4px;
+
+    overflow: hidden;
+
+    flex-shrink: 0;
+
+    background: #ffffff;
+
+    box-shadow:
+        0 1px 4px rgba(0, 0, 0, 0.22);
 }
 
 .language-switcher-flag svg {
-  display: block;
-  width: 100%;
-  height: 100%;
+    display: block;
+    width: 100%;
+    height: 100%;
 }
+
+/*
+|--------------------------------------------------------------------------
+| TRIGGER TEXT
+|--------------------------------------------------------------------------
+*/
 
 .language-switcher-copy {
-  display: inline-flex;
-  align-items: center;
-  font-size: 11px;
-  font-weight: 800;
-  letter-spacing: 0.2px;
-  color: #123f46;
-  white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+
+    font-size: 11px;
+    font-weight: 800;
+
+    letter-spacing: 0.2px;
+
+    color: #123f46;
+
+    white-space: nowrap;
 }
+
+.language-switcher-copy strong {
+    font-weight: 800;
+}
+
+/*
+|--------------------------------------------------------------------------
+| CARET
+|--------------------------------------------------------------------------
+*/
 
 .language-switcher-caret {
-  flex-shrink: 0;
-  color: #123f46;
-  opacity: 0.75;
-  transition: transform 0.3s ease, color 0.25s ease;
+    flex-shrink: 0;
+
+    color: #123f46;
+
+    opacity: 0.75;
+
+    transition:
+        transform 0.3s ease,
+        color 0.25s ease,
+        opacity 0.25s ease;
 }
 
-.language-switcher-trigger.is-open .language-switcher-caret {
-  transform: rotate(180deg);
-  color: #168083;
-  opacity: 1;
+.language-switcher-trigger.is-open
+.language-switcher-caret {
+    transform:
+        rotate(180deg);
+
+    color: #168083;
+
+    opacity: 1;
 }
 
-/* =========================================================
-   DROPDOWN MENU — DESKTOP
-   ========================================================= */
+/*
+|--------------------------------------------------------------------------
+| DESKTOP DROPDOWN
+|--------------------------------------------------------------------------
+*/
 
 .language-switcher-menu {
-  position: absolute;
-  top: calc(100% + 10px);
-  right: 0;
-  min-width: 210px;
-  z-index: 1300;
+    position: absolute;
 
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
+    top:
+        calc(100% + 10px);
 
-  padding: 8px;
+    right: 0;
 
-  background: rgba(255, 255, 255, 0.98);
-  border: 1px solid rgba(18, 63, 70, 0.08);
-  border-radius: 16px;
+    min-width: 210px;
 
-  box-shadow: 0 20px 45px rgba(17, 35, 39, 0.14);
+    z-index: 1500;
 
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+    display: flex;
+    flex-direction: column;
 
-  animation: languageSwitcherFadeIn 0.2s ease-out forwards;
+    gap: 4px;
+
+    padding: 8px;
+
+    background:
+        rgba(255, 255, 255, 0.985);
+
+    border:
+        1px solid rgba(18, 63, 70, 0.08);
+
+    border-radius: 16px;
+
+    box-shadow:
+        0 20px 45px rgba(17, 35, 39, 0.15);
+
+    backdrop-filter:
+        blur(16px);
+
+    -webkit-backdrop-filter:
+        blur(16px);
+
+    animation:
+        languageSwitcherFadeIn
+        0.2s ease-out forwards;
 }
 
+/*
+|--------------------------------------------------------------------------
+| LANGUAGE OPTION
+|--------------------------------------------------------------------------
+*/
+
 .language-switcher-option {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  width: 100%;
-  min-height: 42px;
-  padding: 9px 10px;
-  border: 0;
-  border-radius: 10px;
-  background: transparent;
-  color: #123f46;
-  text-align: left;
-  cursor: pointer;
-  transition: background 0.2s ease, color 0.2s ease;
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+
+    width: 100%;
+    min-height: 42px;
+
+    padding:
+        9px 10px;
+
+    border: 0;
+    border-radius: 10px;
+
+    background: transparent;
+
+    color: #123f46;
+
+    text-align: left;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        color 0.2s ease,
+        transform 0.15s ease;
 }
 
 .language-switcher-option:hover {
-  background: rgba(22, 128, 131, 0.06);
+    background:
+        rgba(22, 128, 131, 0.07);
+
+    transform:
+        translateX(1px);
+}
+
+.language-switcher-option:focus-visible {
+    outline:
+        2px solid rgba(22, 128, 131, 0.30);
+
+    outline-offset: -2px;
 }
 
 .language-switcher-option.is-selected {
-  background: rgba(22, 128, 131, 0.10);
-  color: #137779;
-  font-weight: 700;
+    background:
+        rgba(22, 128, 131, 0.10);
+
+    color: #137779;
+
+    font-weight: 700;
 }
 
 .language-switcher-option-copy {
-  flex: 1;
-  font-size: 13px;
-  font-weight: 600;
-  letter-spacing: 0.1px;
+    flex: 1;
+
+    font-size: 13px;
+    font-weight: 600;
+
+    letter-spacing: 0.1px;
+
+    white-space: nowrap;
 }
 
-.language-switcher-option.is-selected .language-switcher-option-copy strong {
-  font-weight: 700;
+.language-switcher-option.is-selected
+.language-switcher-option-copy strong {
+    font-weight: 700;
 }
 
 .language-switcher-option-code {
-  font-size: 10px;
-  font-weight: 800;
-  letter-spacing: 0.1em;
-  opacity: 0.55;
+    font-size: 10px;
+    font-weight: 800;
+
+    letter-spacing: 0.1em;
+
+    opacity: 0.55;
 }
 
-/* =========================================================
-   ANIMATION
-   ========================================================= */
+/*
+|--------------------------------------------------------------------------
+| ANIMATION
+|--------------------------------------------------------------------------
+*/
 
 @keyframes languageSwitcherFadeIn {
-  from { opacity: 0; transform: translateY(6px); }
-  to   { opacity: 1; transform: translateY(0); }
+    from {
+        opacity: 0;
+        transform:
+            translateY(6px);
+    }
+
+    to {
+        opacity: 1;
+        transform:
+            translateY(0);
+    }
 }
 
-/* =========================================================
-   MOBILE VARIANT
-   ========================================================= */
+/*
+|--------------------------------------------------------------------------
+| MOBILE VARIANT
+|--------------------------------------------------------------------------
+*/
 
 .language-switcher--mobile {
-  display: block;
-  width: 100%;
+    display: block;
+    width: 100%;
 }
 
-.language-switcher--mobile .language-switcher-trigger {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
-  height: 52px;
-  padding: 0 16px;
+.language-switcher--mobile
+.language-switcher-trigger {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 14px;
+    width: 100%;
+    height: 52px;
 
-  color: #f8fafc;
+    padding:
+        0 16px;
 
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+    background:
+        rgba(255, 255, 255, 0.06);
 
-  box-shadow: none;
-  transform: none;
+    border:
+        1px solid rgba(255, 255, 255, 0.12);
+
+    border-radius: 14px;
+
+    color: #f8fafc;
+
+    backdrop-filter:
+        blur(10px);
+
+    -webkit-backdrop-filter:
+        blur(10px);
+
+    box-shadow: none;
+
+    transform: none;
 }
 
-.language-switcher--mobile .language-switcher-trigger:hover,
-.language-switcher--mobile .language-switcher-trigger.is-open {
-  background: rgba(255, 255, 255, 0.10);
-  border-color: rgba(255, 255, 255, 0.22);
-  transform: none;
+.language-switcher--mobile
+.language-switcher-trigger:hover,
+.language-switcher--mobile
+.language-switcher-trigger.is-open {
+    background:
+        rgba(255, 255, 255, 0.10);
+
+    border-color:
+        rgba(255, 255, 255, 0.22);
+
+    transform: none;
 }
 
-.language-switcher--mobile .language-switcher-flag {
-  width: 26px;
-  height: 18px;
-  border-radius: 4px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.30);
+.language-switcher--mobile
+.language-switcher-trigger:focus-visible {
+    outline:
+        3px solid rgba(56, 189, 248, 0.25);
+
+    outline-offset: 2px;
 }
 
-.language-switcher--mobile .language-switcher-copy {
-  flex: 1;
-  margin-left: 12px;
-  font-size: 13px;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  color: #e2e8f0;
+.language-switcher--mobile
+.language-switcher-flag {
+    width: 26px;
+    height: 18px;
+
+    border-radius: 4px;
+
+    box-shadow:
+        0 1px 3px rgba(0, 0, 0, 0.30);
 }
 
-.language-switcher--mobile .language-switcher-caret {
-  color: #cbd5e1;
-  opacity: 1;
+.language-switcher--mobile
+.language-switcher-copy {
+    flex: 1;
+
+    margin-left: 12px;
+
+    font-size: 13px;
+    font-weight: 700;
+
+    letter-spacing: 0.08em;
+
+    color: #e2e8f0;
 }
 
-.language-switcher--mobile .language-switcher-trigger.is-open .language-switcher-caret {
-  color: #38bdf8;
+.language-switcher--mobile
+.language-switcher-caret {
+    color: #cbd5e1;
+    opacity: 1;
 }
 
-/* =========================================================
-   MOBILE DROPDOWN MENU
-   ========================================================= */
-
-.language-switcher--mobile .language-switcher-menu {
-  position: absolute;
-  top: calc(100% + 8px);
-  left: 0;
-  right: 0;
-
-  min-width: 0;
-  padding: 8px;
-
-  background: rgba(10, 30, 36, 0.98);
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  border-radius: 16px;
-
-  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.45);
-
-  z-index: 9999;
-
-  animation: languageSwitcherFadeIn 0.2s ease-out forwards;
+.language-switcher--mobile
+.language-switcher-trigger.is-open
+.language-switcher-caret {
+    color: #38bdf8;
 }
 
-.language-switcher--mobile .language-switcher-option {
-  min-height: 46px;
-  padding: 11px 14px;
-  border-radius: 10px;
-  color: #cbd5e1;
-  font-size: 13px;
-  font-weight: 600;
+/*
+|--------------------------------------------------------------------------
+| MOBILE DROPDOWN
+|--------------------------------------------------------------------------
+*/
+
+.language-switcher--mobile
+.language-switcher-menu {
+    position: absolute;
+
+    top:
+        calc(100% + 8px);
+
+    left: 0;
+    right: 0;
+
+    min-width: 0;
+
+    padding: 8px;
+
+    background:
+        rgba(10, 30, 36, 0.985);
+
+    border:
+        1px solid rgba(255, 255, 255, 0.14);
+
+    border-radius: 16px;
+
+    box-shadow:
+        0 20px 45px rgba(0, 0, 0, 0.45);
+
+    z-index: 9999;
+
+    animation:
+        languageSwitcherFadeIn
+        0.2s ease-out forwards;
 }
 
-.language-switcher--mobile .language-switcher-option:hover {
-  background: rgba(255, 255, 255, 0.08);
-  color: #ffffff;
+.language-switcher--mobile
+.language-switcher-option {
+    min-height: 46px;
+
+    padding:
+        11px 14px;
+
+    border-radius: 10px;
+
+    color: #cbd5e1;
+
+    font-size: 13px;
+    font-weight: 600;
 }
 
-.language-switcher--mobile .language-switcher-option.is-selected {
-  background: rgba(56, 189, 248, 0.14);
-  color: #38bdf8;
+.language-switcher--mobile
+.language-switcher-option:hover {
+    background:
+        rgba(255, 255, 255, 0.08);
+
+    color: #ffffff;
 }
 
-.language-switcher--mobile .language-switcher-option-copy strong {
-  font-weight: 600;
+.language-switcher--mobile
+.language-switcher-option.is-selected {
+    background:
+        rgba(56, 189, 248, 0.14);
+
+    color: #38bdf8;
 }
 
-.language-switcher--mobile .language-switcher-option-code {
-  font-size: 10px;
-  font-weight: 800;
-  letter-spacing: 0.1em;
-  opacity: 0.6;
+.language-switcher--mobile
+.language-switcher-option-copy strong {
+    font-weight: 600;
 }
 
-/* =========================================================
-   MOBILE WRAPPER — inside .navbar-mobile-language
-   ========================================================= */
+.language-switcher--mobile
+.language-switcher-option-code {
+    font-size: 10px;
+    font-weight: 800;
+
+    letter-spacing: 0.1em;
+
+    opacity: 0.6;
+}
+
+/*
+|--------------------------------------------------------------------------
+| MOBILE NAVBAR LANGUAGE CONTAINER
+|--------------------------------------------------------------------------
+*/
 
 .navbar-mobile-language {
-  position: relative;
-  display: block;
-  width: 100%;
-  margin: 18px 0;
-  overflow: visible;
+    position: relative;
+
+    display: block;
+
+    width: 100%;
+
+    margin:
+        18px 0;
+
+    overflow: visible;
 }
 
-.navbar-mobile-language > .language-switcher {
-  width: 100%;
+.navbar-mobile-language
+> .language-switcher {
+    width: 100%;
 }
 
-/* =========================================================
-   RESPONSIVE TIGHTENING
-   ========================================================= */
+/*
+|--------------------------------------------------------------------------
+| GTRANSLATE ENGINE
+|--------------------------------------------------------------------------
+|
+| IMPORTANT:
+|
+| We do NOT use display:none because GTranslate must initialize
+| and generate its controls.
+|
+| We also intentionally DO NOT use pointer-events:none.
+|
+| The custom React selector programmatically activates the
+| GTranslate controls.
+|
+*/
+
+#gtranslate-engine,
+.gtranslate_wrapper {
+    position: fixed !important;
+
+    left: -10000px !important;
+    top: -10000px !important;
+
+    width: 1px !important;
+    height: 1px !important;
+
+    min-width: 1px !important;
+    min-height: 1px !important;
+
+    max-width: 1px !important;
+    max-height: 1px !important;
+
+    overflow: hidden !important;
+
+    opacity: 0 !important;
+
+    z-index: -1 !important;
+}
+
+/*
+|--------------------------------------------------------------------------
+| PREVENT GTRANSLATE UI FROM AFFECTING PAGE LAYOUT
+|--------------------------------------------------------------------------
+*/
+
+.gtranslate_wrapper img {
+    max-width: none;
+}
+
+.gtranslate_wrapper select {
+    pointer-events: auto;
+}
+
+/*
+|--------------------------------------------------------------------------
+| RESPONSIVE TIGHTENING
+|--------------------------------------------------------------------------
+*/
+
+@media (max-width: 900px) {
+    .language-switcher--navbar
+    .language-switcher-menu {
+        right: 0;
+    }
+}
 
 @media (max-width: 600px) {
-  .language-switcher-menu {
-    min-width: 190px;
-  }
+    .language-switcher-menu {
+        min-width: 190px;
+    }
 
-  .language-switcher-option-copy {
-    font-size: 12px;
-  }
+    .language-switcher-option-copy {
+        font-size: 12px;
+    }
 }
 
-/* =========================================================
-   REDUCED MOTION
-   ========================================================= */
+/*
+|--------------------------------------------------------------------------
+| REDUCED MOTION
+|--------------------------------------------------------------------------
+*/
 
 @media (prefers-reduced-motion: reduce) {
-  .language-switcher-trigger,
-  .language-switcher-caret,
-  .language-switcher-menu,
-  .language-switcher-option {
-    animation: none !important;
-    transition: none !important;
-  }
+    .language-switcher-trigger,
+    .language-switcher-caret,
+    .language-switcher-menu,
+    .language-switcher-option {
+        animation: none !important;
+        transition: none !important;
+    }
 }

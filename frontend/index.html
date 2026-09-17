@@ -3,7 +3,9 @@
   <head>
     <meta charset="UTF-8" />
 
-    <!-- Website Favicon -->
+    <!-- =====================================================
+         WEBSITE FAVICON
+         ===================================================== -->
     <link
       rel="icon"
       type="image/jpeg"
@@ -11,49 +13,98 @@
       sizes="128x128"
     />
 
-    <!-- Responsive Design -->
+    <!-- =====================================================
+         RESPONSIVE DESIGN
+         ===================================================== -->
     <meta
       name="viewport"
       content="width=device-width, initial-scale=1.0"
     />
 
-    <!-- SEO Description -->
+    <!-- =====================================================
+         SEO DESCRIPTION
+         ===================================================== -->
     <meta
       name="description"
       content="ZAN GATES ADVENTURES — Discover unforgettable tours, experiences and destinations across Zanzibar."
     />
 
-    <!-- Website Title -->
+    <!-- =====================================================
+         WEBSITE TITLE
+         ===================================================== -->
     <title>ZAN GATES Adventures Tours & Safaris</title>
 
     <!-- =====================================================
-         GTRANSLATE — Website Translation Widget
-         Powered by Google Translate.
-         Loads on every page via this file.
+         GTRANSLATE WEBSITE TRANSLATOR
+         -----------------------------------------------------
+         Source language:
+         English
+
+         Available languages:
+         English
+         Deutsch
+         Italiano
+         Français
+         Polski
          ===================================================== -->
 
-    <!-- 1. GTranslate settings (must be defined BEFORE the script loads) -->
     <script>
       window.gtranslateSettings = {
         default_language: "en",
-        native_language: "en",
+        native_language_names: true,
+
+        /*
+         * We deliberately disable automatic browser-language
+         * detection so the visitor remains in the language
+         * selected from the ZAN GATES language selector.
+         */
         detect_browser_language: false,
+
+        /*
+         * GTranslate will render its actual translation
+         * engine inside this hidden wrapper.
+         *
+         * The visible selector is our custom React component.
+         */
         wrapper_selector: ".gtranslate_wrapper",
+
+        /*
+         * Five languages only.
+         */
+        languages: [
+          "en",
+          "de",
+          "it",
+          "fr",
+          "pl"
+        ],
+
+        /*
+         * English should use the United States flag,
+         * matching the current visual design.
+         */
+        alt_flags: {
+          en: "usa"
+        },
+
         flag_size: 24,
+
+        /*
+         * The actual GTranslate widget remains hidden from
+         * the visitor because ZAN GATES uses its own
+         * professionally designed language selector.
+         */
         horizontal_position: "right",
         vertical_position: "bottom",
         switcher_vertical_position: "bottom",
         switcher_horizontal_position: "right",
-        alt_flags: { en: "usa" },
-        switcher_open_direction: "top",
-        languages: [
-          "en", "sw", "fr", "de", "it", "es", "nl", "ru",
-          "ar", "zh-CN", "ja", "ko", "pt", "tr", "pl", "hi"
-        ]
+        switcher_open_direction: "top"
       };
     </script>
 
-    <!-- 2. GTranslate widget loader -->
+    <!-- =====================================================
+         GTRANSLATE WIDGET LOADER
+         ===================================================== -->
     <script
       src="https://cdn.gtranslate.net/widgets/latest/dropdown.js"
       defer
@@ -61,6 +112,21 @@
   </head>
 
   <body>
+    <!-- =====================================================
+         GTRANSLATE ENGINE
+         -----------------------------------------------------
+         The React LanguageSwitcher controls this widget.
+         It is intentionally visually hidden by CSS.
+         ===================================================== -->
+    <div
+      class="gtranslate_wrapper"
+      id="gtranslate-engine"
+      aria-hidden="true"
+    ></div>
+
+    <!-- =====================================================
+         REACT APPLICATION
+         ===================================================== -->
     <div id="root"></div>
 
     <script
