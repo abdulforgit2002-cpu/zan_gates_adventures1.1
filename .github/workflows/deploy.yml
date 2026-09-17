@@ -1,0 +1,138 @@
+name: Build and deploy
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch: {}
+
+env:
+  REGISTRY: ghcr.io
+  BACKEND_IMAGE: ghcr.io/abdulforgit2002-cpu/zan-gates-backend
+  FRONTEND_IMAGE: ghcr.io/abdulforgit2002-cpu/zan-gates-frontend
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  build-backend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: docker/setup-buildx-action@v3
+
+      - uses: docker/build-push-action@v6
+        with:
+          context: ./backend
+          platforms: linux/amd64
+          push: true
+          tags: |
+            ${{ env.BACKEND_IMAGE }}:latest
+            ${{ env.BACKEND_IMAGE }}:${{ github.sha }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+  build-frontend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: docker/setup-buildx-action@v3
+
+      - uses: docker/build-push-action@v6
+        with:
+          context: ./frontend
+          platforms: linux/amd64
+          push: true
+          build-args: |
+            VITE_API_BASE_URL=https://api.zanzibargates.co.tz/api
+          tags: |
+            ${{ env.FRONTEND_IMAGE }}:latest
+            ${{ env.FRONTEND_IMAGE }}:${{ github.sha }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+  deploy:
+    needs: [build-backend, build-frontend]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Copy compose file and migrations to server
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.SERVER_IP }}
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          source: "docker-compose.prod.yml,backend/migrations/*.sql"
+          target: zan-gates-deploy
+          strip_components: 0
+
+      - name: Pull images, apply migrations, restart stack
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.SERVER_IP }}
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            set -e
+            cd ~/zan-gates-deploy
+
+            if [ ! -f .env ]; then
+              echo "ERROR: ~/zan-gates-deploy/.env is missing on the server."
+              echo "Copy .env.prod.example there as .env and fill in real values first — see DEPLOY.md."
+              exit 1
+            fi
+
+            for var in DB_NAME DB_USER DB_PASSWORD JWT_SECRET; do
+              if ! grep -qE "^${var}=.+" .env; then
+                echo "ERROR: ${var} is missing or blank in ~/zan-gates-deploy/.env — refusing to deploy."
+                echo "See DEPLOY.md / .env.prod.example."
+                exit 1
+              fi
+            done
+
+            echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+
+            docker compose -f docker-compose.prod.yml pull
+            docker compose -f docker-compose.prod.yml up -d db
+
+            echo "Waiting for Postgres to be healthy..."
+            for i in $(seq 1 30); do
+              status=$(docker inspect -f '{{.State.Health.Status}}' "$(docker compose -f docker-compose.prod.yml ps -q db)")
+              if [ "$status" = "healthy" ]; then
+                break
+              fi
+              sleep 2
+            done
+
+            # Extract only what's needed on the host, rather than sourcing
+            # the whole file — DB_PASSWORD/JWT_SECRET may contain characters
+            # that would be unsafe to let the shell evaluate.
+            DB_USER=$(grep -E '^DB_USER=' .env | head -n1 | cut -d '=' -f2-)
+            DB_NAME=$(grep -E '^DB_NAME=' .env | head -n1 | cut -d '=' -f2-)
+
+            if [ -d backend/migrations ]; then
+              for f in backend/migrations/*.sql; do
+                [ -f "$f" ] || continue
+                echo "Applying migration: $f"
+                docker compose -f docker-compose.prod.yml exec -T db \
+                  psql -U "$DB_USER" -d "$DB_NAME" -v ON_ERROR_STOP=1 < "$f"
+              done
+            fi
+
+            docker compose -f docker-compose.prod.yml up -d
+            docker image prune -f

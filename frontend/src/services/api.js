@@ -1,4 +1,5 @@
 const API_BASE_URL =
+    import.meta.env.VITE_API_BASE_URL ||
     "https://zan-gates-backend-production.up.railway.app/api";
 
 
