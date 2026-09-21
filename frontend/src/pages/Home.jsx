@@ -463,18 +463,6 @@ function Home() {
 
             {/* WHY ZAN GATES */}
             <section id="about" className="home-about-section">
-                <div className="home-about-visual">
-                    <div className="home-about-image" />
-                    <div className="home-about-stat">
-                        <strong>ZG</strong>
-                        <span>
-                            Zanzibar
-                            <br />
-                            Adventures
-                        </span>
-                    </div>
-                </div>
-
                 <div className="home-about-content">
                     <span className="home-section-eyebrow">
                         WHY ZAN GATES
