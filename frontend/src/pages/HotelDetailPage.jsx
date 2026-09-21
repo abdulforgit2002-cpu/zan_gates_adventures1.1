@@ -2,6 +2,9 @@ import { useEffect, useMemo, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { getHotelBySlug } from "../data/hotels";
+import Seo from "../seo/Seo";
+import { breadcrumbSchema, hotelSchema, webPageSchema } from "../seo/schema";
+import { truncate } from "../seo/site";
 
 /* =========================================================
    CONTACT CHANNELS
@@ -71,6 +74,11 @@ function HotelDetailPage() {
   if (!hotel) {
     return (
       <div className="hotel-detail-page">
+        <Seo
+          title="Hotel not found"
+          description="This hotel could not be found. Browse the full ZAN GATES Adventures hotel and lodge collection."
+          noindex
+        />
         <header className="hotel-detail-header">
           <div className="container">
             <nav className="hotel-detail-breadcrumb">
@@ -110,8 +118,39 @@ function HotelDetailPage() {
     hotel.name
   );
 
+  const seoPath = `/hotels/${encodeURIComponent(hotel.slug)}`;
+  const seoDescription = truncate(hotel.description, 155);
+
   return (
     <div className="hotel-detail-page">
+      <Seo
+        title={`${hotel.name}, ${hotel.location}`}
+        description={seoDescription}
+        keywords={[
+          hotel.name,
+          hotel.location,
+          `hotel ${hotel.location}`,
+          "where to stay",
+        ]}
+        path={seoPath}
+        image={hotel.images[0]}
+        imageAlt={hotel.name}
+        jsonLd={[
+          webPageSchema({
+            type: "ItemPage",
+            name: hotel.name,
+            description: seoDescription,
+            path: seoPath,
+            image: hotel.images[0],
+          }),
+          breadcrumbSchema([
+            { name: "Home", path: "/" },
+            { name: "Hotels", path: "/hotels" },
+            { name: hotel.name, path: seoPath },
+          ]),
+          hotelSchema({ hotel, path: seoPath }),
+        ]}
+      />
       <header className="hotel-detail-header">
         <div className="container">
           <nav className="hotel-detail-breadcrumb">
@@ -143,7 +182,12 @@ function HotelDetailPage() {
                   "Open image"
                 )} ${index + 1}`}
               >
-                <img src={src} alt={`${hotel.name} — view ${index + 1}`} />
+                <img
+                  src={src}
+                  alt={`${hotel.name} — view ${index + 1}`}
+                  loading={index === 0 ? "eager" : "lazy"}
+                  decoding="async"
+                />
                 <span className="hotel-gallery-overlay">
                   {t("hotelDetail.viewImage", "View image")}
                 </span>

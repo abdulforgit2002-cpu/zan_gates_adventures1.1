@@ -1,3 +1,7 @@
+import Seo from "../seo/Seo";
+import { pageSeo } from "../seo/pages";
+import { pageJsonLd, itemListSchema } from "../seo/schema";
+
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import HOTELS from "../data/hotels";
@@ -7,6 +11,20 @@ function HotelsPage() {
 
   return (
     <div className="hotels-page">
+      <Seo
+        {...pageSeo("/hotels")}
+        jsonLd={pageJsonLd("/hotels", [
+          itemListSchema(
+            "Hotels and safari lodges",
+            HOTELS.map((hotel) => ({
+              name: hotel.name,
+              path: `/hotels/${encodeURIComponent(hotel.slug)}`,
+              image: hotel.images[0],
+            }))
+          ),
+        ])}
+      />
+
       <header className="hotels-header">
         <div className="container">
           <span className="tour-section-eyebrow">

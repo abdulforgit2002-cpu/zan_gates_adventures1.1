@@ -44,6 +44,18 @@ require_once __DIR__ . '/../src/Controllers/AdminDestinationController.php';
 
 /*
 |--------------------------------------------------------------------------
+| SEO (sitemaps + server-side <head> rendering)
+|--------------------------------------------------------------------------
+*/
+
+require_once __DIR__ . '/../src/Seo/SiteData.php';
+require_once __DIR__ . '/../src/Seo/SchemaBuilder.php';
+require_once __DIR__ . '/../src/Seo/SeoResolver.php';
+require_once __DIR__ . '/../src/Controllers/SeoController.php';
+
+
+/*
+|--------------------------------------------------------------------------
 | Database
 |--------------------------------------------------------------------------
 */
@@ -100,6 +112,9 @@ $adminCategoryController =
 
 $adminDestinationController =
     new AdminDestinationController($db);
+
+$seoController =
+    new SeoController($db);
 
 
 /*
@@ -720,6 +735,33 @@ $router->delete(
     '/api/admin/destinations/{id}',
     [$adminDestinationController, 'destroy']
 );
+
+
+/*
+|--------------------------------------------------------------------------
+| SEO
+|--------------------------------------------------------------------------
+|
+| Reached through the frontend's nginx, which proxies /sitemap*.xml and
+| every page URL (as /seo/render) to this backend.
+|
+| /sitemap.xml            sitemap index
+| /sitemap-pages.xml      static pages
+| /sitemap-tours.xml      active tours (+ image entries)
+| /sitemap-destinations.xml  destinations that have tours
+| /sitemap-hotels.xml     hotel catalog (+ image entries)
+| /seo/render             index.html with per-route <head>, JSON-LD, status
+| /robots.txt             disallow-all, for the API host only
+|
+*/
+
+$router->get('/robots.txt', [$seoController, 'robots']);
+$router->get('/sitemap.xml', [$seoController, 'sitemapIndex']);
+$router->get('/sitemap-pages.xml', [$seoController, 'sitemapPages']);
+$router->get('/sitemap-tours.xml', [$seoController, 'sitemapTours']);
+$router->get('/sitemap-destinations.xml', [$seoController, 'sitemapDestinations']);
+$router->get('/sitemap-hotels.xml', [$seoController, 'sitemapHotels']);
+$router->get('/seo/render', [$seoController, 'render']);
 
 
 /*

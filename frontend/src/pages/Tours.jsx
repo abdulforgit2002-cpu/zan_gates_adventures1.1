@@ -1,3 +1,7 @@
+import Seo from "../seo/Seo";
+import { pageSeo } from "../seo/pages";
+import { pageJsonLd, itemListSchema } from "../seo/schema";
+
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
@@ -110,6 +114,26 @@ function Tours() {
     return (
 
         <main className="tours-page">
+
+            <Seo
+                {...pageSeo("/tours")}
+                jsonLd={pageJsonLd(
+                    "/tours",
+                    tours.length
+                        ? [
+                              itemListSchema(
+                                  "Zanzibar excursions and tours",
+                                  tours.map((tour) => ({
+                                      name: tour.title,
+                                      path: `/tours/${encodeURIComponent(tour.slug)}`,
+                                      image: tour.image_url || undefined,
+                                  }))
+                              ),
+                          ]
+                        : []
+                )}
+            />
+
 
 
             {/* =========================================================

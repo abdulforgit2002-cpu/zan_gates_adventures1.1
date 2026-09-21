@@ -1,3 +1,5 @@
+import { lazy, Suspense } from "react";
+
 import {
     BrowserRouter,
     Routes,
@@ -36,35 +38,22 @@ import WeddingProposals from "./pages/WeddingProposals";
 
 import PublicLayout from "./components/PublicLayout";
 
-
-/*
-|--------------------------------------------------------------------------
-| ADMIN PAGES
-|--------------------------------------------------------------------------
-*/
-
-import AdminLogin from "./pages/admin/AdminLogin";
-import AdminDashboard from "./pages/admin/AdminDashboard";
-import AdminBookings from "./pages/admin/AdminBookings";
-import AdminBookingDetails from "./pages/admin/AdminBookingDetails";
-import AdminTours from "./pages/admin/AdminTours";
-import AdminTourForm from "./pages/admin/AdminTourForm";
-import AdminCategories from "./pages/admin/AdminCategories";
-import AdminDestinations from "./pages/admin/AdminDestinations";
-
-
-/*
-|--------------------------------------------------------------------------
-| ADMIN LAYOUT + AUTHENTICATION
-|--------------------------------------------------------------------------
-*/
-
-import AdminLayout from "./components/admin/AdminLayout";
-import ProtectedRoute from "./components/admin/ProtectedRoute";
-
 import {
     AuthProvider,
 } from "./context/AuthContext";
+
+
+/*
+|--------------------------------------------------------------------------
+| ADMIN AREA (lazy-loaded)
+|--------------------------------------------------------------------------
+|
+| The whole admin panel is one separate chunk, fetched only when someone
+| actually opens /admin/*. See pages/admin/AdminArea.jsx.
+|
+*/
+
+const AdminArea = lazy(() => import("./pages/admin/AdminArea"));
 
 
 function App() {
@@ -74,6 +63,8 @@ function App() {
         <BrowserRouter>
 
             <AuthProvider>
+
+                <Suspense fallback={null}>
 
                 <Routes>
 
@@ -183,67 +174,15 @@ function App() {
 
 
                     {/* =====================================================
-                        ADMIN AUTHENTICATION
+                        ADMIN AREA
+                        /admin/login and every protected admin page
+                        (see pages/admin/AdminArea.jsx)
                     ===================================================== */}
 
                     <Route
-                        path="/admin/login"
-                        element={<AdminLogin />}
+                        path="/admin/*"
+                        element={<AdminArea />}
                     />
-
-
-                    {/* =====================================================
-                        PROTECTED ADMIN AREA
-                        Every admin page renders inside <AdminLayout />
-                    ===================================================== */}
-
-                    <Route element={<ProtectedRoute />}>
-
-                        <Route element={<AdminLayout />}>
-
-                            <Route
-                                path="/admin/dashboard"
-                                element={<AdminDashboard />}
-                            />
-
-                            <Route
-                                path="/admin/bookings"
-                                element={<AdminBookings />}
-                            />
-
-                            <Route
-                                path="/admin/bookings/:id"
-                                element={<AdminBookingDetails />}
-                            />
-
-                            <Route
-                                path="/admin/tours"
-                                element={<AdminTours />}
-                            />
-
-                            <Route
-                                path="/admin/tours/new"
-                                element={<AdminTourForm />}
-                            />
-
-                            <Route
-                                path="/admin/tours/:id/edit"
-                                element={<AdminTourForm />}
-                            />
-
-                            <Route
-                                path="/admin/categories"
-                                element={<AdminCategories />}
-                            />
-
-                            <Route
-                                path="/admin/destinations"
-                                element={<AdminDestinations />}
-                            />
-
-                        </Route>
-
-                    </Route>
 
 
                     {/* =====================================================
@@ -261,6 +200,8 @@ function App() {
                     />
 
                 </Routes>
+
+                </Suspense>
 
             </AuthProvider>
 

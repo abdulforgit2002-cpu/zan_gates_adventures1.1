@@ -18,6 +18,8 @@ import {
     createBookingEnquiry,
 } from "../services/bookingService";
 
+import Seo from "../seo/Seo";
+
 
 const Booking = () => {
 
@@ -562,6 +564,12 @@ const Booking = () => {
 
             <main className="booking-page">
 
+            <Seo
+                title={tour?.title ? `Book ${tour.title}` : "Book your Zanzibar tour"}
+                description="Send a booking enquiry to ZAN GATES Adventures — we reply with availability and next steps."
+                noindex
+            />
+
                 <section className="booking-loading">
 
                     <div>
@@ -594,6 +602,12 @@ const Booking = () => {
         return (
 
             <main className="booking-page">
+
+            <Seo
+                title={tour?.title ? `Book ${tour.title}` : "Book your Zanzibar tour"}
+                description="Send a booking enquiry to ZAN GATES Adventures — we reply with availability and next steps."
+                noindex
+            />
 
                 <section className="booking-error">
 
@@ -637,6 +651,12 @@ const Booking = () => {
         return (
 
             <main className="booking-page">
+
+            <Seo
+                title={tour?.title ? `Book ${tour.title}` : "Book your Zanzibar tour"}
+                description="Send a booking enquiry to ZAN GATES Adventures — we reply with availability and next steps."
+                noindex
+            />
 
                 <section className="booking-success-section">
 
@@ -790,6 +810,12 @@ const Booking = () => {
     return (
 
         <main className="booking-page">
+
+            <Seo
+                title={tour?.title ? `Book ${tour.title}` : "Book your Zanzibar tour"}
+                description="Send a booking enquiry to ZAN GATES Adventures — we reply with availability and next steps."
+                noindex
+            />
 
 
             {/* ==================================================

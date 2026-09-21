@@ -1,3 +1,7 @@
+import Seo from "../seo/Seo";
+import { pageSeo } from "../seo/pages";
+import { pageJsonLd } from "../seo/schema";
+
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import "./AboutZanzibar.css";
@@ -44,6 +48,7 @@ function AboutZanzibar() {
 
   return (
     <main className="about-zanzibar-page">
+            <Seo {...pageSeo("/about-zanzibar")} jsonLd={pageJsonLd("/about-zanzibar")} />
 
       {/* =========================================================
           HERO

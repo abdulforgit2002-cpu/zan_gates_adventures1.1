@@ -28,6 +28,12 @@ services:
       DB_HOST: db
       DB_PORT: "5432"
       PORT: "8080"
+      # SEO: canonical/sitemap host, where to read the built index.html and
+      # seo-data.json (the frontend container, over the compose network), and
+      # extra PHP workers so page renders never queue behind API calls.
+      SITE_URL: ${SITE_URL:-https://zanzibargates.co.tz}
+      FRONTEND_INTERNAL_URL: http://frontend
+      PHP_CLI_SERVER_WORKERS: "4"
     ports:
       - "8028:8080"
     networks:

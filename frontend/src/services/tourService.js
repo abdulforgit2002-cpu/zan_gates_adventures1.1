@@ -52,6 +52,49 @@ export const getTours = async () => {
             tours.map(
                 async (tour) => {
 
+                    /*
+                    |--------------------------------------------------------------------------
+                    | PRIMARY IMAGE ALREADY INCLUDED
+                    |--------------------------------------------------------------------------
+                    |
+                    | /tours now returns primary_image (+ alt text) for every tour, so
+                    | the extra /tours/{id}/images request per tour (N+1) is skipped.
+                    |
+                    */
+
+                    if (
+                        Object.prototype.hasOwnProperty.call(
+                            tour,
+                            "primary_image"
+                        )
+                    ) {
+                        return {
+                            ...tour,
+
+                            images:
+                                tour.primary_image
+                                    ? [
+                                        {
+                                            image_url:
+                                                tour.primary_image,
+                                            alt_text:
+                                                tour.primary_image_alt ||
+                                                null,
+                                            is_primary: true,
+                                        },
+                                    ]
+                                    : [],
+
+                            image_url:
+                                tour.primary_image || null,
+
+                            image_alt:
+                                tour.primary_image_alt ||
+                                tour.title ||
+                                "Zanzibar tour experience",
+                        };
+                    }
+
                     try {
 
                         const images =

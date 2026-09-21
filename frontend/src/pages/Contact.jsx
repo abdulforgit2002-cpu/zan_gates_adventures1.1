@@ -1,3 +1,7 @@
+import Seo from "../seo/Seo";
+import { pageSeo } from "../seo/pages";
+import { pageJsonLd } from "../seo/schema";
+
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
@@ -174,6 +178,7 @@ function Contact() {
 
   return (
     <main className="contact-page contact-page--premium">
+            <Seo {...pageSeo("/contact")} jsonLd={pageJsonLd("/contact")} />
       {/* ---------------------------------------------------
           HERO
          --------------------------------------------------- */}

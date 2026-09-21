@@ -2,6 +2,14 @@ import { useEffect, useMemo, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { getTours } from "../services/tourService";
+import { getDestinations } from "../services/destinationService";
+import Seo from "../seo/Seo";
+import {
+  breadcrumbSchema,
+  destinationSchema,
+  itemListSchema,
+  webPageSchema,
+} from "../seo/schema";
 
 /* Slug → display name (reverse of the map in DestinationsPage) */
 const SLUG_TO_NAME = {
@@ -47,26 +55,43 @@ function DestinationDetailPage() {
   const { slug } = useParams();
 
   const [tours, setTours] = useState([]);
+  const [destination, setDestination] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   const destinationName = useMemo(() => {
     if (!slug) return "";
+    if (destination?.name) return destination.name;
+
+    const fromTour = tours.find(
+      (tour) => tour.destination_slug === slug
+    )?.destination_name;
+    if (fromTour) return fromTour;
+
     if (SLUG_TO_NAME[slug]) return SLUG_TO_NAME[slug];
     return slug
       .split("-")
       .map((s) => s.charAt(0).toUpperCase() + s.slice(1))
       .join(" ");
-  }, [slug]);
+  }, [slug, destination, tours]);
 
   useEffect(() => {
     let mounted = true;
 
     const load = async () => {
       try {
-        const data = await getTours();
+        const [data, destinationList] = await Promise.all([
+          getTours(),
+          getDestinations().catch(() => []),
+        ]);
 
         if (!mounted) return;
+
+        setDestination(
+          (Array.isArray(destinationList) ? destinationList : []).find(
+            (item) => item.slug === slug
+          ) || null
+        );
 
         let list = [];
 
@@ -93,17 +118,78 @@ function DestinationDetailPage() {
     return () => {
       mounted = false;
     };
-  }, []);
+  }, [slug]);
 
   const filtered = useMemo(() => {
+    const bySlug = tours.filter((tour) => tour.destination_slug === slug);
+    if (bySlug.length > 0) return bySlug;
+
     const target = normalizeString(destinationName);
     return tours.filter(
       (tour) => normalizeString(getTourDestination(tour)) === target
     );
-  }, [tours, destinationName]);
+  }, [tours, slug, destinationName]);
+
+  const firstImage = filtered.length > 0 ? getTourImage(filtered[0]) : null;
+  const seoDescription = destination?.description
+    ? destination.description
+    : filtered.length > 0
+    ? `Book ${destinationName} tours and excursions with ZAN GATES Adventures: ${filtered
+        .slice(0, 3)
+        .map((tour) => tour.title)
+        .join(", ")}. Compare prices and send an enquiry.`
+    : `Tours and excursions in ${destinationName} with ZAN GATES Adventures.`;
+  const seoPath = `/destinations/${encodeURIComponent(slug || "")}`;
 
   return (
     <div className="destination-detail-page">
+      <Seo
+        title={`${destinationName} Tours & Excursions`}
+        description={seoDescription}
+        keywords={[
+          destinationName,
+          `${destinationName} tours`,
+          `${destinationName} excursions`,
+          "Zanzibar destinations",
+        ]}
+        path={seoPath}
+        image={firstImage || undefined}
+        imageAlt={destinationName}
+        noindex={!loading && !error && filtered.length === 0}
+        jsonLd={[
+          webPageSchema({
+            type: "CollectionPage",
+            name: `${destinationName} tours`,
+            description: seoDescription,
+            path: seoPath,
+            image: firstImage || undefined,
+          }),
+          breadcrumbSchema([
+            { name: "Home", path: "/" },
+            { name: "Destinations", path: "/destinations" },
+            { name: destinationName, path: seoPath },
+          ]),
+          destinationSchema({
+            name: destinationName,
+            description: destination?.description || undefined,
+            path: seoPath,
+            image: firstImage || undefined,
+          }),
+          ...(filtered.length > 0
+            ? [
+                itemListSchema(
+                  `${destinationName} tours`,
+                  filtered.map((tour) => ({
+                    name: tour.title,
+                    path: `/tours/${encodeURIComponent(tour.slug)}`,
+                    image: getTourImage(tour) || undefined,
+                  }))
+                ),
+              ]
+            : []),
+        ]}
+      />
+
       <header className="destination-detail-header">
         <div className="container">
           <nav className="destination-detail-breadcrumb">
@@ -116,6 +202,11 @@ function DestinationDetailPage() {
             <strong>{destinationName}</strong>
           </nav>
           <h1>{destinationName}</h1>
+          {destination?.description && (
+            <p className="destination-detail-description">
+              {destination.description}
+            </p>
+          )}
         </div>
       </header>
 
@@ -165,7 +256,12 @@ function DestinationDetailPage() {
                   <article key={tour.id || slugValue} className="tour-card">
                     <div className="tour-card-image">
                       {image ? (
-                        <img src={image} alt={tour.title || "Tour"} />
+                        <img
+                          src={image}
+                          alt={tour.title || "Tour"}
+                          loading="lazy"
+                          decoding="async"
+                        />
                       ) : (
                         <div className="tour-card-placeholder">
                           <span>ZAN GATES</span>

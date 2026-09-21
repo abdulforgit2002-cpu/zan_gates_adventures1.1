@@ -58,9 +58,17 @@ class TourController
                         COALESCE(tt.description, t.description) AS description,
                         COALESCE(tt.duration, t.duration) AS duration,
                         t.featured, t.status,
-                        t.category_id, c.name AS category_name,
-                        t.destination_id, d.name AS destination_name,
-                        tp.price, tp.currency, tp.pricing_type
+                        t.category_id, c.name AS category_name, c.slug AS category_slug,
+                        t.destination_id, d.name AS destination_name, d.slug AS destination_slug,
+                        tp.price, tp.currency, tp.pricing_type,
+                        (SELECT ti.image_url FROM tour_images ti
+                          WHERE ti.tour_id = t.id
+                          ORDER BY ti.is_primary DESC, ti.sort_order ASC, ti.id ASC
+                          LIMIT 1) AS primary_image,
+                        (SELECT ti.alt_text FROM tour_images ti
+                          WHERE ti.tour_id = t.id
+                          ORDER BY ti.is_primary DESC, ti.sort_order ASC, ti.id ASC
+                          LIMIT 1) AS primary_image_alt
                     FROM tours t
                     INNER JOIN categories c ON c.id = t.category_id
                     INNER JOIN destinations d ON d.id = t.destination_id
@@ -83,9 +91,17 @@ class TourController
                     "SELECT
                         t.id, t.title, t.slug, t.short_description, t.description,
                         t.duration, t.featured, t.status,
-                        t.category_id, c.name AS category_name,
-                        t.destination_id, d.name AS destination_name,
-                        tp.price, tp.currency, tp.pricing_type
+                        t.category_id, c.name AS category_name, c.slug AS category_slug,
+                        t.destination_id, d.name AS destination_name, d.slug AS destination_slug,
+                        tp.price, tp.currency, tp.pricing_type,
+                        (SELECT ti.image_url FROM tour_images ti
+                          WHERE ti.tour_id = t.id
+                          ORDER BY ti.is_primary DESC, ti.sort_order ASC, ti.id ASC
+                          LIMIT 1) AS primary_image,
+                        (SELECT ti.alt_text FROM tour_images ti
+                          WHERE ti.tour_id = t.id
+                          ORDER BY ti.is_primary DESC, ti.sort_order ASC, ti.id ASC
+                          LIMIT 1) AS primary_image_alt
                     FROM tours t
                     INNER JOIN categories c ON c.id = t.category_id
                     INNER JOIN destinations d ON d.id = t.destination_id
@@ -145,8 +161,8 @@ class TourController
                         t.featured, t.status,
                         t.duration_start, t.duration_end,
                         t.departure_location, t.return_location,
-                        c.id AS category_id, c.name AS category_name,
-                        d.id AS destination_id, d.name AS destination_name
+                        c.id AS category_id, c.name AS category_name, c.slug AS category_slug,
+                        d.id AS destination_id, d.name AS destination_name, d.slug AS destination_slug
                     FROM tours t
                     INNER JOIN categories c ON c.id = t.category_id
                     INNER JOIN destinations d ON d.id = t.destination_id
@@ -165,8 +181,8 @@ class TourController
                         t.duration, t.featured, t.status,
                         t.duration_start, t.duration_end,
                         t.departure_location, t.return_location,
-                        c.id AS category_id, c.name AS category_name,
-                        d.id AS destination_id, d.name AS destination_name
+                        c.id AS category_id, c.name AS category_name, c.slug AS category_slug,
+                        d.id AS destination_id, d.name AS destination_name, d.slug AS destination_slug
                     FROM tours t
                     INNER JOIN categories c ON c.id = t.category_id
                     INNER JOIN destinations d ON d.id = t.destination_id
@@ -220,8 +236,8 @@ class TourController
                         t.featured, t.status,
                         t.duration_start, t.duration_end,
                         t.departure_location, t.return_location,
-                        c.id AS category_id, c.name AS category_name,
-                        d.id AS destination_id, d.name AS destination_name
+                        c.id AS category_id, c.name AS category_name, c.slug AS category_slug,
+                        d.id AS destination_id, d.name AS destination_name, d.slug AS destination_slug
                     FROM tours t
                     INNER JOIN categories c ON c.id = t.category_id
                     INNER JOIN destinations d ON d.id = t.destination_id
@@ -238,8 +254,8 @@ class TourController
                         t.duration, t.featured, t.status,
                         t.duration_start, t.duration_end,
                         t.departure_location, t.return_location,
-                        c.id AS category_id, c.name AS category_name,
-                        d.id AS destination_id, d.name AS destination_name
+                        c.id AS category_id, c.name AS category_name, c.slug AS category_slug,
+                        d.id AS destination_id, d.name AS destination_name, d.slug AS destination_slug
                     FROM tours t
                     INNER JOIN categories c ON c.id = t.category_id
                     INNER JOIN destinations d ON d.id = t.destination_id

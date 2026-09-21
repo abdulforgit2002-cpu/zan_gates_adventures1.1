@@ -61,6 +61,12 @@ if (getenv('CORS_ALLOW_CREDENTIALS') === '1' || getenv('CORS_ALLOW_CREDENTIALS')
     header('Access-Control-Allow-Credentials: true');
 }
 
+// The JSON API is never meant to appear in search results. (The SEO routes —
+// sitemaps and /seo/render — live outside /api/ and are unaffected.)
+if (str_starts_with((string) parse_url($_SERVER['REQUEST_URI'] ?? '', PHP_URL_PATH), '/api/')) {
+    header('X-Robots-Tag: noindex, nofollow');
+}
+
 // Handle browser preflight request
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     http_response_code(204);

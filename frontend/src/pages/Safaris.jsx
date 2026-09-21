@@ -1,3 +1,7 @@
+import Seo from "../seo/Seo";
+import { pageSeo } from "../seo/pages";
+import { pageJsonLd } from "../seo/schema";
+
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { getTours } from "../services/tourService";
@@ -90,6 +94,7 @@ function Safaris() {
 
   return (
     <main className="safaris-page">
+            <Seo {...pageSeo("/safaris")} jsonLd={pageJsonLd("/safaris")} />
 
       <header className="safaris-header">
         <div className="container">

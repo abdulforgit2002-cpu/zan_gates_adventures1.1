@@ -23,6 +23,15 @@ import {
     useTranslation,
 } from "react-i18next";
 
+import Seo from "../seo/Seo";
+import {
+    breadcrumbSchema,
+    tourSchema,
+    tourSeoDescription,
+    tourSeoTitle,
+    webPageSchema,
+} from "../seo/schema";
+
 import "./TourDetails.css";
 
 
@@ -689,6 +698,11 @@ function TourDetails() {
     if (error || !tour) {
         return (
             <div className="tour-details-error">
+                <Seo
+                    title="Tour not found"
+                    description="This tour could not be found. Explore our Zanzibar excursions and Tanzania safaris."
+                    noindex
+                />
                 <div className="tour-details-error-inner">
                     <span>{t("tourDetails.errorLabel")}</span>
                     <h1>{t("tourDetails.errorTitle")}</h1>
@@ -710,8 +724,49 @@ function TourDetails() {
     |--------------------------------------------------------------------------
     */
 
+    const seoPath = `/tours/${encodeURIComponent(tour.slug || slug)}`;
+    const seoImages = images.map(getImageUrl).filter(Boolean);
+    const seoDescription = tourSeoDescription(tour, prices);
+
     return (
         <div className="tour-details-page">
+
+            <Seo
+                title={tourSeoTitle(tour)}
+                description={seoDescription}
+                keywords={[
+                    tour.title,
+                    `${tour.title} Zanzibar`,
+                    tour.destination_name,
+                    tour.category_name,
+                    "Zanzibar excursions",
+                    `book ${tour.title}`,
+                ].filter(Boolean)}
+                path={seoPath}
+                image={seoImages[0]}
+                imageAlt={getImageAlt(images[0], tour.title)}
+                type="product"
+                jsonLd={[
+                    webPageSchema({
+                        type: "ItemPage",
+                        name: tour.title,
+                        description: seoDescription,
+                        path: seoPath,
+                        image: seoImages[0],
+                    }),
+                    breadcrumbSchema([
+                        { name: "Home", path: "/" },
+                        { name: "Tours", path: "/tours" },
+                        { name: tour.title, path: seoPath },
+                    ]),
+                    tourSchema({
+                        tour,
+                        images: seoImages,
+                        prices,
+                        path: seoPath,
+                    }),
+                ]}
+            />
 
             {/* HERO */}
             <section
@@ -952,6 +1007,8 @@ function TourDetails() {
                                                             onClick={() => selectImage(image, index)}
                                                         >
                                                             <img
+                                                                loading="lazy"
+                                                                decoding="async"
                                                                 src={url}
                                                                 alt={getImageAlt(
                                                                     image,

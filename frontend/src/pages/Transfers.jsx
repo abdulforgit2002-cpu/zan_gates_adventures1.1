@@ -1,3 +1,7 @@
+import Seo from "../seo/Seo";
+import { pageSeo } from "../seo/pages";
+import { pageJsonLd } from "../seo/schema";
+
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import "./Transfers.css";
@@ -87,6 +91,7 @@ function Transfers() {
 
   return (
     <main className="transfers-page">
+            <Seo {...pageSeo("/transfers")} jsonLd={pageJsonLd("/transfers")} />
 
       {/* =========================================================
           HERO

@@ -1,0 +1,12 @@
+# https://zanzibargates.co.tz/robots.txt
+#
+# Served as a plain static file on purpose: if the API were down, a failing
+# robots.txt would make crawlers pause crawling the whole site.
+# Booking-form pages are kept out of the index with a meta robots noindex tag
+# (not blocked here, so crawlers can actually read that tag).
+
+User-agent: *
+Allow: /
+Disallow: /admin
+
+Sitemap: https://zanzibargates.co.tz/sitemap.xml

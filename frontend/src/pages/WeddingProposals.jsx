@@ -1,3 +1,7 @@
+import Seo from "../seo/Seo";
+import { pageSeo } from "../seo/pages";
+import { pageJsonLd } from "../seo/schema";
+
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
@@ -602,6 +606,7 @@ function WeddingProposals() {
 
   return (
     <main className="wp-page">
+            <Seo {...pageSeo("/wedding-and-proposals")} jsonLd={pageJsonLd("/wedding-and-proposals")} />
       {/* HERO */}
       <header className="wp-hero">
         <div className="wp-hero-bg" aria-hidden="true" />

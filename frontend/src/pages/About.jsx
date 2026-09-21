@@ -1,3 +1,7 @@
+import Seo from "../seo/Seo";
+import { pageSeo } from "../seo/pages";
+import { pageJsonLd } from "../seo/schema";
+
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
@@ -43,6 +47,7 @@ function About() {
     return (
 
         <main className="about-page">
+            <Seo {...pageSeo("/about")} jsonLd={pageJsonLd("/about")} />
 
 
             {/* =========================================================

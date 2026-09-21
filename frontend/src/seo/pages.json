@@ -1,0 +1,223 @@
+{
+  "/": {
+    "title": "Zanzibar Tours, Excursions & Safaris | ZAN GATES Adventures",
+    "description": "Book Zanzibar tours with a local team: Safari Blue, Prison Island, Mnemba snorkeling, Stone Town, Nungwi and Tanzania safaris. Send an enquiry today.",
+    "keywords": [
+      "Zanzibar tours",
+      "Zanzibar excursions",
+      "Safari Blue Zanzibar",
+      "Prison Island tour",
+      "Mnemba Island snorkeling",
+      "Stone Town tour",
+      "Nungwi",
+      "Tanzania safari from Zanzibar",
+      "Serengeti safari",
+      "Ngorongoro Crater",
+      "Zanzibar airport transfer",
+      "Zanzibar tour company",
+      "things to do in Zanzibar"
+    ],
+    "heading": "Zanzibar Tours, Excursions & Safaris",
+    "intro": "ZAN GATES Adventures is a local Zanzibar tour company. Book Safari Blue, Prison Island, Mnemba Island snorkeling, Stone Town, Jozani Forest and Nungwi excursions, Tanzania safaris to the Serengeti and Ngorongoro Crater, airport transfers, hotels and romantic beach proposals.",
+    "changefreq": "weekly",
+    "priority": 1.0,
+    "label": "Home",
+    "schema": {
+      "type": "WebPage"
+    },
+    "preload": "https://res.cloudinary.com/djczmay2i/image/upload/v1779540443/aaa_faq_ixagv2.webp"
+  },
+  "/tours": {
+    "title": "Zanzibar Excursions & Day Tours | ZAN GATES Adventures",
+    "description": "Explore Zanzibar excursions and day tours — Safari Blue, Prison Island, Jozani Forest, Mnemba Island and more. Compare prices and enquire online.",
+    "keywords": [
+      "Zanzibar excursions",
+      "Zanzibar day tours",
+      "Safari Blue Zanzibar",
+      "Prison Island tour",
+      "Jozani Forest tour",
+      "Mnemba Island",
+      "best tours in Zanzibar",
+      "Zanzibar tour prices"
+    ],
+    "heading": "Zanzibar Excursions & Day Tours",
+    "intro": "Handpicked Zanzibar excursions that reveal the beauty, culture and adventure of the island. Compare prices and send a booking enquiry online.",
+    "changefreq": "daily",
+    "priority": 0.9,
+    "label": "Tours",
+    "schema": {
+      "type": "CollectionPage"
+    }
+  },
+  "/safaris": {
+    "title": "Tanzania Safaris from Zanzibar | Serengeti & Ngorongoro",
+    "description": "Book Tanzania safaris from Zanzibar: Serengeti, Ngorongoro Crater, Tarangire, Selous and more. Day trips and multi-day wildlife adventures with local experts.",
+    "keywords": [
+      "Tanzania safari",
+      "safari from Zanzibar",
+      "Serengeti safari",
+      "Ngorongoro Crater safari",
+      "Tarangire safari",
+      "Selous safari",
+      "Tanzania wildlife tours"
+    ],
+    "heading": "Tanzania Safari Adventures",
+    "intro": "From the Serengeti plains to the Ngorongoro Crater — discover the best national parks and game reserves of Tanzania, with flights departing from Zanzibar.",
+    "changefreq": "weekly",
+    "priority": 0.9,
+    "label": "Safaris",
+    "schema": {
+      "type": "CollectionPage"
+    }
+  },
+  "/destinations": {
+    "title": "Zanzibar & Tanzania Destinations | ZAN GATES Adventures",
+    "description": "Discover Zanzibar and Tanzania by destination — from Serengeti and Ngorongoro to Nungwi, Mnemba Island, Prison Island and Nakupenda Sandbank. Find your tour.",
+    "keywords": [
+      "Zanzibar destinations",
+      "Tanzania destinations",
+      "places to visit in Zanzibar",
+      "Nungwi",
+      "Mnemba Island",
+      "Prison Island",
+      "Nakupenda Sandbank",
+      "Serengeti National Park"
+    ],
+    "heading": "Explore Tours by Destination",
+    "intro": "Discover Zanzibar and Tanzania by destination — from the Serengeti plains to the beaches of Nungwi and the reefs of Mnemba.",
+    "changefreq": "weekly",
+    "priority": 0.8,
+    "label": "Destinations",
+    "schema": {
+      "type": "CollectionPage"
+    }
+  },
+  "/hotels": {
+    "title": "Hotels & Safari Lodges in Zanzibar & Tanzania | ZAN GATES",
+    "description": "Handpicked beach resorts, boutique hotels and safari lodges in Nungwi, Jambiani, Stone Town, Karatu and the Serengeti, chosen by local travel experts.",
+    "keywords": [
+      "Zanzibar hotels",
+      "Nungwi hotels",
+      "Jambiani boutique hotel",
+      "Stone Town hotel",
+      "Karatu lodges",
+      "Serengeti safari lodge",
+      "where to stay in Zanzibar"
+    ],
+    "heading": "Handpicked Hotels & Safari Lodges",
+    "intro": "From Karatu lodges on the Northern Safari Circuit to boutique beachfront properties in Nungwi and Jambiani — every stay is chosen for comfort, location and character.",
+    "changefreq": "monthly",
+    "priority": 0.7,
+    "label": "Hotels",
+    "schema": {
+      "type": "CollectionPage"
+    }
+  },
+  "/transfers": {
+    "title": "Zanzibar Airport Transfers from $20 | ZAN GATES Adventures",
+    "description": "Reliable Zanzibar airport transfers from $20 and private rides to Nungwi, Kendwa, Paje, Jambiani, Kiwengwa and Stone Town. Clear prices, comfortable vehicles.",
+    "keywords": [
+      "Zanzibar airport transfer",
+      "Zanzibar taxi",
+      "airport to Nungwi transfer",
+      "airport to Stone Town transfer",
+      "Zanzibar private transfer",
+      "Paje transfer",
+      "Jambiani transfer"
+    ],
+    "heading": "Zanzibar Airport & Private Transfers",
+    "intro": "Trusted, comfortable and reliable transfer services across Zanzibar — from the airport to every beach and resort on the island.",
+    "changefreq": "monthly",
+    "priority": 0.7,
+    "label": "Transfers",
+    "schema": {
+      "type": "Service",
+      "serviceType": "Airport transfers and private taxi",
+      "name": "Zanzibar airport and private transfers",
+      "lowPrice": 20,
+      "highPrice": 100,
+      "currency": "USD"
+    }
+  },
+  "/about": {
+    "title": "About ZAN GATES Adventures | Local Zanzibar Tour Company",
+    "description": "ZAN GATES Adventures is a local Zanzibar tour company offering carefully organised tours, personal service and real island expertise. Meet the team.",
+    "keywords": [
+      "ZAN GATES Adventures",
+      "Zanzibar tour company",
+      "local tour operator Zanzibar",
+      "Zanzibar travel agency"
+    ],
+    "heading": "About ZAN GATES Adventures",
+    "intro": "ZAN GATES Adventures is a local Zanzibar tour company dedicated to creating memorable experiences through carefully organised tours, personalised service and local expertise.",
+    "changefreq": "monthly",
+    "priority": 0.5,
+    "label": "About us",
+    "schema": {
+      "type": "AboutPage"
+    }
+  },
+  "/about-zanzibar": {
+    "title": "About Zanzibar: Best Places & Beaches to Visit | ZAN GATES",
+    "description": "Plan your trip to Zanzibar, the Spice Island: best places to visit, best beaches, culture and history, with tips from local tour experts.",
+    "keywords": [
+      "about Zanzibar",
+      "best places to visit in Zanzibar",
+      "best beaches in Zanzibar",
+      "Zanzibar travel guide",
+      "Spice Island",
+      "Stone Town history"
+    ],
+    "heading": "About Zanzibar — The Spice Island",
+    "intro": "A Tanzanian archipelago off the coast of East Africa — where Swahili, Arab, Indian and European cultures meet. Discover the best places to visit and the best beaches in Zanzibar.",
+    "changefreq": "monthly",
+    "priority": 0.6,
+    "label": "About Zanzibar",
+    "schema": {
+      "type": "WebPage"
+    }
+  },
+  "/contact": {
+    "title": "Contact ZAN GATES Adventures | Zanzibar Tour Booking",
+    "description": "Contact ZAN GATES Adventures on WhatsApp +255 658 450 092 or adventures@zanzibargates.co.tz. Get help choosing a Zanzibar tour or safari.",
+    "keywords": [
+      "contact ZAN GATES Adventures",
+      "book Zanzibar tour",
+      "Zanzibar tour WhatsApp",
+      "Zanzibar travel enquiry"
+    ],
+    "heading": "Contact ZAN GATES Adventures",
+    "intro": "Have a question, need help choosing a tour, or ready to plan your Zanzibar experience? Contact our team on WhatsApp, phone or email.",
+    "changefreq": "yearly",
+    "priority": 0.6,
+    "label": "Contact",
+    "schema": {
+      "type": "ContactPage"
+    }
+  },
+  "/wedding-and-proposals": {
+    "title": "Zanzibar Beach Proposals & Weddings | ZAN GATES Adventures",
+    "description": "Plan a romantic Zanzibar beach or sandbank proposal from $350, luxury picnics and destination weddings from $4,500 — styled and organised by our team.",
+    "keywords": [
+      "Zanzibar proposal",
+      "beach proposal Zanzibar",
+      "sandbank proposal",
+      "Zanzibar destination wedding",
+      "luxury picnic Zanzibar",
+      "Zanzibar honeymoon"
+    ],
+    "heading": "Zanzibar Proposals, Picnics & Destination Weddings",
+    "intro": "Romantic beachside proposals, elegant arches, glowing signs and unforgettable moments — designed by our team, styled for you.",
+    "changefreq": "monthly",
+    "priority": 0.6,
+    "label": "Weddings & proposals",
+    "schema": {
+      "type": "Service",
+      "serviceType": "Wedding and proposal planning",
+      "name": "Zanzibar beach proposals, picnics and destination weddings",
+      "lowPrice": 350,
+      "highPrice": 4500,
+      "currency": "USD"
+    }
+  }
+}

@@ -22,17 +22,123 @@
     />
 
     <!-- =====================================================
-         SEO DESCRIPTION
+         PERFORMANCE HINTS
+         Images are served from Cloudinary and the language
+         widget from gtranslate — open those connections early.
          ===================================================== -->
-    <meta
-      name="description"
-      content="ZAN GATES ADVENTURES — Discover unforgettable tours, experiences and destinations across Zanzibar."
+    <link rel="preconnect" href="https://res.cloudinary.com" />
+    <link rel="dns-prefetch" href="https://cdn.gtranslate.net" />
+
+    <link
+      rel="apple-touch-icon"
+      href="https://res.cloudinary.com/djczmay2i/image/upload/c_fill,w_180,h_180/v1788254388/ZAN_GATES_ADVENTURES_k59crf.jpg"
     />
+    <meta name="theme-color" content="#0e5b54" />
+    <meta name="author" content="ZAN GATES Adventures" />
+    <meta name="geo.region" content="TZ-ZN" />
+    <meta name="geo.placename" content="Zanzibar" />
 
     <!-- =====================================================
-         WEBSITE TITLE
+         SEO
+         Everything between the seo:start / seo:end markers is
+         replaced per-route by the server renderer
+         (backend/src/Seo) and kept in sync on the client by
+         <Seo /> (frontend/src/seo/Seo.jsx). What is written
+         here is the home-page default, used by the dev server
+         and as the fallback when the renderer is unreachable.
          ===================================================== -->
-    <title>ZAN GATES Adventures Tours & Safaris</title>
+    <!--seo:start-->
+    <title>Zanzibar Tours, Excursions &amp; Safaris | ZAN GATES Adventures</title>
+    <meta
+      name="description"
+      content="Book Zanzibar tours with a local team: Safari Blue, Prison Island, Mnemba snorkeling, Stone Town, Nungwi and Tanzania safaris. Send an enquiry today."
+    />
+    <meta
+      name="keywords"
+      content="Zanzibar tours, Zanzibar excursions, Safari Blue Zanzibar, Prison Island tour, Mnemba Island snorkeling, Stone Town tour, Nungwi, Tanzania safari from Zanzibar, Serengeti safari, Zanzibar airport transfer"
+    />
+    <meta
+      name="robots"
+      content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"
+    />
+    <link rel="canonical" href="https://zanzibargates.co.tz/" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="ZAN GATES Adventures" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:title" content="Zanzibar Tours, Excursions &amp; Safaris | ZAN GATES Adventures" />
+    <meta
+      property="og:description"
+      content="Book Zanzibar tours with a local team: Safari Blue, Prison Island, Mnemba snorkeling, Stone Town, Nungwi and Tanzania safaris. Send an enquiry today."
+    />
+    <meta property="og:url" content="https://zanzibargates.co.tz/" />
+    <meta
+      property="og:image"
+      content="https://res.cloudinary.com/djczmay2i/image/upload/c_fill,g_auto,w_1200,h_630,q_auto,f_jpg/v1779540443/aaa_faq_ixagv2.jpg"
+    />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Sailing through Zanzibar's turquoise waters with ZAN GATES Adventures" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Zanzibar Tours, Excursions &amp; Safaris | ZAN GATES Adventures" />
+    <meta
+      name="twitter:description"
+      content="Book Zanzibar tours with a local team: Safari Blue, Prison Island, Mnemba snorkeling, Stone Town, Nungwi and Tanzania safaris. Send an enquiry today."
+    />
+    <meta
+      name="twitter:image"
+      content="https://res.cloudinary.com/djczmay2i/image/upload/c_fill,g_auto,w_1200,h_630,q_auto,f_jpg/v1779540443/aaa_faq_ixagv2.jpg"
+    />
+
+    <script type="application/ld+json" data-seo-jsonld="site">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "TravelAgency",
+            "@id": "https://zanzibargates.co.tz/#organization",
+            "name": "ZAN GATES Adventures",
+            "alternateName": "ZAN GATES ADVENTURES",
+            "url": "https://zanzibargates.co.tz/",
+            "logo": "https://res.cloudinary.com/djczmay2i/image/upload/v1788254388/ZAN_GATES_ADVENTURES_k59crf.jpg",
+            "image": "https://res.cloudinary.com/djczmay2i/image/upload/c_fill,g_auto,w_1200,h_630,q_auto,f_jpg/v1779540443/aaa_faq_ixagv2.jpg",
+            "description": "ZAN GATES Adventures is a local Zanzibar tour company offering excursions, Tanzania safaris, airport transfers, hotels and romantic beach proposals.",
+            "email": "adventures@zanzibargates.co.tz",
+            "telephone": "+255658450092",
+            "address": {
+              "@type": "PostalAddress",
+              "addressLocality": "Zanzibar",
+              "addressCountry": "TZ"
+            },
+            "areaServed": [
+              { "@type": "Place", "name": "Zanzibar" },
+              { "@type": "Country", "name": "Tanzania" }
+            ],
+            "sameAs": [
+              "https://www.facebook.com/share/19SBfqRvNk/",
+              "https://www.instagram.com/zanzibar_gates_safaris._",
+              "https://www.threads.com/@zanzibar_gates_safaris._"
+            ],
+            "contactPoint": {
+              "@type": "ContactPoint",
+              "contactType": "customer service",
+              "telephone": "+255658450092",
+              "email": "adventures@zanzibargates.co.tz"
+            }
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://zanzibargates.co.tz/#website",
+            "url": "https://zanzibargates.co.tz/",
+            "name": "ZAN GATES Adventures",
+            "inLanguage": "en",
+            "publisher": { "@id": "https://zanzibargates.co.tz/#organization" }
+          }
+        ]
+      }
+    </script>
+    <!--seo:end-->
 
     <!-- =====================================================
          GTRANSLATE WEBSITE TRANSLATOR
@@ -123,6 +229,38 @@
       id="gtranslate-engine"
       aria-hidden="true"
     ></div>
+
+    <!-- =====================================================
+         CRAWLER / NO-JS CONTENT
+         The server renderer replaces this per route with the
+         page heading, summary and internal links. Browsers
+         that run JavaScript never show it.
+         ===================================================== -->
+    <!--seo:noscript:start-->
+    <noscript>
+      <header>
+        <h1>ZAN GATES Adventures — Zanzibar Tours, Excursions &amp; Safaris</h1>
+        <p>
+          ZAN GATES Adventures is a local Zanzibar tour company. Book Safari
+          Blue, Prison Island, Mnemba Island snorkeling, Stone Town and Nungwi
+          excursions, Tanzania safaris, airport transfers and beach proposals.
+        </p>
+      </header>
+      <nav aria-label="Main">
+        <ul>
+          <li><a href="/tours">Zanzibar excursions &amp; tours</a></li>
+          <li><a href="/safaris">Tanzania safaris</a></li>
+          <li><a href="/destinations">Destinations</a></li>
+          <li><a href="/hotels">Hotels &amp; lodges</a></li>
+          <li><a href="/transfers">Airport transfers</a></li>
+          <li><a href="/wedding-and-proposals">Weddings &amp; proposals</a></li>
+          <li><a href="/about">About us</a></li>
+          <li><a href="/contact">Contact</a></li>
+        </ul>
+      </nav>
+      <p>Please enable JavaScript to book and browse the full site.</p>
+    </noscript>
+    <!--seo:noscript:end-->
 
     <!-- =====================================================
          REACT APPLICATION

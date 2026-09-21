@@ -1,3 +1,7 @@
+import Seo from "../seo/Seo";
+import { pageSeo } from "../seo/pages";
+import { pageJsonLd, itemListSchema } from "../seo/schema";
+
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
@@ -131,6 +135,7 @@ function Home() {
     const [error, setError] = useState("");
 
     const [activeHeroImage, setActiveHeroImage] = useState(0);
+    const [heroSlidesReady, setHeroSlidesReady] = useState(false);
     const [heroVisible, setHeroVisible] = useState(false);
 
     /* ------------------------------------------------------------------
@@ -191,10 +196,10 @@ function Home() {
        ------------------------------------------------------------------ */
 
     useEffect(() => {
-        HOME_HERO_SLIDES.forEach((slide) => {
-            const image = new Image();
-            image.src = slide.image;
-        });
+        const timer = window.setTimeout(() => {
+            setHeroSlidesReady(true);
+        }, 2000);
+        return () => window.clearTimeout(timer);
     }, []);
 
     /* ------------------------------------------------------------------
@@ -232,11 +237,30 @@ function Home() {
 
     return (
         <main className="home-page">
+            <Seo
+                {...pageSeo("/")}
+                jsonLd={pageJsonLd(
+                    "/",
+                    tours.length
+                        ? [
+                              itemListSchema(
+                                  "Featured Zanzibar tours",
+                                  tours.slice(0, 12).map((tour) => ({
+                                      name: tour.title,
+                                      path: `/tours/${encodeURIComponent(tour.slug)}`,
+                                      image: tour.image_url || undefined,
+                                  }))
+                              ),
+                          ]
+                        : []
+                )}
+            />
+
 
             {/* HERO */}
             <section className="home-hero" aria-label="ZAN GATES Adventures">
                 <div className="home-hero-background" aria-hidden="true">
-                    {HOME_HERO_SLIDES.map((slide, index) => (
+                    {HOME_HERO_SLIDES.map((slide, index) => (index === 0 || heroSlidesReady) && (
                         <img
                             key={slide.id}
                             src={slide.image}
@@ -274,6 +298,10 @@ function Home() {
                         <h1>
                             <span>Discover</span>
                             <strong>Zanzibar.</strong>
+                            <span className="seo-visually-hidden">
+                                {" "}
+                                Tours, excursions &amp; safaris with ZAN GATES Adventures
+                            </span>
                         </h1>
 
                         <p className="home-hero-title">

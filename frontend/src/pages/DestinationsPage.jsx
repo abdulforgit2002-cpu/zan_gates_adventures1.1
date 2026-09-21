@@ -1,3 +1,7 @@
+import Seo from "../seo/Seo";
+import { pageSeo } from "../seo/pages";
+import { pageJsonLd, itemListSchema } from "../seo/schema";
+
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
@@ -92,31 +96,55 @@ function DestinationsPage() {
     };
   }, []);
 
-  /* Build the aggregated destination list with counts */
+  /* Build the aggregated destination list with counts.
+     Grouped by the destination's DB slug (the same slug the admin sets and
+     the sitemap uses); the hardcoded name→slug map is only a fallback for
+     tours from an API that does not send destination_slug. */
   const destinations = useMemo(() => {
-    const counts = new Map();
+    const groups = new Map();
 
     tours.forEach((tour) => {
       const name = getTourDestination(tour);
       if (!name) return;
-      counts.set(name, (counts.get(name) || 0) + 1);
+
+      const slug = tour.destination_slug || getDestinationSlug(name);
+      const existing = groups.get(slug);
+
+      if (existing) {
+        existing.count += 1;
+      } else {
+        groups.set(slug, { name, slug, count: 1 });
+      }
     });
 
-    /* Preserve DESTINATION_ORDER, then append any extra */
-    const ordered = DESTINATION_ORDER.filter((n) => counts.has(n));
-    const extras = [...counts.keys()].filter(
-      (n) => !DESTINATION_ORDER.includes(n)
-    );
+    const rank = (destination) => {
+      const index = DESTINATION_ORDER.indexOf(destination.name);
+      return index === -1 ? DESTINATION_ORDER.length : index;
+    };
 
-    return [...ordered, ...extras].map((name) => ({
-      name,
-      slug: getDestinationSlug(name),
-      count: counts.get(name),
-    }));
+    return [...groups.values()].sort((a, b) => rank(a) - rank(b));
   }, [tours]);
 
   return (
     <div className="destinations-page">
+      <Seo
+        {...pageSeo("/destinations")}
+        jsonLd={pageJsonLd(
+          "/destinations",
+          destinations.length
+            ? [
+                itemListSchema(
+                  "Zanzibar and Tanzania destinations",
+                  destinations.map((destination) => ({
+                    name: destination.name,
+                    path: `/destinations/${encodeURIComponent(destination.slug)}`,
+                  }))
+                ),
+              ]
+            : []
+        )}
+      />
+
       <header className="destinations-header">
         <div className="container">
           <span className="tour-section-eyebrow">

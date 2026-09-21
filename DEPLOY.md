@@ -7,8 +7,8 @@ applies any new SQL files in `backend/migrations/`, and restarts the stack
 (`.github/workflows/deploy.yml`). Postgres runs as its own container on a
 named volume so data survives redeploys.
 
-- Frontend → `zanzibargates.co.tz` / `www.zanzibargates.co.tz` (container
-  listens on `:3016`)
+- Frontend → `zanzibargates.co.tz` (container listens on `:3016`;
+  `www.zanzibargates.co.tz` redirects to it)
 - Backend → `api.zanzibargates.co.tz` (container listens on `:8028`)
 
 TLS and domain routing are handled by the system-level Caddy already running
@@ -21,13 +21,22 @@ Add this block to `/etc/caddy/Caddyfile` once, by hand:
 
 ```caddy
 # ── Zan Gates Adventures ─────────────────────────────────────────────────────
-zanzibargates.co.tz, www.zanzibargates.co.tz {
+zanzibargates.co.tz {
     reverse_proxy http://127.0.0.1:3016
+}
+www.zanzibargates.co.tz {
+    redir https://zanzibargates.co.tz{uri} permanent
 }
 api.zanzibargates.co.tz {
     reverse_proxy http://127.0.0.1:8028
 }
 ```
+
+`www` deliberately **redirects** instead of serving the site: search engines
+must see exactly one hostname (the canonical tags, sitemaps and structured
+data all use `https://zanzibargates.co.tz`). If you already added the earlier
+version of this block that proxied both hostnames to the same port, replace it
+with the one above.
 
 Then reload Caddy: `sudo systemctl reload caddy`.
 
@@ -69,8 +78,8 @@ cd ~/zan-gates-deploy
 Copy [`.env.prod.example`](.env.prod.example) (in this repo) to
 `~/zan-gates-deploy/.env` and fill in real values:
 
-- `DB_NAME` / `DB_USER` — pick values matching whatever you use for the
-  restored database (see step 3)
+- `DB_NAME` / `DB_USER` — any names you like; the Postgres container is
+  initialised with them on its first run
 - `DB_PASSWORD` — a strong password; this is what the **new** Postgres
   container will be initialized with
 - `JWT_SECRET` — at least 32 random characters
@@ -144,6 +153,104 @@ and `/admin/destinations`.
    it to be healthy, applies every `.sql` file in `backend/migrations/` via
    `psql`, seeds the first admin account if `users` is empty, then starts
    everything.
+
+## SEO
+
+The site is a React single-page app, which by default gives every URL the same
+empty HTML — invisible to link previews (WhatsApp/Facebook/X) and slow for
+search engines to understand. The stack fixes that without moving to a
+different framework:
+
+```
+browser / Googlebot
+      │
+   Caddy ──► frontend container (nginx)
+                ├─ real file (JS/CSS/images/robots.txt)  → served directly
+                ├─ /sitemap*.xml                         → backend (built from the database)
+                └─ any page URL                          → backend GET /seo/render
+                        │  reads the built index.html + seo-data.json from this
+                        │  container, looks the URL up in the database, and
+                        │  returns the same HTML with that page's <title>,
+                        │  description, canonical, Open Graph/Twitter tags,
+                        │  JSON-LD, crawler-visible text and the real HTTP
+                        │  status (404 for unknown/inactive tours and pages)
+                        └─ backend slow/down/erroring → plain static index.html
+                           (the site never depends on the SEO layer)
+```
+
+Rendered pages are cached by nginx for 5 minutes (404s for 1 minute, sitemaps
+for 10) — so an edit in the admin panel reaches search engines within minutes,
+and a frontend deploy starts with an empty cache.
+
+**What each page gets**
+
+| Page | Title / description | Structured data (JSON-LD) |
+|---|---|---|
+| Every page | unique title + description, canonical, Open Graph, Twitter card, robots | `TravelAgency` + `WebSite` (site-wide), `BreadcrumbList` |
+| Tours | title, description with the real lowest price | `Product` + `TouristTrip` with `Offer`/`AggregateOffer` from the tour's prices |
+| Destinations | destination description (admin-editable) | `TouristDestination`, `ItemList` of its tours |
+| Hotels | from the hotel catalog | `Hotel` |
+| Transfers / Weddings | real starting prices | `Service` + `AggregateOffer` |
+| Booking, admin, empty destinations, 404s | — | `noindex` |
+
+The static-page copy lives in one file, `frontend/src/seo/pages.json`; it is
+used by the React app and (via the build-emitted `/seo-data.json`) by the
+backend, so the two cannot drift. Tours, destinations and prices always come
+from the database.
+
+**Sitemaps** (all generated live, no file to maintain):
+`/sitemap.xml` → index of `/sitemap-pages.xml`, `/sitemap-tours.xml` (active
+tours only, with `<lastmod>` and their images), `/sitemap-destinations.xml`
+(only destinations that have at least one active tour) and
+`/sitemap-hotels.xml`. Add a tour or destination in the admin panel and it is
+in the sitemap immediately. `robots.txt` points crawlers at it and blocks
+`/admin`; the API host (`api.zanzibargates.co.tz`) serves `Disallow: /` and
+sends `X-Robots-Tag: noindex`.
+
+**Environment**: `SITE_URL` (optional, default `https://zanzibargates.co.tz`) in
+the server `.env` sets the host used in canonicals, sitemaps and JSON-LD.
+
+### After the first deploy — do these once
+
+Ranking also depends on things no code can do for you. In order of impact:
+
+1. **Google Search Console** → add the *Domain* property `zanzibargates.co.tz`
+   (DNS TXT record), then *Sitemaps* → submit `https://zanzibargates.co.tz/sitemap.xml`.
+   Use *URL Inspection → Request indexing* on the home page, `/tours`,
+   `/safaris` and your top tours.
+2. **Google Business Profile** for ZAN GATES Adventures (category "Tour
+   operator"/"Travel agency", service area Zanzibar, your real phone and
+   website, photos). This is the biggest lever for "tours in Zanzibar" style
+   searches and the map pack.
+3. **Bing Webmaster Tools** (can import the Search Console property).
+4. **Verify the output** on a live tour URL:
+   `curl -s https://zanzibargates.co.tz/tours/<slug> | grep -E "<title>|canonical|ld\+json"`
+   and paste the URL into Google's *Rich Results Test*.
+5. **Fill in the content** — this is what search engines actually rank:
+   - every tour: a unique title, a 100–160 character *short description*, a
+     long *description* (300+ words is a good target), real prices, and 5+
+     photos each with **alt text** (it feeds image search and the sitemap)
+   - every destination: a *description* (it becomes the page's intro text
+     and its meta description)
+   - use short, keyword-bearing slugs (`safari-blue-zanzibar`, not `tour-1`);
+     never reuse or change a live slug — deactivate a tour instead of
+     deleting it if you want to retire it (inactive tours return a proper 404)
+6. **Reviews & links**: list the tours on TripAdvisor, Viator/GetYourGuide and
+   local directories, and ask guests for Google/TripAdvisor reviews. Add
+   `AggregateRating` structured data only once you have real reviews to
+   show on the page — it is deliberately not included today.
+
+### SEO — what is not covered (yet)
+
+- **Multi-language search results.** Language switching uses the GTranslate
+  widget, which translates in the visitor's browser; search engines never see
+  German/French/Italian/Polish versions and there is no per-language URL to
+  put `hreflang` on. Ranking in those markets needs real per-language URLs
+  (e.g. `/de/tours/safari-blue`) using the tour translations that already
+  exist in the database — a sizeable follow-up change to routing.
+- **Ranking is not guaranteed.** This is the complete technical foundation;
+  position #1 for competitive terms (Zanzibar tours, Safari Blue…) also needs
+  content, backlinks, reviews and time.
 
 ## Known limitations (flagging, not fixed here)
 
