@@ -1,215 +1,110 @@
-import { lazy, Suspense } from "react";
+// ============================================================
+// PAYMENT HOLD SCREEN — ALL ROUTES TEMPORARILY DISABLED
+// ============================================================
 
-import {
-    BrowserRouter,
-    Routes,
-    Route,
-    Navigate,
-} from "react-router-dom";
+// import {
+//   BrowserRouter,
+//   Route,
+//   Routes,
+// } from 'react-router-dom'
 
+// import Navbar from './components/layout/Navbar'
+// import Footer from './components/layout/Footer'
+// import SocialRail from './components/ui/SocialRail'
+// import Destinations from './pages/Destinations'
+// import DestinationDetails from './pages/DestinationDetails'
+// import Experiences from './pages/Experiences'
+// import ExperienceDetails from './pages/ExperienceDetails'
+// import Home from './pages/Home'
+// import Book from './pages/Book'
+// import BookingSuccess from './pages/BookingSuccess'
+// import Contact from './pages/Contact'
+// import About from './pages/About'
+// import Impact from './pages/Impact'
+// import Journal from './pages/Journal'
 
-/*
-|--------------------------------------------------------------------------
-| PUBLIC PAGES
-|--------------------------------------------------------------------------
-*/
+// import AdminLayout from './pages/admin/AdminLayout'
+// import AdminLogin from './pages/admin/AdminLogin'
+// import AdminDashboard from './pages/admin/AdminDashboard'
+// import AdminBookings from './pages/admin/AdminBookings'
+// import AdminBookingDetail from './pages/admin/AdminBookingDetail'
+// import AdminMessages from './pages/admin/AdminMessages'
+// import AdminTours from './pages/admin/AdminTours'
+// import AdminTourForm from './pages/admin/AdminTourForm'
+// import AdminDestinations from './pages/admin/AdminDestinations'
+// import AdminDestinationForm from './pages/admin/AdminDestinationForm'
 
-import Home from "./pages/Home";
-import Tours from "./pages/Tours";
-import TourDetails from "./pages/TourDetails";
-import About from "./pages/About";
-import AboutZanzibar from "./pages/AboutZanzibar";
-import Contact from "./pages/Contact";
-import Booking from "./pages/Booking";
-import DestinationsPage from "./pages/DestinationsPage";
-import DestinationDetailPage from "./pages/DestinationDetailPage";
-import HotelsPage from "./pages/HotelsPage";
-import HotelDetailPage from "./pages/HotelDetailPage";
-import Transfers from "./pages/Transfers";
-import Safaris from "./pages/Safaris";
-import WeddingProposals from "./pages/WeddingProposals";
+import './index.css'
 
+function PaymentHold() {
+  return (
+    <div className="payment-hold-root">
+      <div className="payment-hold-card">
+        <div className="payment-hold-icon" aria-hidden="true">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.8"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            width="56"
+            height="56"
+          >
+            <rect x="2" y="5" width="20" height="14" rx="2.5" />
+            <line x1="2" y1="10" x2="22" y2="10" />
+            <line x1="6" y1="15" x2="10" y2="15" />
+            <circle cx="17" cy="15" r="1.2" fill="currentColor" stroke="none" />
+          </svg>
+        </div>
 
-/*
-|--------------------------------------------------------------------------
-| PUBLIC LAYOUT
-|--------------------------------------------------------------------------
-*/
+        <h1 className="payment-hold-title">Complete Payment</h1>
 
-import PublicLayout from "./components/PublicLayout";
+        <div className="payment-hold-divider" aria-hidden="true" />
 
-import {
-    AuthProvider,
-} from "./context/AuthContext";
+        <p className="payment-hold-message">
+          <strong>Your website is currently on hold.</strong>
+        </p>
 
+        <p className="payment-hold-message">
+          Access to this application has been temporarily suspended
+          because the outstanding balance for this project has not
+          been settled.
+        </p>
 
-/*
-|--------------------------------------------------------------------------
-| ADMIN AREA (lazy-loaded)
-|--------------------------------------------------------------------------
-|
-| The whole admin panel is one separate chunk, fetched only when someone
-| actually opens /admin/*. See pages/admin/AdminArea.jsx.
-|
-*/
+        <p className="payment-hold-warning">
+          ⚠️ If payment is not completed, the website will remain
+          offline and all public and administrative pages will stay
+          inaccessible.
+        </p>
 
-const AdminArea = lazy(() => import("./pages/admin/AdminArea"));
+        <p className="payment-hold-message">
+          To restore full access immediately, please complete the
+          outstanding payment and notify the development team. Once
+          payment is confirmed, the site will be reactivated without
+          further delay.
+        </p>
 
+        <div className="payment-hold-cta">
+          <a
+            href="mailto:billing@example.com?subject=Payment%20Completion%20-%20Website%20Reactivation"
+            className="payment-hold-button"
+          >
+            Contact Billing to Complete Payment
+          </a>
+        </div>
 
-function App() {
-
-    return (
-
-        <BrowserRouter>
-
-            <AuthProvider>
-
-                <Suspense fallback={null}>
-
-                <Routes>
-
-                    {/* =====================================================
-                        PUBLIC WEBSITE
-                    ===================================================== */}
-
-                    <Route
-                        element={
-                            <PublicLayout />
-                        }
-                    >
-
-                        <Route
-                            path="/"
-                            element={<Home />}
-                        />
-
-                        <Route
-                            path="/tours"
-                            element={<Tours />}
-                        />
-
-                        <Route
-                            path="/tours/:slug"
-                            element={<TourDetails />}
-                        />
-
-                        {/* =============================================
-                            SAFARIS LISTING
-                        ============================================= */}
-
-                        <Route
-                            path="/safaris"
-                            element={<Safaris />}
-                        />
-
-                        {/* =============================================
-                            DESTINATIONS
-                            /destinations       → listing page
-                            /destinations/:slug → filtered tours
-                        ============================================= */}
-
-                        <Route
-                            path="/destinations"
-                            element={<DestinationsPage />}
-                        />
-
-                        <Route
-                            path="/destinations/:slug"
-                            element={<DestinationDetailPage />}
-                        />
-
-                        {/* =============================================
-                            HOTELS
-                            /hotels       → listing page
-                            /hotels/:slug → hotel detail
-                        ============================================= */}
-
-                        <Route
-                            path="/hotels"
-                            element={<HotelsPage />}
-                        />
-
-                        <Route
-                            path="/hotels/:slug"
-                            element={<HotelDetailPage />}
-                        />
-
-                        {/* =============================================
-                            TRANSFERS
-                            ✅ This was missing — that's why the
-                            Transfers nav link was redirecting to /
-                        ============================================= */}
-
-                        <Route
-                            path="/transfers"
-                            element={<Transfers />}
-                        />
-
-                        <Route
-                            path="/about"
-                            element={<About />}
-                        />
-
-                        <Route
-                            path="/about-zanzibar"
-                            element={<AboutZanzibar />}
-                        />
-
-                        <Route
-                            path="/contact"
-                            element={<Contact />}
-                        />
-
-                        <Route
-                            path="/book/:slug"
-                            element={<Booking />}
-                        />
-
-                        <Route
-                            path="/wedding-and-proposals"
-                            element={<WeddingProposals />}
-                        />
-
-                    </Route>
-
-
-                    {/* =====================================================
-                        ADMIN AREA
-                        /admin/login and every protected admin page
-                        (see pages/admin/AdminArea.jsx)
-                    ===================================================== */}
-
-                    <Route
-                        path="/admin/*"
-                        element={<AdminArea />}
-                    />
-
-
-                    {/* =====================================================
-                        FALLBACK
-                    ===================================================== */}
-
-                    <Route
-                        path="*"
-                        element={
-                            <Navigate
-                                to="/"
-                                replace
-                            />
-                        }
-                    />
-
-                </Routes>
-
-                </Suspense>
-
-            </AuthProvider>
-
-        </BrowserRouter>
-
-    );
-
+        <p className="payment-hold-footer">
+          Thank you for your prompt attention to this matter.
+        </p>
+      </div>
+    </div>
+  )
 }
 
+function App() {
+  return <PaymentHold />
+}
 
-export default App;
+export default App

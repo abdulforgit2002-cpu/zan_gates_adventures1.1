@@ -27,3 +27,5 @@ frontend/dist/
 
 # Local database backups
 backups/
+database password.png
+*.png
