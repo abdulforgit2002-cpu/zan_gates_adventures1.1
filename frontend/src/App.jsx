@@ -86,17 +86,17 @@ function PaymentHold() {
           further delay.
         </p>
 
-        <div className="payment-hold-cta">
+        {/* <div className="payment-hold-cta">
           <a
             href="mailto:billing@example.com?subject=Payment%20Completion%20-%20Website%20Reactivation"
             className="payment-hold-button"
           >
             Contact Billing to Complete Payment
           </a>
-        </div>
+        </div> */}
 
         <p className="payment-hold-footer">
-          Thank you for your prompt attention to this matter.
+          Thank you.
         </p>
       </div>
     </div>
