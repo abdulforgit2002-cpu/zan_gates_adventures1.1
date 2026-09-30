@@ -76,7 +76,6 @@ const normalizeTour = (response) => {
                 data.images ??
                 [],
 
-            /* ✳ NEW — rich content fallbacks */
             list_items:
                 data.tour.list_items ??
                 data.list_items ??
@@ -475,6 +474,21 @@ function TourDetails() {
         selectedImage ||
         getPrimaryImage(images);
 
+    /*
+    |--------------------------------------------------------------------------
+    | HERO IMAGE — always the tour's PRIMARY image.
+    |
+    | We deliberately keep the hero locked to the primary image so switching
+    | the gallery thumbnail does NOT change the top hero. This prevents the
+    | hero image from being duplicated / changing when the user clicks a
+    | thumbnail, and keeps the hero stable while the gallery is interactive.
+    |--------------------------------------------------------------------------
+    */
+    const heroImage = useMemo(
+        () => getPrimaryImage(images),
+        [images]
+    );
+
     const startingPrice = useMemo(() => {
 
         if (!Array.isArray(prices) || prices.length === 0) {
@@ -771,11 +785,11 @@ function TourDetails() {
             {/* HERO */}
             <section
                 className="tour-details-hero"
-                style={
-                    primaryImage
-                        ? { backgroundImage: `url("${primaryImage}")` }
-                        : undefined
-                }
+                style={{
+                    backgroundImage: heroImage
+                        ? `url("${heroImage}")`
+                        : "none",
+                }}
             >
                 <div className="tour-details-hero-overlay" />
 
@@ -1049,9 +1063,7 @@ function TourDetails() {
                                 </div>
                             </section>
 
-                            {/* ============================================================
-                                ✳ NEW SECTION — PRACTICAL INFO
-                            ============================================================ */}
+                            {/* PRACTICAL INFO */}
                             {(tour.duration_start ||
                                 tour.duration_end ||
                                 tour.departure_location ||
@@ -1104,9 +1116,7 @@ function TourDetails() {
                                 </section>
                             )}
 
-                            {/* ============================================================
-                                ✳ NEW SECTION — HIGHLIGHTS
-                            ============================================================ */}
+                            {/* HIGHLIGHTS */}
                             {tour.list_items?.highlight?.length > 0 && (
                                 <section className="tour-details-section">
                                     <span className="tour-section-eyebrow">
@@ -1129,9 +1139,7 @@ function TourDetails() {
                                 </section>
                             )}
 
-                            {/* ============================================================
-                                ✳ NEW SECTION — INCLUSIONS / EXCLUSIONS
-                            ============================================================ */}
+                            {/* INCLUSIONS / EXCLUSIONS */}
                             {(tour.list_items?.include?.length > 0 ||
                                 tour.list_items?.exclude?.length > 0) && (
                                 <section className="tour-details-section">
@@ -1174,9 +1182,7 @@ function TourDetails() {
                                 </section>
                             )}
 
-                            {/* ============================================================
-                                ✳ NEW SECTION — ACTIVITIES
-                            ============================================================ */}
+                            {/* ACTIVITIES */}
                             {tour.list_items?.activity?.length > 0 && (
                                 <section className="tour-details-section">
                                     <span className="tour-section-eyebrow">
@@ -1199,9 +1205,7 @@ function TourDetails() {
                                 </section>
                             )}
 
-                            {/* ============================================================
-                                ✳ NEW SECTION — WHAT TO SEE
-                            ============================================================ */}
+                            {/* WHAT TO SEE */}
                             {tour.list_items?.what_to_see?.length > 0 && (
                                 <section className="tour-details-section">
                                     <span className="tour-section-eyebrow">
@@ -1224,9 +1228,7 @@ function TourDetails() {
                                 </section>
                             )}
 
-                            {/* ============================================================
-                                ✳ NEW SECTION — GROUP PRICING
-                            ============================================================ */}
+                            {/* GROUP PRICING */}
                             {tour.group_prices?.length > 0 && (
                                 <section className="tour-details-section">
                                     <span className="tour-section-eyebrow">
@@ -1254,9 +1256,7 @@ function TourDetails() {
                                 </section>
                             )}
 
-                            {/* ============================================================
-                                ✳ NEW SECTION — EXTRA SECTIONS (tips, notes, itinerary)
-                            ============================================================ */}
+                            {/* EXTRA SECTIONS */}
                             {Object.entries(tour.extra_sections || {}).map(([key, section]) => (
                                 <section key={key} className="tour-details-section">
                                     <span className="tour-section-eyebrow">
@@ -1335,7 +1335,7 @@ function TourDetails() {
                                 </div>
                             </section>
 
-                            {/* PRICING (per-person pricing rules) */}
+                            {/* PRICING (per-person rules) */}
                             <section className="tour-details-section">
                                 <span className="tour-section-eyebrow">
                                     {t("tourDetails.pricingEyebrow")}
