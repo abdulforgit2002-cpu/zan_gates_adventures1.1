@@ -476,12 +476,8 @@ function TourDetails() {
 
     /*
     |--------------------------------------------------------------------------
-    | HERO IMAGE — always the tour's PRIMARY image.
-    |
-    | We deliberately keep the hero locked to the primary image so switching
-    | the gallery thumbnail does NOT change the top hero. This prevents the
-    | hero image from being duplicated / changing when the user clicks a
-    | thumbnail, and keeps the hero stable while the gallery is interactive.
+    | HERO IMAGE — locked to the tour's PRIMARY image so the top hero NEVER
+    | re-renders / duplicates when the user browses the gallery thumbnails.
     |--------------------------------------------------------------------------
     */
     const heroImage = useMemo(
@@ -782,13 +778,15 @@ function TourDetails() {
                 ]}
             />
 
-            {/* HERO */}
+            {/* HERO — single background image, no tiling */}
             <section
                 className="tour-details-hero"
                 style={{
-                    backgroundImage: heroImage
-                        ? `url("${heroImage}")`
-                        : "none",
+                    backgroundImage: heroImage ? `url("${heroImage}")` : "none",
+                    backgroundSize: "cover",
+                    backgroundPosition: "center center",
+                    backgroundRepeat: "no-repeat",
+                    backgroundColor: "#123f46",
                 }}
             >
                 <div className="tour-details-hero-overlay" />
@@ -825,27 +823,30 @@ function TourDetails() {
 
                         <div className="tour-details-quick-info">
                             {/* DESTINATION */}
-                            <div>
-                                <span className="quick-info-icon">
-                                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                            <div className="quick-info-item">
+                                <span
+                                    className="quick-info-badge quick-info-badge--location"
+                                    aria-hidden="true"
+                                >
+                                    <svg viewBox="0 0 24 24" fill="none">
                                         <path
-                                            d="M12 21s7-6.1 7-12a7 7 0 1 0-14 0c0 5.9 7 12 7 12Z"
-                                            fill="none"
+                                            d="M12 22s7-6.1 7-12a7 7 0 1 0-14 0c0 5.9 7 12 7 12Z"
                                             stroke="currentColor"
-                                            strokeWidth="1.7"
+                                            strokeWidth="1.8"
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
                                         />
                                         <circle
                                             cx="12"
-                                            cy="9"
-                                            r="2.2"
-                                            fill="none"
+                                            cy="10"
+                                            r="2.6"
                                             stroke="currentColor"
-                                            strokeWidth="1.7"
+                                            strokeWidth="1.8"
                                         />
                                     </svg>
                                 </span>
 
-                                <div>
+                                <div className="quick-info-text">
                                     <small>{t("tourDetails.destination")}</small>
                                     <strong>
                                         {tour.destination_name ||
@@ -856,28 +857,30 @@ function TourDetails() {
                             </div>
 
                             {/* DURATION */}
-                            <div>
-                                <span className="quick-info-icon">
-                                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                            <div className="quick-info-item">
+                                <span
+                                    className="quick-info-badge quick-info-badge--duration"
+                                    aria-hidden="true"
+                                >
+                                    <svg viewBox="0 0 24 24" fill="none">
                                         <circle
                                             cx="12"
                                             cy="12"
-                                            r="8.5"
-                                            fill="none"
+                                            r="8.6"
                                             stroke="currentColor"
-                                            strokeWidth="1.7"
+                                            strokeWidth="1.8"
                                         />
                                         <path
-                                            d="M12 7v5l3.2 2"
-                                            fill="none"
+                                            d="M12 7.2v5l3.3 2"
                                             stroke="currentColor"
-                                            strokeWidth="1.7"
+                                            strokeWidth="1.8"
                                             strokeLinecap="round"
+                                            strokeLinejoin="round"
                                         />
                                     </svg>
                                 </span>
 
-                                <div>
+                                <div className="quick-info-text">
                                     <small>{t("tourDetails.duration")}</small>
                                     <strong>
                                         {tour.duration || t("common.flexible")}
@@ -887,20 +890,23 @@ function TourDetails() {
 
                             {/* STARTING PRICE */}
                             {startingPrice && (
-                                <div>
-                                    <span className="quick-info-icon">
-                                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                                <div className="quick-info-item">
+                                    <span
+                                        className="quick-info-badge quick-info-badge--price"
+                                        aria-hidden="true"
+                                    >
+                                        <svg viewBox="0 0 24 24" fill="none">
                                             <path
-                                                d="M12 3v18M16.5 7.5c-.7-1.1-2-1.8-4-1.8-2.4 0-4 1.1-4 2.8 0 4.2 8 2 8 6.2 0 1.8-1.7 3.1-4.1 3.1-2 0-3.6-.7-4.4-2"
-                                                fill="none"
+                                                d="M12 3.5v17M16.5 7.5c-.7-1.1-2-1.8-4-1.8-2.4 0-4 1.1-4 2.8 0 4.2 8 2 8 6.2 0 1.8-1.7 3.1-4.1 3.1-2 0-3.6-.7-4.4-2"
                                                 stroke="currentColor"
-                                                strokeWidth="1.7"
+                                                strokeWidth="1.8"
                                                 strokeLinecap="round"
+                                                strokeLinejoin="round"
                                             />
                                         </svg>
                                     </span>
 
-                                    <div>
+                                    <div className="quick-info-text">
                                         <small>{t("tourDetails.startingFrom")}</small>
                                         <strong>
                                             {formatMoney(

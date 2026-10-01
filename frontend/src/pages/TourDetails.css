@@ -32,7 +32,7 @@
     align-items: flex-end;
     padding: 120px 0 88px;
     background-color: #123f46;
-    background-position: center;
+    background-position: center center;
     background-size: cover;
     background-repeat: no-repeat;
     color: #ffffff;
@@ -189,69 +189,164 @@
 
 
 /* ============================================================
-   QUICK INFO
+   QUICK INFO — PREMIUM BADGES
 ============================================================ */
 
 .tour-details-quick-info {
     display: flex;
     flex-wrap: wrap;
-    gap: 15px;
+    gap: 14px;
     margin-top: 48px;
 }
 
-.tour-details-quick-info > div {
+.quick-info-item {
     display: flex;
     align-items: center;
-    gap: 12px;
-    min-width: 170px;
-    padding-right: 28px;
-    border-right: 1px solid rgba(255, 255, 255, 0.16);
+    gap: 14px;
+    min-width: 210px;
+    padding: 14px 20px 14px 14px;
+    border-radius: 18px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    backdrop-filter: blur(14px) saturate(140%);
+    -webkit-backdrop-filter: blur(14px) saturate(140%);
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.10),
+        0 8px 24px rgba(0, 0, 0, 0.14);
+    transition:
+        transform 0.25s cubic-bezier(0.22, 1, 0.36, 1),
+        background 0.25s ease,
+        border-color 0.25s ease;
 }
 
-.tour-details-quick-info > div:last-child {
-    border-right: 0;
+.quick-info-item:hover {
+    transform: translateY(-3px);
+    background: rgba(255, 255, 255, 0.10);
+    border-color: rgba(255, 255, 255, 0.24);
 }
 
-.quick-info-icon {
+.quick-info-badge {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 37px;
-    height: 37px;
-    flex: 0 0 37px;
-    border: 1px solid rgba(255, 255, 255, 0.18);
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.06);
-    color: rgba(255, 255, 255, 0.82);
-}
-
-.quick-info-icon svg {
-    width: 18px;
-    height: 18px;
-}
-
-.tour-details-quick-info small {
-    display: block;
-    margin-bottom: 4px;
-    color: rgba(255, 255, 255, 0.48);
-    font-size: 0.61rem;
-    font-weight: 750;
-    letter-spacing: 0.10em;
-    text-transform: uppercase;
-}
-
-.tour-details-quick-info strong {
-    display: block;
+    width: 46px;
+    height: 46px;
+    flex: 0 0 46px;
+    border-radius: 14px;
     color: #ffffff;
-    font-size: 0.91rem;
-    font-weight: 700;
+    transition: transform 0.3s ease;
 }
 
-.tour-details-quick-info span {
-    display: block;
-    margin-top: 3px;
-    color: rgba(255, 255, 255, 0.53);
+.quick-info-item:hover .quick-info-badge {
+    transform: scale(1.06);
+}
+
+.quick-info-badge svg {
+    width: 22px;
+    height: 22px;
+}
+
+.quick-info-badge--location {
+    background: linear-gradient(135deg, #22d3ee 0%, #0891b2 100%);
+    box-shadow:
+        0 6px 18px rgba(34, 211, 238, 0.35),
+        inset 0 1px 0 rgba(255, 255, 255, 0.25);
+}
+
+.quick-info-badge--duration {
+    background: linear-gradient(135deg, #fbbf24 0%, #d97706 100%);
+    box-shadow:
+        0 6px 18px rgba(251, 191, 36, 0.35),
+        inset 0 1px 0 rgba(255, 255, 255, 0.25);
+}
+
+.quick-info-badge--price {
+    background: linear-gradient(135deg, #10b981 0%, #047857 100%);
+    box-shadow:
+        0 6px 18px rgba(16, 185, 129, 0.35),
+        inset 0 1px 0 rgba(255, 255, 255, 0.25);
+}
+
+.quick-info-text {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 0;
+}
+
+.quick-info-text small {
+    color: rgba(255, 255, 255, 0.55);
+    font-size: 0.60rem;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    line-height: 1;
+}
+
+.quick-info-text strong {
+    color: #ffffff;
+    font-size: 0.94rem;
+    font-weight: 700;
+    line-height: 1.25;
+    word-break: break-word;
+}
+
+.quick-info-text span {
+    color: rgba(255, 255, 255, 0.55);
     font-size: 0.68rem;
+    font-weight: 600;
+    line-height: 1;
+}
+
+@media (max-width: 900px) {
+    .tour-details-quick-info {
+        gap: 12px;
+        margin-top: 38px;
+    }
+
+    .quick-info-item {
+        min-width: 180px;
+        padding: 12px 16px 12px 12px;
+    }
+
+    .quick-info-badge {
+        width: 42px;
+        height: 42px;
+        flex: 0 0 42px;
+        border-radius: 12px;
+    }
+
+    .quick-info-badge svg {
+        width: 20px;
+        height: 20px;
+    }
+}
+
+@media (max-width: 640px) {
+    .tour-details-quick-info {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 10px;
+        margin-top: 32px;
+    }
+
+    .quick-info-item {
+        min-width: 0;
+        width: 100%;
+        padding: 12px 14px;
+        border-radius: 14px;
+    }
+
+    .quick-info-badge {
+        width: 40px;
+        height: 40px;
+        flex: 0 0 40px;
+        border-radius: 12px;
+    }
+
+    .quick-info-text strong {
+        font-size: 0.88rem;
+    }
 }
 
 
@@ -1427,6 +1522,160 @@
 
 
 /* ============================================================
+   TOUR INCLUSIONS
+============================================================ */
+
+.tour-inclusions {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 22px;
+    margin-top: 24px;
+}
+
+.tour-inclusions-column {
+    padding: 24px 26px;
+    border-radius: 18px;
+    background: #f4f8f7;
+    border: 1px solid #e3eae9;
+}
+
+.tour-inclusions-column--excludes {
+    background: #fbf6f4;
+    border-color: #f0e3dd;
+}
+
+.tour-inclusions-column h3 {
+    margin: 0 0 16px;
+    color: #123f46;
+    font-size: 1.05rem;
+    font-weight: 700;
+}
+
+.tour-inclusions-column ul {
+    display: grid;
+    gap: 10px;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+.tour-inclusions-column li {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    color: #5e6f71;
+    font-size: 0.94rem;
+    line-height: 1.55;
+}
+
+.tour-inclusions-column li span {
+    flex-shrink: 0;
+    width: 18px;
+    height: 18px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: #d9efe4;
+    color: #21723d;
+    font-size: 11px;
+    font-weight: 800;
+    line-height: 1;
+    margin-top: 2px;
+}
+
+.tour-inclusions-column--excludes li span {
+    background: #f5dfd5;
+    color: #a33a3a;
+}
+
+
+/* ============================================================
+   GROUP PRICING TABLE
+============================================================ */
+
+.tour-group-pricing {
+    margin-top: 26px;
+    border: 1px solid #e5ebeb;
+    border-radius: 18px;
+    overflow: hidden;
+}
+
+.tour-group-pricing-header {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 25px;
+    padding: 16px 25px;
+    background: #f7faf9;
+    border-bottom: 1px solid #e5ebeb;
+    color: #718083;
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+.tour-group-pricing-row {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 25px;
+    align-items: center;
+    padding: 18px 25px;
+    border-bottom: 1px solid #edf1f0;
+}
+
+.tour-group-pricing-row:last-child {
+    border-bottom: 0;
+}
+
+.tour-group-pricing-row > span {
+    color: #123f46;
+    font-size: 0.96rem;
+}
+
+.tour-group-pricing-row > strong {
+    color: #168083;
+    font-size: 1.15rem;
+    font-weight: 800;
+    white-space: nowrap;
+}
+
+
+/* ============================================================
+   EXTRA SECTIONS
+============================================================ */
+
+.tour-extra-sections {
+    display: grid;
+    gap: 18px;
+    margin-top: 24px;
+}
+
+.tour-extra-item {
+    padding: 20px 22px;
+    border-radius: 16px;
+    background: #f4f8f7;
+    border: 1px solid #e3eae9;
+}
+
+.tour-extra-item-title {
+    display: block;
+    margin-bottom: 6px;
+    color: #123f46;
+    font-size: 0.98rem;
+    font-weight: 700;
+}
+
+.tour-extra-item-body {
+    margin: 0;
+    color: #5e6f71;
+    font-size: 0.94rem;
+    line-height: 1.65;
+    white-space: pre-wrap;
+}
+
+
+/* ============================================================
    RESPONSIVE — 1100
 ============================================================ */
 
@@ -1507,16 +1756,6 @@
         line-height: 1.7;
     }
 
-    .tour-details-quick-info {
-        gap: 10px;
-        margin-top: 34px;
-    }
-
-    .tour-details-quick-info > div {
-        min-width: 145px;
-        padding-right: 17px;
-    }
-
     .tour-hero-bottom {
         width: calc(100% - 32px);
     }
@@ -1560,6 +1799,10 @@
     }
 
     .tour-info-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .tour-inclusions {
         grid-template-columns: 1fr;
     }
 
@@ -1638,23 +1881,6 @@
 
     .tour-details-hero-content > p {
         font-size: 0.86rem;
-    }
-
-    .tour-details-quick-info {
-        display: grid;
-        grid-template-columns:
-            1fr 1fr;
-        gap: 18px 10px;
-    }
-
-    .tour-details-quick-info > div {
-        min-width: 0;
-        padding-right: 8px;
-        border-right: 0;
-    }
-
-    .tour-details-quick-info > div:last-child {
-        grid-column: 1 / -1;
     }
 
     .tour-hero-bottom {
@@ -1738,161 +1964,4 @@
         height: 38px;
     }
 
-}
-
-/* ============================================================
-   TOUR INCLUSIONS
-============================================================ */
-
-.tour-inclusions {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 22px;
-    margin-top: 24px;
-}
-
-.tour-inclusions-column {
-    padding: 24px 26px;
-    border-radius: 18px;
-    background: #f4f8f7;
-    border: 1px solid #e3eae9;
-}
-
-.tour-inclusions-column--excludes {
-    background: #fbf6f4;
-    border-color: #f0e3dd;
-}
-
-.tour-inclusions-column h3 {
-    margin: 0 0 16px;
-    color: #123f46;
-    font-size: 1.05rem;
-    font-weight: 700;
-}
-
-.tour-inclusions-column ul {
-    display: grid;
-    gap: 10px;
-    padding: 0;
-    margin: 0;
-    list-style: none;
-}
-
-.tour-inclusions-column li {
-    display: flex;
-    align-items: flex-start;
-    gap: 10px;
-    color: #5e6f71;
-    font-size: 0.94rem;
-    line-height: 1.55;
-}
-
-.tour-inclusions-column li span {
-    flex-shrink: 0;
-    width: 18px;
-    height: 18px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
-    background: #d9efe4;
-    color: #21723d;
-    font-size: 11px;
-    font-weight: 800;
-    line-height: 1;
-    margin-top: 2px;
-}
-
-.tour-inclusions-column--excludes li span {
-    background: #f5dfd5;
-    color: #a33a3a;
-}
-
-/* ============================================================
-   GROUP PRICING TABLE
-============================================================ */
-
-.tour-group-pricing {
-    margin-top: 26px;
-    border: 1px solid #e5ebeb;
-    border-radius: 18px;
-    overflow: hidden;
-}
-
-.tour-group-pricing-header {
-    display: grid;
-    grid-template-columns: 1fr auto;
-    gap: 25px;
-    padding: 16px 25px;
-    background: #f7faf9;
-    border-bottom: 1px solid #e5ebeb;
-    color: #718083;
-    font-size: 0.72rem;
-    font-weight: 800;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-}
-
-.tour-group-pricing-row {
-    display: grid;
-    grid-template-columns: 1fr auto;
-    gap: 25px;
-    align-items: center;
-    padding: 18px 25px;
-    border-bottom: 1px solid #edf1f0;
-}
-
-.tour-group-pricing-row:last-child {
-    border-bottom: 0;
-}
-
-.tour-group-pricing-row > span {
-    color: #123f46;
-    font-size: 0.96rem;
-}
-
-.tour-group-pricing-row > strong {
-    color: #168083;
-    font-size: 1.15rem;
-    font-weight: 800;
-    white-space: nowrap;
-}
-
-/* ============================================================
-   EXTRA SECTIONS
-============================================================ */
-
-.tour-extra-sections {
-    display: grid;
-    gap: 18px;
-    margin-top: 24px;
-}
-
-.tour-extra-item {
-    padding: 20px 22px;
-    border-radius: 16px;
-    background: #f4f8f7;
-    border: 1px solid #e3eae9;
-}
-
-.tour-extra-item-title {
-    display: block;
-    margin-bottom: 6px;
-    color: #123f46;
-    font-size: 0.98rem;
-    font-weight: 700;
-}
-
-.tour-extra-item-body {
-    margin: 0;
-    color: #5e6f71;
-    font-size: 0.94rem;
-    line-height: 1.65;
-    white-space: pre-wrap;
-}
-
-@media (max-width: 700px) {
-    .tour-inclusions {
-        grid-template-columns: 1fr;
-    }
 }
