@@ -51,7 +51,6 @@ const HOTELS = [
       "https://res.cloudinary.com/djczmay2i/image/upload/v1789537919/Farm_of_Dreams_Lodge_Karatu5_d6gasa.jpg",
       "https://res.cloudinary.com/djczmay2i/image/upload/v1789537918/Farm_of_Dreams_Lodge_Karatu4_tu5nzu.jpg",
       "https://res.cloudinary.com/djczmay2i/image/upload/v1789537918/Farm_of_Dreams_Lodge_Karatu3_nmqxk0.jpg",
-      // ⚠️ VERIFY: original URL had a broken extension — added .jpg below
       "https://res.cloudinary.com/djczmay2i/image/upload/v1789537918/Farm_of_Dreams_Lodge_Karatu1_eeweal.jpg",
       "https://res.cloudinary.com/djczmay2i/image/upload/v1789537918/Farm_of_Dreams_Lodge_Karatu2_rl47zk.jpg",
     ],
@@ -105,7 +104,6 @@ const HOTELS = [
     images: [
       "https://res.cloudinary.com/djczmay2i/image/upload/v1789497370/Max_Hotel_Nungwi_Zanzibar4_hjv6vo.jpg",
       "https://res.cloudinary.com/djczmay2i/image/upload/v1789497370/Max_Hotel_Nungwi_Zanzibar3_b2jbkl.jpg",
-      // ⚠️ VERIFY: original URL had no extension — added .jpg below
       "https://res.cloudinary.com/djczmay2i/image/upload/v1789497369/Max_Hotel_Nungwi_Zanzibar1_labvmd.jpg",
       "https://res.cloudinary.com/djczmay2i/image/upload/v1789497370/Max_Hotel_Nungwi_Zanzibar2_dx06nh.jpg",
     ],
@@ -267,7 +265,7 @@ const HOTELS = [
     ],
   },
 
-    /* =======================================================
+  /* =======================================================
      SERENGETI — MAINLAND
      ======================================================= */
   {
@@ -286,7 +284,13 @@ const HOTELS = [
       "One of the strongest choices for premium clients",
     ],
     images: [
-      "https://res.cloudinary.com/djczmay2i/image/upload/v1789538531/Four_Seasons_Safari_Lodge_Serengeti1_x5jny1.jpg",
+      "https://res.cloudinary.com/djczmay2i/image/upload/v1791397868/Four_Seasons_Safari_Lodge_Serengeti_Serengeti_Tanzania_wfausb.jpg",
+      "https://res.cloudinary.com/djczmay2i/image/upload/v1791397867/Tanzania_s_Wild_Luxury_Awaits_vgdurp.jpg",
+      "https://res.cloudinary.com/djczmay2i/image/upload/v1791397868/%EF%B8%8F_Where_the_Wild_Meets_Unmatched_Luxury_Four_qnjm6u.jpg",
+      "https://res.cloudinary.com/djczmay2i/image/upload/v1791397868/The_ultimate_I_do_list_from_wild_safaris_to_x1w02w.jpg",
+      "https://res.cloudinary.com/djczmay2i/image/upload/v1791397867/20266267069613765_ospszt.jpg",
+      "https://res.cloudinary.com/djczmay2i/image/upload/v1791397867/The_Best_New_Safari_Camps_of_2025_gcrazv.jpg",
+      "https://res.cloudinary.com/djczmay2i/image/upload/v1791397867/44684221304174502_ki4kgl.jpg",
     ],
   },
 
@@ -306,7 +310,11 @@ const HOTELS = [
       "Excellent for honeymoon and luxury packages",
     ],
     images: [
-      "https://res.cloudinary.com/djczmay2i/image/upload/v1789538535/Singita_Sasakwa1_mwyqnx.jpg",
+      "https://res.cloudinary.com/djczmay2i/image/upload/v1791398388/Discover_the_height_of_safari_luxury_at_Singita_lttrzh.jpg",
+      "https://res.cloudinary.com/djczmay2i/image/upload/v1791398388/Singita_Sasakwa_Lodge_k1o2og.jpg",
+      "https://res.cloudinary.com/djczmay2i/image/upload/v1791398390/Singita_Sasakwa_Lodge_is_located_in_the_Grumeti_jrrzgz.jpg",
+      "https://res.cloudinary.com/djczmay2i/image/upload/v1791398391/pamushana_lodge_singita_juaktw.jpg",
+      "https://res.cloudinary.com/djczmay2i/image/upload/v1791398391/Singita_Sasakwa_Lodge_Serengeti_National_Park_Tanzania_gpbmuc.jpg",
     ],
   },
 
@@ -325,9 +333,14 @@ const HOTELS = [
       "Suitable for couples and families",
     ],
     images: [
-      "https://res.cloudinary.com/djczmay2i/image/upload/v1789538533/Serengeti_Safari_Lodge1_mkedpf.jpg",
-      "https://res.cloudinary.com/djczmay2i/image/upload/v1789538534/Serengeti_Safari_Lodge2_udmwbs.jpg",
-      "https://res.cloudinary.com/djczmay2i/image/upload/v1789538534/Serengeti_Safari_Lodge3_mgjfxu.webp",
+      "https://res.cloudinary.com/djczmay2i/image/upload/v1791398803/Travel_for_safari___inspired_to_travel_w6bf3n.jpg",
+      "https://res.cloudinary.com/djczmay2i/image/upload/v1791398803/Tanzania_Safari_Itinerary_Four_Seasons_Serengeti_1_hembis.jpg",
+      "https://res.cloudinary.com/djczmay2i/image/upload/v1791398797/550354016986318280_us616i.jpg",
+      "https://res.cloudinary.com/djczmay2i/image/upload/v1791398800/Where_to_Stay_in_Serengeti_ahjn7r.jpg",
+      "https://res.cloudinary.com/djczmay2i/image/upload/v1791398797/Beyond_Grumeti_Serengeti_River_Lodge_in_Tanzania_ewppqz.jpg",
+      "https://res.cloudinary.com/djczmay2i/image/upload/v1791398799/Madikwe_River_Lodge_-_each_chalet_overlooks_the__foiw5m.jpg",
+      "https://res.cloudinary.com/djczmay2i/image/upload/v1791398797/550354016986318280_1_dxzcar.jpg",
+      "https://res.cloudinary.com/djczmay2i/image/upload/v1791398794/Romantic_Santorini_Escape__Must-Visit_Infinity_Pool_Views_zodwya.jpg",
     ],
   },
 
@@ -346,7 +359,11 @@ const HOTELS = [
       "Good option for combining with Tarangire and Ngorongoro",
     ],
     images: [
-      "https://res.cloudinary.com/djczmay2i/image/upload/v1789538537/Serengeti_Serena_Safari_Lodge1_kr4xoc.webp",
+      "https://res.cloudinary.com/djczmay2i/image/upload/v1791399178/Mbuzi_Mawe_Serena_Camp_Luxury_in_the_Heart_of_kwphlv.jpg",
+      "https://res.cloudinary.com/djczmay2i/image/upload/v1791399178/Serengeti_Serena_Safari_Lodge_ztzlmu.jpg",
+      "https://res.cloudinary.com/djczmay2i/image/upload/v1791399178/Tanzania_Serengeti_National_Park_Hotel_qtyb6i.jpg",
+      "https://res.cloudinary.com/djczmay2i/image/upload/v1791399178/Around_the_beautiful_fsserengeti_property_wdkvzd.jpg",
+      "https://res.cloudinary.com/djczmay2i/image/upload/v1791398803/Travel_for_safari___inspired_to_travel_w6bf3n.jpg",
     ],
   },
 
@@ -365,8 +382,12 @@ const HOTELS = [
       "Particularly attractive for clients interested in the Great Migration",
     ],
     images: [
-      "https://res.cloudinary.com/djczmay2i/image/upload/v1789538532/Serengeti_Bushtops_Luxury_Camp1_uevx0a.jpg",
-      "https://res.cloudinary.com/djczmay2i/image/upload/v1789538532/Serengeti_Bushtops_Luxury_Camp2_okowaw.jpg",
+      "https://res.cloudinary.com/djczmay2i/image/upload/v1791399532/4_Days_Tanzania_Lodge_Safari_to_Tarangire_and_Serengeti_jxqaom.jpg",
+      "https://res.cloudinary.com/djczmay2i/image/upload/v1791399533/Serengeti_Luxury_Tented_Camp_Safari_Dining_Under_African_Stars_rqytto.jpg",
+      "https://res.cloudinary.com/djczmay2i/image/upload/v1791399532/Tanzania_Holidays___Safari_Holidays_Tours_In_Tanzania_gtswbh.jpg",
+      "https://res.cloudinary.com/djczmay2i/image/upload/v1791399532/Singita_Explore_Mobile_Tented_Camp__return_to_the_essence_of_safari_TravelPlusStyle_com_gqdj9m.jpg",
+      "https://res.cloudinary.com/djczmay2i/image/upload/v1791399531/Luxury_Tented_Safari_Camp_In_Tanzania_s_Serengeti___Roving_Bushtops_ml71rg.jpg",
+      "https://res.cloudinary.com/djczmay2i/image/upload/v1791399530/Best_Serengeti_Safaris_2026__Luxury_Tanzania__1_p0gwck.jpg",
     ],
   },
 
